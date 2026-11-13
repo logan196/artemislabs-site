@@ -24,21 +24,10 @@ export default function Cta() {
         </div>
       </Reveal>
 
-      <Reveal className="max-w-5xl mx-auto border-t border-line pt-10 mt-16">
-        <div className="grid sm:grid-cols-3 gap-6 text-center sm:text-left">
-          <div>
-            <p className="font-mono text-[13px] text-violet">built by Caltech researchers</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">who ran every analysis on this page themselves before selling it.</p>
-          </div>
-          <div>
-            <p className="font-mono text-[13px] text-violet">pipelines that ran, not promises</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">every figure on this page came from an end-to-end run on public data — Visium, MERFISH and seqFISH today; Xenium ingest in the same stack.</p>
-          </div>
-          <div>
-            <p className="font-mono text-[13px] text-violet">GSE194329, re-analyzed end-to-end</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">everything on this page was generated from public data by the pipeline shown above. Ask for the code.</p>
-          </div>
-        </div>
+      <Reveal className="max-w-5xl mx-auto mt-16">
+        <p className="font-mono text-[14px] tracking-[0.2em] text-violet text-center uppercase">
+          built by Caltech researchers
+        </p>
       </Reveal>
 
       <div className="max-w-3xl mx-auto text-center mt-24">
