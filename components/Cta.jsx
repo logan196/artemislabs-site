@@ -35,12 +35,22 @@ export default function Cta() {
             first analysis is on us — pick a public or in-house dataset and we'll turn it
             around as a live portal.
           </p>
-          <a
-            href="mailto:sne@novaflowapp.com?subject=Artemis%20Labs%20%C2%B7%20spatial%20analysis"
-            className="mt-10 inline-block rounded-full bg-violet-deep px-8 py-3.5 font-medium hover:bg-violet transition-colors glow-ring"
-          >
-            Start a conversation
-          </a>
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block rounded-full bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors glow-ring"
+            >
+              Book a demo
+            </a>
+            <a
+              href="mailto:sne@novaflowapp.com?subject=Artemis%20BioLabs%20%C2%B7%20spatial%20analysis"
+              className="inline-block rounded-full border border-line px-8 py-3.5 text-dim hover:text-snow hover:border-violet/60 transition-all"
+            >
+              Or start with an email
+            </a>
+          </div>
         </Reveal>
       </div>
 

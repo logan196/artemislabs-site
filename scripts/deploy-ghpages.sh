@@ -11,7 +11,7 @@ npm run build
 DEPLOY=$(mktemp -d)
 cp -R out/. "$DEPLOY"/
 touch "$DEPLOY/.nojekyll"
-# [ -n "${ARTEMIS_DOMAIN:-}" ] && echo "$ARTEMIS_DOMAIN" > "$DEPLOY/CNAME"
+echo "artemislabs.bio" > "$DEPLOY/CNAME"
 cd "$DEPLOY"
 git init -q
 git checkout -q -b gh-pages

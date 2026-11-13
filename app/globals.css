@@ -109,3 +109,14 @@ html {
   .aurora, .bg-sea::before, .bg-sea::after { animation: none; }
   html { scroll-behavior: auto; }
 }
+
+/* institutions marquee */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee { mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { animation: marquee-scroll 36s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}

@@ -112,9 +112,9 @@ export default function DeJongSection() {
               />
             </AnimatePresence>
           </a>
-          <p className="mt-4 font-mono text-xs text-dim">
-            Imported unmodified — no re-clustering; the paper's own deconvolution and annotations drive every view.
-            Data: de Jong et al., Nature 2026 (open access) · gbmspace.org. Nine sections live in the portal.
+          <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
+            <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> Imported unmodified — no re-clustering; the paper's own deconvolution and annotations drive every view.
+            Data: de Jong et al., <i>Nature</i> 2026 (open access) · gbmspace.org. Nine sections live in the portal.
           </p>
         </div>
       </div>

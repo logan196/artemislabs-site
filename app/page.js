@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import ClientMarquee from "@/components/ClientMarquee";
 import PipelineFlow from "@/components/PipelineFlow";
 import BanksySection from "@/components/BanksySection";
 import GbmGallery from "@/components/GbmGallery";
@@ -13,6 +14,7 @@ export default function Home() {
     <main className="grain">
       <div className="bg-sea" aria-hidden />
       <Hero />
+      <ClientMarquee />
       <PipelineFlow />
       <BanksySection />
       <GbmGallery />

@@ -1,9 +1,52 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Dodecahedron from "./Dodecahedron";
 import FounderLock from "./FounderLock";
+
+// The hero figure is alive: raw H&E ⇄ annotated overlay, the analysis
+// happening in front of the reader.
+function LivingFigure() {
+  const [annotated, setAnnotated] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAnnotated(true);
+      return;
+    }
+    const t0 = setTimeout(() => setAnnotated(true), 2200);
+    const iv = setInterval(() => setAnnotated((a) => !a), 4600);
+    return () => { clearTimeout(t0); clearInterval(iv); };
+  }, []);
+  return (
+    <motion.a
+      href="#gallery"
+      initial={{ opacity: 0, scale: 0.97, y: 24 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 1.1, delay: 0.3, ease: [0.21, 0.6, 0.27, 1] }}
+      className="relative block rounded-xl overflow-hidden border border-line shadow-[0_18px_50px_-22px_rgba(28,26,21,0.45)] max-h-[62vh]"
+      title="GBM1 — the pipeline annotating a section"
+    >
+      <img
+        src="gbm/GBM1_he.jpg"
+        alt="Glioblastoma Visium section, H&E histology"
+        className="w-full h-full object-cover object-top"
+      />
+      <img
+        src="gbm/GBM1_overlay.jpg"
+        alt="The same section with BANKSY cell states overlaid"
+        className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-[1800ms] ease-in-out"
+        style={{ opacity: annotated ? 1 : 0 }}
+      />
+      <span className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-panel via-panel/85 to-transparent px-5 pt-9 pb-3.5 text-[13px] text-snow">
+        <span className="font-semibold">Fig. 1&nbsp;|</span>{" "}
+        <span className="transition-opacity duration-700">
+          {annotated ? "The same section, annotated — BANKSY domains + LLM cell states." : "GBM1 · H&E histology, as the slide arrives."}
+        </span>
+      </span>
+    </motion.a>
+  );
+}
 
 export default function Hero() {
   const ref = useRef(null);
@@ -85,11 +128,16 @@ export default function Hero() {
             transition={{ duration: 0.9, delay: 0.5 }}
             className="mt-9 flex flex-col sm:flex-row items-center lg:items-start gap-4"
           >
-            <a href="#gallery" className="rounded-full bg-violet-deep px-7 py-3 font-medium hover:bg-violet transition-colors glow-ring">
-              See the glioblastoma demo
+            <a
+              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet transition-colors glow-ring"
+            >
+              Book a demo
             </a>
-            <a href="#pipeline" className="rounded-full border border-line px-7 py-3 text-dim hover:text-snow hover:border-violet/60 transition-all">
-              How it works
+            <a href="#gallery" className="rounded-full border border-line px-7 py-3 text-dim hover:text-snow hover:border-violet/60 transition-all">
+              See the glioblastoma demo
             </a>
           </motion.div>
           <motion.p
@@ -102,23 +150,7 @@ export default function Hero() {
           </motion.p>
         </div>
 
-        <motion.a
-          href="#gallery"
-          initial={{ opacity: 0, scale: 0.96, y: 24 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.1, delay: 0.3, ease: [0.21, 0.6, 0.27, 1] }}
-          className="relative block rounded-3xl overflow-hidden border border-line glow-ring max-h-[62vh]"
-          title="GBM1 — BANKSY cell states on the H&E section"
-        >
-          <img
-            src="gbm/GBM1_overlay.jpg"
-            alt="Glioblastoma Visium section: H&E histology with BANKSY cell states overlaid"
-            className="w-full h-full object-cover object-top"
-          />
-          <span className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-ink/90 to-transparent px-5 pt-10 pb-4 font-mono text-[12px] text-snow/90">
-            GBM1 · BANKSY cell states on H&E · annotated by a local LLM
-          </span>
-        </motion.a>
+        <LivingFigure />
       </motion.div>
 
       <motion.div

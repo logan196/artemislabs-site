@@ -114,8 +114,8 @@ export default function GbmGallery() {
               />
             </AnimatePresence>
           </a>
-          <p className="mt-4 font-mono text-xs text-dim/70">
-            High-res H&E with BANKSY domains and cell states called by a local Qwen3-8B agent (the same pipeline runs on Claude when egress is fine) — click any view for full resolution. Public data: GSE194329 (Ren et al., Nat Commun 2023), 10x Genomics Parent Visium.
+          <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
+            <span className="font-semibold text-snow">Fig. 2&nbsp;|</span> High-resolution H&E with BANKSY domains and cell states called by a local Qwen3-8B agent (the same pipeline runs on Claude when egress is fine) — click any view for full resolution. Public data: GSE194329 (Ren et al., <i>Nat Commun</i> 2023); 10x Genomics Parent Visium.
           </p>
         </div>
       </div>
@@ -133,8 +133,8 @@ export default function GbmGallery() {
             className="w-full"
           />
         </div>
-        <p className="mt-3 text-center font-mono text-xs text-dim/60">
-          the live portal — three tumors and a local-LLM question, recorded headless in one take
+        <p className="mt-3 text-[13.5px] text-dim text-center leading-relaxed">
+          <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> The live portal — three tumors and a local-LLM question, recorded headless in one take.
         </p>
       </Reveal>
     </section>
