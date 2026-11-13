@@ -23,7 +23,7 @@ export default function CopilotSection() {
     <section id="copilot" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">qwen3:8b · deepseek-r1:8b · claude</p>
+          <p className="font-mono text-sm text-violet mb-4">06 · COPILOT</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             An analyst inside every portal.
           </h2>
@@ -54,14 +54,14 @@ export default function CopilotSection() {
               transition={{ delay: i * 0.25 }}
               className={`max-w-[92%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
                 m.role === "user"
-                  ? "ml-auto bg-violet-deep/80 text-snow"
+                  ? "ml-auto bg-violet-deep text-ink"
                   : "bg-ink border border-line text-dim"
               }`}
             >
               {m.text}
             </motion.div>
           ))}
-          <p className="font-mono text-[11px] text-dim pt-1">
+          <p className="text-[12.5px] text-dim pt-1 leading-relaxed">
             from the 10x GBM section · markers per report.md · Moran's I via the portal's live tool
           </p>
         </Stagger>

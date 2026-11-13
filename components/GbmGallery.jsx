@@ -33,7 +33,7 @@ export default function GbmGallery() {
     <section id="gallery" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
       <Reveal>
         <p className="font-mono text-sm text-violet mb-4">03 · GLIOBLASTOMA, LIVE</p>
-        <h2 className="text-4xl md:text-6xl font-semibold tracking-tight max-w-3xl">
+        <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Five sections, one afternoon.
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
@@ -77,7 +77,7 @@ export default function GbmGallery() {
                   key={v.id}
                   onClick={() => setView(v.id)}
                   className={`rounded-full px-4 py-1.5 text-sm font-mono transition-all ${
-                    view === v.id ? "bg-violet-deep text-snow" : "text-dim hover:text-snow border border-line"
+                    view === v.id ? "bg-violet-deep text-ink" : "text-dim hover:text-snow border border-line"
                   }`}
                 >
                   {v.label}
@@ -121,7 +121,7 @@ export default function GbmGallery() {
       </div>
 
       <Reveal delay={0.1} className="mt-14">
-        <div className="rounded-3xl border border-line overflow-hidden glow-ring bg-ink">
+        <div className="rounded-lg border border-snow/60 overflow-hidden bg-[#0e0a1a]">
           <video
             src="demo/artemis_gbm_demo.mp4"
             poster="demo/poster.png"

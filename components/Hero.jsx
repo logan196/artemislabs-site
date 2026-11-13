@@ -19,32 +19,32 @@ function LivingFigure() {
     return () => { clearTimeout(t0); clearInterval(iv); };
   }, []);
   return (
-    <motion.a
-      href="#gallery"
+    <motion.figure
       initial={{ opacity: 0, scale: 0.97, y: 24 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 1.1, delay: 0.3, ease: [0.21, 0.6, 0.27, 1] }}
-      className="relative block rounded-xl overflow-hidden border border-line shadow-[0_18px_50px_-22px_rgba(28,26,21,0.45)] max-h-[62vh]"
-      title="GBM1 — the pipeline annotating a section"
+      className="rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(28,26,21,0.4)] bg-panel"
     >
-      <img
-        src="gbm/GBM1_he.jpg"
-        alt="Glioblastoma Visium section, H&E histology"
-        className="w-full h-full object-cover object-top"
-      />
-      <img
-        src="gbm/GBM1_overlay.jpg"
-        alt="The same section with BANKSY cell states overlaid"
-        className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-[1800ms] ease-in-out"
-        style={{ opacity: annotated ? 1 : 0 }}
-      />
-      <span className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-panel via-panel/85 to-transparent px-5 pt-9 pb-3.5 text-[13px] text-snow">
-        <span className="font-semibold">Fig. 1&nbsp;|</span>{" "}
-        <span className="transition-opacity duration-700">
-          {annotated ? "The same section, annotated — BANKSY domains + LLM cell states." : "GBM1 · H&E histology, as the slide arrives."}
-        </span>
-      </span>
-    </motion.a>
+      <a href="#gallery" title="GBM2 — the pipeline annotating a section" className="relative block aspect-[4/3.4] overflow-hidden">
+        <img
+          src="gbm/GBM2_he.jpg"
+          alt="Glioblastoma Visium section, H&E histology"
+          className="absolute inset-0 w-full h-full object-cover object-top"
+        />
+        <img
+          src="gbm/GBM2_overlay.jpg"
+          alt="The same section with BANKSY cell states overlaid"
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-[1800ms] ease-in-out"
+          style={{ opacity: annotated ? 1 : 0 }}
+        />
+      </a>
+      <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
+        <span className="font-semibold text-snow">Fig. 1&nbsp;|</span>{" "}
+        {annotated
+          ? "The same section, annotated — BANKSY domains + LLM cell states."
+          : "GBM2 · H&E histology, as the slide arrives."}
+      </figcaption>
+    </motion.figure>
   );
 }
 
@@ -58,7 +58,7 @@ export default function Hero() {
     <section ref={ref} className="relative min-h-[100svh] flex flex-col overflow-hidden">
       {/* aurora background */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 -z-10">
-        <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/30 blur-[140px]" />
+        <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/15 blur-[140px]" />
         <div className="aurora absolute top-1/3 -left-40 h-[50vh] w-[40vw] rounded-full bg-magma/15 blur-[120px] [animation-delay:-9s]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#f7f4ec_78%)]" />
         {/* spot grid suggestion */}
@@ -82,12 +82,14 @@ export default function Hero() {
           </div>
           <a
             href="#contact"
-            className="rounded-full border border-line px-4 py-1.5 text-snow hover:border-violet hover:bg-violet/10 transition-all whitespace-nowrap"
+            className="rounded-[3px] border border-snow/50 px-4 py-1.5 text-snow hover:border-violet hover:bg-violet/10 transition-all whitespace-nowrap"
           >
             Work with us
           </a>
           <FounderLock />
-          <Dodecahedron size={56} />
+          <span className="hidden md:block">
+            <Dodecahedron size={56} />
+          </span>
         </div>
       </nav>
 
@@ -103,7 +105,7 @@ export default function Hero() {
             className="text-[2.6rem] leading-[1.05] sm:text-6xl xl:text-7xl font-semibold tracking-tight"
           >
             Drop in a dataset.<br />
-            <span className="text-gradient">Get a living atlas.</span>
+            <span className="text-violet">Get a living atlas.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 24 }}
@@ -132,11 +134,11 @@ export default function Hero() {
               href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet transition-colors glow-ring"
+              className="rounded-[3px] bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet transition-colors"
             >
               Book a demo
             </a>
-            <a href="#gallery" className="rounded-full border border-line px-7 py-3 text-dim hover:text-snow hover:border-violet/60 transition-all">
+            <a href="#gallery" className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet transition-all">
               See the glioblastoma demo
             </a>
           </motion.div>
@@ -152,6 +154,14 @@ export default function Hero() {
 
         <LivingFigure />
       </motion.div>
+
+      {/* mobile section nav — the md:flex links vanish on phones */}
+      <div className="md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
+        <a href="#pipeline" className="underline-offset-4 hover:text-snow">Pipeline</a>
+        <a href="#banksy" className="underline-offset-4 hover:text-snow">BANKSY</a>
+        <a href="#gallery" className="underline-offset-4 hover:text-snow">Demo</a>
+        <a href="#catalog" className="underline-offset-4 hover:text-snow">Catalog</a>
+      </div>
 
       <motion.div
         animate={{ y: [0, 8, 0] }}

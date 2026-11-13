@@ -11,7 +11,7 @@ export default function CatalogSection() {
   return (
     <section id="catalog" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">from our systematic review · verified accessions</p>
+        <p className="font-mono text-sm text-violet mb-4">05 · DATASET CATALOG</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl rule-head inline-block">
           The public GBM spatial atlas, catalogued.
         </h2>
@@ -47,7 +47,7 @@ export default function CatalogSection() {
                   </td>
                   <td className="py-2.5 pr-4 text-dim max-w-[150px]">{d.platform}</td>
                   <td className="py-2.5 pr-4 text-dim max-w-[190px]">{d.scope}</td>
-                  <td className="py-2.5 pr-4 font-mono text-[12.5px] max-w-[160px]">
+                  <td className="py-2.5 pr-4 font-mono text-[12.5px] max-w-[200px]">
                     <a href={d.url} target="_blank" rel="noreferrer" className="text-violet hover:underline break-words">
                       {d.accession}
                     </a>
@@ -58,7 +58,7 @@ export default function CatalogSection() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 font-mono text-[12px] text-dim">
+        <p className="mt-3 text-[13px] text-dim leading-relaxed">
           Accessions verified against GEO, BioStudies, Zenodo, Dryad and vendor pages. Ask for the full review.
         </p>
       </Reveal>

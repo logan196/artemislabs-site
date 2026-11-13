@@ -15,9 +15,9 @@ export default function PipelineFlow() {
   return (
     <section id="pipeline" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">raw folder in → living atlas out</p>
-        <h2 className="text-4xl md:text-6xl font-semibold tracking-tight max-w-3xl">
-          One command, <span className="text-gradient">five stages</span>, zero notebooks.
+        <p className="font-mono text-sm text-violet mb-4">01 · PIPELINE</p>
+        <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
+          One command, <span className="text-violet">five stages</span>, zero notebooks.
         </h2>
       </Reveal>
       <Stagger className="mt-14 relative">

@@ -30,7 +30,7 @@ export default function DeJongSection() {
   return (
     <section id="dejong" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">de Jong et al. · Nature 2026 · gbmspace.org</p>
+        <p className="font-mono text-sm text-violet mb-4">04 · DE JONG ET AL., NATURE 2026</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           A Nature paper, loaded overnight.
         </h2>
@@ -75,7 +75,7 @@ export default function DeJongSection() {
                   key={v.id}
                   onClick={() => setView(v.id)}
                   className={`rounded-full px-4 py-1.5 text-sm font-mono transition-all ${
-                    view === v.id ? "bg-violet-deep text-snow" : "text-dim hover:text-snow border border-line"
+                    view === v.id ? "bg-violet-deep text-ink" : "text-dim hover:text-snow border border-line"
                   }`}
                 >
                   {v.label}

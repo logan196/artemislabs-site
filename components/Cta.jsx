@@ -5,7 +5,7 @@ import Reveal from "./Reveal";
 export default function Cta() {
   return (
     <section id="contact" className="relative px-6 md:px-14 py-28 md:py-40 overflow-hidden">
-      <div className="aurora absolute left-1/2 bottom-0 h-[60vh] w-[70vw] -translate-x-1/2 translate-y-1/3 rounded-full bg-violet-deep/25 blur-[140px] -z-10" />
+      
 
       <Reveal className="max-w-5xl mx-auto border-t border-line pt-10">
         <div className="grid sm:grid-cols-3 gap-6 text-center sm:text-left">
@@ -40,13 +40,13 @@ export default function Cta() {
               href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
               target="_blank"
               rel="noreferrer"
-              className="inline-block rounded-full bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors glow-ring"
+              className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"
             >
               Book a demo
             </a>
             <a
               href="mailto:sne@novaflowapp.com?subject=Artemis%20BioLabs%20%C2%B7%20spatial%20analysis"
-              className="inline-block rounded-full border border-line px-8 py-3.5 text-dim hover:text-snow hover:border-violet/60 transition-all"
+              className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:text-snow hover:border-violet transition-all"
             >
               Or start with an email
             </a>

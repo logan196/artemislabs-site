@@ -93,13 +93,28 @@ export default function BioDodecahedron({ size = 460 }) {
         ctx.arc(x, y, 2.6 + 1.6 * near, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(15, 118, 110, ${0.35 + 0.6 * near})`;
         ctx.fill();
-        if (near > 0.45) {
+        if (near > 0.35) {
+          // ramp in smoothly 0.35→0.55 instead of popping
+          const la = Math.min(1, (near - 0.35) / 0.2);
           const label = LABELS[i % LABELS.length];
           const tw = ctx.measureText(label).width;
-          ctx.fillStyle = `rgba(255,253,247,${0.75 * near})`;
-          ctx.fillRect(x + 7, y - 8, tw + 8, 15);
-          ctx.fillStyle = `rgba(28, 26, 21, ${0.25 + 0.75 * near})`;
-          ctx.fillText(label, x + 11, y + 3.5);
+          const flip = x > w - tw - 28; // keep chips inside the right edge
+          const cx0 = flip ? x - tw - 19 : x + 11;
+          // leader tick from vertex to chip
+          ctx.strokeStyle = `rgba(17,94,89,${0.5 * la})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x + (flip ? -4 : 4), y);
+          ctx.lineTo(flip ? cx0 + tw + 4 : cx0 - 4, y);
+          ctx.stroke();
+          ctx.fillStyle = `rgba(255,253,247,${0.85 * la})`;
+          ctx.strokeStyle = `rgba(216,210,194,${0.8 * la})`;
+          ctx.beginPath();
+          ctx.roundRect(cx0 - 5, y - 8.5, tw + 10, 16, 3);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = `rgba(28, 26, 21, ${0.3 + 0.7 * la})`;
+          ctx.fillText(label, cx0, y + 3.5);
         }
       }
       raf = requestAnimationFrame(draw);

@@ -20,7 +20,7 @@ export default function ToolsGrid() {
     <section className="relative bg-ink-2/60 border-y border-line">
       <div className="px-6 md:px-14 py-20 md:py-28 max-w-7xl mx-auto">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">the stack, from the terminal</p>
+          <p className="font-mono text-sm text-violet mb-4">07 · THE STACK</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             Eight capabilities, one stack.
           </h2>
@@ -28,8 +28,8 @@ export default function ToolsGrid() {
 
         <Reveal delay={0.05} className="mt-6">
           <BioDodecahedron size={440} />
-          <p className="text-center font-mono text-[13px] text-dim mt-4">
-            the dodecahedron of bioinformatics — twenty vertices of the stack, thirty edges connecting them
+          <p className="text-center text-[13.5px] text-dim leading-relaxed mt-4">
+            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The dodecahedron of bioinformatics — twenty vertices of the stack, thirty edges connecting them.
           </p>
         </Reveal>
 
@@ -47,17 +47,19 @@ export default function ToolsGrid() {
           ))}
         </Stagger>
 
-        <Reveal delay={0.1} className="mt-12">
-          <div className="rounded-2xl border border-line overflow-hidden">
+        <Reveal delay={0.1} className="mt-12 max-w-4xl mx-auto">
+          <div className="rounded-lg border border-snow/60 overflow-hidden">
             <div className="flex items-center gap-1.5 bg-ink-2 border-b border-line px-4 py-2.5" aria-hidden>
               <span className="h-2.5 w-2.5 rounded-full bg-line" />
               <span className="h-2.5 w-2.5 rounded-full bg-line" />
               <span className="h-2.5 w-2.5 rounded-full bg-line" />
               <span className="ml-3 font-mono text-[12px] text-dim">artemis — zsh</span>
             </div>
-            <img src="artemis_cli.gif" alt="Artemis Labs CLI showing the spatial transcriptomics agent stack" className="w-full" />
+            <img src="artemis_cli.png" alt="Artemis BioLabs CLI showing the spatial transcriptomics agent stack" className="w-full max-h-[420px] object-cover object-top" />
           </div>
-          <p className="mt-3 text-center font-mono text-[13px] text-dim">the stack, live from the terminal</p>
+          <p className="mt-3 text-[13.5px] text-dim text-center leading-relaxed">
+            <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> The stack, from the terminal.
+          </p>
         </Reveal>
       </div>
     </section>

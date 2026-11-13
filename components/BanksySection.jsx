@@ -142,18 +142,18 @@ export default function BanksySection() {
   const cap3 = useTransform(scrollYProgress, [0.6, 0.7, 1], [0, 1, 1]);
 
   return (
-    <section id="banksy" ref={wrapRef} className="relative h-[220vh] md:h-[320vh]">
+    <section id="banksy" ref={wrapRef} className="relative h-[180vh] md:h-[240vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         <div className="px-6 md:px-14 pt-16 md:pt-20 max-w-7xl mx-auto w-full">
           <p className="font-mono text-sm text-violet mb-3">02 · BANKSY</p>
-          <h2 className="text-4xl md:text-6xl font-semibold tracking-tight">
-            Clustering that <span className="text-gradient">sees the tissue.</span>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
+            Clustering that <span className="text-violet">sees the tissue.</span>
           </h2>
         </div>
         <div className="relative flex-1 max-w-5xl w-full mx-auto">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           {/* persistent card; only the text crossfades, so the backdrop never ghosts */}
-          <div className="absolute bottom-8 left-6 md:left-10 w-[26rem] max-w-[85vw] min-h-[7.6rem] rounded-2xl bg-ink/75 backdrop-blur-sm p-4">
+          <div className="absolute bottom-8 left-6 md:left-10 w-[26rem] max-w-[85vw] min-h-[7.6rem] rounded-[4px] bg-panel/95 border border-line shadow-sm p-4">
             <motion.p style={{ opacity: cap1 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
               Standard clustering sees each spot alone — expression without place. The
               tissue dissolves into noise.
