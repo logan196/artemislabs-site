@@ -92,7 +92,7 @@ function CompareSlider() {
         H&E — input
       </span>
       <span className="absolute right-3 bottom-3 font-mono text-[11px] tracking-wide bg-ground/90 text-snow border border-line rounded-[3px] px-2.5 py-1 pointer-events-none text-right">
-        measured cell states — the training target
+        cell2location-estimated states — the training target
         <span className="block text-dim">(cell2location, de Jong et al. 2026)</span>
       </span>
     </div>
@@ -128,16 +128,18 @@ export default function FoundationSection() {
   return (
     <section id="foundation" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">05 · H&E × FOUNDATION MODELS</p>
+        <p className="font-mono text-sm text-violet mb-4">08 · H&E × FOUNDATION MODELS</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           The slide already knows.
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
+          So far, everything on this page works on data you paid to generate. The
+          cheapest data you own is still waiting.
           Every lab has H&E — it costs almost nothing and it's already in the archive;
           spatial profiling costs thousands per section, so almost nobody has it at scale.
           Pathology foundation models (UNI, Virchow, CONCH, Prov-GigaPath) are learning to
           read molecular state straight from morphology — and pairs like the one below are
-          exactly the supervision that teaching requires: measured, not predicted.
+          exactly the supervision that teaching requires: profiled tissue, not H&E-derived predictions.
         </p>
       </Reveal>
 
@@ -145,10 +147,10 @@ export default function FoundationSection() {
         <figure className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(28,26,21,0.4)] bg-panel">
           <CompareSlider />
           <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> AT14 section,
-            de Jong et al., Nature 2026 (gbmspace.org). Left: H&E. Right: measured
-            cell2location cell-state abundances — the supervision pairs for H&E→molecular
-            prediction. Measured data; no model predictions shown. Drag the handle (or use
+            <span className="font-semibold text-snow">Fig. 7&nbsp;|</span> AT14 section,
+            de Jong et al., Nature 2026 (gbmspace.org). Left: H&E. Right: cell2location-estimated
+            cell-state abundances (deconvolved from measured Visium) — the supervision pairs for H&E→molecular
+            prediction. Deconvolved from measured Visium; no H&E-derived predictions shown. Drag the handle (or use
             arrow keys) to compare.
           </figcaption>
         </figure>
@@ -202,7 +204,8 @@ export default function FoundationSection() {
         <p className="mt-6 max-w-2xl text-[15px] text-dim leading-relaxed">
           We haven't trained this model — nobody should claim that lightly. What we do is
           build and fine-tune it <span className="text-snow">per lab</span>: your slides,
-          your measured spatial runs as ground truth, your archive unlocked.
+          your measured spatial runs as ground truth, your archive unlocked. And your
+          archive is only the one you own — the world keeps a bigger one.
         </p>
       </Reveal>
     </section>

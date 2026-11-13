@@ -21,10 +21,14 @@ export default function ToolsGrid() {
     <section className="relative bg-ink-2/60 border-y border-line">
       <div className="px-6 md:px-14 py-20 md:py-28 max-w-7xl mx-auto">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">10 · THE STACK</p>
+          <p className="font-mono text-sm text-violet mb-4">11 · THE STACK</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             Eight capabilities, one stack.
           </h2>
+          <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
+            Everything above — the domains, the labels, the portals, the copilot — came
+            out of these eight pieces. Welcome to the machine room.
+          </p>
         </Reveal>
 
         <Stagger className="mt-12 font-mono text-[14px]">
@@ -48,7 +52,7 @@ export default function ToolsGrid() {
         <Reveal delay={0.1} className="mt-12 max-w-4xl mx-auto">
           <TerminalLive />
           <p className="mt-3 text-[13.5px] text-dim text-center leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The stack, from the terminal — a replay of the real GBM3 run.
+            <span className="font-semibold text-snow">Fig. 9&nbsp;|</span> The stack, from the terminal — a replay of the real GBM3 run.
           </p>
         </Reveal>
       </div>

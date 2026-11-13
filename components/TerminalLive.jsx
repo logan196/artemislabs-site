@@ -46,19 +46,27 @@ function BenchVerb({ running }) {
 
 function Bar({ label, dur, onDone, active }) {
   const [p, setP] = useState(0);
+  const doneRef = useRef(false);
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
   useEffect(() => {
-    if (!active) return;
+    // latch: once a bar completes it stays complete — parent re-renders must
+    // never restart t0 (that made stages finish out of order).
+    if (!active || doneRef.current) return;
     const t0 = performance.now();
     let raf;
     const step = (now) => {
-      const f = Math.min(1, (now - t0) / dur);
+      const f = dur <= 0 ? 1 : Math.min(1, (now - t0) / dur);
       setP(f);
       if (f < 1) raf = requestAnimationFrame(step);
-      else onDone();
+      else {
+        doneRef.current = true;
+        onDoneRef.current();
+      }
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [active, dur, onDone]);
+  }, [active, dur]);
   const n = 22;
   const filled = Math.max(0, Math.min(n, Math.round((Number.isFinite(p) ? p : 1) * n)));
   return (
@@ -81,7 +89,7 @@ export default function TerminalLive() {
 
   const CMD = "artemis run --input GBM3.h5ad --tissue-context glioblastoma";
   const CHAT_A =
-    "The proliferating-tumor domain carries the hypoxia program — VEGFA and ADM in its top markers, spatially contiguous (Moran's I 0.58).";
+    "Hypoxia-linked VEGFA is strongest in the endothelial-annotated domain and spatially contiguous — Moran's I 0.62 on this section's k-NN graph.";
 
   useEffect(() => {
     reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

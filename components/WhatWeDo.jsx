@@ -18,12 +18,17 @@ export default function WhatWeDo() {
   return (
     <section id="whatwedo" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">06 · WHAT WE DO</p>
+        <p className="font-mono text-sm text-violet mb-4">04 · WHAT WE DO</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Every core your biotech would build or rent.
         </h2>
         <p className="text-4xl md:text-5xl font-semibold tracking-tight text-violet">
           One AI-powered team.
+        </p>
+        <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
+          That was the promise at the top of the page — and you have now watched one
+          core run end-to-end. The rest work the same way: real pipeline, live portal,
+          a report you can hand a reviewer.
         </p>
       </Reveal>
 

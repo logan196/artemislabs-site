@@ -49,10 +49,12 @@ export default function Hero() {
             ))}
           </div>
           <a
-            href="#contact"
+            href={BOOKING}
+            target="_blank"
+            rel="noreferrer"
             className="rounded-[3px] border border-snow/50 px-4 py-1.5 text-snow hover:border-violet hover:bg-violet/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all whitespace-nowrap"
           >
-            Work with us
+            Book a demo
           </a>
           <FounderLock />
           <details className="relative md:hidden">
@@ -108,9 +110,12 @@ export default function Hero() {
               rel="noreferrer"
               className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
             >
-              Explore the 3.9M-cell brain atlas →
+              Explore the 3.9M-cell mouse brain atlas →
             </a>
           </div>
+          <p className="mt-4 font-mono text-[12.5px] text-dim">
+            The first analysis is on us.
+          </p>
         </motion.div>
       </motion.div>
 

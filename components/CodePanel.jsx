@@ -408,7 +408,7 @@ export default function CodePanel() {
       </div>
 
       <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-        <span className="font-semibold text-snow">Fig. 7&nbsp;|</span> From raw data to a publication-ready figure —
+        <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> From raw data to a publication-ready figure —
         the pipeline as it actually ships (run_pipeline.py, verbatim), replayed. Numbers from the real GBM3 run.
       </p>
     </figure>

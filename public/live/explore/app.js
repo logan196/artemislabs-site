@@ -15,7 +15,7 @@
     active: null,               // active marker name (range slider shown)
     cam: { k: 1, tx: 0, ty: 0 },
     needsRender: true,
-    defaultsOn: ["GFAP", "EGFR", "CD68"],
+    defaultsOn: ["EGFR", "SOX2", "MKI67"],
   };
 
   const panes = {

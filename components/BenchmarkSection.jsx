@@ -17,8 +17,8 @@ const ORBIT = [
   "GSE194329 · Ren 2023",
   "10x Parent Visium",
   "gbmspace.org · de Jong 2026",
-  "Eng 2019 · seqFISH+",
-  "Yao 2023 · 3.9M cells",
+  "Eng 2019 · mouse seqFISH+",
+  "Yao 2023 · mouse · 3.9M cells",
   "ENCODE",
 ];
 
@@ -27,7 +27,7 @@ export default function BenchmarkSection() {
     <section id="benchmark" className="relative px-6 md:px-14 py-28 md:py-36 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">07 · ARTEMIS BENCHMARKING</p>
+          <p className="font-mono text-sm text-violet mb-4">09 · ARTEMIS BENCHMARKING</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             &ldquo;How does my sample <span className="text-violet">compare?</span>&rdquo;
           </h2>

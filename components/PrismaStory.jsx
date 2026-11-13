@@ -93,7 +93,7 @@ function PortalChrome({ interactive = true }) {
 function Caption() {
   return (
     <p className="text-[11px] md:text-[13px] text-dim leading-relaxed max-w-4xl mt-4 md:mt-6 px-1">
-      <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> From search to portal — the
+      <span className="font-semibold text-snow">Fig. 1&nbsp;|</span> From search to portal — the
       GEO DataSets query{" "}
       <span className="font-mono text-[12px]">
         (glioblastoma) AND (spatial transcriptomics) AND &quot;Homo sapiens&quot;[organism] AND
@@ -171,7 +171,7 @@ function StaticStory() {
           <FlowBox title={`not ingested · n=${N_NOT_INGESTED}`} tone="excl">
             <ExclusionBody />
           </FlowBox>
-          <FlowBox title="included in this page's demos">
+          <FlowBox title="included in this page's GBM demos">
             <IncludedBody />
           </FlowBox>
         </div>
@@ -260,9 +260,10 @@ function AnimatedBox({ progress, range, children, className = "" }) {
 function Tile({ tile, progress, i }) {
   const a = 0.56 + i * 0.012;
   const b = 0.66 + i * 0.012;
-  const x = useTransform(progress, [a, b], [tile.sx, 0]);
-  const y = useTransform(progress, [a, b], [tile.sy, 0]);
-  const rotate = useTransform(progress, [a, b], [tile.r, 0]);
+  const ease = { ease: (v) => 1 - Math.pow(1 - v, 3) }; // decelerate into the grid
+  const x = useTransform(progress, [a, b], [tile.sx, 0], ease);
+  const y = useTransform(progress, [a, b], [tile.sy, 0], ease);
+  const rotate = useTransform(progress, [a, b], [tile.r, 0], ease);
   const opacity = useTransform(progress, [a, a + 0.03], [0, 1]);
   const ring = useTransform(progress, [0.68, 0.73], [0, 1]);
   return (
@@ -348,6 +349,7 @@ export default function PrismaStory() {
 
   // Act visibility windows (contiguous — no dead zones).
   const o1 = useTransform(scrollYProgress, [0, 0.21, 0.26], [1, 1, 0]);
+  const headerFade = useTransform(scrollYProgress, [0.52, 0.6, 0.93, 1], [1, 0.25, 0.25, 1]);
   const o2 = useTransform(scrollYProgress, [0.24, 0.29, 0.51, 0.55], [0, 1, 1, 0]);
   const o3 = useTransform(scrollYProgress, [0.53, 0.58, 0.76, 0.8], [0, 1, 1, 0]);
   const o4 = useTransform(scrollYProgress, [0.78, 0.85, 1], [0, 1, 1]);
@@ -359,9 +361,13 @@ export default function PrismaStory() {
     return (
       <section id="pipeline" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
         <p className="font-mono text-sm text-violet mb-4">02 · FROM SEARCH TO PORTAL</p>
-        <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl mb-12">
-          One query, <span className="text-violet">every public section</span>, one portal.
+        <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
+          One query, <span className="text-violet">eight sections</span>, one portal.
         </h2>
+        <p className="mt-4 mb-12 max-w-2xl text-[15px] md:text-base text-dim leading-relaxed">
+          The section above is one of eight — here is the paper trail that found them,
+          screened them, and shipped them live.
+        </p>
         <StaticStory />
         <Caption />
       </section>
@@ -371,13 +377,20 @@ export default function PrismaStory() {
   return (
     <section id="pipeline" ref={wrapRef} className="relative h-[300vh] md:h-[340vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
-        {/* header */}
-        <div className="px-6 md:px-14 pt-14 md:pt-20 max-w-7xl mx-auto w-full">
+        {/* header — recedes while the atlas thumbnails fly through */}
+        <motion.div
+          style={{ opacity: headerFade }}
+          className="px-6 md:px-14 pt-14 md:pt-20 max-w-7xl mx-auto w-full"
+        >
           <p className="font-mono text-sm text-violet mb-4">02 · FROM SEARCH TO PORTAL</p>
           <h2 className="text-3xl md:text-5xl font-semibold tracking-tight max-w-3xl">
-            One query, <span className="text-violet">every public section</span>, one portal.
+            One query, <span className="text-violet">eight sections</span>, one portal.
           </h2>
-        </div>
+          <p className="mt-3 max-w-2xl text-[15px] md:text-base text-dim leading-relaxed">
+            The section above is one of eight — here is the paper trail that found them,
+            screened them, and shipped them live.
+          </p>
+        </motion.div>
 
         {/* progress rail */}
         <div
@@ -455,7 +468,7 @@ export default function PrismaStory() {
                 </AnimatedBox>
                 <Connector progress={scrollYProgress} range={[0.42, 0.45]} />
                 <AnimatedBox progress={scrollYProgress} range={[0.45, 0.49]} className="w-full">
-                  <FlowBox title="included in this page's demos">
+                  <FlowBox title="included in this page's GBM demos">
                     <IncludedBody nRef={inclRef} />
                   </FlowBox>
                 </AnimatedBox>

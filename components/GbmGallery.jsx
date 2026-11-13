@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Reveal, { Stagger, item } from "./Reveal";
 
 const SAMPLES = [
-  { id: "GBM1", title: "GBM1 · Ren et al. 2023", source: "GSE194329 · Visium · IDH-mut, secondary" },
-  { id: "GBM2", title: "GBM2 · Ren et al. 2023", source: "GSE194329 · Visium · IDH-wt, recurrent" },
-  { id: "GBM3", title: "GBM3 · Ren et al. 2023", source: "GSE194329 · Visium · IDH-wt, primary" },
-  { id: "GBM4", title: "GBM4 · Ren et al. 2023", source: "GSE194329 · Visium · IDH-mut, secondary" },
+  { id: "GBM1", title: "HGG1 · Ren et al. 2023", source: "GSE194329 · Visium · astrocytoma, IDH-mut, gr. 4" },
+  { id: "GBM2", title: "GBM2 · Ren et al. 2023", source: "GSE194329 · Visium · GBM, IDH-wt, recurrent" },
+  { id: "GBM3", title: "GBM3 · Ren et al. 2023", source: "GSE194329 · Visium · GBM, IDH-wt, primary" },
+  { id: "GBM4", title: "HGG4 · Ren et al. 2023", source: "GSE194329 · Visium · astrocytoma, IDH-mut, gr. 4" },
   { id: "TenX_GBM", title: "GBM · 10x Genomics", source: "Parent Visium · fresh frozen" },
 ];
 
@@ -22,17 +22,24 @@ const VIEWS = [
 // between raw H&E and the paper's annotation.
 function LivingFigure() {
   const [annotated, setAnnotated] = useState(false);
+  const figRef = useRef(null);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setAnnotated(true);
       return;
     }
-    const t0 = setTimeout(() => setAnnotated(true), 2000);
-    const iv = setInterval(() => setAnnotated((a) => !a), 4600);
-    return () => { clearTimeout(t0); clearInterval(iv); };
+    let t0, iv;
+    const io = new IntersectionObserver((e) => {
+      if (!e[0].isIntersecting) return;
+      io.disconnect();
+      t0 = setTimeout(() => setAnnotated(true), 1500);
+      iv = setInterval(() => setAnnotated((a) => !a), 4600);
+    }, { threshold: 0.35 });
+    if (figRef.current) io.observe(figRef.current);
+    return () => { io.disconnect(); clearTimeout(t0); clearInterval(iv); };
   }, []);
   return (
-    <figure className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(28,26,21,0.4)] bg-panel">
+    <figure ref={figRef} className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(28,26,21,0.4)] bg-panel">
       <span className="relative block aspect-[16/8] overflow-hidden">
         <img
           src="dejong/AT15-BRA-4-FO-B2-S25_he.jpg"
@@ -47,10 +54,9 @@ function LivingFigure() {
         />
       </span>
       <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
-        <span className="font-semibold text-snow">Fig. 1&nbsp;|</span>{" "}
-        {annotated
-          ? "The same section, annotated — cell2location states from de Jong et al., Nature 2026."
-          : "AT15 · H&E histology, as the slide arrives. Public data: gbmspace.org."}
+        <span className="font-semibold text-snow">Fig. 2&nbsp;|</span>{" "}
+        AT15, an atlas section breathing between the raw H&E and its
+        cell2location-estimated states — de Jong et al., Nature 2026 · gbmspace.org.
       </figcaption>
     </figure>
   );
@@ -77,9 +83,12 @@ export default function GbmGallery() {
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
           Five public glioma Visium sections — four adult high-grade gliomas from the
           Ren&nbsp;et&nbsp;al. 2023 cohort (GSE194329; two IDH-wildtype GBM, two IDH-mutant
-          secondary), one glioblastoma from 10x Genomics — dropped into the pipeline
-          unmodified. BANKSY domains, putative cell states, and marker maps, each with
-          its own interactive Vitessce portal.
+          grade-4 astrocytomas under WHO CNS5), one glioblastoma from 10x Genomics —
+          dropped into the pipeline unmodified. BANKSY domains, putative cell states,
+          and marker maps, each with its own interactive Vitessce portal. The other
+          three of the eight — the gbmspace.org atlas sections — arrive through the
+          same stack with the paper&apos;s own annotations intact; one of them is
+          breathing just below.
         </p>
         <LivingFigure />
       </Reveal>
@@ -87,24 +96,23 @@ export default function GbmGallery() {
       <div className="mt-14 flex flex-col gap-6">
         <Stagger className="flex gap-3 overflow-x-auto pb-2">
           {SAMPLES.map((s) => (
-            <motion.button
+            <motion.a
               key={s.id}
               variants={item}
-              onClick={() => setActive(s.id)}
-              className={`text-left shrink-0 rounded-2xl border px-5 py-4 transition-all ${
-                active === s.id
-                  ? "border-violet bg-violet/10 glow-ring"
-                  : "border-line bg-panel/60 hover:border-violet/40"
-              }`}
+              href={`gbm/${s.id}_overlay.jpg`}
+              target="_blank"
+              rel="noreferrer"
+              title="Open the full-resolution annotated section"
+              className="text-left shrink-0 rounded-2xl border border-line bg-panel/60 hover:border-violet/50 px-5 py-4 transition-all cursor-zoom-in"
             >
               <p className="font-medium">{s.title}</p>
               <p className="font-mono text-xs text-dim mt-1">{s.source}</p>
               {meta[s.id] && (
                 <p className="font-mono text-xs text-violet/80 mt-2">
-                  {meta[s.id].n_spots.toLocaleString()} spots · {meta[s.id].n_clusters} domains
+                  {meta[s.id].n_spots.toLocaleString()} spots · {meta[s.id].n_clusters} domains · full res →
                 </p>
               )}
-            </motion.button>
+            </motion.a>
           ))}
         </Stagger>
 
@@ -132,7 +140,7 @@ export default function GbmGallery() {
               rel="noreferrer"
               className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
             >
-              3.9M-cell brain atlas →
+              3.9M-cell mouse brain atlas →
             </a>
             <a
               href="live/seqfish/portal.html"
@@ -140,21 +148,8 @@ export default function GbmGallery() {
               rel="noreferrer"
               className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
             >
-              seqFISH+ cortex →
+              seqFISH+ mouse cortex →
             </a>
-            <div className="flex gap-2 flex-wrap">
-              {VIEWS.map((v) => (
-                <button
-                  key={v.id}
-                  onClick={() => setView(v.id)}
-                  className={`rounded-full px-4 py-1.5 text-sm font-mono transition-all ${
-                    view === v.id ? "bg-violet-deep text-ink" : "text-dim hover:text-snow border border-line"
-                  }`}
-                >
-                  {v.label}
-                </button>
-              ))}
-            </div>
             {m && (
               <div className="flex gap-2 flex-wrap">
                 {m.top_states.map((t) => (
@@ -165,49 +160,26 @@ export default function GbmGallery() {
               </div>
             )}
           </div>
-          <a
-            href={`gbm/${active}_${view}.jpg`}
-            target="_blank"
-            rel="noreferrer"
-            title="Open full resolution"
-            className="block overflow-hidden rounded-2xl bg-ink cursor-zoom-in"
-          >
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={`${active}-${view}`}
-                src={`gbm/${active}_${view}.jpg`}
-                alt={`${active} — ${view} on the H&E section`}
-                className="w-full max-h-[84vh] object-contain"
-                initial={{ opacity: 0, scale: 1.015 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.45 }}
-              />
-            </AnimatePresence>
-          </a>
+          <div className="relative overflow-hidden rounded-2xl bg-ink border border-snow/60">
+            <iframe
+              src="live/explore/index.html"
+              title="Artemis Explore — live glioblastoma section viewer: H&E, marker channels, cell states"
+              className="w-full h-[640px] md:h-[720px] border-0"
+              loading="lazy"
+            />
+            <span className="absolute top-3 right-3 font-mono text-[11px] text-ink bg-violet-deep/95 rounded-[3px] px-2.5 py-1 pointer-events-none">
+              ● live — this is the viewer, not a screenshot
+            </span>
+          </div>
           <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 2&nbsp;|</span> High-resolution H&E with BANKSY domains and cell states called by a local Qwen3-8B agent (the same pipeline runs on a frontier cloud model when egress is fine) — click any view for full resolution. Public data: GSE194329 (Ren et al., <i>Nat Commun</i> 2023); 10x Genomics Parent Visium. Cell-state labels are model-annotated and not independently validated.
+            <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> Artemis Explore, running live in this page — AT15 glioblastoma section (de Jong et al., <i>Nature</i> 2026): pan and zoom the H&E, composite eight expression-derived marker channels, toggle 66 mapped cell states, and let the agent annotate from the run itself. Split view with the s key; open full screen above. Sample cards open the Ren et al. 2023 / 10x sections at full resolution; their state labels are model-annotated and not independently validated.
+          </p>
+          <p className="mt-6 text-[15px] text-dim">
+            All of this is one assay on one disease — the demo we lead with, not the edge of the map.
           </p>
         </div>
       </div>
 
-      <Reveal delay={0.1} className="mt-14">
-        <div className="rounded-lg border border-snow/60 overflow-hidden bg-[#0e0a1a]">
-          <video
-            src="demo/artemis_gbm_demo.mp4"
-            poster="demo/poster.png"
-            autoPlay
-            muted
-            loop
-            playsInline
-            controls
-            className="w-full"
-          />
-        </div>
-        <p className="mt-3 text-[13.5px] text-dim text-center leading-relaxed">
-          <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> The live portal — three tumors and a local-LLM question, recorded headless in one take.
-        </p>
-      </Reveal>
     </section>
   );
 }

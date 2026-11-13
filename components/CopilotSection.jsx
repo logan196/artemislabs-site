@@ -14,7 +14,7 @@ const CHAT = [
   { role: "user", text: "Any immune infiltration near it?" },
   {
     role: "ai",
-    text: "Four domains annotate as microglia/TAMs — the largest, 246 spots, carries SPP1 and C1QB among its top markers. Want me to run DE between it and the rest of the section?",
+    text: "Four domains annotate as microglia/TAMs — the largest spans 246 spots, and a 71-spot domain carries SPP1 and C1QB in its top markers. Want me to run DE between it and the rest of the section?",
   },
 ];
 
@@ -23,7 +23,7 @@ export default function CopilotSection() {
     <section id="copilot" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">08 · YOUR CO-SCIENTIST</p>
+          <p className="font-mono text-sm text-violet mb-4">10 · YOUR CO-SCIENTIST</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Text us like your core.
           </h2>
@@ -39,13 +39,13 @@ export default function CopilotSection() {
             <span aria-hidden>·</span>
             <span>frontier model optional</span>
             <span aria-hidden>·</span>
-            <span>grounded in your zarr</span>
+            <span>grounded in your data</span>
           </div>
           <div className="mt-8 grid grid-cols-3 gap-3">
             {[
               ["demo/poster.png", "GBM3 · Visium portal", "live/GBM3/portal.html"],
-              ["portal_brain.jpg", "whole-brain MERFISH atlas", "live/brain/index.html"],
-              ["seqfish_card.jpg", "seqFISH+ cortex portal", "live/seqfish/portal.html"],
+              ["portal_brain.jpg", "whole-mouse-brain MERFISH atlas", "live/brain/index.html"],
+              ["seqfish_card.jpg", "seqFISH+ mouse cortex portal", "live/seqfish/portal.html"],
             ].map(([src, label, href]) => (
               <a key={src} href={href} target="_blank" rel="noreferrer" className="group block">
                 <span className="block overflow-hidden rounded-[4px] border border-line bg-ink aspect-[4/3]">
@@ -57,7 +57,7 @@ export default function CopilotSection() {
           </div>
           <p className="mt-3 text-[13px] text-dim leading-relaxed max-w-xl">
             Three live portals, one co-scientist. The same rail ships with every assay we
-            support — the genomics browser below is where CUT&amp;RUN and long reads land.
+            support — the live genome browser above is where CUT&amp;RUN and long reads land.
           </p>
         </Reveal>
 
@@ -70,7 +70,7 @@ export default function CopilotSection() {
             <motion.div
               key={i}
               variants={item}
-              transition={{ delay: i * 0.25 }}
+              transition={{ delay: i * 0.55, duration: 0.5 }}
               className={`max-w-[92%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
                 m.role === "user"
                   ? "ml-auto bg-violet-deep text-ink"
@@ -81,7 +81,7 @@ export default function CopilotSection() {
             </motion.div>
           ))}
           <p className="text-[12.5px] text-dim pt-1 leading-relaxed">
-            Values from output/TenX_GBM/report.md; Moran's I computed with the portal's live tool (backend/analysis/live.py) on the same section.
+            Illustrative exchange — the prose is scripted, every number is real: output/TenX_GBM/report.md; Moran's I computed with the portal's live tool (backend/analysis/live.py) on the same section.
           </p>
         </Stagger>
       </div>

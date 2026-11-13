@@ -2,13 +2,12 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { stateColor } from "../lib/stateColors";
 
 // Fixed palette, assigned to real states in order (states are sorted by
 // descending count in the JSON). Repeats if there are more states than colors.
-const PALETTE = [
-  "#0d9488", "#b45309", "#1d4ed8", "#15803d",
-  "#7c3aed", "#be123c", "#0369a1", "#a16207",
-];
+// Canonical per-state colors shared with the UMAP explorer, keyed by NAME —
+// the same state keeps the same color in every figure on the page.
 
 const INK = [28, 26, 21]; // neutral "expression without place" color
 
@@ -40,7 +39,7 @@ export default function BanksySection() {
     let raf;
 
     const { states, spots } = data;
-    const stateRgb = states.map((_, i) => hexToRgb(PALETTE[i % PALETTE.length]));
+    const stateRgb = states.map((name, i) => hexToRgb(stateColor(name, i)));
     const counts = states.map(() => 0);
     let maxX = 0, maxY = 0;
     for (const [x, y, s] of spots) {
@@ -93,28 +92,57 @@ export default function BanksySection() {
         }
       }
 
-      // spots: neutral ink before resolve, lerp to real state colors after
-      for (const [sx, sy, si] of spots) {
-        let fill;
-        if (resolve > 0) {
+      // spots: beat 1 = REAL per-spot GFAP intensity (sepia ramp — the blur the
+      // caption describes), lerped to real state colors as BANKSY resolves.
+      const SEPIA = [154, 91, 19];
+      for (const [sx, sy, si, gf] of spots) {
+        const g0 = gf ?? 0;
+        // GFAP view: ink -> sepia by expression
+        const gr = INK[0] + (SEPIA[0] - INK[0]) * g0;
+        const gg = INK[1] + (SEPIA[1] - INK[1]) * g0;
+        const gb = INK[2] + (SEPIA[2] - INK[2]) * g0;
+        let r = gr, g = gg, b = gb, a = 0.22 + 0.5 * g0;
+        // staged: clusters snap in one at a time, largest first, cubic-eased
+        const ri0 = Math.min(1, Math.max(0, (resolve - si * 0.08) / 0.4));
+        const ri = ri0 * ri0 * (3 - 2 * ri0);
+        if (ri > 0) {
           const c = stateRgb[si];
-          const r = Math.round(INK[0] + (c[0] - INK[0]) * resolve);
-          const g = Math.round(INK[1] + (c[1] - INK[1]) * resolve);
-          const b = Math.round(INK[2] + (c[2] - INK[2]) * resolve);
-          fill = `rgba(${r},${g},${b},${0.35 + 0.55 * resolve})`;
-        } else {
-          fill = "rgba(28,26,21,0.35)";
+          r = gr + (c[0] - gr) * ri;
+          g = gg + (c[1] - gg) * ri;
+          b = gb + (c[2] - gb) * ri;
+          a = a + (0.9 - a) * ri;
         }
         ctx.beginPath();
         ctx.arc(px(sx), py(sy), 2.6, 0, Math.PI * 2);
-        ctx.fillStyle = fill;
+        ctx.fillStyle = `rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${a})`;
         ctx.fill();
+      }
+
+      // GFAP ramp label while in the expression view
+      if (resolve < 0.6) {
+        const a = 1 - resolve / 0.6;
+        ctx.font = "600 12px 'JetBrains Mono', ui-monospace, monospace";
+        const lx = w - 170, ly = 26;
+        ctx.fillStyle = `rgba(28,26,21,${0.75 * a})`;
+        ctx.fillText("GFAP expression", lx, ly);
+        for (let k = 0; k < 60; k++) {
+          const f = k / 59;
+          ctx.fillStyle = `rgba(${Math.round(INK[0] + (SEPIA[0] - INK[0]) * f)},${Math.round(
+            INK[1] + (SEPIA[1] - INK[1]) * f
+          )},${Math.round(INK[2] + (SEPIA[2] - INK[2]) * f)},${(0.25 + 0.6 * f) * a})`;
+          ctx.fillRect(lx + k * 1.9, ly + 8, 1.9, 6);
+        }
+        ctx.fillStyle = `rgba(95,91,80,${0.8 * a})`;
+        ctx.font = "500 10px 'JetBrains Mono', ui-monospace, monospace";
+        ctx.fillText("0", lx, ly + 26);
+        ctx.fillText("p99", lx + 100, ly + 26);
       }
 
       // legend: real state names + counts, bottom-right, once resolved
       // NOTE: CSS vars are invalid in Canvas2D font strings; hardcode the face.
-      if (resolve > 0.75) {
-        const a = Math.min(1, (resolve - 0.75) * 4);
+      const nVisible = legend.filter((_, i) => (resolve - i * 0.08) / 0.4 > 0.02).length;
+      if (resolve > 0.2 && nVisible > 0) {
+        const a = 1;
         ctx.font = "600 12px 'JetBrains Mono', ui-monospace, monospace";
         const rowH = 20, pad = 12;
         let tw = 0;
@@ -122,7 +150,7 @@ export default function BanksySection() {
           tw = Math.max(tw, ctx.measureText(`${l.name}  ${l.count}`).width);
         }
         const boxW = tw + pad * 2 + 18;
-        const boxH = legend.length * rowH + pad * 2 - 6;
+        const boxH = nVisible * rowH + pad * 2 - 6;
         const bx = w - boxW - 16;
         const by = h - boxH - 16;
         ctx.fillStyle = `rgba(255,253,247,${0.9 * a})`;
@@ -130,12 +158,15 @@ export default function BanksySection() {
         ctx.roundRect(bx, by, boxW, boxH, 6);
         ctx.fill();
         legend.forEach((l, i) => {
+          const ra0 = Math.min(1, Math.max(0, (resolve - i * 0.08) / 0.4));
+          const ra = ra0 * ra0 * (3 - 2 * ra0);
+          if (ra <= 0.02) return;
           const ly = by + pad + i * rowH + 5;
           ctx.beginPath();
           ctx.arc(bx + pad + 4, ly - 4, 4, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${l.rgb.join(",")},${a})`;
+          ctx.fillStyle = `rgba(${l.rgb.join(",")},${ra})`;
           ctx.fill();
-          ctx.fillStyle = `rgba(28,26,21,${a})`;
+          ctx.fillStyle = `rgba(28,26,21,${ra})`;
           ctx.fillText(`${l.name}  ${l.count}`, bx + pad + 16, ly);
         });
       }
@@ -147,8 +178,8 @@ export default function BanksySection() {
 
   // Contiguous windows — no dead zones where all three captions are ghosts.
   const cap1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
-  const cap2 = useTransform(scrollYProgress, [0.3, 0.38, 0.52, 0.6], [0, 1, 1, 0]);
-  const cap3 = useTransform(scrollYProgress, [0.6, 0.7, 1], [0, 1, 1]);
+  const cap2 = useTransform(scrollYProgress, [0.3, 0.38, 0.56, 0.64], [0, 1, 1, 0]);
+  const cap3 = useTransform(scrollYProgress, [0.58, 0.66, 1], [0, 1, 1]);
 
   return (
     <section id="banksy" ref={wrapRef} className="relative h-[180vh] md:h-[240vh]">
@@ -158,6 +189,10 @@ export default function BanksySection() {
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Clustering that <span className="text-violet">sees the tissue.</span>
           </h2>
+          <p className="mt-3 max-w-2xl text-[15px] md:text-base text-dim leading-relaxed">
+            A big claim deserves a concrete opening: one method, one tumor section,
+            watched doing its job.
+          </p>
         </div>
         <div className="relative flex-1 max-w-5xl w-full mx-auto">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
@@ -170,8 +205,8 @@ export default function BanksySection() {
             </motion.p>
             <motion.p style={{ opacity: cap2 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
               BANKSY embeds every spot <span className="text-snow">with its neighborhood</span> —
-              mean expression plus an azimuthal gradient over the k-nearest ring. Place
-              becomes part of identity.
+              its own expression, the average of the ring of spots around it, and how that
+              average changes around the ring. Place becomes part of identity.
             </motion.p>
             <motion.p style={{ opacity: cap3 }} className="absolute inset-4 text-dim text-[17px] leading-relaxed">
               Now they separate: <span className="text-snow">putative astrocytes apart from

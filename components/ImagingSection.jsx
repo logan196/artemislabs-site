@@ -8,7 +8,7 @@ export default function ImagingSection() {
     <section id="imaging" className="relative bg-ink-2/60 border-y border-line">
       <div className="px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">RADIOMICS & IMAGING</p>
+          <p className="font-mono text-sm text-violet mb-4">06 · RADIOMICS & IMAGING</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             From scanner to statistics, browsable.
           </h2>
@@ -34,7 +34,7 @@ export default function ImagingSection() {
             />
           </div>
           <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> The DTI cohort browser — 15 mice × 3 timepoints, registered to the Allen CCFv3 atlas (100&nbsp;µm): FA mosaics, DEC fiber-orientation maps, in-browser 3D volumes, and per-region trajectories with effect sizes. Preclinical research in progress; regional labels provisional.
+            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The DTI cohort browser — 15 mice × 3 timepoints, registered to the Allen CCFv3 atlas (100&nbsp;µm): FA mosaics, DEC fiber-orientation maps, in-browser 3D volumes, and per-region trajectories with effect sizes. Preclinical research in progress; regional labels provisional.
           </p>
         </Reveal>
       </div>

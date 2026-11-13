@@ -279,7 +279,9 @@ export default function ToolGraph() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const t0 = performance.now();
     const tick = (now) => {
-      const t = now - t0;
+      // rAF's first timestamp can precede t0 → negative t → Math.floor(-ε) = -1
+      // → negative JS modulo → undefined edge lookup. Clamp.
+      const t = Math.max(0, now - t0);
       for (let i = 0; i < N_PULSES; i++) {
         const el = pulseRefs.current[i];
         if (!el) continue;
@@ -315,7 +317,7 @@ export default function ToolGraph() {
   return (
     <section id="stack" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">11 · THE STACK, CONNECTED</p>
+        <p className="font-mono text-sm text-violet mb-4">12 · THE STACK, CONNECTED</p>
         <h3 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-3xl">
           Speaks the tools you already trust.
         </h3>

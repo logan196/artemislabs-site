@@ -21,7 +21,7 @@ export default function UmapExplorer() {
   const canvasRef = useRef(null);
   const wrapRef = useRef(null);
   const [data, setData] = useState(null);
-  const [active, setActive] = useState(1); // 0.1/1.0 — scanpy's defaults — first
+  const [active, setActive] = useState(0); // tissue first — then watch it fold into UMAP
   const [colorBy, setColorBy] = useState("domain");
   const [focus, setFocus] = useState(null); // domain index or null
   const [tip, setTip] = useState(null); // {x, y, i}
@@ -38,7 +38,7 @@ export default function UmapExplorer() {
       .then((d) => {
         if (!alive) return;
         const n = d.n_shown;
-        const s = d.settings[1];
+        const s = d.settings[0];
         const pos = new Float32Array(n * 2);
         for (let i = 0; i < n; i++) {
           pos[i * 2] = s.x[i];
@@ -122,7 +122,7 @@ export default function UmapExplorer() {
     ctx.font = "500 11px 'JetBrains Mono', ui-monospace, monospace";
     ctx.fillStyle = "rgba(95,91,80,0.9)";
     const st = data.settings[view.current.setting] || data.settings[0];
-    ctx.fillText(`min_dist=${st.min_dist}  spread=${st.spread}`, pad, h - 6);
+    ctx.fillText(st.id === "tissue" ? "tissue coordinates — no embedding" : `min_dist=${st.min_dist}  spread=${st.spread}`, pad, h - 6);
   }, [data]);
 
   // Redraw on any view-state change (no tween needed).
@@ -230,11 +230,13 @@ export default function UmapExplorer() {
   return (
     <section id="umap-interrogated" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">04 · FIGURES, INTERROGATED</p>
+        <p className="font-mono text-sm text-violet mb-4">07 · FIGURES, INTERROGATED</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           One UMAP is a <span className="text-violet">choice</span>, not a fact.
         </h2>
         <p className="mt-5 max-w-2xl text-lg text-dim leading-relaxed">
+          This page has shown you a lot of figures by now — a good reviewer asks how
+          much of each one was a choice.
           Every embedding you have ever been shown was one point in a parameter space —
           and the picture moves when the parameters move. So instead of curating the
           prettiest view, we hand you the dials: the same section, the same neighbors
@@ -247,7 +249,7 @@ export default function UmapExplorer() {
           {/* controls row */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-mono text-[11px] tracking-[0.2em] text-dim uppercase mr-1">
-              min_dist · spread
+              space
             </span>
             {data &&
               data.settings.map((s, i) => (
@@ -260,7 +262,7 @@ export default function UmapExplorer() {
                       : "border-line text-dim hover:text-snow hover:border-snow/50"
                   }`}
                 >
-                  {s.min_dist} · {s.spread}
+                  {s.id === "tissue" ? "tissue (x,y)" : `${s.min_dist} · ${s.spread}`}
                 </button>
               ))}
             <span className="flex-1" />
@@ -353,8 +355,8 @@ export default function UmapExplorer() {
           )}
         </div>
         <p className="mt-2.5 text-[13.5px] text-dim leading-relaxed max-w-3xl">
-          <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The same spots,
-          re-embedded live as you switch parameters — watch clusters merge, split, and
+          <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> The same spots,
+          four embeddings computed offline from the same neighbors graph (fixed seed), animated between as you switch — watch clusters merge, split, and
           drift while their labels never change. GBM3, Ren et al. 2023 (GSE194329);
           same neighbors graph, four UMAP parameterizations; every view computed, none
           curated.

@@ -18,7 +18,7 @@ export default function ClientMarquee() {
   return (
     <section aria-label="Institutions" className="border-y border-line bg-panel/70 py-6 overflow-hidden">
       <p className="text-center font-mono text-[11px] tracking-[0.25em] text-dim uppercase mb-5">
-        Our team has trained and worked with researchers at
+        Where our team has trained and collaborated
       </p>
       <div className="marquee relative">
         <div className="marquee-track flex items-center gap-16 w-max pr-16">

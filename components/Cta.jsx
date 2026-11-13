@@ -7,19 +7,36 @@ export default function Cta() {
     <section id="contact" className="relative px-6 md:px-14 py-28 md:py-40 overflow-hidden">
       
 
-      <Reveal className="max-w-5xl mx-auto border-t border-line pt-10">
+      <Reveal className="max-w-5xl mx-auto">
+        <p className="font-mono text-sm text-violet mb-4 text-center">HOW AN ENGAGEMENT WORKS</p>
+        <div className="grid sm:grid-cols-4 gap-4">
+          {[
+            ["1 · pilot", "The first analysis is on us — a public or in-house dataset, turned into a live portal."],
+            ["2 · scope", "One call. We map your assays and questions to a concrete deliverable list."],
+            ["3 · deliverables", "A live portal, the written report, the figures — and the code that made all three."],
+            ["4 · your data stays yours", "Local-mode runs mean zero egress; cloud models are opt-in per project; deletion on request."],
+          ].map(([t, b]) => (
+            <div key={t} className="rounded-[3px] border border-line bg-panel/80 p-5">
+              <p className="font-mono text-[12px] tracking-[0.15em] text-violet uppercase mb-2">{t}</p>
+              <p className="text-[14px] text-dim leading-relaxed">{b}</p>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal className="max-w-5xl mx-auto border-t border-line pt-10 mt-16">
         <div className="grid sm:grid-cols-3 gap-6 text-center sm:text-left">
           <div>
-            <p className="font-mono text-[13px] text-violet">built by a researcher-founder</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">who ran these analyses before selling them.</p>
+            <p className="font-mono text-[13px] text-violet">built by Logan Beharry</p>
+            <p className="mt-1 text-dim text-[15px] leading-relaxed">researcher-founder — who ran every analysis on this page before selling it.</p>
           </div>
           <div>
             <p className="font-mono text-[13px] text-violet">pipelines that ran, not promises</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">every figure on this page came from an end-to-end run on public data — Visium and CODEX today, Xenium ingest in the same stack.</p>
+            <p className="mt-1 text-dim text-[15px] leading-relaxed">every figure on this page came from an end-to-end run on public data — Visium, MERFISH and seqFISH today; Xenium ingest in the same stack.</p>
           </div>
           <div>
-            <p className="font-mono text-[13px] text-violet">GSE194329, reproduced</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">everything on this page was generated end-to-end from public data. Ask for the code.</p>
+            <p className="font-mono text-[13px] text-violet">GSE194329, re-analyzed end-to-end</p>
+            <p className="mt-1 text-dim text-[15px] leading-relaxed">everything on this page was generated from public data by the pipeline shown above. Ask for the code.</p>
           </div>
         </div>
       </Reveal>
@@ -35,7 +52,7 @@ export default function Cta() {
             first analysis is on us — pick a public or in-house dataset and we'll turn it
             around as a live portal.
           </p>
-          <div className="mt-10 flex items-center justify-center">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
               target="_blank"

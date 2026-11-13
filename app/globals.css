@@ -51,10 +51,12 @@ html {
     0 14px 40px -18px rgb(28 26 21 / 0.35);
 }
 
+/* translate-only: scaling/rotating a blurred layer defeats the compositor's
+   blur cache and re-rasterizes every frame (~50ms/frame measured). */
 @keyframes drift {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(4%, -6%, 0) scale(1.12); }
-  100% { transform: translate3d(0, 0, 0) scale(1); }
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(4%, -6%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 .aurora {
   animation: drift 18s ease-in-out infinite;
@@ -63,9 +65,9 @@ html {
 
 /* site-wide moving wash — a faint teal watercolor on paper */
 @keyframes drift2 {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(-5%, 4%, 0) scale(1.18) rotate(8deg); }
-  100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-5%, 4%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 .bg-sea {
   position: fixed;
