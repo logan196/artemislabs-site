@@ -3,6 +3,8 @@ import ClientMarquee from "@/components/ClientMarquee";
 import BanksySection from "@/components/BanksySection";
 import PrismaStory from "@/components/PrismaStory";
 import GbmGallery from "@/components/GbmGallery";
+import PortalFeature from "@/components/PortalFeature";
+import TissueBand from "@/components/TissueBand";
 import UmapExplorer from "@/components/UmapExplorer";
 import FoundationSection from "@/components/FoundationSection";
 import WhatWeDo from "@/components/WhatWeDo";
@@ -22,6 +24,8 @@ export default function Home() {
       <BanksySection />
       <PrismaStory />
       <GbmGallery />
+      <PortalFeature />
+      <TissueBand />
       <WhatWeDo />
       <GenomeSection />
       <ImagingSection />

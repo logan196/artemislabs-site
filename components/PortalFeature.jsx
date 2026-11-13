@@ -26,7 +26,7 @@ export default function PortalFeature() {
           />
         </div>
         <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-          <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> The portal as captured during the demo recording — GBM1 (4,764 spots) with UMAP + spatial linked views, cell sets, markers and the copilot rail.
+          The portal as captured during the demo recording — GBM1 (4,764 spots) with UMAP + spatial linked views, cell sets, markers and the copilot rail.
         </p>
       </Reveal>
       <Reveal delay={0.12} className="mt-8 grid sm:grid-cols-3 gap-4">
