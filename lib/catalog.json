@@ -1,6 +1,6 @@
 [
  {
-  "dataset": "De Jong et al. 2025, GBM-Space (Xenium)",
+  "dataset": "De Jong et al. 2025 preprint (Nature 2026), GBM-Space (Xenium)",
   "platform": "10x Xenium",
   "scope": "17 sections, 8 tumours (BioStudies S-BIAD2898)",
   "accession": "S-BIAD2898 (BioImage Archive)",
@@ -8,7 +8,7 @@
   "why": "Anchor dataset; edge to core trajectory"
  },
  {
-  "dataset": "De Jong et al. 2025, GBM-Space (Visium + snRNA/snATAC)",
+  "dataset": "De Jong et al. 2025 preprint (Nature 2026), GBM-Space (Visium + snRNA/snATAC)",
   "platform": "10x Visium (whole transcriptome) + snMultiome",
   "scope": "97 Visium sections, 12 tumours; 1,025,329 nuclei",
   "accession": "E-MTAB-17164 (ArrayExpress); CELLxGENE",
@@ -70,14 +70,6 @@
   "accession": "GSE242352",
   "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE242352",
   "why": "Pairs spatial with DNA-seq, so CNV calls can be checked against ground truth"
- },
- {
-  "dataset": "Heiland lab 2024, neural GBM",
-  "platform": "10x Visium",
-  "scope": "Not checked",
-  "accession": "Zenodo 10863736",
-  "url": "https://doi.org/10.5281/zenodo.10863736",
-  "why": "Additional Freiburg/Erlangen Visium sections"
  },
  {
   "dataset": "10x Genomics, Xenium IO panel GBM",

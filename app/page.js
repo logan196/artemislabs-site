@@ -3,10 +3,15 @@ import ClientMarquee from "@/components/ClientMarquee";
 import PipelineFlow from "@/components/PipelineFlow";
 import BanksySection from "@/components/BanksySection";
 import GbmGallery from "@/components/GbmGallery";
+import PortalFeature from "@/components/PortalFeature";
+import AnalysisGallery from "@/components/AnalysisGallery";
 import DeJongSection from "@/components/DeJongSection";
+import WhatWeDo from "@/components/WhatWeDo";
 import CatalogSection from "@/components/CatalogSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
+import WetLabSection from "@/components/WetLabSection";
+import PricingSection from "@/components/PricingSection";
 import Cta from "@/components/Cta";
 
 export default function Home() {
@@ -18,10 +23,15 @@ export default function Home() {
       <PipelineFlow />
       <BanksySection />
       <GbmGallery />
+      <PortalFeature />
+      <AnalysisGallery />
       <DeJongSection />
+      <WhatWeDo />
+      <WetLabSection />
       <CatalogSection />
       <CopilotSection />
       <ToolsGrid />
+      <PricingSection />
       <Cta />
     </main>
   );

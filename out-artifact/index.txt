@@ -2,29 +2,35 @@
 2:"./_next/static/chunks/1ua2kfq9s-me6.js"
 3:I[39756,["$2"],"default"]
 4:I[37457,["$2"],"default"]
-6:"./_next/static/chunks/3mm_8g7efxhsa.js"
+6:"./_next/static/chunks/1c8i66db-t62m.js"
 7:I[78068,["$2","$6"],"default"]
-8:I[86327,["$2","$6"],"default"]
-9:I[25091,["$2","$6"],"default"]
-a:I[95250,["$2","$6"],"default"]
-b:I[76017,["$2","$6"],"default"]
-c:I[8578,["$2","$6"],"default"]
-d:I[33155,["$2","$6"],"default"]
-e:I[88676,["$2","$6"],"default"]
-f:I[38199,["$2","$6"],"default"]
-10:I[97367,["$2"],"OutletBoundary"]
-11:"$Sreact.suspense"
-13:"ViewportBoundary"
-14:I[97367,["$2"],"$13"]
-16:"MetadataBoundary"
-17:I[97367,["$2"],"$16"]
-19:I[68027,["$2"],"default",1]
-:HL["./_next/static/chunks/3kxpagw9b6kqz.css","style"]
+8:I[86704,["$2","$6"],"default"]
+9:I[86327,["$2","$6"],"default"]
+a:I[25091,["$2","$6"],"default"]
+b:I[95250,["$2","$6"],"default"]
+c:I[86882,["$2","$6"],"default"]
+d:I[55801,["$2","$6"],"default"]
+e:I[76017,["$2","$6"],"default"]
+f:I[18956,["$2","$6"],"default"]
+10:I[25311,["$2","$6"],"default"]
+11:I[8578,["$2","$6"],"default"]
+12:I[33155,["$2","$6"],"default"]
+13:I[88676,["$2","$6"],"default"]
+14:I[40922,["$2","$6"],"default"]
+15:I[38199,["$2","$6"],"default"]
+16:I[97367,["$2"],"OutletBoundary"]
+17:"$Sreact.suspense"
+19:"ViewportBoundary"
+1a:I[97367,["$2"],"$19"]
+1c:"MetadataBoundary"
+1d:I[97367,["$2"],"$1c"]
+1f:I[68027,["$2"],"default",1]
+:HL["./_next/static/chunks/1g5e08fspsjt0.css","style"]
 :HL["./_next/static/media/53897e768d329f66-s.p.3t6q91iet4nsy.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["./_next/static/media/7c42b85337e0c4bb-s.p.012bmydply3go.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-5:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","main",null,{"className":"grain","children":[["$","div",null,{"className":"bg-sea","aria-hidden":true}],["$","$L7",null,{}],["$","$L8",null,{}],["$","$L9",null,{}],["$","$La",null,{}],["$","$Lb",null,{}],["$","$Lc",null,{}],["$","$Ld",null,{}],["$","$Le",null,{}],["$","$Lf",null,{}]]}],[["$","script","script-0",{"src":"./_next/static/chunks/3mm_8g7efxhsa.js","async":true,"nonce":"$undefined"}]],["$","$L10",null,{"children":["$","$11",null,{"name":"Next.MetadataOutlet","children":"$@12"}]}]]}],"p":false,"v":null}}]]
-0:{"P":null,"c":["",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"./_next/static/chunks/3kxpagw9b6kqz.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"./_next/static/chunks/1ua2kfq9s-me6.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"_6W5yua_variable cMxhpq_variable antialiased","children":["$","body",null,{"className":"bg-ink text-snow font-sans overflow-x-hidden","children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],"p":false,"v":null},"c":"$Q5"},"h":{"r":["$","$1","h",{"children":[null,["$","$L14",null,{"children":"$L15"}],["$","$L17",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$11",null,{"name":"Next.Metadata","children":"$L18"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$19",[["$","link","0",{"rel":"stylesheet","href":"./_next/static/chunks/3kxpagw9b6kqz.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"SAhP6011zaC3CmcwaojZv"}
-15:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
-1a:I[27201,["$2"],"IconMark"]
-12:null
-18:[["$","title","0",{"children":"Artemis BioLabs · Spatial Transcriptomics, Delivered"}],["$","meta","1",{"name":"description","content":"Drop in a spatial dataset, get an interactive Vitessce portal — BANKSY clustering, cell-state annotation, and a local LLM copilot. Computational biology, delivered."}],["$","link","2",{"rel":"icon","href":"/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","link","3",{"rel":"icon","href":"artemis_mark.svg"}],["$","$L1a","4",{}]]
+5:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","main",null,{"className":"grain","children":[["$","div",null,{"className":"bg-sea","aria-hidden":true}],["$","$L7",null,{}],["$","$L8",null,{}],["$","$L9",null,{}],["$","$La",null,{}],["$","$Lb",null,{}],["$","$Lc",null,{}],["$","$Ld",null,{}],["$","$Le",null,{}],["$","$Lf",null,{}],["$","$L10",null,{}],["$","$L11",null,{}],["$","$L12",null,{}],["$","$L13",null,{}],["$","$L14",null,{}],["$","$L15",null,{}]]}],[["$","script","script-0",{"src":"./_next/static/chunks/1c8i66db-t62m.js","async":true,"nonce":"$undefined"}]],["$","$L16",null,{"children":["$","$17",null,{"name":"Next.MetadataOutlet","children":"$@18"}]}]]}],"p":false,"v":null}}]]
+0:{"P":null,"c":["",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"./_next/static/chunks/1g5e08fspsjt0.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"./_next/static/chunks/1ua2kfq9s-me6.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"_6W5yua_variable cMxhpq_variable antialiased","children":["$","body",null,{"className":"bg-ink text-snow font-sans overflow-x-hidden","children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],"p":false,"v":null},"c":"$Q5"},"h":{"r":["$","$1","h",{"children":[null,["$","$L1a",null,{"children":"$L1b"}],["$","$L1d",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$17",null,{"name":"Next.Metadata","children":"$L1e"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$1f",[["$","link","0",{"rel":"stylesheet","href":"./_next/static/chunks/1g5e08fspsjt0.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"P6-RriXWQ1LDieSEgKMHF"}
+1b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+20:I[27201,["$2"],"IconMark"]
+18:null
+1e:[["$","title","0",{"children":"Artemis BioLabs · Spatial Transcriptomics, Delivered"}],["$","meta","1",{"name":"description","content":"Drop in a spatial dataset, get an interactive Vitessce portal — BANKSY clustering, cell-state annotation, and an AI copilot that can run with a local model. Computational biology, delivered."}],["$","meta","2",{"property":"og:title","content":"Artemis BioLabs"}],["$","meta","3",{"property":"og:description","content":"Spatial transcriptomics, delivered — drop in a dataset, get a living atlas."}],["$","meta","4",{"property":"og:url","content":"https://artemislabs.bio"}],["$","meta","5",{"property":"og:site_name","content":"Artemis BioLabs"}],["$","meta","6",{"property":"og:image","content":"https://artemislabs.bio/og.png"}],["$","meta","7",{"property":"og:image:width","content":"1200"}],["$","meta","8",{"property":"og:image:height","content":"630"}],["$","meta","9",{"property":"og:image:alt","content":"Artemis BioLabs lockup"}],["$","meta","10",{"property":"og:type","content":"website"}],["$","meta","11",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","12",{"name":"twitter:title","content":"Artemis BioLabs"}],["$","meta","13",{"name":"twitter:description","content":"Spatial transcriptomics, delivered — drop in a dataset, get a living atlas."}],["$","meta","14",{"name":"twitter:image","content":"https://artemislabs.bio/og.png"}],["$","meta","15",{"name":"twitter:image:alt","content":"Artemis BioLabs lockup"}],["$","meta","16",{"name":"twitter:image:width","content":"1200"}],["$","meta","17",{"name":"twitter:image:height","content":"630"}],["$","link","18",{"rel":"icon","href":"/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","link","19",{"rel":"icon","href":"artemis_mark.svg"}],["$","$L20","20",{}]]

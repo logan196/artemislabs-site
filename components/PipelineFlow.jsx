@@ -2,6 +2,7 @@
 
 import Reveal, { Stagger, item } from "./Reveal";
 import { motion } from "framer-motion";
+import DataMorph from "./DataMorph";
 
 const STAGES = [
   { name: "Load + preprocess", detail: "Any .h5ad or 10x Xenium folder. Counts detected, normalized, log1p — spatial coordinates verified.", mono: "load_h5ad(input)" },
@@ -20,7 +21,14 @@ export default function PipelineFlow() {
           One command, <span className="text-violet">five stages</span>, zero notebooks.
         </h2>
       </Reveal>
-      <Stagger className="mt-14 relative">
+      <Reveal delay={0.05} className="mt-8">
+        <DataMorph height={400} />
+        <p className="text-center text-[13px] text-dim mt-1">
+          Raw reads in, atlas out — the glyph stream is animation; the section it becomes is the real GBM1 data.
+        </p>
+      </Reveal>
+
+      <Stagger className="mt-12 relative">
         <span className="absolute left-[7px] top-3 bottom-3 w-px bg-line hidden md:block" aria-hidden />
         {STAGES.map((s, i) => (
           <motion.div

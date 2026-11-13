@@ -14,7 +14,7 @@ const CHAT = [
   { role: "user", text: "Any immune infiltration near it?" },
   {
     role: "ai",
-    text: "Four domains annotate as microglia/TAMs — the largest sits adjacent to the hypoxic domain, with SPP1 and C1QB among its top markers. Want me to run DE between it and the rest of the TAM spots?",
+    text: "Four domains annotate as microglia/TAMs — the largest, 246 spots, carries SPP1 and C1QB among its top markers. Want me to run DE between it and the rest of the section?",
   },
 ];
 
@@ -23,7 +23,7 @@ export default function CopilotSection() {
     <section id="copilot" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">06 · COPILOT</p>
+          <p className="font-mono text-sm text-violet mb-4">07 · COPILOT</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             An analyst inside every portal.
           </h2>
@@ -62,7 +62,7 @@ export default function CopilotSection() {
             </motion.div>
           ))}
           <p className="text-[12.5px] text-dim pt-1 leading-relaxed">
-            from the 10x GBM section · markers per report.md · Moran's I via the portal's live tool
+            Values from output/TenX_GBM/report.md; Moran's I computed with the portal's live tool (backend/analysis/live.py) on the same section.
           </p>
         </Stagger>
       </div>
