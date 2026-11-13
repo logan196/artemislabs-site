@@ -79,6 +79,14 @@ export default function GbmGallery() {
             >
               Launch the interactive portal — GBM3, live →
             </a>
+            <a
+              href="live/brain/index.html"
+              target="_blank"
+              rel="noreferrer"
+              className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
+            >
+              Artemis Brain — 3.9M-cell MERFISH atlas →
+            </a>
             <div className="flex gap-2 flex-wrap">
               {VIEWS.map((v) => (
                 <button
