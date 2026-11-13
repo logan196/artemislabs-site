@@ -1,0 +1,10 @@
+name = "artemis-coscientist"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+# Optional per-IP rate limiting. Create the namespace once:
+#   npx wrangler kv namespace create RL
+# then paste the returned id below and uncomment both lines.
+# [[kv_namespaces]]
+# binding = "RL"
+# id = "<paste-id-here>"
