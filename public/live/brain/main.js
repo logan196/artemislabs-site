@@ -274,7 +274,7 @@ const MERFISH_TL = [
   {t0:21.8, t1:25.2, enter(){ uniforms.u_dim.value = 0; setCaption('All channels at once - 3,938,808 cells.', 'each dot: its strongest measured gene of the 8 shown · from the 550-gene panel'); animateUniform('u_exposure', 1.2, 21.8, 23.6); }, u:{mode:5}, back:true, orbit:true,
    anno:{rail:[['CELLS','3,938,808'],['BRAIN','1 adult mouse']]}},
   {t0:25.2, t1:27.5, enter(){ setCaption('Every dot: one measured cell.', 'nothing simulated · data: Allen Brain Cell Atlas'); }, u:{mode:5}, back:true, orbit:true,
-   anno:{foot:true, title:'Yao et al., Nature 2023 · MERFISH whole mouse brain · 550-gene panel', sub:'artemis-whole-brain.vercel.app'}},
+   anno:{foot:true, title:'Yao et al., Nature 2023 · MERFISH whole mouse brain · 550-gene panel', sub:'artemislabs.bio/live/brain'}},
 ];
 const TOUR_TL = [
   {t0:0.0, t1:3.0, enter(){ clearHl(); setCaption('Guided tour: the cast of a real brain.', '8 stops · every number from the data'); }, u:{mode:2}},
