@@ -2,7 +2,7 @@
 
 import Reveal, { Stagger, item } from "./Reveal";
 import { motion } from "framer-motion";
-import CodePanel from "./CodePanel";
+import RunBoard from "./RunBoard";
 import StackMini from "./StackMini";
 
 const TOOLS = [
@@ -49,7 +49,7 @@ export default function ToolsGrid() {
         </Stagger>
 
         <Reveal className="mt-12 max-w-4xl mx-auto">
-          <CodePanel />
+          <RunBoard />
         </Reveal>
       </div>
     </section>
