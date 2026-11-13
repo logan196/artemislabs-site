@@ -15,13 +15,15 @@ const N_IDENTIFIED = 62; // GEO series matching the query above
 const N_NOT_INGESTED = 61; // 62 minus GSE194329, the one GEO series ingested
 const N_SECTIONS = 8; // sections actually shown on this page
 
+// Two tidy bands: sources surface above the query, platforms below the count —
+// nothing ever overlaps the search bar or the counter.
 const CHIPS = [
-  { label: "GSE194329", x: "6%", y: "12%" },
-  { label: "10x Parent Visium", x: "72%", y: "8%" },
-  { label: "gbmspace.org", x: "80%", y: "70%" },
-  { label: "Visium", x: "10%", y: "76%" },
-  { label: "MERFISH", x: "58%", y: "86%" },
-  { label: "seqFISH", x: "34%", y: "4%" },
+  { label: "GSE194329", kind: "source" },
+  { label: "10x Parent Visium", kind: "source" },
+  { label: "gbmspace.org", kind: "source" },
+  { label: "Visium", kind: "platform" },
+  { label: "MERFISH", kind: "platform" },
+  { label: "seqFISH", kind: "platform" },
 ];
 
 const TILES = [
@@ -209,14 +211,21 @@ function StaticStory() {
 /* --------------------------- animated pieces --------------------------- */
 
 function Chip({ chip, progress, i }) {
-  const a = 0.03 + i * 0.02;
-  const opacity = useTransform(progress, [a, a + 0.05, 0.2, 0.25], [0, 1, 1, 0]);
-  const y = useTransform(progress, [a, a + 0.08], [24, 0]);
+  // patient: each chip waits its turn, rises gently into its slot
+  const a = 0.035 + i * 0.025;
+  const opacity = useTransform(progress, [a, a + 0.06, 0.2, 0.25], [0, 1, 1, 0]);
+  const y = useTransform(progress, [a, a + 0.08], [10, 0]);
   return (
     <motion.span
-      style={{ opacity, y, left: chip.x, top: chip.y }}
-      className="absolute rounded-full border border-line bg-panel px-3 py-1 font-mono text-[10px] md:text-xs text-dim shadow-sm"
+      style={{ opacity, y }}
+      className="flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-1 font-mono text-[10px] md:text-xs text-dim shadow-sm"
     >
+      <motion.span
+        className={`h-1.5 w-1.5 rounded-full ${chip.kind === "source" ? "bg-violet" : "bg-[#9a5b13]"}`}
+        animate={{ opacity: [0.45, 1, 0.45] }}
+        transition={{ repeat: Infinity, duration: 2.2, delay: i * 0.35, ease: "easeInOut" }}
+        aria-hidden
+      />
       {chip.label}
     </motion.span>
   );
@@ -423,9 +432,11 @@ export default function PrismaStory() {
             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           >
             <div className="relative w-full max-w-3xl">
-              {CHIPS.map((c, i) => (
-                <Chip key={c.label} chip={c} progress={scrollYProgress} i={i} />
-              ))}
+              <div className="flex flex-wrap justify-center gap-2.5 mb-6 min-h-[30px]">
+                {CHIPS.filter((c) => c.kind === "source").map((c, i) => (
+                  <Chip key={c.label} chip={c} progress={scrollYProgress} i={i} />
+                ))}
+              </div>
               <div className="rounded-[3px] border border-line bg-panel shadow-sm p-4 md:p-5 font-mono text-[12px] md:text-sm text-snow min-h-[5.5rem]">
                 <span className="text-dim">geo/gds&nbsp;»&nbsp;</span>
                 <span ref={typedRef} />
@@ -439,6 +450,11 @@ export default function PrismaStory() {
                 </span>{" "}
                 series identified · GEO DataSets · accessed {ACCESSED}
               </p>
+              <div className="flex flex-wrap justify-center gap-2.5 mt-6 min-h-[30px]">
+                {CHIPS.filter((c) => c.kind === "platform").map((c, i) => (
+                  <Chip key={c.label} chip={c} progress={scrollYProgress} i={i + 3} />
+                ))}
+              </div>
             </div>
           </motion.div>
 

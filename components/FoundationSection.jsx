@@ -342,10 +342,24 @@ export default function FoundationSection() {
             arrow keys) to compare.
           </figcaption>
         </figure>
-        <p className="mt-6 max-w-2xl text-[15px] text-dim leading-relaxed">
-          Bring the archive — we build the model <span className="text-snow">with your lab</span>:
-          your slides, your measured spatial runs as the labels.
-        </p>
+        <div className="mt-8 rounded-[4px] border border-violet/40 bg-panel/80 p-6 max-w-3xl">
+          <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">
+            virtual staining · early access
+          </p>
+          <p className="text-[15px] text-dim leading-relaxed">
+            Pairs like the one above train the reverse direction too:{" "}
+            <span className="text-snow">compute the stain instead of performing it</span> —
+            H&amp;E in, molecular overlays out (virtual staining; Rivenson et&nbsp;al.,{" "}
+            <em>Nat. Biomed. Eng.</em> 2019). We build it per lab: your slides, your
+            measured spatial runs as the labels, your archive unlocked.
+          </p>
+          <a
+            href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20virtual%20staining%20early%20access"
+            className="mt-4 inline-block rounded-[3px] bg-violet-deep text-ink px-5 py-2.5 text-[14px] font-medium hover:bg-violet transition-colors"
+          >
+            Request early access →
+          </a>
+        </div>
       </Reveal>
     </section>
   );

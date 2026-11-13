@@ -93,7 +93,7 @@ export default function Hero() {
             computational biology, accelerated.
           </p>
           <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
-            Every core your biotech would build or rent.
+            Every core service your lab needs.
             <br className="hidden sm:block" />
             <span className="text-dim"> One AI-powered team.</span>
           </p>

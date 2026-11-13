@@ -355,6 +355,38 @@ export default function BanksySection() {
           </div>
         </div>
       </div>
+
+      {/* after the show: why this disease, and who wrote the labels */}
+      <div className="px-6 md:px-14 pb-20 md:pb-24 max-w-7xl mx-auto grid md:grid-cols-2 gap-4 md:gap-5">
+        <div className="rounded-[4px] border border-line bg-panel/80 p-6">
+          <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">
+            why glioblastoma
+          </p>
+          <p className="text-[15px] text-dim leading-relaxed">
+            GBM is the stress test. Several tumor states coexist in one section, they
+            shade into each other, and the hardest split — reactive astrocytes versus
+            astrocyte-like tumor states — <span className="text-snow">shares the very
+            marker you just watched (GFAP)</span>, so histology and single-gene panels
+            both blur it. A pipeline that separates states here has earned the gentler
+            tissues — and the public GBM record is deep enough (GSE194329, 10x,
+            gbmspace.org) that every claim on this page can be re-run and checked.
+          </p>
+        </div>
+        <div className="rounded-[4px] border border-line bg-panel/80 p-6">
+          <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">
+            agentic annotation of cell states
+          </p>
+          <p className="text-[15px] text-dim leading-relaxed">
+            Once BANKSY resolves the domains, annotation fans out:{" "}
+            <span className="text-snow">one subagent per domain, running in
+            parallel</span>, each handed its domain&rsquo;s top differential markers and
+            constrained to a controlled vocabulary (AC-, MES-, NPC-, OPC-like plus the
+            brain tumor microenvironment). The labels that snapped in above are those
+            calls — model-annotated, flagged as such on every figure, never presented
+            as ground truth.
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

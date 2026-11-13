@@ -9,6 +9,8 @@ const LOGOS = [
   { src: "logos/stjude.svg", alt: "St. Jude Children's Research Hospital", h: "h-12" },
   { src: "logos/a2.png", alt: "A2 Biotherapeutics", h: "h-12" },
   { src: "logos/pfizer.svg", alt: "Pfizer", h: "h-12" },
+  { src: "logos/columbia.svg", alt: "Columbia University", h: "h-9" },
+  { src: "logos/princeton.svg", alt: "Princeton University", h: "h-9" },
   { src: "logos/usc.svg", alt: "USC Keck", h: "h-12" },
   { src: "logos/ucsf.svg", alt: "UCSF", h: "h-12" },
 ];
