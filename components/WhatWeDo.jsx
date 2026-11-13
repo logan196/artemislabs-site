@@ -18,7 +18,7 @@ export default function WhatWeDo() {
   return (
     <section id="whatwedo" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">05 · WHAT WE DO</p>
+        <p className="font-mono text-sm text-violet mb-4">06 · WHAT WE DO</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Every core your biotech would build or rent.
         </h2>
@@ -38,7 +38,7 @@ export default function WhatWeDo() {
               <p className="text-dim text-[14.5px] mt-1.5">{c.desc}</p>
               {c.live ? (
                 <a
-                  href="live/GBM3/portal.html"
+                  href="live/explore/index.html"
                   target="_blank"
                   rel="noreferrer"
                   className="mt-3 inline-block text-violet font-medium hover:underline text-[14px]"

@@ -17,6 +17,33 @@ const BARS = [
   ["Vitessce portal + zarr", 700],
 ];
 
+// the in-silico bench — whimsical wet-lab verbs while the pipeline cooks
+const VERBS = [
+  "titrating buffers…",
+  "hybridizing probes…",
+  "phosphorylating the backbone…",
+  "annealing neighborhoods…",
+  "spinning down barcodes…",
+  "blocking nonspecific clusters…",
+  "eluting marker genes…",
+  "imaging the virtual slide…",
+];
+
+function BenchVerb({ running }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (!running) return;
+    const t = setInterval(() => setI((v) => (v + 1) % VERBS.length), 850);
+    return () => clearInterval(t);
+  }, [running]);
+  if (!running) return null;
+  return (
+    <div style={{ color: "#6c6880", fontStyle: "italic" }}>
+      {"  "}⌁ {VERBS[i]}
+    </div>
+  );
+}
+
 function Bar({ label, dur, onDone, active }) {
   const [p, setP] = useState(0);
   useEffect(() => {
@@ -33,7 +60,7 @@ function Bar({ label, dur, onDone, active }) {
     return () => cancelAnimationFrame(raf);
   }, [active, dur, onDone]);
   const n = 22;
-  const filled = Math.round(p * n);
+  const filled = Math.max(0, Math.min(n, Math.round((Number.isFinite(p) ? p : 1) * n)));
   return (
     <div>
       <span style={{ color: p >= 1 ? MINT : DIM }}>{p >= 1 ? "✓ " : "  "}</span>
@@ -139,6 +166,7 @@ export default function TerminalLive() {
             <Bar key={label} label={label} dur={reduced.current ? 0 : dur} active={phase === i + 2 || phase > i + 2} onDone={barDone(i)} />
           ) : null
         )}
+        <BenchVerb running={phase >= 2 && phase < 100} />
         {phase >= 100 && (
           <div>
             {"\n"}<span style={{ color: "#efeef8", fontWeight: 700 }}>  16 domains → 7 cell states</span>

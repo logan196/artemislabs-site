@@ -10,11 +10,11 @@ const BOOKING =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
 
 const NAV = [
-  ["#pipeline", "Pipeline"],
   ["#banksy", "BANKSY"],
+  ["#pipeline", "Pipeline"],
   ["#gallery", "Glioblastoma"],
   ["#whatwedo", "What we do"],
-  ["#catalog", "Catalog"],
+  ["#benchmark", "Benchmarking"],
 ];
 
 export default function Hero() {
@@ -32,9 +32,8 @@ export default function Hero() {
         Skip to content
       </a>
       <div className="absolute inset-0 -z-10">
-        <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/15 blur-[140px]" />
+        <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#f7f4ec_78%)]" />
-        <div className="absolute inset-0 opacity-[0.16] bg-[radial-gradient(circle_at_center,#0f766e_1px,transparent_1px)] [background-size:34px_34px]" />
       </div>
 
       <nav className="flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
@@ -79,20 +78,20 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.5, ease: [0.21, 0.6, 0.27, 1] }}
+          transition={{ duration: 0.9, delay: 0.4, ease: [0.21, 0.6, 0.27, 1] }}
           className="relative"
         >
-          <p className="font-mono text-[12px] tracking-[0.5em] text-violet uppercase">Artemis BioLabs</p>
-          <h1 className="mt-3 text-[2.5rem] leading-[1.06] sm:text-6xl xl:text-7xl font-semibold tracking-tight">
-            <Decode text="Drop in a dataset." delay={600} /><br />
-            <Decode text="Get a living atlas." delay={1400} className="text-violet" />
+          <h1 className="text-[2.6rem] leading-[1.04] sm:text-6xl xl:text-[5.2rem] font-semibold tracking-tight">
+            <Decode text="ARTEMIS" delay={500} />{" "}
+            <Decode text="BIOLABS" delay={1200} className="text-violet" />
           </h1>
-          <p className="mt-5 max-w-xl mx-auto text-lg md:text-xl text-dim leading-relaxed">
-            The embedded computational team for wet labs — every assay, one engagement.
-            This page shows one use case end-to-end.
+          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
+            computational biology, accelerated.
           </p>
-          <p className="mt-3 font-mono text-[13px] text-dim">
-            Visium · Xenium · CODEX → BANKSY → annotated Vitessce portal
+          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
+            Every core your biotech would build or rent.
+            <br className="hidden sm:block" />
+            <span className="text-dim"> One AI-powered team.</span>
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -118,7 +117,7 @@ export default function Hero() {
       <div className="md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
         <a href="#pipeline" className="hover:text-snow">Pipeline</a>
         <a href="#gallery" className="hover:text-snow">Demo</a>
-        <a href="#catalog" className="hover:text-snow">Catalog</a>
+        <a href="#benchmark" className="hover:text-snow">Benchmarking</a>
       </div>
 
       <motion.div

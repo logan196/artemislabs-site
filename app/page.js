@@ -1,18 +1,17 @@
 import Hero from "@/components/Hero";
 import ClientMarquee from "@/components/ClientMarquee";
-import PipelineFlow from "@/components/PipelineFlow";
 import BanksySection from "@/components/BanksySection";
+import PrismaStory from "@/components/PrismaStory";
 import GbmGallery from "@/components/GbmGallery";
-import PortalFeature from "@/components/PortalFeature";
-import AnalysisGallery from "@/components/AnalysisGallery";
-import DeJongSection from "@/components/DeJongSection";
+import UmapExplorer from "@/components/UmapExplorer";
+import FoundationSection from "@/components/FoundationSection";
 import WhatWeDo from "@/components/WhatWeDo";
-import CatalogSection from "@/components/CatalogSection";
+import BenchmarkSection from "@/components/BenchmarkSection";
 import CopilotSection from "@/components/CopilotSection";
+import GenomeSection from "@/components/GenomeSection";
 import ToolsGrid from "@/components/ToolsGrid";
-import ToolMarquee from "@/components/ToolMarquee";
+import ToolGraph from "@/components/ToolGraph";
 import Cta from "@/components/Cta";
-import ComicFooter from "@/components/ComicFooter";
 
 export default function Home() {
   return (
@@ -20,19 +19,18 @@ export default function Home() {
       <div className="bg-sea" aria-hidden />
       <Hero />
       <ClientMarquee />
-      <PipelineFlow />
       <BanksySection />
+      <PrismaStory />
       <GbmGallery />
-      <PortalFeature />
-      <AnalysisGallery />
-      <DeJongSection />
+      <UmapExplorer />
+      <FoundationSection />
       <WhatWeDo />
-      <CatalogSection />
+      <BenchmarkSection />
       <CopilotSection />
+      <GenomeSection />
       <ToolsGrid />
-      <ToolMarquee />
+      <ToolGraph />
       <Cta />
-      <ComicFooter />
     </main>
   );
 }

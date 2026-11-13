@@ -38,8 +38,7 @@ export default function AnalysisGallery() {
           More ways to read a section.
         </h3>
         <p className="mt-4 max-w-2xl text-lg text-dim leading-relaxed">
-          Every portal carries the embeddings with it — UMAP beside tissue, gradients like
-          diffusion pseudotime on demand. All computed from the runs shown above.
+          UMAP beside tissue, pseudotime, morphology — all computed from the runs above.
         </p>
       </Reveal>
       {/* museum placards — plain-language concepts, clearly not data */}
@@ -64,13 +63,13 @@ export default function AnalysisGallery() {
         </div>
       </Reveal>
 
-      <div className="mt-8 grid gap-6">
+      <div className="mt-8 grid md:grid-cols-2 gap-6">
         {FIGS.map((f) => (
           <Reveal key={f.src}>
-            <a href={f.src} target="_blank" rel="noreferrer" className="block rounded-lg border border-snow/60 overflow-hidden bg-panel cursor-zoom-in">
-              <img src={f.src} alt={f.alt} className="w-full" />
+            <a href={f.src} target="_blank" rel="noreferrer" className="group block rounded-lg border border-snow/60 overflow-hidden bg-panel cursor-zoom-in">
+              <img src={f.src} alt={f.alt} className="w-full group-hover:scale-[1.015] transition-transform duration-500" />
             </a>
-            <p className="mt-2.5 text-[13.5px] text-dim leading-relaxed">
+            <p className="mt-2.5 text-[13px] text-dim leading-relaxed">
               <span className="font-semibold text-snow">Fig. 7{f.tag}&nbsp;|</span> {f.cap}
             </p>
           </Reveal>

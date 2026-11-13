@@ -7,7 +7,7 @@ const LOGOS = [
   { src: "logos/caltech.svg", alt: "Caltech", h: "h-12" },
   { src: "logos/mit.svg", alt: "MIT", h: "h-11" },
   { src: "logos/stjude.svg", alt: "St. Jude Children's Research Hospital", h: "h-12" },
-  { src: "logos/a2.svg", alt: "A2 Biotherapeutics", h: "h-11" },
+  { src: "logos/a2.png", alt: "A2 Biotherapeutics", h: "h-12" },
   { src: "logos/pfizer.svg", alt: "Pfizer", h: "h-12" },
   { src: "logos/usc.svg", alt: "USC Keck", h: "h-12" },
   { src: "logos/ucsf.svg", alt: "UCSF", h: "h-12" },

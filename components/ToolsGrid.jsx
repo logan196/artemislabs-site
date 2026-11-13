@@ -21,7 +21,7 @@ export default function ToolsGrid() {
     <section className="relative bg-ink-2/60 border-y border-line">
       <div className="px-6 md:px-14 py-20 md:py-28 max-w-7xl mx-auto">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">08 · THE STACK</p>
+          <p className="font-mono text-sm text-violet mb-4">10 · THE STACK</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             Eight capabilities, one stack.
           </h2>

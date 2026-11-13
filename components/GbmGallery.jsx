@@ -111,20 +111,36 @@ export default function GbmGallery() {
         <div className="rounded-3xl border border-line bg-panel/60 p-5 md:p-8">
           <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
             <a
+              href="live/explore/index.html"
+              target="_blank"
+              rel="noreferrer"
+              className="order-last w-full sm:w-auto sm:order-none rounded-[3px] bg-violet-deep text-ink px-5 py-2 text-[15px] font-medium hover:bg-violet transition-colors text-center"
+            >
+              Artemis Explore — H&amp;E × markers × cell states, live →
+            </a>
+            <a
               href="live/GBM3/portal.html"
               target="_blank"
               rel="noreferrer"
               className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
             >
-              GBM3 portal, live →
+              GBM3 portal →
             </a>
             <a
               href="live/brain/index.html"
               target="_blank"
               rel="noreferrer"
-              className="order-last w-full sm:w-auto sm:order-none rounded-[3px] bg-violet-deep text-ink px-5 py-2 text-[15px] font-medium hover:bg-violet transition-colors text-center"
+              className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
             >
-              Artemis Brain — 3.9M-cell MERFISH atlas, live →
+              3.9M-cell brain atlas →
+            </a>
+            <a
+              href="live/seqfish/portal.html"
+              target="_blank"
+              rel="noreferrer"
+              className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
+            >
+              seqFISH+ cortex →
             </a>
             <div className="flex gap-2 flex-wrap">
               {VIEWS.map((v) => (

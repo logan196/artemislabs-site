@@ -23,15 +23,16 @@ export default function CopilotSection() {
     <section id="copilot" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">07 · COPILOT</p>
+          <p className="font-mono text-sm text-violet mb-4">08 · YOUR CO-SCIENTIST</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            An analyst inside every portal.
+            Text us like your core.
           </h2>
           <p className="mt-6 text-lg text-dim leading-relaxed max-w-xl">
-            Every portal ships with a research copilot grounded in your dataset — clusters,
-            markers, spatial statistics. Run it on a frontier cloud model, or flip the
-            model dropdown to a local open-source model through Ollama and keep the entire
-            loop on your own hardware: no API keys, no cloud, no PHI exposure.
+            A dedicated co-scientist rides inside <span className="text-snow">every portal
+            we ship</span> — grounded in your clusters, markers and spatial statistics,
+            answering the way a good core facility does, minus the three-week queue. Run it
+            on a frontier cloud model, or flip the dropdown to a local open-source model
+            through Ollama: no API keys, no cloud, no PHI exposure.
           </p>
           <div className="mt-8 flex gap-3 flex-wrap font-mono text-[13px] text-dim">
             <span>local mode: zero egress</span>
@@ -40,6 +41,24 @@ export default function CopilotSection() {
             <span aria-hidden>·</span>
             <span>grounded in your zarr</span>
           </div>
+          <div className="mt-8 grid grid-cols-3 gap-3">
+            {[
+              ["demo/poster.png", "GBM3 · Visium portal", "live/GBM3/portal.html"],
+              ["portal_brain.jpg", "whole-brain MERFISH atlas", "live/brain/index.html"],
+              ["seqfish_card.jpg", "seqFISH+ cortex portal", "live/seqfish/portal.html"],
+            ].map(([src, label, href]) => (
+              <a key={src} href={href} target="_blank" rel="noreferrer" className="group block">
+                <span className="block overflow-hidden rounded-[4px] border border-line bg-ink aspect-[4/3]">
+                  <img src={src} alt={label} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+                </span>
+                <span className="mt-1.5 block font-mono text-[11px] text-dim group-hover:text-violet transition-colors">{label} →</span>
+              </a>
+            ))}
+          </div>
+          <p className="mt-3 text-[13px] text-dim leading-relaxed max-w-xl">
+            Three live portals, one co-scientist. The same rail ships with every assay we
+            support — the genomics browser below is where CUT&amp;RUN and long reads land.
+          </p>
         </Reveal>
 
         <Stagger className="rounded-3xl border border-line bg-panel/70 p-6 md:p-8 space-y-4 glow-ring">

@@ -154,7 +154,7 @@ export default function BanksySection() {
     <section id="banksy" ref={wrapRef} className="relative h-[180vh] md:h-[240vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         <div className="px-6 md:px-14 pt-16 md:pt-20 max-w-7xl mx-auto w-full">
-          <p className="font-mono text-sm text-violet mb-3">02 · BANKSY</p>
+          <p className="font-mono text-sm text-violet mb-3">01 · BANKSY — A GBM USE CASE</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Clustering that <span className="text-violet">sees the tissue.</span>
           </h2>
@@ -164,17 +164,19 @@ export default function BanksySection() {
           {/* persistent card; only the text crossfades, so the backdrop never ghosts */}
           <div className="absolute bottom-8 left-6 md:left-10 w-[26rem] max-w-[85vw] min-h-[7.6rem] rounded-[4px] bg-panel/95 border border-line shadow-sm p-4">
             <motion.p style={{ opacity: cap1 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
-              Standard clustering sees each spot alone — expression without place. The
-              tissue dissolves into noise.
+              A glioblastoma section. GFAP lights up{" "}
+              <span className="text-snow">reactive astrocytes and astrocyte-like tumor
+              states alike</span> — spot-by-spot clustering reads them as one blur.
             </motion.p>
             <motion.p style={{ opacity: cap2 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
               BANKSY embeds every spot <span className="text-snow">with its neighborhood</span> —
-              mean expression and an azimuthal gradient over the k-nearest ring.
+              mean expression plus an azimuthal gradient over the k-nearest ring. Place
+              becomes part of identity.
             </motion.p>
-            <motion.p style={{ opacity: cap3 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
-              Domains emerge that follow the anatomy — this is the{" "}
-              <span className="text-snow">real GBM1 section</span>, 4,764 spots, states
-              model-annotated by the pipeline.
+            <motion.p style={{ opacity: cap3 }} className="absolute inset-4 text-dim text-[17px] leading-relaxed">
+              Now they separate: <span className="text-snow">putative astrocytes apart from
+              NPC- and MES-like tumor states</span>, each domain annotated by its own
+              parallel subagent. Real GBM1 section, 4,764 spots; labels model-annotated.
             </motion.p>
           </div>
         </div>
