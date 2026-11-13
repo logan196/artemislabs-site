@@ -1,54 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GBM3 · Artemis BioLabs live demo</title>
-  <style>
-    html, body, #root { margin: 0; padding: 0; width: 100%; height: 100%; background: #fff; }
-    #loading { font-family: -apple-system, system-ui, sans-serif; padding: 24px; color: #444; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GBM Spatial Atlas · Artemis BioLabs</title>
+<style>
+  :root {
+    --bg: #0b0b0d;
+    --panel: #141417;
+    --panel-2: #18181c;
+    --line: #26262c;
+    --line-soft: #1e1e24;
+    --text: #e8e8ec;
+    --muted: #8b8b95;
+    --faint: #5c5c66;
+    --accent: #35b5ac;
+    --accent-dim: #1f6f78;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 13px; overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  #app { height: 100%; display: flex; flex-direction: column; }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 14px; height: 52px; flex: none;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; flex: none; }
+  .lockup { height: 26px; filter: invert(1) hue-rotate(180deg) saturate(0.9); }
+  .divider { width: 1px; height: 24px; background: var(--line); flex: none; }
+  .appinfo { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+  .app-id { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; white-space: nowrap; }
+  .app-sub { font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .live-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); margin-right: 5px; vertical-align: 1px;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  /* ---------- dataset tabs ---------- */
+  .tabs {
+    display: flex; align-items: stretch; gap: 2px; position: relative;
+    padding: 0 10px; flex: none; background: var(--panel);
+    border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    appearance: none; border: 0; background: transparent; cursor: pointer;
+    text-align: left; padding: 9px 14px 11px; min-width: 148px;
+    color: var(--muted); border-radius: 8px 8px 0 0; position: relative;
+    transition: background .18s ease, color .18s ease;
+  }
+  .tab:hover { background: var(--panel-2); color: var(--text); }
+  .tab.active { color: var(--text); background: var(--panel-2); }
+  .tab:focus-visible { outline: 1px solid var(--accent-dim); outline-offset: -1px; }
+  .tab-name { font: 600 12.5px var(--mono); letter-spacing: .03em; display: block; }
+  .tab-dx { font-size: 10.5px; color: var(--muted); display: block; margin-top: 2px; white-space: nowrap; }
+  .tab-stats { font: 10px var(--mono); color: var(--faint); display: block; margin-top: 3px; white-space: nowrap; }
+  .tab.active .tab-dx { color: #b9b9c2; }
+  .tab.active .tab-stats { color: var(--accent); }
+  .ink {
+    position: absolute; bottom: 0; left: 0; height: 2px; width: 100px;
+    background: var(--accent); border-radius: 1px;
+    transform-origin: 0 0; transform: translateX(0) scaleX(0);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+  }
+
+  /* ---------- stage ---------- */
+  .stage { flex: 1; position: relative; min-height: 0; background: #000; }
+  .stage iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+    background: var(--bg); opacity: 0; visibility: hidden;
+    transition: opacity .3s ease, visibility 0s linear .3s;
+    pointer-events: none;
+  }
+  .stage iframe.active {
+    opacity: 1; visibility: visible; transition: opacity .3s ease;
+    pointer-events: auto;
+  }
+  .pane-loading {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    pointer-events: none; opacity: 0; transition: opacity .25s ease; z-index: 3;
+  }
+  .pane-loading.show { opacity: 1; }
+  .pane-loading .inner {
+    display: flex; align-items: center; gap: 10px;
+    font: 12px var(--mono); color: var(--muted);
+    background: rgba(10,10,12,.7); border: 1px solid var(--line);
+    padding: 10px 16px; border-radius: 8px; backdrop-filter: blur(3px);
+  }
+  .spinner {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--line); border-top-color: var(--accent);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- status bar ---------- */
+  .statusbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    height: 30px; padding: 0 14px; flex: none;
+    background: var(--panel); border-top: 1px solid var(--line);
+    font: 10.5px var(--mono); color: var(--faint);
+    white-space: nowrap; overflow: hidden;
+  }
+  .statusbar .cite { overflow: hidden; text-overflow: ellipsis; }
+  .statusbar .active-stats { flex: none; color: var(--muted); }
+  .statusbar .active-stats b { color: var(--accent); font-weight: 600; }
+
+  /* ---------- entry overlay ---------- */
+  #entry {
+    position: fixed; inset: 0; z-index: 50;
+    background: radial-gradient(1200px 700px at 50% 38%, #101014 0%, var(--bg) 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 26px; cursor: pointer;
+    transition: transform .6s cubic-bezier(.65,0,.35,1), opacity .6s ease;
+    will-change: transform, opacity;
+  }
+  #entry.lift { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+  #entry .mark {
+    width: 92px; height: 92px; opacity: 0;
+    transform: scale(.82); will-change: transform, opacity;
+    animation: markIn .7s cubic-bezier(.2,.7,.3,1) .05s forwards;
+  }
+  @keyframes markIn { to { opacity: 1; transform: scale(1); } }
+  #entry .typed {
+    font: 12.5px var(--mono); color: var(--muted); letter-spacing: .04em;
+    min-height: 17px; text-align: center; padding: 0 20px;
+  }
+  #entry .typed .caret {
+    display: inline-block; width: 7px; height: 13px; margin-left: 2px;
+    background: var(--accent); vertical-align: -2px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  #entry .skip {
+    position: absolute; bottom: 22px; font: 10.5px var(--mono);
+    color: var(--faint); letter-spacing: .08em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #entry { display: none; }
+    .tabs .ink, .stage iframe, .tab { transition: none; }
+    .live-dot { animation: none; }
+  }
+</style>
 </head>
 <body>
-  <div id="root"><div id="loading">Loading spatial portal&hellip; (serve this folder over HTTP)</div></div>
-  <script type="module">
-    let importWithMap;
-    try {
-      importWithMap = (await import('https://unpkg.com/dynamic-importmap@0.1.0')).importWithMap;
-    } catch (e) {
-      importWithMap = (await import('https://cdn.vitessce.io/dynamic-importmap@0.1.0/dist/index.js')).importWithMap;
-    }
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <img class="lockup" src="../../artemis_lockup.svg" alt="Artemis BioLabs" />
+      <div class="divider"></div>
+      <div class="appinfo">
+        <span class="app-id"><span class="live-dot"></span>GBM SPATIAL ATLAS</span>
+        <span class="app-sub">5 glioma Visium sections · BANKSY domains + putative cell states</span>
+      </div>
+    </div>
+  </header>
 
-    const importMap = {
-      imports: {
-        "react": "https://esm.sh/react@18.2.0",
-        "react-dom": "https://esm.sh/react-dom@18.2.0",
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-        "vitessce": "https://cdn.vitessce.io/vitessce@3.9.11/dist/index.min.js"
-      }
-    };
+  <nav class="tabs" id="tabs" aria-label="Datasets"></nav>
 
-    const React = await importWithMap("react", importMap);
-    const { createRoot } = await importWithMap("react-dom/client", importMap);
-    const { Vitessce } = await importWithMap("vitessce", importMap);
+  <main class="stage" id="stage">
+    <div class="pane-loading" id="paneLoading">
+      <div class="inner"><div class="spinner"></div><span id="paneLoadingText">mounting viewer…</span></div>
+    </div>
+  </main>
 
-    const config = {"version": "1.0.16", "name": "GBM3 \u00b7 Artemis BioLabs live demo", "description": "BANKSY domains + putative cell states on a public GBM Visium section", "datasets": [{"uid": "A", "name": "GBM3", "files": [{"fileType": "anndata.zarr", "url": "./data.zarr", "options": {"obsLocations": {"path": "obsm/spatial"}, "obsEmbedding": [{"path": "obsm/spatial", "dims": [0, 1], "embeddingType": "Spatial"}], "obsSets": [{"name": "Putative cell state", "path": "obs/putative_cell_type"}, {"name": "BANKSY domain", "path": "obs/banksy_cluster"}], "obsFeatureMatrix": {"path": "X", "initialFeatureFilterPath": "var/top_marker"}}, "coordinationValues": {"obsType": "cell"}}]}], "coordinationSpace": {"dataset": {"A": "A"}, "embeddingType": {"A": "Spatial"}, "obsSetSelection": {"A": null}, "obsColorEncoding": {"A": "cellSetSelection"}}, "layout": [{"component": "scatterplot", "coordinationScopes": {"dataset": "A", "embeddingType": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 0, "y": 0, "w": 12, "h": 6}, {"component": "obsSets", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 0, "y": 6, "w": 3, "h": 6}, {"component": "featureList", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 3, "y": 6, "w": 3, "h": 6}, {"component": "heatmap", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 6, "y": 6, "w": 6, "h": 6}], "initStrategy": "auto", "vitessceMetadata": {"lab_name": "Artemis BioLabs", "portal_title": "GBM3 live demo", "has_spatial_coordinates": true, "spatial_coordinate_origin": "measured", "has_measured_spatial_coordinates": true}};
+  <footer class="statusbar">
+    <span class="cite">Ren et al., Nat Commun 2023 (GSE194329) · 10x Genomics Parent Visium · labels model-annotated, not independently validated</span>
+    <span class="active-stats" id="activeStats"></span>
+  </footer>
+</div>
 
-    // Vitessce's zarr loader calls `new URL(url)`, which rejects relative
-    // strings. Resolve each data file URL against this page's location so the
-    // portal works from whatever host/port serves the folder.
-    for (const ds of (config.datasets || [])) {
-      for (const f of (ds.files || [])) {
-        if (f.url && !/^https?:\/\//.test(f.url)) {
-          f.url = new URL(f.url, window.location.href).href;
-        }
-      }
-    }
+<div id="entry" role="button" aria-label="Skip intro" tabindex="0">
+  <img class="mark" src="../../artemis_mark.svg" alt="" />
+  <div class="typed"><span id="typedText"></span><span class="caret"></span></div>
+  <div class="skip">click to skip</div>
+</div>
 
-    const e = React.createElement;
-    createRoot(document.getElementById('root')).render(
-      e(Vitessce, { config, theme: 'light', height: window.innerHeight })
-    );
-  </script>
+<script>
+(function () {
+  "use strict";
+
+  var DATASETS = [
+    { id: "GBM1",     name: "GBM1",      dx: "Astrocytoma · IDH-mut",      src: "../GBM1/",     },
+    { id: "GBM2",     name: "GBM2",      dx: "GBM · IDH-wt · recurrent",   src: "../GBM2/",     },
+    { id: "GBM3",     name: "GBM3",      dx: "GBM · IDH-wt · primary",     src: "./",           },
+    { id: "GBM4",     name: "GBM4",      dx: "Astrocytoma · IDH-mut",      src: "../GBM4/",     },
+    { id: "TenX_GBM", name: "10x Parent", dx: "GBM · 10x Genomics Visium", src: "../TenX_GBM/", }
+  ];
+  var DEFAULT_ID = "GBM3";
+
+  var tabsEl = document.getElementById("tabs");
+  var stageEl = document.getElementById("stage");
+  var paneLoading = document.getElementById("paneLoading");
+  var paneLoadingText = document.getElementById("paneLoadingText");
+  var activeStats = document.getElementById("activeStats");
+  var frames = {};   // id -> {iframe, loaded}
+  var stats = {};    // id -> stats.json payload
+  var activeId = null;
+
+  /* ---------- tabs ---------- */
+  var ink = document.createElement("div");
+  ink.className = "ink";
+  DATASETS.forEach(function (d) {
+    var b = document.createElement("button");
+    b.className = "tab"; b.type = "button";
+    b.setAttribute("data-id", d.id);
+    b.setAttribute("role", "tab");
+    b.innerHTML =
+      '<span class="tab-name">' + d.name + '</span>' +
+      '<span class="tab-dx">' + d.dx + '</span>' +
+      '<span class="tab-stats" data-stats="' + d.id + '">—</span>';
+    b.addEventListener("click", function () { activate(d.id); });
+    tabsEl.appendChild(b);
+    d.tabEl = b;
+  });
+  tabsEl.appendChild(ink);
+
+  function moveInk(tabEl) {
+    var r = tabEl.getBoundingClientRect();
+    var pr = tabsEl.getBoundingClientRect();
+    var x = r.left - pr.left + tabsEl.scrollLeft;
+    ink.style.transform = "translateX(" + x + "px) scaleX(" + (r.width / 100) + ")";
+  }
+  window.addEventListener("resize", function () {
+    var d = byId(activeId); if (d) moveInk(d.tabEl);
+  });
+
+  function byId(id) {
+    for (var i = 0; i < DATASETS.length; i++) if (DATASETS[i].id === id) return DATASETS[i];
+    return null;
+  }
+  function fmt(n) { return n == null ? "—" : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+
+  /* ---------- real per-dataset stats (read from each export) ---------- */
+  DATASETS.forEach(function (d) {
+    fetch(d.src + "stats.json").then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (s) {
+        if (!s) return;
+        stats[d.id] = s;
+        var el = tabsEl.querySelector('[data-stats="' + d.id + '"]');
+        if (el) el.textContent = fmt(s.spots) + " spots · " + s.domains + " domains";
+        if (d.id === activeId) renderActiveStats(d.id);
+      }).catch(function () {});
+  });
+
+  function renderActiveStats(id) {
+    var s = stats[id], d = byId(id);
+    if (!d) return;
+    activeStats.innerHTML = s
+      ? d.name + " · <b>" + fmt(s.spots) + "</b> spots · <b>" + s.domains + "</b> BANKSY domains · " + fmt(s.genes) + " genes"
+      : d.name;
+  }
+
+  /* ---------- iframe lifecycle (lazy mount, keep-alive, 300ms crossfade) ---------- */
+  function ensureFrame(d) {
+    if (frames[d.id]) return frames[d.id];
+    var f = document.createElement("iframe");
+    f.src = d.src + "index.html";
+    f.title = d.name + " Vitessce viewer";
+    f.setAttribute("loading", "eager");
+    var rec = { iframe: f, loaded: false };
+    f.addEventListener("load", function () {
+      rec.loaded = true;
+      if (activeId === d.id) hidePaneLoading();
+    });
+    frames[d.id] = rec;
+    stageEl.appendChild(f);
+    return rec;
+  }
+  function showPaneLoading(name) {
+    paneLoadingText.textContent = "mounting " + name + " …";
+    paneLoading.classList.add("show");
+  }
+  function hidePaneLoading() {
+    setTimeout(function () { paneLoading.classList.remove("show"); }, 350);
+  }
+
+  function activate(id) {
+    if (id === activeId) return;
+    var d = byId(id); if (!d) return;
+    activeId = id;
+
+    DATASETS.forEach(function (x) {
+      x.tabEl.classList.toggle("active", x.id === id);
+      x.tabEl.setAttribute("aria-selected", x.id === id ? "true" : "false");
+    });
+    moveInk(d.tabEl);
+
+    var rec = ensureFrame(d);
+    for (var k in frames) frames[k].iframe.classList.toggle("active", k === id);
+    if (!rec.loaded) showPaneLoading(d.name); else paneLoading.classList.remove("show");
+
+    renderActiveStats(id);
+    try { history.replaceState(null, "", "#" + id); } catch (e) {}
+  }
+
+  /* arrow-key tab navigation */
+  tabsEl.addEventListener("keydown", function (ev) {
+    if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+    var i = DATASETS.findIndex(function (d) { return d.id === activeId; });
+    var j = (i + (ev.key === "ArrowRight" ? 1 : -1) + DATASETS.length) % DATASETS.length;
+    DATASETS[j].tabEl.focus();
+    activate(DATASETS[j].id);
+    ev.preventDefault();
+  });
+
+  /* ---------- entry overlay ---------- */
+  var entry = document.getElementById("entry");
+  var typedEl = document.getElementById("typedText");
+  var LINE = "loading GBM atlas · 5 sections · GSE194329 + 10x";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var dismissed = false, typeTimer = null, liftTimer = null;
+
+  function dismissEntry(fast) {
+    if (dismissed) return;
+    dismissed = true;
+    clearTimeout(typeTimer); clearTimeout(liftTimer);
+    if (reduced || !entry.style) { entry.remove(); return; }
+    if (fast) entry.style.transitionDuration = ".3s, .3s";
+    entry.classList.add("lift");
+    entry.addEventListener("transitionend", function () { entry.remove(); }, { once: true });
+    setTimeout(function () { if (entry.parentNode) entry.remove(); }, 900);
+  }
+
+  if (reduced) {
+    entry.remove();
+  } else {
+    var i = 0;
+    (function type() {
+      typedEl.textContent = LINE.slice(0, i);
+      if (i++ <= LINE.length) { typeTimer = setTimeout(type, 26); }
+      else { liftTimer = setTimeout(function () { dismissEntry(false); }, 380); }
+    })();
+    entry.addEventListener("click", function () { dismissEntry(true); });
+    window.addEventListener("keydown", function onKey(ev) {
+      if (dismissed) { window.removeEventListener("keydown", onKey); return; }
+      if (ev.key === "Escape" || ev.key === "Enter" || ev.key === " ") dismissEntry(true);
+    });
+  }
+
+  /* ---------- boot ---------- */
+  var startId = (location.hash || "").replace("#", "");
+  if (!byId(startId)) startId = DEFAULT_ID;
+  activate(startId);
+  /* position ink once fonts settle */
+  requestAnimationFrame(function () { var d = byId(activeId); if (d) moveInk(d.tabEl); });
+})();
+</script>
 </body>
 </html>

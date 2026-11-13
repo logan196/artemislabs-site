@@ -6,8 +6,52 @@ import Reveal from "./Reveal";
 // Sequential teal ramp for marker expression — one hue, light→dark, on cream.
 const RAMP_LO = [217, 232, 228]; // barely-teal paper
 const RAMP_HI = [11, 63, 58]; // deep teal ink
+const INK = [28, 26, 21]; // body ink (--color-snow) — "no color yet" spots
 
 const TWEEN_MS = 700;
+
+// ——— the story ———————————————————————————————————————————————————————
+// A scripted autoplay loop that teaches cell typing + gene-expression gating.
+// Beats are driven off one rAF clock; captions are fixed copy (audited — do
+// not reword numbers). Any click pauses; the button replays.
+const GATE_MAX = 0.45; // settle point of the EGFR threshold sweep (log-norm)
+const GATE_SWEEP_FRAC = 0.62; // fraction of the gating beat spent sweeping up
+
+const BEATS = [
+  {
+    dur: 4200, // TISSUE — spatial coords, all spots ink
+    caption: "1,775 spots, exactly where they sat in the tumor.",
+  },
+  {
+    dur: 4600, // GENE ON — color by EGFR
+    caption:
+      "Each spot measured ~36,601 genes. Here's one — EGFR, an RTK amplified in many GBMs.",
+  },
+  {
+    dur: 6200, // GATING — threshold sweep, dim below cutoff
+    caption:
+      "Gating: keep what's above threshold. This is how flow cytometrists have typed cells for decades — one gene at a time.",
+  },
+  {
+    dur: 4800, // MANY GENES — domain labels, still in tissue space
+    caption:
+      "Clustering does this with all genes at once — spots with similar whole-transcriptome profiles get one label.",
+  },
+  {
+    dur: 5200, // FOLD — tween to the 0.1·1.0 UMAP
+    caption:
+      "UMAP folds those thousands of dimensions into two. Neighbors stay neighbors; distances lie.",
+  },
+  {
+    dur: 4200, // INTERROGATE — hop through the other parameterizations
+    caption:
+      "Same data, same graph, different dials — if a conclusion survives every view, it's probably real.",
+  },
+  {
+    dur: 3400, // END — hand over the controls
+    caption: "Now you drive.",
+  },
+];
 
 function hexToRgb(hex) {
   return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
@@ -26,10 +70,25 @@ export default function UmapExplorer() {
   const [focus, setFocus] = useState(null); // domain index or null
   const [tip, setTip] = useState(null); // {x, y, i}
 
+  // Story state. React state drives chrome (button label, caption strip,
+  // legend fade); the per-frame clock lives in refs so nothing re-renders
+  // at 60fps.
+  const [story, setStory] = useState("idle"); // idle | playing | paused | done
+  const [beatIdx, setBeatIdx] = useState(0);
+  const [ctrlGlow, setCtrlGlow] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const storyRef = useRef({ raf: 0, t0: 0, beat: 0, hop: 0, playing: false, playedOnce: false });
+  const fx = useRef({ ink: false, gate: null }); // story overlays read by draw()
+  const capRef = useRef(null); // typewriter target
+
   // Mutable animation state lives outside React.
   const anim = useRef({ pos: null, from: null, to: null, t0: 0, running: false, raf: 0 });
   const view = useRef({ colorBy: "domain", focus: null, tip: null });
   view.current = { colorBy, focus, tip, setting: active };
+
+  useEffect(() => {
+    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -69,6 +128,7 @@ export default function UmapExplorer() {
     ctx.clearRect(0, 0, w, h);
 
     const { colorBy: cb, focus: fo, tip: tp } = view.current;
+    const { ink, gate } = fx.current;
     const pad = 18;
     const sw = w - pad * 2;
     const sh = h - pad * 2;
@@ -82,12 +142,15 @@ export default function UmapExplorer() {
       vals = data.markers[cb];
       vmax = (data._max && data._max[cb]) || 1;
     }
+    const gateVals = gate ? data.markers[gate.marker] : null;
 
     for (let i = 0; i < n; i++) {
       const x = pad + a.pos[i * 2] * sw;
       const y = pad + (1 - a.pos[i * 2 + 1]) * sh; // UMAP y points up
       let rgb;
-      if (cb === "domain") {
+      if (ink) {
+        rgb = INK; // story beat 1: no colors yet — just positions
+      } else if (cb === "domain") {
         rgb = pal[labels[i]];
       } else {
         const t = vals[i] / vmax;
@@ -98,7 +161,8 @@ export default function UmapExplorer() {
         ];
       }
       const dimmed = fo !== null && labels[i] !== fo;
-      const alpha = dimmed ? 0.08 : 0.85;
+      let alpha = dimmed ? 0.08 : 0.85;
+      if (gateVals) alpha = gateVals[i] >= gate.cutoff ? 0.9 : 0.06; // the gate
       ctx.beginPath();
       ctx.arc(x, y, 2.2, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${rgb[0] | 0},${rgb[1] | 0},${rgb[2] | 0},${alpha})`;
@@ -123,6 +187,15 @@ export default function UmapExplorer() {
     ctx.fillStyle = "rgba(95,91,80,0.9)";
     const st = data.settings[view.current.setting] || data.settings[0];
     ctx.fillText(st.id === "tissue" ? "tissue coordinates — no embedding" : `min_dist=${st.min_dist}  spread=${st.spread}`, pad, h - 6);
+
+    // Live gate readout (story beat 3) — the moving cutoff, in mono.
+    if (gate) {
+      ctx.font = "600 13px 'JetBrains Mono', ui-monospace, monospace";
+      ctx.fillStyle = "rgba(17,94,89,0.95)";
+      ctx.textAlign = "right";
+      ctx.fillText(`gate: ${gate.marker} ≥ ${gate.cutoff.toFixed(2)}`, w - pad, pad + 8);
+      ctx.textAlign = "left";
+    }
   }, [data]);
 
   // Redraw on any view-state change (no tween needed).
@@ -178,7 +251,174 @@ export default function UmapExplorer() {
     [data, draw]
   );
 
-  useEffect(() => () => cancelAnimationFrame(anim.current.raf), []);
+  // Latest goTo, reachable from the story clock without re-subscribing.
+  const goToRef = useRef(goTo);
+  goToRef.current = goTo;
+
+  // ——— story engine: one rAF clock drives every beat ————————————————————
+  const enterBeat = useCallback((bi) => {
+    const go = goToRef.current;
+    switch (bi) {
+      case 0: // TISSUE — spatial coords, everything ink
+        fx.current.ink = true;
+        fx.current.gate = null;
+        setColorBy("domain");
+        setFocus(null);
+        setTip(null);
+        go(0);
+        break;
+      case 1: // GENE ON — EGFR ramp
+        fx.current.ink = false;
+        setColorBy("EGFR");
+        break;
+      case 2: // GATING — threshold sweep starts at 0
+        fx.current.gate = { marker: "EGFR", cutoff: 0 };
+        break;
+      case 3: // MANY GENES — drop the gate, label every spot
+        fx.current.gate = null;
+        setColorBy("domain");
+        break;
+      case 4: // FOLD — tissue → 0.1·1.0 UMAP
+        go(2);
+        break;
+      case 5: // INTERROGATE — hop the other parameterizations
+        storyRef.current.hop = 0;
+        go(3);
+        break;
+      case 6: // END — settle on 0.1·1.0, hand over the dials
+        go(2);
+        setCtrlGlow(true);
+        break;
+    }
+  }, []);
+
+  const finishStory = useCallback(() => {
+    const s = storyRef.current;
+    s.playing = false;
+    cancelAnimationFrame(s.raf);
+    fx.current.ink = false;
+    fx.current.gate = null;
+    setCtrlGlow(false);
+    setStory("done");
+    if (capRef.current) capRef.current.textContent = BEATS[BEATS.length - 1].caption;
+  }, []);
+
+  const tick = useCallback(
+    (now) => {
+      const s = storyRef.current;
+      if (!s.playing) return;
+      let t = now - s.t0;
+      if (t >= BEATS[s.beat].dur) {
+        if (s.beat >= BEATS.length - 1) {
+          finishStory();
+          return;
+        }
+        s.beat += 1;
+        s.t0 = now;
+        t = 0;
+        setBeatIdx(s.beat);
+        enterBeat(s.beat);
+      }
+      const beat = BEATS[s.beat];
+
+      // Typewriter: caption fills over the first ~45% of the beat.
+      if (capRef.current) {
+        const cap = beat.caption;
+        const chars = Math.min(cap.length, Math.ceil((t / (beat.dur * 0.45)) * cap.length));
+        capRef.current.textContent = cap.slice(0, chars);
+      }
+
+      // Beat 3 (index 2): sweep the EGFR cutoff up, then hold it high.
+      if (s.beat === 2 && fx.current.gate) {
+        const p = Math.min(1, t / (beat.dur * GATE_SWEEP_FRAC));
+        fx.current.gate.cutoff = easeInOut(p) * GATE_MAX;
+        draw();
+      }
+
+      // Beat 6 (index 5): hop through the remaining parameterizations.
+      if (s.beat === 5) {
+        if (t > 1300 && s.hop < 1) {
+          s.hop = 1;
+          goToRef.current(4);
+        } else if (t > 2600 && s.hop < 2) {
+          s.hop = 2;
+          goToRef.current(1);
+        }
+      }
+
+      s.raf = requestAnimationFrame(tick);
+    },
+    [draw, enterBeat, finishStory]
+  );
+
+  const startStory = useCallback(() => {
+    const s = storyRef.current;
+    cancelAnimationFrame(s.raf);
+    s.playedOnce = true;
+    s.beat = 0;
+    s.hop = 0;
+    s.playing = true;
+    s.t0 = performance.now();
+    setBeatIdx(0);
+    setCtrlGlow(false);
+    setStory("playing");
+    enterBeat(0);
+    s.raf = requestAnimationFrame(tick);
+  }, [enterBeat, tick]);
+
+  const pauseStory = useCallback(() => {
+    const s = storyRef.current;
+    if (!s.playing) return;
+    s.playing = false;
+    cancelAnimationFrame(s.raf);
+    // Hand the canvas back clean: no story overlays while paused.
+    fx.current.ink = false;
+    fx.current.gate = null;
+    setCtrlGlow(false);
+    setStory("paused");
+    if (capRef.current) capRef.current.textContent = BEATS[s.beat].caption;
+    if (!anim.current.running) draw();
+  }, [draw]);
+
+  const resumeStory = useCallback(() => {
+    const s = storyRef.current;
+    if (s.playing) return;
+    s.playing = true;
+    s.t0 = performance.now(); // beat restarts from its top — deterministic
+    setStory("playing");
+    enterBeat(s.beat);
+    s.raf = requestAnimationFrame(tick);
+  }, [enterBeat, tick]);
+
+  // Any real interaction pauses the show.
+  const userInterrupt = useCallback(() => {
+    if (storyRef.current.playing) pauseStory();
+  }, [pauseStory]);
+
+  // Autoplay ONCE when the figure first becomes ≥60% visible.
+  useEffect(() => {
+    if (!data || reduced) return;
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.intersectionRatio >= 0.6 && !storyRef.current.playedOnce) startStory();
+        }
+      },
+      { threshold: 0.6 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [data, reduced, startStory]);
+
+  useEffect(
+    () => () => {
+      cancelAnimationFrame(anim.current.raf);
+      cancelAnimationFrame(storyRef.current.raf);
+    },
+    []
+  );
 
   // Hover: nearest point within 14px, throttled to one lookup per frame.
   const hoverPending = useRef(false);
@@ -227,6 +467,14 @@ export default function UmapExplorer() {
   const markers = data ? Object.keys(data.markers) : [];
   const setting = data ? data.settings[active] : null;
 
+  const playLabel =
+    story === "playing" ? "⏸ pause" : story === "paused" ? "▶ resume" : story === "done" ? "↺ replay" : "▶ play the story";
+  const onPlayClick = () => {
+    if (story === "playing") pauseStory();
+    else if (story === "paused") resumeStory();
+    else startStory();
+  };
+
   return (
     <section id="umap-interrogated" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
@@ -245,9 +493,26 @@ export default function UmapExplorer() {
       </Reveal>
 
       <Reveal className="mt-10">
-        <div className="rounded-[4px] border border-line bg-panel p-4 md:p-6">
+        <div
+          className="rounded-[4px] border border-line bg-panel p-4 md:p-6"
+          data-story-state={story}
+          data-story-beat={beatIdx}
+        >
           {/* controls row */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div
+            className={`flex flex-wrap items-center gap-2 rounded-[3px] transition-shadow duration-500 ${
+              ctrlGlow ? "ring-2 ring-violet ring-offset-2 ring-offset-panel" : ""
+            }`}
+          >
+            {!reduced && (
+              <button
+                onClick={onPlayClick}
+                className="font-mono text-[12px] px-3 py-1.5 rounded-[3px] border border-violet-deep bg-violet-deep text-ink cursor-pointer transition-opacity hover:opacity-85 mr-2"
+                data-story-play
+              >
+                {playLabel}
+              </button>
+            )}
             <span className="font-mono text-[11px] tracking-[0.2em] text-dim uppercase mr-1">
               space
             </span>
@@ -255,7 +520,10 @@ export default function UmapExplorer() {
               data.settings.map((s, i) => (
                 <button
                   key={s.id}
-                  onClick={() => goTo(i)}
+                  onClick={() => {
+                    userInterrupt();
+                    goTo(i);
+                  }}
                   className={`font-mono text-[12px] px-3 py-1.5 rounded-[3px] border transition-colors cursor-pointer ${
                     i === active
                       ? "bg-violet-deep text-ink border-violet-deep"
@@ -272,7 +540,10 @@ export default function UmapExplorer() {
             {["domain", ...markers].map((m) => (
               <button
                 key={m}
-                onClick={() => setColorBy(m)}
+                onClick={() => {
+                  userInterrupt();
+                  setColorBy(m);
+                }}
                 className={`font-mono text-[12px] px-3 py-1.5 rounded-[3px] border transition-colors cursor-pointer ${
                   m === colorBy
                     ? "bg-violet-deep text-ink border-violet-deep"
@@ -291,6 +562,7 @@ export default function UmapExplorer() {
               className="absolute inset-0 w-full h-full cursor-crosshair"
               onMouseMove={onMove}
               onMouseLeave={() => setTip(null)}
+              onPointerDown={userInterrupt}
             />
             {!data && (
               <p className="absolute inset-0 flex items-center justify-center font-mono text-sm text-dim">
@@ -317,13 +589,52 @@ export default function UmapExplorer() {
             )}
           </div>
 
-          {/* domain legend — click to isolate */}
+          {/* narration strip — fixed under the canvas while the story runs */}
+          {!reduced && story !== "idle" && (
+            <div
+              className="mt-4 rounded-[3px] border border-line bg-panel px-4 py-3"
+              data-story-caption
+            >
+              <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-violet mb-1">
+                story · {beatIdx + 1}/{BEATS.length}
+                {story === "paused" && " · paused"}
+              </p>
+              <p ref={capRef} className="text-[14px] text-snow leading-relaxed min-h-[1.5em]">
+                {story === "playing" ? "" : BEATS[beatIdx].caption}
+              </p>
+            </div>
+          )}
+
+          {/* reduced motion: the captions carry the teaching — list them */}
+          {reduced && (
+            <div className="mt-4 rounded-[3px] border border-line bg-panel px-4 py-3">
+              <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-violet mb-2">
+                the story, step by step
+              </p>
+              <ol className="list-decimal list-inside space-y-1">
+                {BEATS.map((b) => (
+                  <li key={b.caption} className="text-[14px] text-snow leading-relaxed">
+                    {b.caption}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {/* domain legend — click to isolate; the story reveals it at beat 4 */}
           {data && (
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div
+              className={`mt-4 flex flex-wrap gap-2 transition-opacity duration-700 ${
+                story === "playing" && beatIdx < 3 ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
+            >
               {data.domains.map((d, i) => (
                 <button
                   key={d}
-                  onClick={() => setFocus(focus === i ? null : i)}
+                  onClick={() => {
+                    userInterrupt();
+                    setFocus(focus === i ? null : i);
+                  }}
                   className={`flex items-center gap-2 font-mono text-[11.5px] px-2.5 py-1 rounded-[3px] border transition-opacity cursor-pointer ${
                     focus === null || focus === i
                       ? "border-line text-snow opacity-100"

@@ -43,15 +43,24 @@ export default function CopilotSection() {
           </div>
           <div className="mt-8 grid grid-cols-3 gap-3">
             {[
-              ["demo/poster.png", "GBM3 · Visium portal", "live/GBM3/portal.html"],
-              ["portal_brain.jpg", "whole-mouse-brain MERFISH atlas", "live/brain/index.html"],
-              ["seqfish_card.jpg", "seqFISH+ mouse cortex portal", "live/seqfish/portal.html"],
+              ["demo/poster.png", "GBM atlas", "live/GBM3/portal.html"],
+              ["portal_brain.jpg", "mouse brain · 3.9M cells", "live/brain/index.html"],
+              ["seqfish_card.jpg", "seqFISH+ cortex", "live/seqfish/portal.html"],
             ].map(([src, label, href]) => (
               <a key={src} href={href} target="_blank" rel="noreferrer" className="group block">
-                <span className="block overflow-hidden rounded-[4px] border border-line bg-ink aspect-[4/3]">
-                  <img src={src} alt={label} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+                {/* mock app-window chrome so dark screenshots read as deliberate */}
+                <span className="block overflow-hidden rounded-[5px] border border-snow/50 shadow-[0_10px_30px_-16px_rgba(28,26,21,0.5)] group-hover:shadow-[0_14px_36px_-14px_rgba(17,94,89,0.45)] transition-shadow">
+                  <span className="flex items-center gap-1 bg-ink px-2.5 py-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-snow/30" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-snow/30" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-snow/30" />
+                    <span className="ml-1.5 font-mono text-[9px] text-ground/70 truncate">{label}</span>
+                  </span>
+                  <span className="block overflow-hidden bg-ink aspect-[16/10]">
+                    <img src={src} alt={label} className="w-full h-full object-cover object-top group-hover:scale-[1.04] transition-transform duration-700" />
+                  </span>
                 </span>
-                <span className="mt-1.5 block font-mono text-[11px] text-dim group-hover:text-violet transition-colors">{label} →</span>
+                <span className="mt-1.5 block font-mono text-[11px] text-dim group-hover:text-violet transition-colors">open live →</span>
               </a>
             ))}
           </div>

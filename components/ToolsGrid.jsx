@@ -3,7 +3,6 @@
 import Reveal, { Stagger, item } from "./Reveal";
 import { motion } from "framer-motion";
 import CodePanel from "./CodePanel";
-import TerminalLive from "./TerminalLive";
 
 const TOOLS = [
   { name: "banksy-pipeline", kind: "agent", desc: "Spatially-aware clustering — BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
@@ -47,13 +46,6 @@ export default function ToolsGrid() {
 
         <Reveal className="mt-12 max-w-4xl mx-auto">
           <CodePanel />
-        </Reveal>
-
-        <Reveal delay={0.1} className="mt-12 max-w-4xl mx-auto">
-          <TerminalLive />
-          <p className="mt-3 text-[13.5px] text-dim text-center leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 9&nbsp;|</span> The stack, from the terminal — a replay of the real GBM3 run.
-          </p>
         </Reveal>
       </div>
     </section>
