@@ -44,4 +44,3 @@ _staging/
 # live LLM key — never commit
 public/live/*/ai-key.js
 
-public/live/*/ai-config.js
