@@ -1,4 +1,4 @@
-# Xenium BANKSY Marker Report
+# BANKSY Marker Report — GBM3, 10x Visium (NOT Xenium; the pipeline template's title is generic)
 
 - **Input:** `output/GBM3/preprocessed.h5ad`
 - **Cells:** 1,775
