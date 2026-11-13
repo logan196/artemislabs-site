@@ -44,6 +44,12 @@ export default function Cta() {
             >
               Book a demo
             </a>
+            <a
+              href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20analysis"
+              className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:text-snow hover:border-violet transition-all"
+            >
+              Or start with an email
+            </a>
           </div>
         </Reveal>
       </div>

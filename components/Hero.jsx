@@ -136,9 +136,9 @@ export default function Hero() {
             transition={{ duration: 0.9, delay: 0.25 }}
             className="mt-6 max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-dim leading-relaxed"
           >
-            Artemis BioLabs turns raw spatial transcriptomics into interactive atlases your
-            whole lab can explore — with an AI copilot that can run with a local model
-            through Ollama.
+            Artemis BioLabs is the embedded computational team for wet labs — every assay,
+            one engagement. This page shows one use case end-to-end: spatial
+            transcriptomics, from raw folder to a living atlas with an AI copilot.
           </motion.p>
           <motion.p
             initial={{ opacity: 0 }}
