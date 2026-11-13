@@ -40,10 +40,10 @@ export default function Hero() {
         <a href="#" aria-label="Artemis BioLabs — top of page">
           <img src="artemis_lockup.svg" alt="Artemis BioLabs" className="h-8 md:h-11 w-auto" />
         </a>
-        <div className="flex items-center gap-3 md:gap-8 text-sm text-dim">
-          <div className="hidden md:flex items-center gap-8">
+        <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
+          <div className="hidden md:flex items-center gap-8 font-medium">
             {NAV.map(([href, label]) => (
-              <a key={href} href={href} className="hover:text-snow focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
+              <a key={href} href={href} className="hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
                 {label}
               </a>
             ))}
