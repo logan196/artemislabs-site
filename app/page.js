@@ -12,6 +12,7 @@ import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import ToolMarquee from "@/components/ToolMarquee";
 import Cta from "@/components/Cta";
+import ComicFooter from "@/components/ComicFooter";
 
 export default function Home() {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
       <ToolsGrid />
       <ToolMarquee />
       <Cta />
+      <ComicFooter />
     </main>
   );
 }
