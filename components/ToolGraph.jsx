@@ -78,13 +78,15 @@ const NODES = [
       "The backbone language of our pipelines — from QC scripts to the portals on this page, nearly everything starts in Python.",
   },
   {
-    id: "bioc", kind: "chip", label: "Bioconductor", x: 212, y: 60, hub: "h-lang",
+    id: "bioc", kind: "badge", wide: true, label: "Bioconductor", img: "logos/bioconductor.svg",
+    iw: 72, ih: 21, x: 212, y: 60, hub: "h-lang",
     title: "Bioconductor",
     blurb:
       "R's genomics ecosystem — thousands of peer-reviewed packages for expression, annotation, and statistics.",
   },
   {
-    id: "scanpy", kind: "chip", label: "scanpy", x: 338, y: 92, hub: "h-lang",
+    id: "scanpy", kind: "badge", wide: true, label: "scanpy", img: "logos/scanpy.svg",
+    iw: 57, ih: 25, x: 338, y: 92, hub: "h-lang",
     title: "scanpy",
     blurb:
       "Our single-cell workhorse. The clustering, UMAP, and pseudotime figures on this page are scanpy runs.",
@@ -98,25 +100,28 @@ const NODES = [
       "Where public sequencing lands. We pull raw series straight from accession IDs — this site's glioblastoma demos come from GSE194329.",
   },
   {
-    id: "kegg", kind: "chip", label: "KEGG", x: 790, y: 52, hub: "h-db",
+    id: "kegg", kind: "badge", label: "KEGG", img: "logos/kegg.png", x: 790, y: 48, hub: "h-db",
     title: "KEGG",
     blurb:
       "Pathway maps for enrichment calls — which signaling programs a cluster is actually running.",
   },
   {
-    id: "reactome", kind: "chip", label: "Reactome", x: 912, y: 92, hub: "h-db",
+    id: "reactome", kind: "badge", wide: true, label: "Reactome", img: "logos/reactome.png",
+    iw: 80, ih: 19, x: 912, y: 96, hub: "h-db",
     title: "Reactome",
     blurb:
       "Curated human pathway hierarchy — the second opinion we read next to KEGG before calling a signaling program.",
   },
   {
-    id: "string", kind: "chip", label: "STRING", x: 936, y: 178, hub: "h-db",
+    id: "string", kind: "badge", wide: true, label: "STRING", img: "logos/string.png",
+    iw: 65, ih: 18, x: 936, y: 178, hub: "h-db",
     title: "STRING",
     blurb:
       "Protein–protein interaction networks — for asking whether a marker set actually hangs together as a complex.",
   },
   {
-    id: "cellxgene", kind: "chip", label: "CELLxGENE", x: 912, y: 262, hub: "h-db",
+    id: "cellxgene", kind: "badge", wide: true, label: "CELLxGENE", img: "logos/cellxgene.svg",
+    iw: 80, ih: 16, x: 912, y: 262, hub: "h-db",
     title: "CELLxGENE",
     blurb:
       "The CZI single-cell atlas ecosystem — published reference datasets to sanity-check a cell-state call against.",
@@ -124,7 +129,7 @@ const NODES = [
 
   // ---- Enrichment & annotation ----
   {
-    id: "enrichr", kind: "chip", label: "Enrichr", x: 920, y: 372, hub: "h-enr",
+    id: "enrichr", kind: "badge", label: "Enrichr", img: "logos/enrichr.png", x: 920, y: 368, hub: "h-enr",
     title: "Enrichr",
     blurb:
       "One gene list in, ranked enrichment across hundreds of libraries out — the fastest first pass on what a cluster is doing.",
@@ -138,7 +143,7 @@ const NODES = [
 
   // ---- Pipelines & compute ----
   {
-    id: "nextflow", kind: "chip", label: "Nextflow", x: 84, y: 362, hub: "h-pipe",
+    id: "nextflow", kind: "badge", label: "Nextflow", img: "logos/nextflow.svg", x: 84, y: 356, hub: "h-pipe",
     title: "Nextflow",
     blurb:
       "The workflow engine for runs too big for a notebook — every step declared, containerized, and resumable.",
@@ -158,7 +163,7 @@ const NODES = [
 
   // ---- Visualization ----
   {
-    id: "vitessce", kind: "chip", label: "Vitessce", x: 352, y: 548, hub: "h-viz",
+    id: "vitessce", kind: "badge", label: "Vitessce", img: "logos/vitessce.png", x: 352, y: 540, hub: "h-viz",
     title: "Vitessce",
     blurb:
       "The viewer every portal on this page is built on — linked UMAP, tissue, and expression panels, all in the browser.",
@@ -170,7 +175,7 @@ const NODES = [
       "The 2-D fold of expression space. Every embedding figure above is a UMAP — always shown beside the tissue it came from.",
   },
   {
-    id: "igv", kind: "chip", label: "IGV", x: 500, y: 556, hub: "h-viz",
+    id: "igv", kind: "badge", label: "IGV", img: "logos/igv.png", x: 500, y: 544, hub: "h-viz",
     title: "IGV",
     blurb:
       "The genome browser for reads and tracks — when a call needs checking at base-pair resolution, we open IGV.",
@@ -184,7 +189,8 @@ const NODES = [
       "NIH archives — GEO, SRA, dbGaP — hold most of the world's public sequencing. The demos on this site are built on NIH-hosted data.",
   },
   {
-    id: "tenx", kind: "chip", label: "10x Genomics", x: 612, y: 40, hub: "h-pub",
+    id: "tenx", kind: "badge", wide: true, label: "10x Genomics", img: "logos/tenx.svg",
+    iw: 42, ih: 27, x: 612, y: 42, hub: "h-pub",
     title: "10x Genomics",
     blurb:
       "Maker of the Chromium and Visium platforms. Their published datasets are the reference sections in our GBM demos.",
@@ -264,14 +270,30 @@ const PULSE_SEQ = (() => {
 const N_PULSES = 5;
 const PULSE_MS = 2600;
 
+/* ---- the "data journey": GEO → scanpy → Analysis hub → Vitessce ----
+   A looping highlight that shows what Artemis does with this graph:
+   pull a public dataset, analyze it, ship it as an interactive portal. */
+const JOURNEY = ["geo", "scanpy", "h-lang", "vitessce"];
+const JOURNEY_SEGS = JOURNEY.slice(0, -1).map((id, i) => {
+  const a = byId[id];
+  const b = byId[JOURNEY[i + 1]];
+  return { x1: a.x, y1: a.y, x2: b.x, y2: b.y };
+});
+const JOURNEY_MS = 8000; // full cycle
+const JOURNEY_TRAVEL = 0.66; // fraction of the cycle the dot spends traveling
+
 const DEFAULT_CARD = {
   title: "The stack",
-  blurb: "Hover any node — every tool here is one we actually run.",
+  blurb:
+    "This is the stack that built every demo above. Hover any node — the card tells you what we run it for.",
 };
 
 export default function ToolGraph() {
   const [active, setActive] = useState(null); // node id or null
   const pulseRefs = useRef([]);
+  const journeyLineRefs = useRef([]);
+  const journeyDotRef = useRef(null);
+  const journeyLabelRef = useRef(null);
   const rafRef = useRef(0);
 
   useEffect(() => {
@@ -294,6 +316,36 @@ export default function ToolGraph() {
         el.setAttribute("cx", pt.x.toFixed(1));
         el.setAttribute("cy", pt.y.toFixed(1));
         el.setAttribute("opacity", (Math.sin(p * Math.PI) * 0.85).toFixed(2));
+      }
+
+      // ---- data journey: GEO → scanpy → Analysis → Vitessce (pure fn of t) ----
+      const dot = journeyDotRef.current;
+      const lbl = journeyLabelRef.current;
+      if (dot && lbl) {
+        const tj = (t % JOURNEY_MS) / JOURNEY_MS;
+        if (tj < JOURNEY_TRAVEL) {
+          const prog = (tj / JOURNEY_TRAVEL) * JOURNEY_SEGS.length;
+          const seg = Math.min(JOURNEY_SEGS.length - 1, Math.floor(prog));
+          const p = prog - seg;
+          const s = JOURNEY_SEGS[seg];
+          dot.setAttribute("cx", (s.x1 + (s.x2 - s.x1) * p).toFixed(1));
+          dot.setAttribute("cy", (s.y1 + (s.y2 - s.y1) * p).toFixed(1));
+          dot.setAttribute("opacity", "0.95");
+          journeyLineRefs.current.forEach((el, k) => {
+            if (!el) return;
+            const o = k < seg ? 0.5 : k === seg ? 0.5 * p : 0;
+            el.setAttribute("opacity", o.toFixed(2));
+          });
+          lbl.setAttribute("opacity", (0.85 * Math.min(1, tj / 0.05)).toFixed(2));
+        } else {
+          // journey done — fade the trail and label, then rest until the next loop
+          const f = Math.max(0, 1 - (tj - JOURNEY_TRAVEL) / 0.18);
+          dot.setAttribute("opacity", "0");
+          journeyLineRefs.current.forEach((el) => {
+            if (el) el.setAttribute("opacity", (0.5 * f).toFixed(2));
+          });
+          lbl.setAttribute("opacity", (0.85 * f).toFixed(2));
+        }
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -361,6 +413,34 @@ export default function ToolGraph() {
               })}
             </g>
 
+            {/* ---- data journey overlay: GEO → scanpy → Analysis → Vitessce ---- */}
+            <g style={{ pointerEvents: "none" }}>
+              {JOURNEY_SEGS.map((s, i) => (
+                <line
+                  key={i}
+                  ref={(el) => (journeyLineRefs.current[i] = el)}
+                  x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
+                  stroke="#0f766e"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  opacity="0"
+                />
+              ))}
+              <circle ref={journeyDotRef} r="3.4" fill="#0f766e" opacity="0" />
+              <text
+                ref={journeyLabelRef}
+                x="500"
+                y="352"
+                textAnchor="middle"
+                fontFamily={MONO}
+                fontSize="10"
+                fill="#115e59"
+                opacity="0"
+              >
+                {"a dataset's path through the stack"}
+              </text>
+            </g>
+
             {/* ---- signal pulses ---- */}
             <g>
               {Array.from({ length: N_PULSES }).map((_, i) => (
@@ -381,14 +461,17 @@ export default function ToolGraph() {
               if (n.kind === "center") {
                 return (
                   <g key={n.id} transform={`translate(${n.x} ${n.y})`} {...nodeProps(n)}>
-                    <circle r="46" fill="transparent" />
+                    <circle r="52" fill="transparent" />
                     <circle
-                      r="38"
+                      r="44"
                       fill="#115e59"
-                      stroke={isActive ? "#0f766e" : "rgba(17,94,89,0.3)"}
-                      strokeWidth={isActive ? 3 : 1}
+                      stroke={isActive ? "#0f766e" : "rgba(17,94,89,0.35)"}
+                      strokeWidth={isActive ? 3 : 1.5}
                     />
+                    <circle r="48" fill="none" stroke="rgba(17,94,89,0.25)" strokeWidth="1" strokeDasharray="2 4" />
+                    <image href="artemis_mark.svg" x="-12" y="-27" width="24" height="24" />
                     <text
+                      y="14"
                       textAnchor="middle"
                       dominantBaseline="central"
                       fill="#f7f4ec"
@@ -398,6 +481,28 @@ export default function ToolGraph() {
                     >
                       Artemis
                     </text>
+                  </g>
+                );
+              }
+
+              if (n.kind === "badge" && n.wide) {
+                // wordmark badge: the logo IS the label, framed like a chip
+                const bw = n.iw + 16;
+                const bh = n.ih + 12;
+                return (
+                  <g key={n.id} transform={`translate(${n.x} ${n.y})`} {...nodeProps(n)}>
+                    <rect x={-bw / 2 - 8} y={-bh / 2 - 8} width={bw + 16} height={bh + 16} fill="transparent" />
+                    <rect
+                      x={-bw / 2}
+                      y={-bh / 2}
+                      width={bw}
+                      height={bh}
+                      rx="4"
+                      fill="#fffdf7"
+                      stroke={isActive ? "#0f766e" : "#d8d2c2"}
+                      strokeWidth={isActive ? 1.8 : 1}
+                    />
+                    <image href={n.img} x={-n.iw / 2} y={-n.ih / 2} width={n.iw} height={n.ih} />
                   </g>
                 );
               }

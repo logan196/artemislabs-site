@@ -3,16 +3,17 @@
 import Reveal, { Stagger, item } from "./Reveal";
 import { motion } from "framer-motion";
 import CodePanel from "./CodePanel";
+import StackMini from "./StackMini";
 
 const TOOLS = [
-  { name: "banksy-pipeline", kind: "agent", desc: "Spatially-aware clustering — BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
-  { name: "marker-annotator", kind: "agent", desc: "Controlled-vocabulary cell-state calling (AC / MES / NPC / OPC-like + brain TME) from top cluster markers. Frontier or local models." },
-  { name: "vitessce-forge", kind: "tool", desc: "Any .h5ad or Xenium folder → chunk-optimized zarr + interactive Vitessce portal. One command." },
-  { name: "live-analysis", kind: "api", desc: "On-demand differential expression, composition shifts, and Moran's I spatial autocorrelation." },
-  { name: "research-copilot", kind: "agent", desc: "Chat grounded in your portal's facts — clusters, selections, logged DE runs. Runs on a frontier model, or fully local on qwen3:8b." },
-  { name: "paper-scout", kind: "agent", desc: "PubMed retrieval tuned to your clusters and markers — returns real PMIDs via NCBI E-utilities." },
-  { name: "abstract-artist", kind: "agent", desc: "One-command graphical abstracts straight from pipeline results." },
-  { name: "cohort-importer", kind: "tool", desc: "Imports published spatial cohorts with their annotations intact — states, niches, histopathology (see the de Jong section)." },
+  { name: "banksy-pipeline", glyph: "banksy", kind: "agent", desc: "Spatially-aware clustering — BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
+  { name: "marker-annotator", glyph: "annotate", kind: "agent", desc: "Controlled-vocabulary cell-state calling (AC / MES / NPC / OPC-like + brain TME) from top cluster markers. Frontier or local models." },
+  { name: "vitessce-forge", glyph: "forge", kind: "tool", desc: "Any .h5ad or Xenium folder → chunk-optimized zarr + interactive Vitessce portal. One command." },
+  { name: "live-analysis", glyph: "live", kind: "api", desc: "On-demand differential expression, composition shifts, and Moran's I spatial autocorrelation." },
+  { name: "research-copilot", glyph: "copilot", kind: "agent", desc: "Chat grounded in your portal's facts — clusters, selections, logged DE runs. Runs on a frontier model, or fully local on qwen3:8b." },
+  { name: "paper-scout", glyph: "scout", kind: "agent", desc: "PubMed retrieval tuned to your clusters and markers — returns real PMIDs via NCBI E-utilities." },
+  { name: "abstract-artist", glyph: "abstract", kind: "agent", desc: "One-command graphical abstracts straight from pipeline results." },
+  { name: "cohort-importer", glyph: "importer", kind: "tool", desc: "Imports published spatial cohorts with their annotations intact — states, niches, histopathology (see the de Jong section)." },
 ];
 
 export default function ToolsGrid() {
@@ -35,8 +36,11 @@ export default function ToolsGrid() {
             <motion.div
               key={t.name}
               variants={item}
-              className="grid md:grid-cols-[190px_1fr_70px] items-baseline gap-2 md:gap-6 px-3 py-3.5 border-b border-line/60 last:border-b-0 hover:bg-panel rounded-lg transition-colors"
+              className="grid md:grid-cols-[96px_180px_1fr_70px] items-baseline gap-2 md:gap-6 px-3 py-3.5 border-b border-line/60 last:border-b-0 hover:bg-panel rounded-lg transition-colors"
             >
+              <div className="hidden md:block self-center w-[96px] shrink-0 bg-[#efeadd66] rounded-[3px] overflow-hidden">
+                <StackMini kind={t.glyph} height={56} />
+              </div>
               <span className="text-violet">{t.name}</span>
               <span className="text-dim font-sans text-[15px] leading-relaxed">{t.desc}</span>
               <span className="text-mint text-[12px] uppercase tracking-wider md:justify-self-end">[{t.kind}]</span>

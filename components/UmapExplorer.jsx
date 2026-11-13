@@ -14,7 +14,9 @@ const TWEEN_MS = 700;
 // A scripted autoplay loop that teaches cell typing + gene-expression gating.
 // Beats are driven off one rAF clock; captions are fixed copy (audited — do
 // not reword numbers). Any click pauses; the button replays.
-const GATE_MAX = 0.45; // settle point of the EGFR threshold sweep (log-norm)
+// Settle point of the EGFR threshold sweep (log-norm). EGFR is sparse at spot
+// level (>90% zeros), so 0.25 is already a high gate — ~40 spots survive.
+const GATE_MAX = 0.25;
 const GATE_SWEEP_FRAC = 0.62; // fraction of the gating beat spent sweeping up
 
 const BEATS = [
@@ -162,7 +164,7 @@ export default function UmapExplorer() {
       }
       const dimmed = fo !== null && labels[i] !== fo;
       let alpha = dimmed ? 0.08 : 0.85;
-      if (gateVals) alpha = gateVals[i] >= gate.cutoff ? 0.9 : 0.06; // the gate
+      if (gateVals) alpha = gateVals[i] >= gate.cutoff ? 0.92 : 0.12; // the gate
       ctx.beginPath();
       ctx.arc(x, y, 2.2, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${rgb[0] | 0},${rgb[1] | 0},${rgb[2] | 0},${alpha})`;
