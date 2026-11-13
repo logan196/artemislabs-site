@@ -28,6 +28,9 @@ const TIMELINE = [
   { at: 6500, shown: 3, typing: true },
   { at: 9300, shown: 4, typing: false },
 ];
+// The thread never goes dead: it holds the finished exchange, then restarts.
+const HOLD_MS = 6500;
+const LOOP_MS = TIMELINE[TIMELINE.length - 1].at + HOLD_MS;
 
 function TypingDots() {
   return (
@@ -52,6 +55,7 @@ export default function CopilotSection() {
   const [typing, setTyping] = useState(false);
   const [started, setStarted] = useState(false);
 
+  const playRef = useRef(null);
   const play = () => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
@@ -65,7 +69,10 @@ export default function CopilotSection() {
         }, step.at)
       )
     );
+    // loop: hold the finished thread, then run it again
+    timers.current.push(setTimeout(() => playRef.current && playRef.current(), LOOP_MS));
   };
+  playRef.current = play;
 
   useEffect(() => {
     if (reduced) {
@@ -76,10 +83,12 @@ export default function CopilotSection() {
     if (!el) return;
     const obs = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting && !started) {
+        if (e.isIntersecting) {
           setStarted(true);
           play();
-          obs.disconnect();
+        } else {
+          timers.current.forEach(clearTimeout);
+          timers.current = [];
         }
       },
       { threshold: 0.35 }
@@ -128,7 +137,7 @@ export default function CopilotSection() {
                 <img src="artemis_mark.svg" alt="" className="h-6 w-6" style={{ filter: "brightness(0) invert(1)" }} />
               </div>
               <p className="mt-1.5 text-[13.5px] font-medium text-snow">Artemis · co-scientist</p>
-              <p className="font-mono text-[10.5px] text-mint">● local · qwen3:8b · zero egress</p>
+              <p className="font-mono text-[10.5px] text-mint"><span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse mr-1 align-middle" aria-hidden />local · qwen3:8b · zero egress</p>
             </div>
 
             {/* thread */}
