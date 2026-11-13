@@ -11,7 +11,7 @@ const TOOLS = [
   { name: "research-copilot", kind: "agent", desc: "Chat grounded in your portal's facts — clusters, selections, logged DE runs. Runs on Claude, or fully local on qwen3:8b." },
   { name: "paper-scout", kind: "agent", desc: "PubMed retrieval tuned to your clusters and markers — returns real PMIDs via NCBI E-utilities." },
   { name: "abstract-artist", kind: "agent", desc: "One-command graphical abstracts straight from pipeline results." },
-  { name: "lead-engine", kind: "agent", desc: "Finds labs whose published work matches the pipeline — then drafts a grounded intro." },
+  { name: "cohort-importer", kind: "tool", desc: "Imports published spatial cohorts with their annotations intact — states, niches, histopathology (see the de Jong section)." },
 ];
 
 export default function ToolsGrid() {
