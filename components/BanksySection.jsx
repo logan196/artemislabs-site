@@ -54,6 +54,36 @@ export default function BanksySection() {
       .map((name, i) => ({ name, count: counts[i], rgb: stateRgb[i] }))
       .slice(0, 6);
 
+    // --- roaming BANKSY neighborhood ring: focus spot + its k nearest ---
+    // Deterministic hops (hopCount * 997 mod n — no Math.random), neighbors
+    // recomputed ONCE per hop and cached; the per-frame cost is just drawing.
+    const RING_K = 6;
+    const HOP_MS = 2400;
+    const GLIDE_MS = 700;
+    const nearestNeighbors = (idx) => {
+      const fx = spots[idx][0], fy = spots[idx][1];
+      const best = []; // ascending by squared distance, length <= RING_K
+      for (let i = 0; i < spots.length; i++) {
+        if (i === idx) continue;
+        const dx = spots[i][0] - fx, dy = spots[i][1] - fy;
+        const d = dx * dx + dy * dy;
+        if (best.length < RING_K) {
+          best.push({ d, i });
+          best.sort((a, b) => a.d - b.d);
+        } else if (d < best[RING_K - 1].d) {
+          best[RING_K - 1] = { d, i };
+          best.sort((a, b) => a.d - b.d);
+        }
+      }
+      return best.map((b) => b.i);
+    };
+    let hopCount = -1; // -1 = not initialized yet
+    let hopSpot = spots[997 % spots.length];
+    let hopNeighbors = [];
+    let glideFrom = null; // previous ring position in DATA coords (null = snap)
+    let glideT0 = 0;
+    const ringEpoch = performance.now();
+
     const draw = () => {
       const p = scrollYProgress.get();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -119,6 +149,91 @@ export default function BanksySection() {
         ctx.arc(px(sx), py(sy), 2.6, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${a})`;
         ctx.fill();
+      }
+
+      // roaming neighborhood ring — a literal picture of what BANKSY does:
+      // one focus spot, spokes to its 6 nearest neighbors, "spot + ring" as
+      // the unit that gets embedded. Full strength while the method is being
+      // explained; fades to 35% once the colored domains fully resolve.
+      {
+        const ringAlpha =
+          resolve < 0.85 ? 1 : 1 - ((resolve - 0.85) / 0.15) * 0.65;
+        if (ringAlpha > 0.01) {
+          const now = performance.now();
+          let rx, ry, glide = 1;
+          if (reduceMotion) {
+            // static: one fixed ring, no roaming, no glide
+            if (hopCount < 0) {
+              hopCount = 0;
+              const fi = 997 % spots.length;
+              hopSpot = spots[fi];
+              hopNeighbors = nearestNeighbors(fi);
+            }
+            rx = px(hopSpot[0]);
+            ry = py(hopSpot[1]);
+          } else {
+            const elapsed = Math.max(0, now - ringEpoch);
+            const hopIdx = Math.floor(elapsed / HOP_MS);
+            if (hopIdx !== hopCount) {
+              // freeze the ring's CURRENT (possibly mid-glide) position as the
+              // start of the next glide, then pick the next deterministic spot
+              if (hopCount >= 0) {
+                const u0 = Math.min(1, Math.max(0, (now - glideT0) / GLIDE_MS));
+                const e0 = 1 - Math.pow(1 - u0, 3);
+                const sx0 = glideFrom ? glideFrom[0] + (hopSpot[0] - glideFrom[0]) * e0 : hopSpot[0];
+                const sy0 = glideFrom ? glideFrom[1] + (hopSpot[1] - glideFrom[1]) * e0 : hopSpot[1];
+                glideFrom = [sx0, sy0];
+              }
+              hopCount = hopIdx;
+              const fi = (hopCount * 997) % spots.length;
+              hopSpot = spots[fi];
+              hopNeighbors = nearestNeighbors(fi); // O(n), once per hop
+              glideT0 = now;
+            }
+            const u = Math.min(1, Math.max(0, (now - glideT0) / GLIDE_MS));
+            glide = 1 - Math.pow(1 - u, 3); // ease-out cubic
+            const gx = glideFrom ? glideFrom[0] + (hopSpot[0] - glideFrom[0]) * glide : hopSpot[0];
+            const gy = glideFrom ? glideFrom[1] + (hopSpot[1] - glideFrom[1]) * glide : hopSpot[1];
+            rx = px(gx);
+            ry = py(gy);
+          }
+          // spokes + neighbor rings (fade in as the glide lands)
+          const spokeA = 0.6 * ringAlpha * (0.25 + 0.75 * glide);
+          for (const ni of hopNeighbors) {
+            const nx = px(spots[ni][0]), ny = py(spots[ni][1]);
+            ctx.beginPath();
+            ctx.moveTo(rx, ry);
+            ctx.lineTo(nx, ny);
+            ctx.strokeStyle = `rgba(154,91,19,${spokeA})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(nx, ny, 5, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(154,91,19,${spokeA})`;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
+          // focus ring
+          ctx.beginPath();
+          ctx.arc(rx, ry, 12, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(17,94,89,${0.95 * ringAlpha})`;
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+          // tiny mono label, paper halo so it reads over the dots; flips to
+          // the left of the ring near the right edge, clamped vertically
+          const label = "spot + ring → one embedding";
+          ctx.font = "500 10px 'JetBrains Mono', ui-monospace, monospace";
+          const lw = ctx.measureText(label).width;
+          let lx = rx + 18;
+          if (lx + lw > w - 8) lx = rx - 18 - lw;
+          const ly = Math.min(Math.max(ry - 16, 14), h - 10);
+          ctx.strokeStyle = `rgba(255,253,247,${0.9 * ringAlpha})`;
+          ctx.lineWidth = 3;
+          ctx.lineJoin = "round";
+          ctx.strokeText(label, lx, ly);
+          ctx.fillStyle = `rgba(95,91,80,${0.9 * ringAlpha})`;
+          ctx.fillText(label, lx, ly);
+        }
       }
 
       // H&E inset while in the expression view — the tissue these spots sit on

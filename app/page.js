@@ -6,7 +6,6 @@ import GbmGallery from "@/components/GbmGallery";
 import UmapExplorer from "@/components/UmapExplorer";
 import FoundationSection from "@/components/FoundationSection";
 import WhatWeDo from "@/components/WhatWeDo";
-import BenchmarkSection from "@/components/BenchmarkSection";
 import CopilotSection from "@/components/CopilotSection";
 import GenomeSection from "@/components/GenomeSection";
 import ImagingSection from "@/components/ImagingSection";
@@ -28,7 +27,6 @@ export default function Home() {
       <ImagingSection />
       <UmapExplorer />
       <FoundationSection />
-      <BenchmarkSection />
       <CopilotSection />
       <ToolsGrid />
       <ToolGraph />

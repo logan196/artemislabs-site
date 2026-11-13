@@ -14,7 +14,6 @@ const NAV = [
   ["#pipeline", "Pipeline"],
   ["#gallery", "Glioblastoma"],
   ["#whatwedo", "What we do"],
-  ["#benchmark", "Benchmarking"],
 ];
 
 export default function Hero() {
@@ -125,7 +124,6 @@ export default function Hero() {
       <div className="md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
         <a href="#pipeline" className="hover:text-snow">Pipeline</a>
         <a href="#gallery" className="hover:text-snow">Demo</a>
-        <a href="#benchmark" className="hover:text-snow">Benchmarking</a>
       </div>
 
       <motion.div
