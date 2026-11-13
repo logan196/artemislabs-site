@@ -11,7 +11,7 @@ export default function Cta() {
         <p className="font-mono text-sm text-violet mb-4 text-center">HOW AN ENGAGEMENT WORKS</p>
         <div className="grid sm:grid-cols-4 gap-4">
           {[
-            ["1 · pilot", "The first analysis is on us — a public or in-house dataset, turned into a live portal."],
+            ["1 · pilot", "Send one dataset — Visium, Xenium, MERFISH or .h5ad — and get back a hosted live portal plus the marker report, free."],
             ["2 · scope", "One call. We map your assays and questions to a concrete deliverable list."],
             ["3 · deliverables", "A live portal, the written report, the figures — and the code that made all three."],
             ["4 · your data stays yours", "Local-mode runs mean zero egress; cloud models are opt-in per project; deletion on request."],

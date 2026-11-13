@@ -25,6 +25,9 @@ export default function ImagingSection() {
               <span className="font-mono text-[11.5px] tracking-[0.14em] uppercase text-dim">
                 artemis · dti-cohort-atlas
               </span>
+              <span className="ml-auto font-mono text-[10px] tracking-wide text-dim border border-[#2a2838] rounded-[3px] px-2 py-0.5">
+                screen capture — 20s replay of the real tool
+              </span>
             </div>
             <video
               src="demo/dti_demo.mp4"

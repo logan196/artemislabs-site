@@ -126,7 +126,7 @@ function IncludedBody({ nRef }) {
       <p className="font-semibold">
         3 sources ·{" "}
         <span className="text-violet">
-          {nRef ? <span ref={nRef}>0</span> : N_SECTIONS} sections
+          {nRef ? <span ref={nRef}>{N_SECTIONS}</span> : N_SECTIONS} sections
         </span>{" "}
         on this page
       </p>
@@ -435,7 +435,7 @@ export default function PrismaStory() {
               </div>
               <p className="mt-4 font-mono text-sm text-dim text-center">
                 <span ref={countRef} className="text-4xl md:text-5xl font-semibold text-snow tabular-nums">
-                  0
+                  {N_IDENTIFIED}
                 </span>{" "}
                 series identified · GEO DataSets · accessed {ACCESSED}
               </p>
@@ -453,7 +453,7 @@ export default function PrismaStory() {
                 <AnimatedBox progress={scrollYProgress} range={[0.27, 0.3]} className="w-full">
                   <FlowBox title="records identified">
                     <p className="font-semibold">
-                      <span ref={idRef} className="text-violet tabular-nums">0</span> GEO series
+                      <span ref={idRef} className="text-violet tabular-nums">{N_IDENTIFIED}</span> GEO series
                     </p>
                     <p className="text-dim mt-0.5 text-[12px]">
                       + 2 sources outside GEO (10x Genomics · gbmspace.org)
@@ -489,7 +489,7 @@ export default function PrismaStory() {
               >
                 <FlowBox title="not ingested" tone="excl">
                   <p className="font-semibold">
-                    <span ref={exclRef} className="text-magma tabular-nums">0</span> GEO series
+                    <span ref={exclRef} className="text-magma tabular-nums">{N_NOT_INGESTED}</span> GEO series
                   </p>
                   <ExclusionBody />
                 </FlowBox>

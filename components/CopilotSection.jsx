@@ -154,7 +154,7 @@ export default function CopilotSection() {
                     </div>
                     {m.role === "user" && shown > i + 1 && (
                       <span className="ml-auto mt-0.5 font-mono text-[10px] text-dim/80">
-                        Read 9:4{i < 2 ? "1" : "2"} AM
+                        {`Read 9:4${i < 2 ? "1" : "2"} AM`}
                       </span>
                     )}
                     {m.role === "user" && shown === i + 1 && !typing && (

@@ -24,7 +24,7 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
 
   return (
-    <section ref={ref} className="relative min-h-[100svh] flex flex-col overflow-hidden">
+    <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
       <a
         href="#pipeline"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"
@@ -43,7 +43,7 @@ export default function Hero() {
         <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
           <div className="hidden md:flex items-center gap-8 font-medium">
             {NAV.map(([href, label]) => (
-              <a key={href} href={href} className="hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
+              <a key={href} href={href} className="whitespace-nowrap hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
                 {label}
               </a>
             ))}
@@ -113,7 +113,7 @@ export default function Hero() {
               rel="noreferrer"
               className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
             >
-              3.9M cells, one mouse brain — explore it live →
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-600 animate-pulse mr-2 align-middle" aria-hidden />3.9M cells, one mouse brain — explore it live →
             </a>
           </div>
           <p className="mt-4 font-mono text-[12.5px] text-dim">

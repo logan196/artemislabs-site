@@ -27,7 +27,8 @@ export default function ToolsGrid() {
           </h2>
           <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
             Everything above — the domains, the labels, the portals, the copilot — came
-            out of these eight pieces. Welcome to the machine room.
+            out of these eight pieces. Welcome to the machine room.{" "}
+            <a href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20run%20my%20.h5ad" className="text-violet hover:text-snow underline underline-offset-4 transition-colors whitespace-nowrap">Try it with your .h5ad →</a>
           </p>
         </Reveal>
 

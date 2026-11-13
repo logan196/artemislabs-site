@@ -403,7 +403,8 @@ export default function UmapExplorer() {
           between the tissue they were cut from and the embedding that organizes them.
           Cell types keep their colors and their names the whole way, so you can watch
           morphology become biology — then take the dials yourself: drag the slider,
-          switch the parameterization, color by a gene.
+          switch the parameterization, color by SOX2 — the same stemness factor caught
+          sitting on its own gene in the browser above.
         </p>
       </Reveal>
 

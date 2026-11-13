@@ -143,7 +143,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
             const src = s1[Math.floor(((g * 11) % N))];
             const dx = (g % 2 ? 1 : -1) * u * Math.min(w, h) * 0.3;
             const dy = -u * Math.min(w, h) * 0.18;
-            ctx.globalAlpha = (1 - u) * 0.55;
+            ctx.globalAlpha = Math.pow(1 - u, 0.7) * 0.85;
             ctx.fillStyle = "#115e59";
             ctx.fillText("ACGT"[g], src[0] + dx, src[1] + dy);
             ctx.globalAlpha = 1;

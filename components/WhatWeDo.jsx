@@ -20,11 +20,8 @@ export default function WhatWeDo() {
       <Reveal>
         <p className="font-mono text-sm text-violet mb-4">04 · WHAT WE DO</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
-          Every core your biotech would build or rent.
+          Eight cores. <span className="text-violet">One embedded team.</span>
         </h2>
-        <p className="text-4xl md:text-5xl font-semibold tracking-tight text-violet">
-          One AI-powered team.
-        </p>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
           That was the promise at the top of the page — and you have now watched one
           core run end-to-end. The rest work the same way: real pipeline, live portal,
@@ -57,7 +54,8 @@ export default function WhatWeDo() {
           ))}
         </div>
         <p className="mt-6 text-[15px] text-dim">
-          Also bulk RNA-seq, variants, proteomics, metabolomics, cytometry and microbiome.
+          Also bulk RNA-seq, variants, proteomics, metabolomics, cytometry and microbiome.{" "}
+          <a href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20sample%20report" className="text-violet hover:text-snow underline underline-offset-4 transition-colors">Request a sample report →</a>
         </p>
       </Reveal>
     </section>

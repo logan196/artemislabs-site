@@ -128,6 +128,9 @@ export default function GenomeSection() {
           return;
         }
         browserRef.current = browser;
+        hostRef.current
+          ?.querySelectorAll("select")
+          .forEach((el) => el.setAttribute("aria-label", "Select chromosome"));
         setStatus("ready");
       } catch (err) {
         if (!cancelled) setStatus("failed");

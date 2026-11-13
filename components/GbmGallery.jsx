@@ -81,15 +81,14 @@ export default function GbmGallery() {
           Five sections, one afternoon.
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          Five public glioma Visium sections — four adult high-grade gliomas from the
-          Ren&nbsp;et&nbsp;al. 2023 cohort (GSE194329; two IDH-wildtype GBM, two IDH-mutant
-          grade-4 astrocytomas under WHO CNS5), one glioblastoma from 10x Genomics —
-          dropped into the pipeline unmodified. BANKSY domains, putative cell states,
-          and marker maps, each with its own interactive Vitessce portal. The other
-          three of the eight — the gbmspace.org atlas sections — arrive through the
-          same stack with the paper&apos;s own annotations intact; one of them is
-          breathing just below.
+          Five public glioma sections, dropped into the pipeline unmodified —{" "}
+          <span className="text-snow">each one came out the other side as a live portal.</span>
         </p>
+        <ul className="mt-4 max-w-2xl space-y-1.5 text-[15.5px] text-dim leading-relaxed list-none">
+          <li>→ four high-grade gliomas from Ren et al. 2023 (GSE194329; two IDH-wt GBM, two IDH-mut grade-4 astrocytomas, WHO CNS5) + one 10x Genomics GBM</li>
+          <li>→ BANKSY domains, putative cell states and marker maps, each with its own interactive Vitessce portal</li>
+          <li>→ three gbmspace.org atlas sections through the same stack, the paper&apos;s own annotations intact — one is breathing just below</li>
+        </ul>
         <LivingFigure />
       </Reveal>
 
@@ -109,6 +108,7 @@ export default function GbmGallery() {
               <p className="font-mono text-xs text-dim mt-1">{s.source}</p>
               {meta[s.id] && (
                 <p className="font-mono text-xs text-violet/80 mt-2">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse mr-1.5 align-middle" aria-hidden />
                   {meta[s.id].n_spots.toLocaleString()} spots · {meta[s.id].n_clusters} domains · live portal →
                 </p>
               )}
