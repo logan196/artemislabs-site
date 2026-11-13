@@ -29,14 +29,14 @@ export default function BenchmarkSection() {
         <Reveal>
           <p className="font-mono text-sm text-violet mb-4">09 · ARTEMIS BENCHMARKING</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            &ldquo;How does my sample <span className="text-violet">compare?</span>&rdquo;
+            Optimize your next experiment <span className="text-violet">before you run it.</span>
           </h2>
           <p className="mt-6 text-lg text-dim leading-relaxed max-w-xl">
-            That one question is most of bioinformatics. The NIH&rsquo;s archives hold the
-            answer — <span className="text-snow">the world&rsquo;s data, at the tips of your
-            fingers</span> — if someone mines it next to your run. We drop your dataset in
-            beside the public cohorts that matter: same pipeline, same markers, same plots,
-            your tissue against everyone else&rsquo;s.
+            The NIH&rsquo;s archives already hold millions of samples like yours. Before you
+            commit a single section, we mine them — which markers to panel, which regions to
+            expect, how many samples you actually need. Then your run lands beside the public
+            cohorts that matter: <span className="text-snow">same pipeline, same plots, your
+            tissue against the world&rsquo;s.</span>
           </p>
           <div className="mt-8 grid grid-cols-3 gap-4">
             {STATS.map(([n, label]) => (
