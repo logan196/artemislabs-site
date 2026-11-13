@@ -231,6 +231,50 @@ function Chip({ chip, progress, i }) {
   );
 }
 
+function WfRow({ progress, range, name, right, tone = "main", children }) {
+  const [a, b] = range;
+  const opacity = useTransform(progress, [a - 0.012, a], [0, 1]);
+  const bar = useTransform(progress, range, [0, 1]);
+  const runOp = useTransform(progress, [a, b - 0.005, b], [1, 1, 0]);
+  const doneOp = useTransform(progress, [b - 0.005, b], [0, 1]);
+  const excl = tone === "excl";
+  return (
+    <motion.div style={{ opacity }} className="pointer-events-none">
+      <div className="flex items-baseline gap-3">
+        <span className="relative w-[14px] shrink-0 font-mono text-[12px] leading-none">
+          <motion.span style={{ opacity: runOp }} className="absolute inset-0 text-[#9a5b13]">●</motion.span>
+          <motion.span style={{ opacity: doneOp }} className={excl ? "text-magma" : "text-violet"}>
+            {excl ? "⊘" : "✓"}
+          </motion.span>
+        </span>
+        <span className="font-mono text-[11px] md:text-[11.5px] tracking-wide text-snow shrink-0">{name}</span>
+        <span className="flex-1" />
+        <span className="font-mono text-[10.5px] md:text-[11px] text-dim text-right">{right}</span>
+      </div>
+      <div className="mt-1 ml-[26px] h-[3px] rounded-full bg-line/50 overflow-hidden">
+        <motion.div
+          className={`h-full origin-left ${excl ? "bg-magma" : "bg-violet-deep"}`}
+          style={{ scaleX: bar }}
+        />
+      </div>
+      {children}
+    </motion.div>
+  );
+}
+
+function WfTask({ progress, at, label }) {
+  const op = useTransform(progress, [at, at + 0.008], [0, 1]);
+  return (
+    <motion.span
+      style={{ opacity: op }}
+      className="flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 rounded-[3px] border border-line bg-ground/50 text-dim"
+    >
+      <span className="text-violet">✓</span>
+      {label}
+    </motion.span>
+  );
+}
+
 function Connector({ progress, range, vertical = true, dashedTone = false, className = "" }) {
   const pathLength = useTransform(progress, range, [0, 1]);
   return (
@@ -458,58 +502,36 @@ export default function PrismaStory() {
             </div>
           </motion.div>
 
-          {/* ACT 2 · PRISMA FLOW */}
+          {/* ACT 2 · THE WORKFLOW — nf-core-style process board */}
           <motion.div
             style={{ opacity: o2 }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <div className="w-full max-w-3xl grid md:grid-cols-[minmax(0,22rem)_auto_minmax(0,16rem)] md:items-start md:justify-center gap-y-0">
-              {/* main spine */}
-              <div className="flex flex-col items-center">
-                <AnimatedBox progress={scrollYProgress} range={[0.27, 0.3]} className="w-full">
-                  <FlowBox title="records identified">
-                    <p className="font-semibold">
-                      <span ref={idRef} className="text-violet tabular-nums">{N_IDENTIFIED}</span> GEO series
-                    </p>
-                    <p className="text-dim mt-0.5 text-[12px]">
-                      + 2 sources outside GEO (10x Genomics · gbmspace.org)
-                    </p>
-                  </FlowBox>
-                </AnimatedBox>
-                <Connector progress={scrollYProgress} range={[0.3, 0.33]} />
-                <AnimatedBox progress={scrollYProgress} range={[0.33, 0.36]} className="w-full">
-                  <FlowBox title="screened for">
-                    Human GBM · Visium / MERFISH / seqFISH · per-sample spatial files + H&amp;E
-                  </FlowBox>
-                </AnimatedBox>
-                <Connector progress={scrollYProgress} range={[0.42, 0.45]} />
-                <AnimatedBox progress={scrollYProgress} range={[0.45, 0.49]} className="w-full">
-                  <FlowBox title="included in this page's GBM demos">
-                    <IncludedBody nRef={inclRef} />
-                  </FlowBox>
-                </AnimatedBox>
+            <div className="w-full max-w-2xl rounded-[4px] border border-line bg-panel shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between border-b border-line bg-ground/60 px-4 py-2">
+                <span className="font-mono text-[11px] text-dim">workflow: search_to_portal</span>
+                <span className="font-mono text-[10.5px] text-violet">executor · artemis</span>
               </div>
-              {/* branch to exclusions (right on md, below on mobile) */}
-              <div className="hidden md:flex items-center pt-[7.5rem]">
-                <Connector
-                  progress={scrollYProgress}
-                  range={[0.36, 0.39]}
-                  vertical={false}
-                  dashedTone
-                />
+              <div className="p-4 md:p-5 flex flex-col gap-3">
+                <WfRow progress={scrollYProgress} range={[0.275, 0.305]} name="GEO_SEARCH:ESEARCH"
+                  right={<><span ref={idRef} className="text-violet tabular-nums">{N_IDENTIFIED}</span> series · +2 outside GEO</>} />
+                <WfRow progress={scrollYProgress} range={[0.305, 0.335]} name="SCREEN:PLATFORM"
+                  right="Visium · MERFISH · seqFISH" />
+                <WfRow progress={scrollYProgress} range={[0.335, 0.365]} name="SCREEN:FILES"
+                  right={<>per-sample spatial + H&amp;E</>} />
+                <WfRow progress={scrollYProgress} range={[0.365, 0.4]} name="EXCLUDE" tone="excl"
+                  right={<><span ref={exclRef} className="text-magma tabular-nums">{N_NOT_INGESTED}</span> not ingested · not individually adjudicated</>} />
+                <WfRow progress={scrollYProgress} range={[0.4, 0.49]} name="INGEST:SECTIONS"
+                  right={<><span ref={inclRef} className="text-violet tabular-nums">{N_SECTIONS}</span> sections · 3 sources</>}>
+                  <div className="flex flex-wrap gap-1.5 mt-2 ml-[26px]">
+                    {["GBM1", "GBM2", "GBM3", "GBM4", "TenX", "AT10", "AT14", "AT15"].map((d, i) => (
+                      <WfTask key={d} progress={scrollYProgress} at={0.405 + i * 0.01} label={d} />
+                    ))}
+                  </div>
+                </WfRow>
+                <WfRow progress={scrollYProgress} range={[0.49, 0.525]} name="PORTAL:BUILD"
+                  right="live — every included section" />
               </div>
-              <AnimatedBox
-                progress={scrollYProgress}
-                range={[0.39, 0.42]}
-                className="md:pt-[4.6rem] mt-3 md:mt-0"
-              >
-                <FlowBox title="not ingested" tone="excl">
-                  <p className="font-semibold">
-                    <span ref={exclRef} className="text-magma tabular-nums">{N_NOT_INGESTED}</span> GEO series
-                  </p>
-                  <ExclusionBody />
-                </FlowBox>
-              </AnimatedBox>
             </div>
           </motion.div>
 
