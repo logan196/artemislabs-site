@@ -10,8 +10,6 @@ import WhatWeDo from "@/components/WhatWeDo";
 import CatalogSection from "@/components/CatalogSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
-import WetLabSection from "@/components/WetLabSection";
-import PricingSection from "@/components/PricingSection";
 import Cta from "@/components/Cta";
 
 export default function Home() {
@@ -27,11 +25,9 @@ export default function Home() {
       <AnalysisGallery />
       <DeJongSection />
       <WhatWeDo />
-      <WetLabSection />
       <CatalogSection />
       <CopilotSection />
       <ToolsGrid />
-      <PricingSection />
       <Cta />
     </main>
   );

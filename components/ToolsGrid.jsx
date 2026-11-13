@@ -2,6 +2,8 @@
 
 import Reveal, { Stagger, item } from "./Reveal";
 import { motion } from "framer-motion";
+import CodePanel from "./CodePanel";
+import TerminalLive from "./TerminalLive";
 
 const TOOLS = [
   { name: "banksy-pipeline", kind: "agent", desc: "Spatially-aware clustering — BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
@@ -39,18 +41,14 @@ export default function ToolsGrid() {
           ))}
         </Stagger>
 
+        <Reveal className="mt-12 max-w-4xl mx-auto">
+          <CodePanel />
+        </Reveal>
+
         <Reveal delay={0.1} className="mt-12 max-w-4xl mx-auto">
-          <div className="rounded-lg border border-snow/60 overflow-hidden">
-            <div className="flex items-center gap-1.5 bg-ink-2 border-b border-line px-4 py-2.5" aria-hidden>
-              <span className="h-2.5 w-2.5 rounded-full bg-line" />
-              <span className="h-2.5 w-2.5 rounded-full bg-line" />
-              <span className="h-2.5 w-2.5 rounded-full bg-line" />
-              <span className="ml-3 font-mono text-[12px] text-dim">artemis — zsh</span>
-            </div>
-            <img src="artemis_cli.png" alt="Artemis BioLabs CLI showing the spatial transcriptomics agent stack" className="w-full max-h-[420px] object-cover object-top" />
-          </div>
+          <TerminalLive />
           <p className="mt-3 text-[13.5px] text-dim text-center leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The stack, from the terminal.
+            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The stack, from the terminal — a replay of the real GBM3 run.
           </p>
         </Reveal>
       </div>

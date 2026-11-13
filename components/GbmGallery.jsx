@@ -18,6 +18,44 @@ const VIEWS = [
   { id: "he", label: "H&E histology" },
 ];
 
+// The living figure: our prettiest section (AT15, de Jong et al.) breathing
+// between raw H&E and the paper's annotation.
+function LivingFigure() {
+  const [annotated, setAnnotated] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAnnotated(true);
+      return;
+    }
+    const t0 = setTimeout(() => setAnnotated(true), 2000);
+    const iv = setInterval(() => setAnnotated((a) => !a), 4600);
+    return () => { clearTimeout(t0); clearInterval(iv); };
+  }, []);
+  return (
+    <figure className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(28,26,21,0.4)] bg-panel">
+      <span className="relative block aspect-[16/8] overflow-hidden">
+        <img
+          src="dejong/AT15-BRA-4-FO-B2-S25_he.jpg"
+          alt="Glioblastoma serial section AT15: H&E-stained tissue"
+          className="absolute inset-0 w-full h-full object-cover object-top"
+        />
+        <img
+          src="dejong/AT15-BRA-4-FO-B2-S25_overlay.jpg"
+          alt="The same AT15 section with the paper's cell states overlaid"
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-[1800ms] ease-in-out"
+          style={{ opacity: annotated ? 1 : 0 }}
+        />
+      </span>
+      <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
+        <span className="font-semibold text-snow">Fig. 1&nbsp;|</span>{" "}
+        {annotated
+          ? "The same section, annotated — cell2location states from de Jong et al., Nature 2026."
+          : "AT15 · H&E histology, as the slide arrives. Public data: gbmspace.org."}
+      </figcaption>
+    </figure>
+  );
+}
+
 export default function GbmGallery() {
   const [meta, setMeta] = useState({});
   const [active, setActive] = useState("GBM1");
@@ -43,6 +81,7 @@ export default function GbmGallery() {
           unmodified. BANKSY domains, putative cell states, and marker maps, each with
           its own interactive Vitessce portal.
         </p>
+        <LivingFigure />
       </Reveal>
 
       <div className="mt-14 flex flex-col gap-6">

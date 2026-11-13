@@ -1,16 +1,17 @@
 "use client";
 
 import Reveal from "./Reveal";
+import AssayMini from "./AssayMini";
 
 const CORES = [
-  { name: "Single-cell", desc: "Raw reads to annotated atlases · iPSC benchmarking" },
-  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", live: true },
-  { name: "CUT&Tag and chromatin", desc: "Peaks, tracks, differential binding" },
-  { name: "Long-read sequencing", desc: "Isoforms, SVs and methylation" },
-  { name: "Radiomics and imaging", desc: "Segmentation to outcome models" },
-  { name: "Calcium imaging", desc: "Wave detection without hand scoring" },
-  { name: "Clinical data and biostatistics", desc: "Cohorts, trials, survival models" },
-  { name: "Custom apps: DNA Studio", desc: "Plasmid maps from SnapGene files" },
+  { name: "Single-cell", desc: "Raw reads to annotated atlases · iPSC benchmarking", kind: "singlecell" },
+  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", live: true, kind: "spatial" },
+  { name: "CUT&Tag and chromatin", desc: "Peaks, tracks, differential binding", kind: "chromatin" },
+  { name: "Long-read sequencing", desc: "Isoforms, SVs and methylation", kind: "longread" },
+  { name: "Radiomics and imaging", desc: "Segmentation to outcome models", kind: "radiomics" },
+  { name: "Calcium imaging", desc: "Wave detection without hand scoring", kind: "calcium" },
+  { name: "Clinical data and biostatistics", desc: "Cohorts, trials, survival models", kind: "clinical" },
+  { name: "Custom apps: DNA Studio", desc: "Plasmid maps from SnapGene files", kind: "dna" },
 ];
 
 export default function WhatWeDo() {
@@ -30,6 +31,9 @@ export default function WhatWeDo() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
           {CORES.map((c) => (
             <div key={c.name} className="rounded-[4px] border border-line bg-panel/70 p-5">
+              <div className="rounded-[3px] bg-[#efeadd66] mb-3 overflow-hidden">
+                <AssayMini kind={c.kind} height={110} />
+              </div>
               <p className="font-medium text-[17px]">{c.name}</p>
               <p className="text-dim text-[14.5px] mt-1.5">{c.desc}</p>
               {c.live ? (

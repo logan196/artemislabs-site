@@ -22,6 +22,12 @@ const FIGS = [
     cap: "10x GBM — diffusion pseudotime (scanpy DPT, rooted at the SOX2-max spot), on UMAP and on tissue. Exploratory: Visium spots mix cells, so read as a gradient, not a lineage.",
     tag: "c",
   },
+  {
+    src: "analysis/morphology_strip.jpg",
+    alt: "Histological morphology of two glioma sections at three zoom levels",
+    cap: "Morphology up close — the same H&E sections at three zoom levels (top: AT15, de Jong et al.; bottom: GBM2, Ren et al.). Staining density varies with cellularity.",
+    tag: "d",
+  },
 ];
 
 export default function AnalysisGallery() {
