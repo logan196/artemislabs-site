@@ -15,7 +15,7 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata = {
   metadataBase: new URL("https://artemislabs.bio"),
-  title: "Artemis BioLabs · Spatial Transcriptomics, Delivered",
+  title: "Artemis BioLabs · Computational Biology, Accelerated",
   description:
     "Drop in a spatial dataset, get an interactive Vitessce portal — BANKSY clustering, cell-state annotation, and an AI copilot that can run with a local model. Computational biology, delivered.",
   icons: { icon: "artemis_mark.svg" },

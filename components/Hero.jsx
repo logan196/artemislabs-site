@@ -73,7 +73,7 @@ export default function Hero() {
       {/* THE OPENING: the moving dodecahedron introduces the company */}
       <motion.div style={{ opacity: fade }} className="flex-1 flex flex-col items-center justify-center px-6 text-center relative">
         <motion.div style={{ scale }} className="relative w-full max-w-[560px] -mb-10 md:-mb-14" aria-hidden>
-          <BioDodecahedron size={400} labels={false} />
+          <BioDodecahedron size={400} labels={false} helix />
         </motion.div>
 
         <motion.div

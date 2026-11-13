@@ -7,7 +7,7 @@ import DataMorph from "./DataMorph";
 const STAGES = [
   { name: "Load + preprocess", detail: "Any .h5ad or 10x Xenium folder. Counts detected, normalized, log1p — spatial coordinates verified.", mono: "load_h5ad(input)" },
   { name: "BANKSY clustering", detail: "Each spot is embedded with its neighborhood — clusters follow tissue architecture, not just expression.", mono: "λ=0.2 · k=15 · Leiden" },
-  { name: "Cell-state annotation", detail: "Controlled-vocabulary marker agent — Claude in the cloud, or a local model through Ollama.", mono: "AC·MES·NPC·OPC-like vocab" },
+  { name: "Cell-state annotation", detail: "Controlled-vocabulary marker agent — a frontier model in the cloud, or a local model through Ollama.", mono: "AC·MES·NPC·OPC-like vocab" },
   { name: "Vitessce portal", detail: "Chunk-optimized zarr + an interactive portal: spatial view, UMAP, heatmap, marker search.", mono: "portal.html + data.zarr" },
   { name: "Live analysis + copilot", detail: "On-demand differential expression, composition, Moran's I — and a grounded chat on your data.", mono: "DE · Moran's I · chat" },
 ];

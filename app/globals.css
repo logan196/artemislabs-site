@@ -120,3 +120,13 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }
 }
+
+/* reverse-direction marquee for the tools strip */
+@keyframes marquee-scroll-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.marquee-track-rev { animation: marquee-scroll-rev 40s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track-rev { animation: none; }
+}

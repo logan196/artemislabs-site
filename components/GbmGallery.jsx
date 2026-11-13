@@ -170,7 +170,7 @@ export default function GbmGallery() {
             </AnimatePresence>
           </a>
           <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 2&nbsp;|</span> High-resolution H&E with BANKSY domains and cell states called by a local Qwen3-8B agent (the same pipeline runs on Claude when egress is fine) — click any view for full resolution. Public data: GSE194329 (Ren et al., <i>Nat Commun</i> 2023); 10x Genomics Parent Visium. Cell-state labels are model-annotated and not independently validated.
+            <span className="font-semibold text-snow">Fig. 2&nbsp;|</span> High-resolution H&E with BANKSY domains and cell states called by a local Qwen3-8B agent (the same pipeline runs on a frontier cloud model when egress is fine) — click any view for full resolution. Public data: GSE194329 (Ren et al., <i>Nat Commun</i> 2023); 10x Genomics Parent Visium. Cell-state labels are model-annotated and not independently validated.
           </p>
         </div>
       </div>

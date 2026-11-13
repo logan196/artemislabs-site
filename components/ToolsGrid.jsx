@@ -7,10 +7,10 @@ import TerminalLive from "./TerminalLive";
 
 const TOOLS = [
   { name: "banksy-pipeline", kind: "agent", desc: "Spatially-aware clustering — BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
-  { name: "marker-annotator", kind: "agent", desc: "Controlled-vocabulary cell-state calling (AC / MES / NPC / OPC-like + brain TME) from top cluster markers. Claude or local Qwen3." },
+  { name: "marker-annotator", kind: "agent", desc: "Controlled-vocabulary cell-state calling (AC / MES / NPC / OPC-like + brain TME) from top cluster markers. Frontier or local models." },
   { name: "vitessce-forge", kind: "tool", desc: "Any .h5ad or Xenium folder → chunk-optimized zarr + interactive Vitessce portal. One command." },
   { name: "live-analysis", kind: "api", desc: "On-demand differential expression, composition shifts, and Moran's I spatial autocorrelation." },
-  { name: "research-copilot", kind: "agent", desc: "Chat grounded in your portal's facts — clusters, selections, logged DE runs. Runs on Claude, or fully local on qwen3:8b." },
+  { name: "research-copilot", kind: "agent", desc: "Chat grounded in your portal's facts — clusters, selections, logged DE runs. Runs on a frontier model, or fully local on qwen3:8b." },
   { name: "paper-scout", kind: "agent", desc: "PubMed retrieval tuned to your clusters and markers — returns real PMIDs via NCBI E-utilities." },
   { name: "abstract-artist", kind: "agent", desc: "One-command graphical abstracts straight from pipeline results." },
   { name: "cohort-importer", kind: "tool", desc: "Imports published spatial cohorts with their annotations intact — states, niches, histopathology (see the de Jong section)." },

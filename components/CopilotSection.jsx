@@ -29,14 +29,14 @@ export default function CopilotSection() {
           </h2>
           <p className="mt-6 text-lg text-dim leading-relaxed max-w-xl">
             Every portal ships with a research copilot grounded in your dataset — clusters,
-            markers, spatial statistics. Run it on Claude for frontier reasoning, or flip the
+            markers, spatial statistics. Run it on a frontier cloud model, or flip the
             model dropdown to a local open-source model through Ollama and keep the entire
             loop on your own hardware: no API keys, no cloud, no PHI exposure.
           </p>
           <div className="mt-8 flex gap-3 flex-wrap font-mono text-[13px] text-dim">
             <span>local mode: zero egress</span>
             <span aria-hidden>·</span>
-            <span>Claude optional</span>
+            <span>frontier model optional</span>
             <span aria-hidden>·</span>
             <span>grounded in your zarr</span>
           </div>

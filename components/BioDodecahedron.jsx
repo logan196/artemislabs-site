@@ -8,10 +8,10 @@ const LABELS = [
   "Visium", "Xenium", "CODEX", "CosMx", "Visium HD",
   "snRNA-seq", "snATAC", "H&E", "BANKSY", "Leiden",
   "cell2location", "NMF niches", "IvyGAP", "Moran's I", "DE",
-  "UMAP", "Vitessce", "zarr", "Qwen3", "Claude",
+  "UMAP", "Vitessce", "zarr", "Qwen3", "GPU",
 ];
 
-export default function BioDodecahedron({ size = 460, labels = true }) {
+export default function BioDodecahedron({ size = 460, labels = true, helix = false }) {
   const ref = useRef(null);
 
   const { verts, edges } = useMemo(() => {
@@ -71,17 +71,84 @@ export default function BioDodecahedron({ size = 460, labels = true }) {
         ctx.lineTo(pts[j][0], pts[j][1]);
         ctx.stroke();
       }
-      // a slow pulse travelling the edges
+      // signal pulses travelling the edges — five concurrent carriers
       if (!reduced) {
-        const k = Math.floor(t * 1.2) % edges.length;
-        const [i, j] = edges[k];
-        const f = (t * 1.2) % 1;
-        const px = pts[i][0] + (pts[j][0] - pts[i][0]) * f;
-        const py = pts[i][1] + (pts[j][1] - pts[i][1]) * f;
-        ctx.beginPath();
-        ctx.arc(px, py, 3.4, 0, Math.PI * 2);
-        ctx.fillStyle = "#9a5b13";
-        ctx.fill();
+        for (let c = 0; c < 5; c++) {
+          const speed = 0.9 + c * 0.23;
+          const k = Math.floor(t * speed + c * 37) % edges.length;
+          const [i, j] = edges[k];
+          const f = (t * speed + c * 37) % 1;
+          const px = pts[i][0] + (pts[j][0] - pts[i][0]) * f;
+          const py = pts[i][1] + (pts[j][1] - pts[i][1]) * f;
+          ctx.beginPath();
+          ctx.arc(px, py, c === 0 ? 3.4 : 2.4, 0, Math.PI * 2);
+          ctx.fillStyle = c % 2 ? "#0f766e" : "#9a5b13";
+          ctx.globalAlpha = 0.85;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      // DNA double helix threaded through the core
+      if (helix) {
+        const H = Math.min(w, h) * 0.62;
+        const cx = w / 2, cy = h / 2;
+        const turns = 2.2, amp = Math.min(w, h) * 0.075;
+        const N = 46;
+        const strand = (ph) => {
+          const ptsS = [];
+          for (let k = 0; k <= N; k++) {
+            const u = k / N;
+            const ang = u * turns * Math.PI * 2 + (reduced ? 0 : t * 1.1) + ph;
+            const x = cx + Math.sin(ang) * amp;
+            const y = cy - H / 2 + u * H;
+            const depth = Math.cos(ang); // -1 back, 1 front
+            ptsS.push([x, y, depth]);
+          }
+          return ptsS;
+        };
+        const s1 = strand(0), s2 = strand(Math.PI);
+        // rungs (base pairs)
+        for (let k = 2; k < N; k += 4) {
+          const a = s1[k], b = s2[k];
+          const front = (a[2] + b[2]) / 2 > 0;
+          ctx.strokeStyle = front ? "rgba(154,91,19,0.65)" : "rgba(154,91,19,0.22)";
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(a[0], a[1]);
+          ctx.lineTo(b[0], b[1]);
+          ctx.stroke();
+        }
+        for (const s of [s1, s2]) {
+          ctx.beginPath();
+          s.forEach(([x, y], k) => (k ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+          ctx.strokeStyle = "rgba(15,118,110,0.7)";
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+          // depth highlights
+          for (const [x, y, d] of s) {
+            if (d > 0.6) {
+              ctx.beginPath();
+              ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+              ctx.fillStyle = "rgba(17,94,89,0.85)";
+              ctx.fill();
+            }
+          }
+        }
+        // bases drifting off the helix
+        if (!reduced) {
+          ctx.font = "600 11px 'JetBrains Mono', ui-monospace, monospace";
+          for (let g = 0; g < 4; g++) {
+            const u = ((t * 0.13 + g * 0.27) % 1);
+            const src = s1[Math.floor(((g * 11) % N))];
+            const dx = (g % 2 ? 1 : -1) * u * Math.min(w, h) * 0.3;
+            const dy = -u * Math.min(w, h) * 0.18;
+            ctx.globalAlpha = (1 - u) * 0.55;
+            ctx.fillStyle = "#115e59";
+            ctx.fillText("ACGT"[g], src[0] + dx, src[1] + dy);
+            ctx.globalAlpha = 1;
+          }
+        }
       }
       // labeled vertices
       ctx.font = "600 11px 'JetBrains Mono', ui-monospace, monospace";
@@ -121,7 +188,7 @@ export default function BioDodecahedron({ size = 460, labels = true }) {
     };
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, [verts, edges, size, labels]);
+  }, [verts, edges, size, labels, helix]);
 
   return (
     <canvas
