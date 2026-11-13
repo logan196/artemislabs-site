@@ -39,7 +39,7 @@ export default function ImagingSection() {
             />
           </div>
           <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The DTI cohort browser — 15 mice × 3 timepoints, registered to the Allen CCFv3 atlas (100&nbsp;µm): FA mosaics, DEC fiber-orientation maps, in-browser 3D volumes, and per-region trajectories with effect sizes. Preclinical research in progress; group labels blinded; regional labels provisional.
+            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The DTI cohort browser — 15 mice × 3 timepoints, registered to the Allen CCFv3 atlas (100&nbsp;µm): FA mosaics and DEC fiber-orientation maps, with in-browser 3D volumes and per-region trajectories in the full tool. Preclinical research in progress, shown with group labels blinded; regional labels provisional.
           </p>
         </Reveal>
       </div>
