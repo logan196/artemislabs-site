@@ -1,6 +1,7 @@
 "use client";
 
 import Reveal from "./Reveal";
+import GrnConcept from "./GrnConcept";
 
 const FIGS = [
   {
@@ -35,6 +36,28 @@ export default function AnalysisGallery() {
           diffusion pseudotime on demand. All computed from the runs shown above.
         </p>
       </Reveal>
+      {/* museum placards — plain-language concepts, clearly not data */}
+      <Reveal className="mt-10 grid md:grid-cols-2 gap-5">
+        <div className="rounded-[4px] border border-line bg-panel/80 p-6">
+          <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">What's a UMAP?</p>
+          <p className="text-[15.5px] leading-relaxed text-snow/90">
+            A tissue section measures thousands of genes in every spot — far too many
+            dimensions to look at. UMAP folds that space down to two, keeping neighbors
+            close: spots with similar expression land near each other, and the clusters
+            you see are real subpopulations. Some detail is always lost in the fold —
+            which is why every UMAP on this page sits beside the tissue it came from.
+          </p>
+        </div>
+        <div className="rounded-[4px] border border-line bg-panel/80 p-6">
+          <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">Regulatory networks, next</p>
+          <GrnConcept height={220} />
+          <p className="mt-3 text-[13px] text-dim leading-relaxed">
+            Concept sketch — gene-regulatory-network inference (after Kamimoto et al. 2020):
+            expression + chromatin in, transcription-factor modules out. Illustration, not data.
+          </p>
+        </div>
+      </Reveal>
+
       <div className="mt-8 grid gap-6">
         {FIGS.map((f) => (
           <Reveal key={f.src}>

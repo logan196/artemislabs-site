@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Artemis Brain · Whole-Brain MERFISH Atlas - 3,938,808 real cells, one real brain</title>
+<meta name="description" content="An interactive whole-mouse-brain single-cell atlas: all 3,938,808 MERFISH-measured cells rendered live in 3D. Real data, not generated.">
+<link rel="icon" href="artemis_mark.svg">
+<style>
+  :root{
+    --bg:#04060c; --panel:#0a0e18; --line:rgba(120,160,255,.14);
+    --txt:#e8ecf6; --dim:#8b94ad; --accent:#5ac8ff; --gold:#ffc94d;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg);color:var(--txt);overflow:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  #gl{position:fixed;inset:0;display:block;touch-action:none}
+  .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;
+    padding:12px 16px;z-index:20;pointer-events:none}
+  .topbar img{width:26px;height:26px;filter:drop-shadow(0 0 8px rgba(90,200,255,.5))}
+  .brand{font-weight:700;letter-spacing:.14em;font-size:13px}
+  .brand small{display:block;font-weight:500;letter-spacing:.04em;color:var(--dim);font-size:10px;margin-top:1px}
+  .spacer{flex:1}
+  .pill{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:999px;
+    color:var(--dim);font-size:11px;padding:6px 11px;white-space:nowrap}
+  .pill b{color:var(--txt);font-weight:600}
+  .chips{position:fixed;top:56px;left:0;right:0;display:flex;gap:6px;padding:0 16px;z-index:20;
+    overflow-x:auto;scrollbar-width:none;pointer-events:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{pointer-events:auto;flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--dim);
+    border-radius:999px;font-size:11px;padding:6px 12px;cursor:pointer;
+    transition:all .18s ease;user-select:none}
+  .chip:hover{color:var(--txt);border-color:rgba(120,160,255,.35)}
+  .chip.on{color:#04121f;background:var(--accent);border-color:var(--accent);font-weight:600}
+  .chip.gold.on{background:var(--gold);border-color:var(--gold)}
+  .rail{position:fixed;left:16px;bottom:16px;z-index:20;display:flex;flex-direction:column;gap:8px;max-width:330px;width:calc(100vw - 32px)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;}
+  .card h4{font-size:10px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+  .card .big{font-size:22px;font-weight:700;letter-spacing:-.01em}
+  .card p{font-size:11.5px;color:var(--dim);line-height:1.45;margin-top:4px}
+  .card p b{color:var(--txt);font-weight:600}
+  .showme{margin-top:8px;align-self:flex-start;background:none;border:1px solid rgba(255,201,77,.4);color:var(--gold);
+    border-radius:8px;font-size:11px;padding:5px 10px;cursor:pointer;transition:all .15s}
+  .showme:hover{background:rgba(255,201,77,.12)}
+  .ctl{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .ctl .card{padding:10px 12px;font-size:11px;color:var(--dim)}
+  .ctl label{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+  input[type=range]{width:110px;accent-color:var(--accent)}
+  .search{position:fixed;top:104px;left:16px;z-index:20;pointer-events:auto}
+  .search input{width:230px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--txt);
+    font-size:12px;padding:8px 11px;outline:none;}
+  .search input::placeholder{color:var(--dim)}
+  .search .hits{margin-top:4px;max-height:180px;overflow:auto;border-radius:10px}
+  .search .hit{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);
+    border-top:none;color:var(--dim);font-size:11px;padding:7px 11px;cursor:pointer;}
+  .search .hit:hover{color:var(--txt);background:rgba(90,200,255,.1)}
+  .search .hit b{color:var(--txt);font-weight:600}
+  .caption{position:fixed;left:50%;bottom:12%;transform:translateX(-50%);z-index:15;text-align:center;
+    font-size:clamp(18px,3.4vw,30px);font-weight:700;letter-spacing:-.01em;max-width:760px;width:92vw;
+    text-shadow:0 2px 30px rgba(0,0,0,.9);opacity:0;transition:opacity .5s ease;pointer-events:none}
+  .caption small{display:block;font-size:12px;font-weight:500;color:var(--dim);margin-top:8px;letter-spacing:.02em}
+  .caption.show{opacity:1}
+  .skip{position:fixed;right:16px;top:56px;z-index:21;background:var(--panel);border:1px solid var(--line);
+    color:var(--dim);border-radius:999px;font-size:11px;padding:7px 14px;cursor:pointer;}
+  .skip:hover{color:var(--txt)}
+  .loader{position:fixed;inset:0;background:var(--bg);z-index:40;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:14px;transition:opacity .6s ease}
+  .loader.done{opacity:0;pointer-events:none}
+  .loader img{width:44px;height:44px;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{50%{filter:drop-shadow(0 0 18px rgba(90,200,255,.9))}}
+  .loader .bar{width:min(300px,70vw);height:3px;background:rgba(120,160,255,.15);border-radius:2px;overflow:hidden}
+  .loader .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .2s}
+  .loader .mb{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .loader .src{font-size:10px;color:rgba(139,148,173,.7);max-width:300px;text-align:center;line-height:1.5}
+  .src-pop{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(2,4,8,.7);}
+  .src-pop.open{display:flex}
+  .src-pop .card{max-width:430px;width:92vw;max-height:80vh;overflow:auto}
+  .src-pop h4{margin-bottom:8px}
+  .src-pop p,.src-pop li{font-size:12px;color:var(--dim);line-height:1.55}
+  .src-pop a{color:var(--accent);text-decoration:none}
+  .src-pop ul{padding-left:16px;margin-top:6px}
+  .src-pop .close{margin-top:12px}
+  @media (max-width:640px){
+    .rail{max-width:210px}
+    .card .big{font-size:17px}
+    .search input{width:170px}
+    .pill.optional{display:none}
+  }
+  .frame{position:fixed;inset:14px;border:1px solid rgba(120,180,255,.10);z-index:9;pointer-events:none;
+    background-image:linear-gradient(rgba(120,180,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(120,180,255,.045) 1px,transparent 1px);
+    background-size:72px 72px;background-position:center}
+  .anno{position:fixed;z-index:16;pointer-events:none;background:rgba(10,16,28,.82);border:1px solid rgba(130,170,230,.16);
+    padding:8px 12px;font-size:13px;color:#dfe7f5;letter-spacing:.01em;opacity:0;transition:opacity .3s;max-width:340px;}
+  .anno.show{opacity:1}
+  .anno .t{font-weight:600}
+  .anno .s{font-size:11px;color:#8fa3c0;margin-top:3px}
+  .anno.foot{left:24px;right:auto;bottom:22px;top:auto;transform:none;max-width:520px;background:none;border:none;padding:0}
+  .anno.foot .t{font-weight:500;color:#9fb2cc;font-size:12px}
+  .anno.foot .s{font-size:11px;color:#66788f}
+  .frail{position:fixed;right:28px;top:120px;z-index:16;pointer-events:none;font-size:11px;color:#9fb2cc;
+    opacity:0;transition:opacity .3s;text-align:right;line-height:1.9}
+  .frail.show{opacity:1}
+  .frail b{color:#e8eef8;font-weight:600;font-variant-numeric:tabular-nums}
+  .frail .k{display:inline-block;min-width:64px;color:#5f7288;text-align:left;margin-right:8px;font-size:10px;letter-spacing:.08em}
+  .frail .row{border-bottom:1px solid rgba(130,170,230,.10);padding:2px 0}
+  .stepper{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:16;pointer-events:none;display:flex;gap:10px;opacity:0;transition:opacity .3s}
+  .stepper.show{opacity:1}
+  .stepper i{font-style:normal;font-size:10px;color:#5f7288;border:1px solid rgba(130,170,230,.15);padding:2px 7px;letter-spacing:.1em}
+  .stepper i.on{color:#dfe7f5;border-color:rgba(150,190,255,.45);background:rgba(120,170,255,.08)}
+  #leader{position:fixed;inset:0;z-index:15;pointer-events:none}
+  @media (max-width:700px){
+    .rail{left:8px;right:8px;bottom:8px;max-width:none;width:auto;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
+    .rail .card{min-width:215px;flex:0 0 auto;padding:10px 12px}
+    body.playing .rail, body.playing #ctl, body.playing .search{display:none !important}
+    body.playing #chips{top:64px}
+    #chips{overflow-x:auto;flex-wrap:nowrap;max-width:100vw;scrollbar-width:none}
+    #chips::-webkit-scrollbar{display:none}
+    .skip{top:auto !important;bottom:210px;right:12px}
+    #ctl{bottom:118px;right:8px}
+    .rail{bottom:8px}
+    .search input{width:150px}
+    #hdr{flex-wrap:wrap}
+    #hdr .pill{font-size:11px;padding:4px 10px}
+    .frail{right:12px;top:70px;font-size:10px}
+  }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div class="topbar">
+  <img src="artemis_mark.svg" alt="Artemis BioLabs">
+  <div class="brand" style="text-transform:lowercase;letter-spacing:.06em">artemis<small>Whole-Brain Atlas</small></div>
+  <div class="spacer"></div>
+  <div class="pill"><b id="cellcount">…</b> cells</div>
+  <div class="pill optional" id="fpspill">… fps</div>
+  <button class="pill" id="srcbtn" style="cursor:pointer">dataset + provenance</button>
+</div>
+
+<div class="chips" id="chips" style="display:none">
+  <button class="chip on" data-mode="0">Neurotransmitter</button>
+  <button class="chip" data-mode="1">Class</button>
+  <button class="chip" data-mode="2">Subclass · 338</button>
+  <button class="chip" id="wmchip">white matter</button>
+  <button class="chip gold" id="tourchip">guided tour</button>
+  <button class="chip gold" data-mode="gene" data-gene="6">Slc6a3 dopamine</button>
+  <button class="chip gold" data-mode="gene" data-gene="7">Slc6a4 serotonin</button>
+  <button class="chip gold" data-mode="gene" data-gene="4">Slc17a7 glutamate</button>
+  <button class="chip gold" data-mode="gene" data-gene="1">Slc32a1 GABA</button>
+  <button class="chip" id="replay">replay intro</button>
+</div>
+
+<div class="search" id="searchbox" style="display:none">
+  <input id="search" type="text" placeholder="Search 338 subclasses + 5,320 clusters - try 'dopa'" autocomplete="off">
+  <div class="hits" id="hits"></div>
+</div>
+
+<div class="rail" id="rail" style="display:none"></div>
+
+<div class="ctl" id="ctl" style="display:none">
+  <div class="card"><label>slice <input type="range" id="slice" min="5" max="100" value="100"></label></div>
+  <div class="card"><label><input type="checkbox" id="bloom" checked> glow</label></div>
+  <div class="card"><label><input type="checkbox" id="spin" checked> auto-rotate</label></div>
+</div>
+
+<div class="caption" id="caption"></div>
+<div class="frame" id="frame" style="display:none"></div>
+<svg id="leader" style="display:none"><line x1="0" y1="0" x2="0" y2="0" stroke="rgba(170,200,240,.55)" stroke-width="1"/><circle r="2.5" fill="rgba(170,200,240,.9)"/></svg>
+<div class="anno" id="anno"></div>
+<div class="frail" id="frail"></div>
+<div class="stepper" id="stepper"></div>
+<button class="skip" id="skip" style="display:none">Skip intro</button>
+
+<div class="src-pop" id="srcpop">
+  <div class="card">
+    <h4>THE DATASET</h4>
+    <p id="srctext"></p>
+    <ul>
+      <li><b>Atlas:</b> Allen Brain Cell Atlas, whole mouse brain, dataset <b>MERFISH-C57BL6J-638850</b> (release 20241115), one adult male C57BL6J mouse, 59 coronal sections.</li>
+      <li><b>Assay:</b> MERFISH (multiplexed error-robust fluorescence in situ hybridization) - single-molecule RNA imaging. Every cell's position is measured in tissue, not computationally placed.</li>
+      <li><b>Coordinate frame:</b> Allen Mouse Common Coordinate Framework v3 (CCFv3), millimeters. Bounds here: x 0.46-10.63, y 1.39-9.27, z 0-15 mm.</li>
+      <li><b>Taxonomy:</b> official WMB taxonomy and colors from the deposit - 34 classes / 338 subclasses / 1,201 supertypes / 5,320 clusters, neurotransmitter assignments per cell.</li>
+    </ul>
+    <h4 style="margin-top:14px">INGESTION LEDGER - EXACTLY WHAT WE PULLED</h4>
+    <ul>
+      <li><b>cell_metadata_with_cluster_annotation.csv</b> - CSV, 1.02 GB, <i>metadata/MERFISH-C57BL6J-638850/20241115/views/</i>. All 3,938,808 cells: CCFv3 coordinates, taxonomy ids at 4 levels, neurotransmitter, official colors.</li>
+      <li><b>example_genes_all_cells_expression.csv</b> - CSV, 360 MB, same folder. Log2-normalized measured expression, 8 genes (Slc17a6, Slc32a1, Tac2, Slc6a5, Slc17a7, Slc17a8, Slc6a3, Slc6a4) for every cell. Joined to the metadata on cell_label: <b>0 unmatched</b>.</li>
+      <li><b>C57BL6J-638850-log2.h5ad</b> - AnnData/HDF5, 7.6 GB, <i>expression_matrices/20230830/</i>, the 550-gene MERFISH panel x 4,334,174 profiled cells. Used for verification and additional gene columns where the panel covers them.</li>
+    </ul>
+    <h4 style="margin-top:14px">WHAT STREAMS TO YOUR BROWSER</h4>
+    <ul>
+      <li>manifest.json (643 KB): taxonomy names, official colors, counts, data bounds.</li>
+      <li>8 binary shards, 78.8 MB total: every cell as a 20-byte record - 16-bit CCFv3 position, taxonomy ids, neurotransmitter, and the 8 genes quantized to 256 levels. No server-side rendering; your GPU decodes and draws all 3,938,808 points.</li>
+      <li>centroids.json: the true centroid of all 338 subclasses and 5,320 clusters, computed from the cells - that is what the search box dives to.</li>
+    </ul>
+    <h4 style="margin-top:14px">REVIEW NOTES (FOR SCIENTISTS)</h4>
+    <ul>
+      <li>Gene-positive counts = cells with measured normalized expression &gt; 0 for that gene. Dopamine card: Slc6a3 &gt; 0 = <b>217,516</b> cells. The 256-level quantization preserves the positive/zero boundary exactly (verified: identical counts before and after packing).</li>
+      <li>Excite/inhibit: glutamatergic = Glut + Glut-GABA (1,393,153); GABAergic = GABA + GABA-Glyc + Glut-GABA (844,132). Co-releasing cells are counted in both groups, so the shares are of the combined 2,237,285, not of all neurons.</li>
+      <li>Non-neuronal cells (1,684,596, no assigned neurotransmitter) are included in every view and every total.</li>
+      <li>Position quantization for GPU transfer: 16-bit per axis over the data bounds, worst-case error about 0.16 microns. <b>No downsampling</b>: all 3,938,808 cells are rendered.</li>
+      <li>The 550-gene panel does not include Agrp, Npy, Pomc, or Gcg. Any hunger/satiety scenes on this site therefore show real taxonomy-defined populations or panel genes (e.g. Cartpt, Th, Dbh), and captions say which is which.</li>
+    </ul>
+    <ul>
+      <li>Dataset: <a href="https://alleninstitute.github.io/abc_atlas_access/descriptions/MERFISH-C57BL6J-638850.html" target="_blank" rel="noopener">Allen Brain Cell Atlas — MERFISH whole mouse brain (C57BL6J-638850)</a></li>
+      <li>Reference: Yao, Z., van Velthoven, C. T. J., Kunst, M., Zhang, M., et al. (2023). A high-resolution transcriptomic and spatial atlas of cell types in the whole mouse brain. <i>Nature, 624</i>, 317–332. <a href="https://doi.org/10.1038/s41586-023-06812-z" target="_blank" rel="noopener">doi:10.1038/s41586-023-06812-z</a></li>
+      <li>Coordinates: Allen Mouse Common Coordinate Framework (CCFv3), mm. Colors: official WMB taxonomy colors from the deposit.</li>
+      <li>License: CC BY-NC 4.0 (Allen Institute). All counts on this page recomputed from the deposited files.</li>
+      <li>Built by Artemis BioLabs. Every dot is one measured cell — nothing generated, nothing sampled.</li>
+    </ul>
+    <button class="showme close" id="srcclose">close</button>
+  </div>
+</div>
+
+<div class="loader" id="loader">
+  <img src="artemis_mark.svg" alt="">
+  <div class="bar"><i id="bar"></i></div>
+  <div class="mb" id="mb">connecting…</div>
+  <div class="src">Allen Brain Cell Atlas · whole-mouse-brain MERFISH<br>Yao et al., Nature (2023) · packed binary, streamed</div>
+</div>
+
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/"}}
+</script>
+<script type="module" src="/main.js"></script>
+</body>
+</html>

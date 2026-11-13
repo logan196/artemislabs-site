@@ -10,6 +10,7 @@ import WhatWeDo from "@/components/WhatWeDo";
 import CatalogSection from "@/components/CatalogSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
+import PricingSection from "@/components/PricingSection";
 import Cta from "@/components/Cta";
 
 export default function Home() {
@@ -28,6 +29,7 @@ export default function Home() {
       <CatalogSection />
       <CopilotSection />
       <ToolsGrid />
+      <PricingSection />
       <Cta />
     </main>
   );
