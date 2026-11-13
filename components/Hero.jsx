@@ -83,7 +83,10 @@ export default function Hero() {
           transition={{ duration: 0.9, delay: 0.4, ease: [0.21, 0.6, 0.27, 1] }}
           className="relative"
         >
-          <h1 className="text-[2.6rem] leading-[1.04] sm:text-6xl xl:text-[5.2rem] font-semibold tracking-tight">
+          <h1
+            className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5rem] font-semibold tracking-[0.015em]"
+            style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
+          >
             <Decode text="ARTEMIS" delay={500} />{" "}
             <Decode text="BIOLABS" delay={1200} className="text-violet" />
           </h1>

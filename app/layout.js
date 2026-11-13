@@ -1,9 +1,16 @@
-import { Source_Serif_4, JetBrains_Mono } from "next/font/google";
+import { Source_Serif_4, JetBrains_Mono, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 
 const serif = Source_Serif_4({
   variable: "--font-serif",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const grotesk = Schibsted_Grotesk({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -31,7 +38,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${serif.variable} ${jetbrains.variable} antialiased`}>
+    <html lang="en" className={`${serif.variable} ${jetbrains.variable} ${grotesk.variable} antialiased`}>
       <body className="bg-ink text-snow font-sans overflow-x-hidden">{children}</body>
     </html>
   );

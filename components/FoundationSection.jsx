@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import Reveal, { Stagger, item } from "./Reveal";
+import Reveal from "./Reveal";
 
 /* ---------------------------------------------------------------------------
  * Ambient "model reads the slide" concept animation.
@@ -314,121 +314,7 @@ function CompareSlider() {
   );
 }
 
-/* ---------------------------------------------------------------------------
- * Step-2 micro-canvas: drifting points settle into clusters.
- * Deterministic positions (golden-angle fan around fixed centers) and
- * explicitly labeled a concept — these are not real embedding vectors.
- * ------------------------------------------------------------------------- */
-
-const EMB_CLUSTERS = [
-  { cx: 19, cy: 15 },
-  { cx: 51, cy: 30 },
-  { cx: 80, cy: 13 },
-];
-const EMB_POINTS = EMB_CLUSTERS.flatMap((c, ci) =>
-  Array.from({ length: 7 }, (_, i) => {
-    const a = i * 2.399 + ci * 1.7;
-    const r = 2.4 + 3.6 * (((i * 37 + ci * 11) % 5) / 5);
-    return {
-      sx: 8 + (((ci * 7 + i * 13) % 17) / 16) * 84,
-      sy: 5 + (((ci * 5 + i * 29) % 13) / 12) * 33,
-      x: c.cx + r * Math.cos(a),
-      y: c.cy + r * Math.sin(a),
-      d: (i + ci * 7) * 0.055,
-      o: 0.4 + 0.45 * (((i + ci) % 3) / 2),
-    };
-  })
-);
-
-function EmbeddingCanvas() {
-  const ref = useRef(null);
-  const reduced = useReducedMotion();
-  const inView = useInView(ref, { amount: 0.5, once: true });
-  const play = inView && !reduced;
-
-  return (
-    <div ref={ref} className="mt-4">
-      <div className="rounded-[3px] border border-line bg-ink/70 px-1.5 pt-1.5 pb-1 overflow-hidden">
-        <svg viewBox="0 0 100 44" className="block w-full h-auto" aria-hidden="true">
-          {reduced ? (
-            EMB_POINTS.map((p, i) => (
-              <circle key={i} cx={p.x} cy={p.y} r="1.5" fill="#0f766e" fillOpacity={p.o} />
-            ))
-          ) : (
-            <motion.g
-              animate={play ? { x: [0, 1.4, 0, -1.4, 0] } : { x: 0 }}
-              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            >
-              {EMB_POINTS.map((p, i) => (
-                <motion.circle
-                  key={i}
-                  r="1.5"
-                  fill="#0f766e"
-                  initial={{ x: p.sx, y: p.sy, opacity: 0.12 }}
-                  animate={play ? { x: p.x, y: p.y, opacity: p.o } : undefined}
-                  transition={{ duration: 1.7, delay: 0.25 + p.d, ease: [0.21, 0.6, 0.27, 1] }}
-                />
-              ))}
-              {EMB_CLUSTERS.map((c, i) => (
-                <motion.circle
-                  key={`ring${i}`}
-                  cx={c.cx}
-                  cy={c.cy}
-                  r="8.5"
-                  fill="none"
-                  stroke="#0f766e"
-                  strokeWidth="0.5"
-                  initial={{ opacity: 0 }}
-                  animate={play ? { opacity: 0.35 } : undefined}
-                  transition={{ duration: 0.8, delay: 2.1 + i * 0.15 }}
-                />
-              ))}
-            </motion.g>
-          )}
-        </svg>
-      </div>
-      <p className="mt-1.5 font-mono text-[9.5px] text-dim">
-        embedding space — concept, not real vectors
-      </p>
-    </div>
-  );
-}
-
-const STEPS = [
-  {
-    n: "1",
-    title: "your archive of H&E slides",
-    body: "Every pathology department already has decades of them — stained, scanned, and otherwise silent.",
-  },
-  {
-    n: "2",
-    title: "foundation-model embeddings",
-    body: "UNI, Virchow-class encoders turn each tile into a vector that already carries morphology's structure.",
-    canvas: true,
-  },
-  {
-    n: "3",
-    title: "fine-tuned on your measured spatial pairs",
-    body: "Your cell2location maps become the labels → predicted molecular maps on every archived slide.",
-    tag: "capability we build with you — not shown as results",
-  },
-];
-
-const CHIPS = [
-  "self-supervised on massive slide archives",
-  "embeddings transfer across stains & scanners",
-  "your spatial runs become the labels",
-];
-
-const STEP_DELAY = 0.45;
-const easeHouse = [0.21, 0.6, 0.27, 1];
-
 export default function FoundationSection() {
-  const flowRef = useRef(null);
-  const reduced = useReducedMotion();
-  const flowInView = useInView(flowRef, { once: true, margin: "-80px" });
-  const flowIn = flowInView || reduced;
-
   return (
     <section id="foundation" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
@@ -437,8 +323,6 @@ export default function FoundationSection() {
           The slide already knows.
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          So far, everything on this page works on data you paid to generate. The
-          cheapest data you own is still waiting.
           Every lab has H&E — it costs almost nothing and it's already in the archive;
           spatial profiling costs thousands per section, so almost nobody has it at scale.
           Pathology foundation models (UNI, Virchow, CONCH, Prov-GigaPath) are learning to
@@ -454,88 +338,13 @@ export default function FoundationSection() {
             <span className="font-semibold text-snow">Fig. 7&nbsp;|</span> AT14 section,
             de Jong et al., Nature 2026 (gbmspace.org). Left: H&E. Right: cell2location-estimated
             cell-state abundances (deconvolved from measured Visium) — the supervision pairs for H&E→molecular
-            prediction. Deconvolved from measured Visium; no H&E-derived predictions shown. Drag the handle (or use
+            prediction; no H&E-derived predictions shown. Drag the handle (or use
             arrow keys) to compare.
           </figcaption>
         </figure>
-      </Reveal>
-
-      {/* 3-step flow — tiles light in sequence, connector draws in */}
-      <div ref={flowRef} className="mt-14">
-        <div className="relative grid md:grid-cols-3 gap-5 md:gap-10">
-          {/* connector line behind the tiles (desktop) — draws left → right */}
-          <motion.div
-            aria-hidden="true"
-            className="hidden md:block absolute top-1/2 left-[8%] right-[8%] h-px bg-violet/50 -z-10 origin-left"
-            initial={reduced ? false : { scaleX: 0 }}
-            animate={flowIn ? { scaleX: 1 } : undefined}
-            transition={{ delay: 0.25, duration: 1.4, ease: "easeInOut" }}
-          />
-          {STEPS.map((s, i) => (
-            <div key={s.n} className="relative">
-              {/* mobile connector — draws top → bottom before its tile */}
-              {i > 0 && (
-                <motion.div
-                  aria-hidden="true"
-                  className="md:hidden mx-auto mb-5 h-6 w-px bg-violet/50 origin-top"
-                  initial={reduced ? false : { scaleY: 0 }}
-                  animate={flowIn ? { scaleY: 1 } : undefined}
-                  transition={{ delay: i * STEP_DELAY - 0.15, duration: 0.35, ease: "easeOut" }}
-                />
-              )}
-              <motion.div
-                className="relative h-full rounded-[3px] border border-line bg-panel p-6"
-                initial={reduced ? false : { opacity: 0, y: 18 }}
-                animate={flowIn ? { opacity: 1, y: 0 } : undefined}
-                transition={{ delay: i * STEP_DELAY, duration: 0.6, ease: easeHouse }}
-              >
-                {/* teal light-up pulse as each step comes online */}
-                {!reduced && (
-                  <motion.div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 rounded-[3px] ring-1 ring-violet"
-                    initial={{ opacity: 0 }}
-                    animate={flowIn ? { opacity: [0, 0.75, 0] } : undefined}
-                    transition={{ delay: 0.2 + i * STEP_DELAY, duration: 1.1, times: [0, 0.35, 1] }}
-                  />
-                )}
-                <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">
-                  {s.n} · {s.title}
-                </p>
-                <p className="text-[14.5px] leading-relaxed text-snow/90">{s.body}</p>
-                {s.canvas && <EmbeddingCanvas />}
-                {s.tag && (
-                  <p className="mt-4 inline-block font-mono text-[11px] text-magma border border-magma/40 rounded-[3px] px-2.5 py-1">
-                    {s.tag}
-                  </p>
-                )}
-              </motion.div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* why now */}
-      <Reveal delay={0.1} className="mt-10">
-        <Stagger className="flex flex-wrap items-center gap-3">
-          <span className="font-mono text-[11px] tracking-[0.25em] text-dim uppercase mr-1">
-            why now
-          </span>
-          {CHIPS.map((c) => (
-            <motion.span
-              key={c}
-              variants={item}
-              className="font-mono text-xs text-dim border border-line bg-panel/60 rounded-full px-4 py-1.5"
-            >
-              {c}
-            </motion.span>
-          ))}
-        </Stagger>
         <p className="mt-6 max-w-2xl text-[15px] text-dim leading-relaxed">
-          We haven't trained this model — nobody should claim that lightly. What we do is
-          build and fine-tune it <span className="text-snow">per lab</span>: your slides,
-          your measured spatial runs as ground truth, your archive unlocked. And your
-          archive is only the one you own — the world keeps a bigger one.
+          Bring the archive — we build the model <span className="text-snow">with your lab</span>:
+          your slides, your measured spatial runs as the labels.
         </p>
       </Reveal>
     </section>

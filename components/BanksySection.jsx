@@ -220,18 +220,19 @@ export default function BanksySection() {
         <div className="relative flex-1 max-w-5xl w-full mx-auto">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           {/* persistent card; only the text crossfades, so the backdrop never ghosts */}
-          <div className="absolute bottom-8 left-6 md:left-10 w-[26rem] max-w-[85vw] min-h-[7.6rem] rounded-[4px] bg-panel/95 border border-line shadow-sm p-4">
-            <motion.p style={{ opacity: cap1 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
+          <div className="absolute bottom-8 left-6 md:left-10 w-[26rem] max-w-[85vw] rounded-[4px] bg-panel/95 border border-line shadow-sm p-4 grid">
+            {/* grid-stacked so the card sizes to the tallest caption — nothing overflows */}
+            <motion.p style={{ opacity: cap1 }} className="col-start-1 row-start-1 text-dim text-[16px] leading-relaxed">
               A glioblastoma section. GFAP lights up{" "}
               <span className="text-snow">reactive astrocytes and astrocyte-like tumor
               states alike</span> — spot-by-spot clustering reads them as one blur.
             </motion.p>
-            <motion.p style={{ opacity: cap2 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
+            <motion.p style={{ opacity: cap2 }} className="col-start-1 row-start-1 text-dim text-[16px] leading-relaxed">
               BANKSY embeds every spot <span className="text-snow">with its neighborhood</span> —
               its own expression, the average of the ring of spots around it, and how that
               average changes around the ring. Place becomes part of identity.
             </motion.p>
-            <motion.p style={{ opacity: cap3 }} className="absolute inset-4 text-dim text-[17px] leading-relaxed">
+            <motion.p style={{ opacity: cap3 }} className="col-start-1 row-start-1 text-dim text-[16px] leading-relaxed">
               Now they separate: <span className="text-snow">putative astrocytes apart from
               NPC- and MES-like tumor states</span>, each domain annotated by its own
               parallel subagent. Real GBM1 section, 4,764 spots; labels model-annotated.
