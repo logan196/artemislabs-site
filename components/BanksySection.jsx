@@ -76,6 +76,13 @@ export default function BanksySection() {
       const resolve = Math.min(1, Math.max(0, (p - 0.5) / 0.35));
       const t = performance.now() / 1000;
 
+      // Aspect-corrected mapping: keep the tissue blob blob-shaped on tall
+      // (mobile) canvases instead of smearing into horizontal stripes.
+      const sh = Math.min(h, w * 0.78);
+      const oy = (h - sh) / 2;
+      const px = (nx) => nx * w;
+      const py = (ny) => oy + ny * sh;
+
       // neighbour rings on a rotating subset
       if (ringPhase > 0 && resolve < 1) {
         const n = Math.floor(ringPhase * 10);
@@ -83,13 +90,13 @@ export default function BanksySection() {
           const s = spots[(k * 97 + Math.floor(t) * 13) % spots.length];
           const pulse = 14 + Math.sin(t * 2.4 + k) * 3;
           ctx.beginPath();
-          ctx.arc(s.x * w, s.y * h, pulse, 0, Math.PI * 2);
+          ctx.arc(px(s.x), py(s.y), pulse, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(94,234,212,${0.5 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 1.2;
           ctx.stroke();
           // azimuthal sweep
           ctx.beginPath();
-          ctx.arc(s.x * w, s.y * h, pulse, t * 1.8 + k, t * 1.8 + k + 1.1);
+          ctx.arc(px(s.x), py(s.y), pulse, t * 1.8 + k, t * 1.8 + k + 1.1);
           ctx.strokeStyle = `rgba(34,211,238,${0.85 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 2;
           ctx.stroke();
@@ -99,19 +106,28 @@ export default function BanksySection() {
       for (const s of spots) {
         const color = resolve > 0 ? hexLerp(s.noisy, DOMAINS[s.domain].color, resolve) : s.noisy;
         ctx.beginPath();
-        ctx.arc(s.x * w, s.y * h, 3.1, 0, Math.PI * 2);
+        ctx.arc(px(s.x), py(s.y), 3.1, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.globalAlpha = 0.9;
         ctx.fill();
       }
       ctx.globalAlpha = 1;
 
-      // domain labels once resolved
+      // domain labels once resolved — pill behind each so they read over dots.
+      // NOTE: CSS vars are invalid in Canvas2D font strings; hardcode the face.
       if (resolve > 0.75) {
-        ctx.font = "12px var(--font-jetbrains), monospace";
+        const a = Math.min(1, (resolve - 0.75) * 4);
+        ctx.font = "600 13px 'JetBrains Mono', ui-monospace, monospace";
         for (const d of DOMAINS) {
-          ctx.fillStyle = `rgba(233,246,245,${(resolve - 0.75) * 4})`;
-          ctx.fillText(d.label, d.cx * w - 28, d.cy * h - 26);
+          const tw = ctx.measureText(d.label).width;
+          const lx = px(d.cx) - tw / 2;
+          const ly = py(d.cy) - 30;
+          ctx.fillStyle = `rgba(5,13,14,${0.78 * a})`;
+          ctx.beginPath();
+          ctx.roundRect(lx - 8, ly - 14, tw + 16, 21, 10);
+          ctx.fill();
+          ctx.fillStyle = `rgba(233,246,245,${a})`;
+          ctx.fillText(d.label, lx, ly + 2);
         }
       }
       raf = requestAnimationFrame(draw);
@@ -120,12 +136,13 @@ export default function BanksySection() {
     return () => cancelAnimationFrame(raf);
   }, [scrollYProgress, spots]);
 
-  const cap1 = useTransform(scrollYProgress, [0, 0.15, 0.25], [1, 1, 0]);
-  const cap2 = useTransform(scrollYProgress, [0.25, 0.35, 0.5, 0.6], [0, 1, 1, 0]);
-  const cap3 = useTransform(scrollYProgress, [0.6, 0.72, 1], [0, 1, 1]);
+  // Contiguous windows — no dead zones where all three captions are ghosts.
+  const cap1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
+  const cap2 = useTransform(scrollYProgress, [0.3, 0.38, 0.52, 0.6], [0, 1, 1, 0]);
+  const cap3 = useTransform(scrollYProgress, [0.6, 0.7, 1], [0, 1, 1]);
 
   return (
-    <section id="banksy" ref={wrapRef} className="relative h-[320vh]">
+    <section id="banksy" ref={wrapRef} className="relative h-[220vh] md:h-[320vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         <div className="px-6 md:px-14 pt-16 md:pt-20 max-w-7xl mx-auto w-full">
           <p className="font-mono text-sm text-violet mb-3">02 · BANKSY</p>
@@ -135,16 +152,17 @@ export default function BanksySection() {
         </div>
         <div className="relative flex-1 max-w-5xl w-full mx-auto">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-          <div className="absolute bottom-10 left-6 md:left-10 w-[26rem] max-w-[85vw]">
-            <motion.p style={{ opacity: cap1 }} className="absolute bottom-0 w-full text-dim text-lg leading-relaxed rounded-2xl bg-ink/70 backdrop-blur-sm p-4">
+          {/* persistent card; only the text crossfades, so the backdrop never ghosts */}
+          <div className="absolute bottom-8 left-6 md:left-10 w-[26rem] max-w-[85vw] min-h-[7.6rem] rounded-2xl bg-ink/75 backdrop-blur-sm p-4">
+            <motion.p style={{ opacity: cap1 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
               Standard clustering sees each spot alone — expression without place. The
               tissue dissolves into noise.
             </motion.p>
-            <motion.p style={{ opacity: cap2 }} className="absolute bottom-0 w-full text-dim text-lg leading-relaxed rounded-2xl bg-ink/70 backdrop-blur-sm p-4">
+            <motion.p style={{ opacity: cap2 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
               BANKSY embeds every spot <span className="text-snow">with its neighborhood</span> —
               mean expression and an azimuthal gradient over the k-nearest ring.
             </motion.p>
-            <motion.p style={{ opacity: cap3 }} className="absolute bottom-0 w-full text-dim text-lg leading-relaxed rounded-2xl bg-ink/70 backdrop-blur-sm p-4">
+            <motion.p style={{ opacity: cap3 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
               Domains emerge that follow the anatomy — tumor states, immune niches,
               hypoxic zones — <span className="text-snow">ready for annotation.</span>
             </motion.p>
