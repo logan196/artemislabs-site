@@ -26,7 +26,7 @@ export default function Cta() {
 
       <div className="max-w-3xl mx-auto text-center mt-24">
         <Reveal>
-          <img src="artemis_icon.svg" alt="" className="h-12 w-12 rounded-xl mx-auto mb-8 glow-ring" />
+          <img src="artemis_mark.svg" alt="" className="h-16 w-16 mx-auto mb-8" />
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Your data has a story.
           </h2>
@@ -45,9 +45,12 @@ export default function Cta() {
       </div>
 
       <footer className="mt-24 border-t border-line pt-8 flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
-        <img src="artemis_logo_white.svg" alt="Artemis Labs" className="h-5 opacity-90" />
+        <span className="flex items-center gap-3">
+          <img src="artemis_mark.svg" alt="" className="h-8" />
+          <span className="font-semibold tracking-[0.18em] text-[14px]">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
+        </span>
         <p className="font-mono text-[13px] text-dim">
-          © 2026 Artemis Labs · computational biology, delivered · artemislabs.bio
+          © 2026 Artemis BioLabs · computational biology, delivered · artemislabs.bio
         </p>
       </footer>
     </section>

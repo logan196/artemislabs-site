@@ -1,18 +1,20 @@
 @import "tailwindcss";
 
+/* Academic-manuscript theme: LaTeX paper ground, serif voice, teal accent.
+   Token NAMES are unchanged so every component restyles automatically. */
 @theme {
-  --color-ink: #050d0e;
-  --color-ink-2: #081517;
-  --color-panel: #0b1a1d;
-  --color-line: #1b3a3e;
-  --color-snow: #e9f6f5;
-  --color-dim: #7fa6a4;
-  --color-violet: #2dd4bf;       /* primary accent — teal (token name kept for class compat) */
-  --color-violet-deep: #0d9488;  /* deep teal */
-  --color-magma: #22d3ee;        /* secondary accent — cyan */
-  --color-mint: #34d399;
-  --color-amber: #fbbf24;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #f7f4ec;          /* paper ground */
+  --color-ink-2: #efeadd;        /* deeper paper band */
+  --color-panel: #fffdf7;        /* card / figure panel */
+  --color-line: #d8d2c2;         /* hairline rules */
+  --color-snow: #1c1a15;         /* body ink */
+  --color-dim: #5f5b50;          /* secondary ink */
+  --color-violet: #0f766e;       /* accent — deep teal */
+  --color-violet-deep: #115e59;  /* buttons */
+  --color-magma: #9a5b13;        /* secondary accent — sepia amber */
+  --color-mint: #047857;
+  --color-amber: #b45309;
+  --font-sans: var(--font-serif), "Source Serif 4", Georgia, serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
@@ -21,23 +23,23 @@ html {
 }
 
 ::selection {
-  background: #0d9488;
-  color: #e9f6f5;
+  background: #0f766e;
+  color: #f7f4ec;
 }
 
-/* grain overlay */
+/* paper grain */
 .grain::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 50;
-  opacity: 0.04;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, #e9f6f5 15%, #5eead4 50%, #22d3ee 88%);
+  background: linear-gradient(100deg, #1c1a15 10%, #0f766e 60%, #115e59 95%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -45,8 +47,8 @@ html {
 
 .glow-ring {
   box-shadow:
-    0 0 0 1px rgb(45 212 191 / 0.25),
-    0 0 60px -12px rgb(45 212 191 / 0.5);
+    0 0 0 1px rgb(15 118 110 / 0.22),
+    0 14px 40px -18px rgb(28 26 21 / 0.35);
 }
 
 @keyframes drift {
@@ -59,7 +61,7 @@ html {
   will-change: transform;
 }
 
-/* site-wide moving teal ground, fixed behind everything */
+/* site-wide moving wash — a faint teal watercolor on paper */
 @keyframes drift2 {
   0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
   50% { transform: translate3d(-5%, 4%, 0) scale(1.18) rotate(8deg); }
@@ -70,7 +72,7 @@ html {
   inset: 0;
   z-index: -20;
   overflow: hidden;
-  background: #050d0e;
+  background: #f7f4ec;
 }
 .bg-sea::before,
 .bg-sea::after {
@@ -85,7 +87,7 @@ html {
   height: 65vh;
   left: -12vw;
   top: 8vh;
-  background: rgb(13 148 136 / 0.26);
+  background: rgb(15 118 110 / 0.07);
   animation: drift 26s ease-in-out infinite;
 }
 .bg-sea::after {
@@ -93,8 +95,14 @@ html {
   height: 55vh;
   right: -14vw;
   bottom: -8vh;
-  background: rgb(34 211 238 / 0.14);
+  background: rgb(154 91 19 / 0.05);
   animation: drift2 32s ease-in-out infinite;
+}
+
+/* LaTeX-style ruled section header */
+.rule-head {
+  border-bottom: 1px solid #1c1a15;
+  padding-bottom: 0.35rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

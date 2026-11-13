@@ -17,13 +17,19 @@ export default function Hero() {
       <motion.div style={{ y: yBg }} className="absolute inset-0 -z-10">
         <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/30 blur-[140px]" />
         <div className="aurora absolute top-1/3 -left-40 h-[50vh] w-[40vw] rounded-full bg-magma/15 blur-[120px] [animation-delay:-9s]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#050d0e_75%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#f7f4ec_78%)]" />
         {/* spot grid suggestion */}
-        <div className="absolute inset-0 opacity-[0.12] bg-[radial-gradient(circle_at_center,#2dd4bf_1px,transparent_1px)] [background-size:34px_34px]" />
+        <div className="absolute inset-0 opacity-[0.16] bg-[radial-gradient(circle_at_center,#0f766e_1px,transparent_1px)] [background-size:34px_34px]" />
       </motion.div>
 
       <nav className="flex items-center justify-between px-6 md:px-14 py-5">
-        <img src="artemis_logo_white.svg" alt="Artemis Labs" className="h-5 md:h-6" />
+        <a href="#" className="flex items-center gap-3">
+          <img src="artemis_mark.svg" alt="" className="h-9 md:h-10" />
+          <span className="leading-none">
+            <span className="block font-semibold tracking-[0.18em] text-[17px]">ARTEMIS</span>
+            <span className="block font-mono text-[10px] tracking-[0.42em] text-violet mt-1">BIOLABS</span>
+          </span>
+        </a>
         <div className="flex items-center gap-4 md:gap-8 text-sm text-dim">
           <div className="hidden md:flex items-center gap-8">
             <a href="#pipeline" className="hover:text-snow transition-colors">Pipeline</a>
@@ -62,7 +68,7 @@ export default function Hero() {
             transition={{ duration: 0.9, delay: 0.25 }}
             className="mt-6 max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-dim leading-relaxed"
           >
-            Artemis Labs turns raw spatial transcriptomics into interactive atlases your
+            Artemis BioLabs turns raw spatial transcriptomics into interactive atlases your
             whole lab can explore — with an AI copilot that can run entirely on your machine.
           </motion.p>
           <motion.p

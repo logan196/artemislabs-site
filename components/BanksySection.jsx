@@ -13,12 +13,12 @@ function mulberry32(a) {
   };
 }
 
-const NOISY = ["#2dd4bf", "#22d3ee", "#34d399", "#fbbf24", "#60a5fa", "#f87171"];
+const NOISY = ["#0d9488", "#1d4ed8", "#15803d", "#b45309", "#7c3aed", "#be123c"];
 const DOMAINS = [
-  { cx: 0.26, cy: 0.3, color: "#2dd4bf", label: "OPC-like" },
-  { cx: 0.72, cy: 0.26, color: "#22d3ee", label: "MES-like · hypoxic" },
-  { cx: 0.3, cy: 0.74, color: "#34d399", label: "AC-like" },
-  { cx: 0.74, cy: 0.72, color: "#fbbf24", label: "Immune · TAM" },
+  { cx: 0.26, cy: 0.3, color: "#0d9488", label: "OPC-like" },
+  { cx: 0.72, cy: 0.26, color: "#1d4ed8", label: "MES-like · hypoxic" },
+  { cx: 0.3, cy: 0.74, color: "#15803d", label: "AC-like" },
+  { cx: 0.74, cy: 0.72, color: "#b45309", label: "Immune · TAM" },
 ];
 
 function makeSpots() {
@@ -91,13 +91,13 @@ export default function BanksySection() {
           const pulse = 14 + Math.sin(t * 2.4 + k) * 3;
           ctx.beginPath();
           ctx.arc(px(s.x), py(s.y), pulse, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(94,234,212,${0.5 * ringPhase * (1 - resolve)})`;
+          ctx.strokeStyle = `rgba(15,118,110,${0.5 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 1.2;
           ctx.stroke();
           // azimuthal sweep
           ctx.beginPath();
           ctx.arc(px(s.x), py(s.y), pulse, t * 1.8 + k, t * 1.8 + k + 1.1);
-          ctx.strokeStyle = `rgba(34,211,238,${0.85 * ringPhase * (1 - resolve)})`;
+          ctx.strokeStyle = `rgba(154,91,19,${0.85 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 2;
           ctx.stroke();
         }
@@ -122,11 +122,11 @@ export default function BanksySection() {
           const tw = ctx.measureText(d.label).width;
           const lx = px(d.cx) - tw / 2;
           const ly = py(d.cy) - 30;
-          ctx.fillStyle = `rgba(5,13,14,${0.78 * a})`;
+          ctx.fillStyle = `rgba(255,253,247,${0.85 * a})`;
           ctx.beginPath();
           ctx.roundRect(lx - 8, ly - 14, tw + 16, 21, 10);
           ctx.fill();
-          ctx.fillStyle = `rgba(233,246,245,${a})`;
+          ctx.fillStyle = `rgba(28,26,21,${a})`;
           ctx.fillText(d.label, lx, ly + 2);
         }
       }

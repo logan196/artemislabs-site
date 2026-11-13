@@ -1,0 +1,138 @@
+[
+ {
+  "dataset": "De Jong et al. 2025, GBM-Space (Xenium)",
+  "platform": "10x Xenium",
+  "scope": "17 sections, 8 tumours (BioStudies S-BIAD2898)",
+  "accession": "S-BIAD2898 (BioImage Archive)",
+  "url": "https://doi.org/10.6019/S-BIAD2898",
+  "why": "Anchor dataset; edge to core trajectory"
+ },
+ {
+  "dataset": "De Jong et al. 2025, GBM-Space (Visium + snRNA/snATAC)",
+  "platform": "10x Visium (whole transcriptome) + snMultiome",
+  "scope": "97 Visium sections, 12 tumours; 1,025,329 nuclei",
+  "accession": "E-MTAB-17164 (ArrayExpress); CELLxGENE",
+  "url": "https://www.gbmspace.org/",
+  "why": "Same tumours as Xenium set, so it is the cleanest per-modality value-add comparison"
+ },
+ {
+  "dataset": "Greenwald et al. 2024 (Cell), Tirosh lab",
+  "platform": "10x Visium",
+  "scope": "13 IDH-wt GBM + 6 IDH-mut glioma",
+  "accession": "GSE237183",
+  "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE237183",
+  "why": "Hypoxia-driven 5-layer organization; overlaps de Jong hypoxia axis"
+ },
+ {
+  "dataset": "Ravi et al. 2022 (Cancer Cell), Freiburg/Heiland",
+  "platform": "10x Visium + MALDI + IMC",
+  "scope": "28 specimens, 20 patients, 88,793 spots",
+  "accession": "Dryad doi:10.5061/dryad.h70rxwdmj",
+  "url": "https://datadryad.org/dataset/doi:10.5061/dryad.h70rxwdmj",
+  "why": "Includes non-tumour cortex, useful reactive-astrocyte reference"
+ },
+ {
+  "dataset": "Pai et al. 2025, resection-margin multiome",
+  "platform": "10x Visium + snRNA-seq + snATAC-seq",
+  "scope": "Visium from 2 GBM patients (1 per sex); multiome from 6 tumours",
+  "accession": "GSE286413 (spatial); GSE286419 (snRNA); GSE286415 (snATAC)",
+  "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE286413",
+  "why": "Closest public match to matched core-vs-margin sampling designs"
+ },
+ {
+  "dataset": "Sonpatki/Shah et al. 2025-26, SNUH glioma atlas",
+  "platform": "10x Xenium + Visium + scRNA/CITE-seq",
+  "scope": "Xenium 4 GBM patients; Visium 13 GBM (+ IDH-mut, normal)",
+  "accession": "Zenodo 17622242 (Xenium); Zenodo 17572905 (Visium)",
+  "url": "https://doi.org/10.5281/zenodo.17622242",
+  "why": "Second public GBM Xenium cohort with a different panel; tests panel dependence"
+ },
+ {
+  "dataset": "De et al. 2025, matrisome Xenium",
+  "platform": "10x Xenium",
+  "scope": "GBM sections, grade 3, TMA of grade 2-4, TMA of GBM core and edge",
+  "accession": "S-BSST2273 (BioStudies)",
+  "url": "https://doi.org/10.6019/S-BSST2273",
+  "why": "Core/edge TMA plus non-cancer brain; ECM-focused panel may lack CNV-informative genes"
+ },
+ {
+  "dataset": "Michigan cohort 2025 (bioRxiv), Ivy GAP niches",
+  "platform": "10x Visium",
+  "scope": "14 slides, 7 patients (8 primary, 6 recurrent)",
+  "accession": "Zenodo 16505469",
+  "url": "https://zenodo.org/records/16505469",
+  "why": "Recurrent (post-therapy) slides relevant to therapy-induced senescence question"
+ },
+ {
+  "dataset": "Glioma LOH and ecDNA spatial study (2025)",
+  "platform": "10x Visium + Visium CytAssist FFPE",
+  "scope": "11 gliomas (FF) + 6 IDH-wt EGFR+ GBM (FFPE)",
+  "accession": "GSE242352",
+  "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE242352",
+  "why": "Pairs spatial with DNA-seq, so CNV calls can be checked against ground truth"
+ },
+ {
+  "dataset": "Heiland lab 2024, neural GBM",
+  "platform": "10x Visium",
+  "scope": "Not checked",
+  "accession": "Zenodo 10863736",
+  "url": "https://doi.org/10.5281/zenodo.10863736",
+  "why": "Additional Freiburg/Erlangen Visium sections"
+ },
+ {
+  "dataset": "10x Genomics, Xenium IO panel GBM",
+  "platform": "10x Xenium",
+  "scope": "1 donor, 816,769 cells",
+  "accession": "10x public dataset",
+  "url": "https://www.10xgenomics.com/datasets/ffpe-human-brain-cancer-data-with-human-immuno-oncology-profiling-panel-and-custom-add-on-1-standard",
+  "why": "Large single-section Xenium test case"
+ },
+ {
+  "dataset": "10x Genomics, Xenium brain preview",
+  "platform": "10x Xenium",
+  "scope": "40,887 GBM cells; 24,406 healthy cells",
+  "accession": "10x public dataset",
+  "url": "https://www.10xgenomics.com/datasets/xenium-human-brain-preview-data-1-standard",
+  "why": "Healthy cortex on same slide gives a normal astrocyte reference"
+ },
+ {
+  "dataset": "10x Genomics, Visium CytAssist gene + protein GBM",
+  "platform": "10x Visium CytAssist (RNA + protein)",
+  "scope": "1 donor",
+  "accession": "10x public dataset",
+  "url": "https://www.10xgenomics.com/datasets/gene-and-protein-expression-library-of-human-glioblastoma-cytassist-ffpe-2-standard",
+  "why": "Protein layer (e.g. GFAP) for marker sanity checks"
+ },
+ {
+  "dataset": "10x Genomics, Visium FFPE brain cancer 11 mm",
+  "platform": "10x Visium CytAssist",
+  "scope": "1 donor; paired Flex scRNA from same block",
+  "accession": "10x public dataset",
+  "url": "https://www.10xgenomics.com/datasets/human-brain-cancer-11-mm-capture-area-ffpe-2-standard",
+  "why": "Same-block single-cell pairing for deconvolution checks"
+ },
+ {
+  "dataset": "Linnarsson lab 2025, GBM organoids",
+  "platform": "10x Xenium",
+  "scope": "Organoids under hypoxia and plasma perturbation",
+  "accession": "S-BIAD1700",
+  "url": "https://doi.org/10.6019/S-BIAD1700",
+  "why": "Hypoxia perturbation; secondary, not tissue"
+ },
+ {
+  "dataset": "Kastner et al. 2026, mouse GBM models",
+  "platform": "10x Visium HD + Xenium + GeoMx",
+  "scope": "Visium HD 4, Xenium 2, GeoMx 12",
+  "accession": "Zenodo 21873496",
+  "url": "https://zenodo.org/records/21873496",
+  "why": "Only Visium HD GBM found; mouse, so secondary"
+ },
+ {
+  "dataset": "Hong Kong CosMx 6K cohort (abstract only)",
+  "platform": "NanoString CosMx 6K",
+  "scope": "21 cases, 337,622 cells",
+  "accession": "No public deposit found",
+  "url": "https://doi.org/10.1093/neuonc/noaf201.1815",
+  "why": "Watch list; ask authors if data will be shared"
+ }
+]

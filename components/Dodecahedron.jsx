@@ -60,12 +60,12 @@ export default function Dodecahedron({ size = 72 }) {
       const pulse = reduced ? 0.8 : 0.65 + 0.35 * Math.sin(t * 1.6);
       ctx.lineWidth = 1.1;
       ctx.lineCap = "round";
-      ctx.shadowColor = "rgba(45, 212, 191, 0.9)";
-      ctx.shadowBlur = 8 + 7 * pulse;
+      ctx.shadowColor = "rgba(15, 118, 110, 0.75)";
+      ctx.shadowBlur = 7 + 6 * pulse;
       for (const [i, j] of edges) {
         const depth = (pts[i][2] + pts[j][2]) / 2; // -c..c
         const near = 1 - (depth + 1.7) / 3.4;
-        ctx.strokeStyle = `rgba(94, 234, 212, ${0.25 + 0.6 * near * pulse})`;
+        ctx.strokeStyle = `rgba(17, 94, 89, ${0.3 + 0.6 * near * pulse})`;
         ctx.beginPath();
         ctx.moveTo(pts[i][0], pts[i][1]);
         ctx.lineTo(pts[j][0], pts[j][1]);

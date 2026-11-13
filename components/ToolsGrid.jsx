@@ -2,6 +2,7 @@
 
 import Reveal, { Stagger, item } from "./Reveal";
 import { motion } from "framer-motion";
+import BioDodecahedron from "./BioDodecahedron";
 
 const TOOLS = [
   { name: "banksy-pipeline", kind: "agent", desc: "Spatially-aware clustering — BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
@@ -23,6 +24,13 @@ export default function ToolsGrid() {
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             Eight capabilities, one stack.
           </h2>
+        </Reveal>
+
+        <Reveal delay={0.05} className="mt-6">
+          <BioDodecahedron size={440} />
+          <p className="text-center font-mono text-[13px] text-dim mt-4">
+            the dodecahedron of bioinformatics — twenty vertices of the stack, thirty edges connecting them
+          </p>
         </Reveal>
 
         <Stagger className="mt-12 font-mono text-[14px]">
