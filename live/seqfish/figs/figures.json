@@ -1,0 +1,32 @@
+[
+  {
+    "file": "fig1_marker_heatmap.png",
+    "title": "Cell-class marker heatmap",
+    "caption": "Wilcoxon one-vs-rest differential expression across the 10 annotated classes (n=913 cells) recovers canonical markers \u2014 e.g. Slc17a7 for excitatory neurons, Slc32a1 for interneurons, Laptm5 for microglia; heatmap shows per-class mean log-normalized expression, z-scored across classes, for the top 5 markers per class.",
+    "question": "Which genes define each cell type in this tissue?"
+  },
+  {
+    "file": "fig2_volcano.png",
+    "title": "Volcano: excitatory vs inhibitory neurons",
+    "caption": "Wilcoxon test, Excitatory neuron (n=337) vs Interneuron (n=60): 102 genes up and 43 down at BH-adjusted p<0.05 and |log2FC|>1.0; top excitatory genes Slc17a7, Lingo1, Tbr1, top interneuron genes Slc32a1, Pcp4l1, Slc6a1.",
+    "question": "What separates excitatory from inhibitory neurons here?"
+  },
+  {
+    "file": "fig3_morans_bar.png",
+    "title": "Spatial autocorrelation (Moran's I)",
+    "caption": "Moran's I on a k=6 nearest-neighbor spatial graph over all 10,000 genes (n=913 cells): Shank1 ranks first at I=0.83 (permutation z=46, p=0.001, 999 perms), followed by Slc17a7 (I=0.80) and Eef1a2 (I=0.79); expected I under no structure is -0.0011.",
+    "question": "Which genes show the strongest spatial patterning?"
+  },
+  {
+    "file": "fig4_spatial_top_gene.png",
+    "title": "Spatial map of Shank1",
+    "caption": "Cells plotted at their recorded x,y centroids colored by log-normalized Shank1 expression \u2014 the most spatially autocorrelated gene in the dataset (Moran's I=0.83 vs expected -0.0011; permutation p=0.001).",
+    "question": "Where is Shank1 expressed in the tissue?"
+  },
+  {
+    "file": "fig5_nhood_enrichment.png",
+    "title": "Neighborhood enrichment matrix",
+    "caption": "Observed vs expected spatial adjacency between cell classes (z-scores from 1000 label permutations on a symmetric k=6 kNN graph, seed 0): Choroid Plexus cells self-aggregate most strongly (z=45); the top cross-class association is Neuroblast-Neural Stem (z=14), while Excitatory neuron-Neuroblast are most spatially segregated (z=-20).",
+    "question": "Which cell types are spatial neighbors more often than chance?"
+  }
+]

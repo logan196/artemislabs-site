@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<!-- HAND-EDITED beyond the generated template: fluorescence dataset B (meta-coordination)
+     and the Artemis co-scientist rail. If regenerating this portal, re-apply both. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>seqFISH+ mouse cortex &amp; SVZ · Artemis BioLabs live demo</title>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #fff; }
+    body { display: flex; flex-direction: column; }
+    #root { flex: 1 1 auto; min-height: 0; }
+    #loading { font-family: -apple-system, system-ui, sans-serif; padding: 24px; color: #444; }
+    #main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: row; }
+    #root { flex: 1 1 auto; min-width: 0; }
+    /* ——— Artemis co-scientist rail ——— */
+    #agent-rail {
+      flex: 0 0 320px; display: flex; flex-direction: column; min-height: 0;
+      border-left: 1px solid #ddd; background: #faf8f2;
+      font-family: -apple-system, system-ui, sans-serif;
+    }
+    .rail-head {
+      display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+      border-bottom: 1px solid #e3ded0; background: #f4f1e8;
+    }
+    .rail-dot { width: 7px; height: 7px; border-radius: 50%; background: #0f766e;
+      box-shadow: 0 0 6px rgba(15,118,110,0.8); animation: railpulse 2.4s ease-in-out infinite; }
+    .rail-title { font: 600 10px ui-monospace, Menlo, monospace; letter-spacing: 0.18em; color: #0f766e; }
+    .rail-replay { margin-left: auto; font: 600 10px ui-monospace, monospace; color: #0f766e;
+      background: none; border: 1px solid #cfc9b8; border-radius: 3px; padding: 3px 8px; cursor: pointer; }
+    .rail-replay:hover { background: #ece8dc; }
+    #rail-chat { flex: 1 1 auto; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .msg { max-width: 92%; border-radius: 12px; padding: 8px 11px; font-size: 12.5px; line-height: 1.5; }
+    .msg.user { align-self: flex-end; background: #115e59; color: #f4f1e8; border-bottom-right-radius: 4px; }
+    .msg.ai { align-self: flex-start; background: #f3f0e8; color: #2c2a24; border: 1px solid #e3ded0; border-bottom-left-radius: 4px; }
+    .figcard { align-self: flex-start; width: 100%; border: 1px solid #e3ded0; border-radius: 6px;
+      background: #fcfcfb; overflow: hidden; }
+    .figcard img { display: block; width: 100%; height: auto; }
+    .figcard .cap { padding: 7px 10px; font-size: 10.5px; color: #6b6657; line-height: 1.45;
+      border-top: 1px solid #eee9db; }
+    .figcard a { color: inherit; text-decoration: none; }
+    .typing { align-self: flex-start; display: flex; gap: 4px; padding: 9px 12px;
+      background: #f3f0e8; border: 1px solid #e3ded0; border-radius: 12px; border-bottom-left-radius: 4px; }
+    .typing i { width: 6px; height: 6px; border-radius: 50%; background: #9b957f; animation: tybob 0.9s ease-in-out infinite; }
+    .typing i:nth-child(2) { animation-delay: 0.15s; } .typing i:nth-child(3) { animation-delay: 0.3s; }
+    .rail-foot { flex: 0 0 auto; padding: 8px 14px; border-top: 1px solid #e3ded0;
+      font-size: 9.5px; color: #8a8471; line-height: 1.45; }
+    @keyframes railpulse { 50% { opacity: 0.35; } }
+    @keyframes tybob { 50% { transform: translateY(-3px); opacity: 1; } 0%,100% { opacity: 0.5; } }
+    @media (max-width: 880px) { #agent-rail { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .rail-dot, .typing i { animation: none; }
+    }
+    #citebar {
+      flex: 0 0 auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      padding: 7px 14px; border-top: 1px solid #ddd; background: #fafafa;
+      font-family: -apple-system, system-ui, sans-serif; font-size: 12px; color: #555;
+      line-height: 1.45;
+    }
+    #citebar label { font-weight: 600; color: #333; white-space: nowrap; }
+    #citebar select { font-size: 12px; padding: 2px 4px; }
+    #citebar .credit { flex: 1 1 320px; min-width: 240px; }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <div id="root"><div id="loading">Loading spatial portal&hellip; (serve this folder over HTTP)</div></div>
+    <aside id="agent-rail" aria-label="Artemis co-scientist — precomputed analysis of this dataset">
+      <div class="rail-head">
+        <span class="rail-dot" aria-hidden="true"></span>
+        <span class="rail-title">ARTEMIS CO-SCIENTIST</span>
+        <button class="rail-replay" id="rail-replay" hidden>&#8635; replay</button>
+      </div>
+      <div id="rail-chat"></div>
+      <div class="rail-foot">
+        Scripted exchange &mdash; every figure precomputed from this dataset (scanpy + kNN spatial
+        statistics, fixed seeds); methods in each caption. Live analysis ships with the product.
+      </div>
+    </aside>
+  </div>
+  <div id="citebar">
+    <label for="fov-select">Fluorescence FOV:</label>
+    <select id="fov-select">
+      <option value="0">FOV Pos0</option>
+      <option value="1">FOV Pos1</option>
+      <option value="2" selected>FOV Pos2</option>
+      <option value="3">FOV Pos3</option>
+      <option value="4">FOV Pos4</option>
+    </select>
+    <span class="credit">
+      Fluorescence panel: segmentation staining (DAPI blue / Nissl green) &mdash; per-FOV frame, not registered to the
+      stitched cell map (Zhu et al., Zenodo <a href="https://doi.org/10.5281/zenodo.4540850" target="_blank" rel="noreferrer">10.5281/zenodo.4540850</a>, CC-BY 4.0).
+      Expression data: Eng et al. 2019, <i>Nature</i> 568:235&ndash;239. Annotations &amp; FOV stitching: Dries et al. 2021, <i>Genome Biology</i> 22:78 (Giotto).
+    </span>
+  </div>
+  <script type="module">
+    let importWithMap;
+    try {
+      importWithMap = (await import('https://unpkg.com/dynamic-importmap@0.1.0')).importWithMap;
+    } catch (e) {
+      importWithMap = (await import('https://cdn.vitessce.io/dynamic-importmap@0.1.0/dist/index.js')).importWithMap;
+    }
+
+    const importMap = {
+      imports: {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "vitessce": "https://cdn.vitessce.io/vitessce@3.9.11/dist/index.min.js"
+      }
+    };
+
+    const React = await importWithMap("react", importMap);
+    const { createRoot } = await importWithMap("react-dom/client", importMap);
+    const { Vitessce } = await importWithMap("vitessce", importMap);
+
+    const CREDIT = "Segmentation staining images (DAPI/Nissl, per-FOV frame): Zhu et al., Zenodo 10.5281/zenodo.4540850 (CC-BY 4.0), companion to Dries et al. 2021.";
+
+    // Per-FOV 99.5th-percentile contrast windows computed during OME-zarr conversion.
+    const FOV_WINDOWS = {
+      0: { dapi: 9026,  nissl: 16912 },
+      1: { dapi: 10613, nissl: 27265 },
+      2: { dapi: 10977, nissl: 30711 },
+      3: { dapi: 11946, nissl: 31709 },
+      4: { dapi: 12140, nissl: 30997 }
+    };
+
+    function makeConfig(fov) {
+      const win = FOV_WINDOWS[fov];
+      // Explicit image-layer meta-coordination for the fluorescence panel:
+      // vitessce 3.9.11's initStrategy "auto" does not auto-create imageLayer
+      // coordination for spatialBeta, so the layer/channel scopes are spelled out.
+      const imageCoordination = {
+        "fileUid": {"image": "segmentation-staining"},
+        "imageLayer": {"image": "__dummy__"},
+        "spatialLayerOpacity": {"image": 1},
+        "spatialLayerVisible": {"image": true},
+        "photometricInterpretation": {"image": "BlackIsZero"},
+        "imageChannel": {"ch0": "__dummy__", "ch1": "__dummy__"},
+        "spatialTargetC": {"ch0": 0, "ch1": 1},
+        "spatialChannelColor": {"ch0": [0, 0, 255], "ch1": [0, 255, 0]},
+        "spatialChannelVisible": {"ch0": true, "ch1": true},
+        "spatialChannelOpacity": {"ch0": 1, "ch1": 1},
+        "spatialChannelWindow": {"ch0": [0, win.dapi], "ch1": [0, win.nissl]},
+        "spatialTargetZ": {"image": 0},
+        "spatialTargetT": {"image": 0},
+        "metaCoordinationScopes": {
+          "metaB": {"spatialTargetZ": "image", "spatialTargetT": "image", "imageLayer": ["image"]}
+        },
+        "metaCoordinationScopesBy": {
+          "metaB": {
+            "imageLayer": {
+              "fileUid": {"image": "image"},
+              "spatialLayerOpacity": {"image": "image"},
+              "spatialLayerVisible": {"image": "image"},
+              "photometricInterpretation": {"image": "image"},
+              "imageChannel": {"image": ["ch0", "ch1"]}
+            },
+            "imageChannel": {
+              "spatialTargetC": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelColor": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelVisible": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelOpacity": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelWindow": {"ch0": "ch0", "ch1": "ch1"}
+            }
+          }
+        }
+      };
+      const imageScopes = {"dataset": "B", "metaCoordinationScopes": ["metaB"], "metaCoordinationScopesBy": ["metaB"]};
+      const config = {"version": "1.0.16", "uid": "seqfish-fov" + fov, "name": "seqFISH+ mouse cortex & SVZ · Artemis BioLabs live demo", "description": "913 cells x 10,000 genes, seqFISH+ mouse brain (cortex, SVZ, choroid plexus). Data: Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "datasets": [{"uid": "A", "name": "seqFISH+ cortex/SVZ", "files": [{"fileType": "anndata.zarr", "url": "./data.zarr", "options": {"obsLocations": {"path": "obsm/spatial"}, "obsEmbedding": [{"path": "obsm/spatial", "dims": [0, 1], "embeddingType": "Spatial"}, {"path": "obsm/X_umap", "dims": [0, 1], "embeddingType": "UMAP"}], "obsSets": [{"name": "Cell type (Dries et al. 2021)", "path": "obs/cell_type"}, {"name": "Leiden cluster", "path": "obs/leiden"}, {"name": "Louvain (Eng et al. 2019)", "path": "obs/louvain_eng2019"}, {"name": "Region", "path": "obs/region"}], "obsFeatureMatrix": {"path": "X", "initialFeatureFilterPath": "var/top_marker"}}, "coordinationValues": {"obsType": "cell"}}]}, {"uid": "B", "name": "Segmentation staining — per-FOV frame (Zhu et al., Zenodo 10.5281/zenodo.4540850, CC-BY 4.0)", "files": [{"fileType": "image.ome-zarr", "url": "./fov" + fov + ".ome.zarr", "coordinationValues": {"fileUid": "segmentation-staining"}}]}], "coordinationSpace": Object.assign({"dataset": {"A": "A", "B": "B"}, "embeddingType": {"A": "Spatial", "B": "UMAP"}, "obsSetSelection": {"A": null}, "obsColorEncoding": {"A": "cellSetSelection"}}, imageCoordination), "layout": [{"component": "scatterplot", "coordinationScopes": {"dataset": "A", "embeddingType": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 0, "y": 0, "w": 8, "h": 6}, {"component": "spatialBeta", "coordinationScopes": imageScopes, "x": 8, "y": 0, "w": 4, "h": 4}, {"component": "layerControllerBeta", "coordinationScopes": imageScopes, "x": 8, "y": 4, "w": 4, "h": 2}, {"component": "scatterplot", "coordinationScopes": {"dataset": "A", "embeddingType": "B", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 0, "y": 6, "w": 3, "h": 6}, {"component": "obsSets", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 3, "y": 6, "w": 1, "h": 6}, {"component": "featureList", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 4, "y": 6, "w": 1, "h": 6}, {"component": "heatmap", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 6, "y": 6, "w": 6, "h": 6}], "initStrategy": "auto", "vitessceMetadata": {"lab_name": "Artemis BioLabs", "portal_title": "seqFISH+ mouse cortex & SVZ live demo", "data_source": "Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "has_spatial_coordinates": true, "spatial_coordinate_origin": "measured", "has_measured_spatial_coordinates": true}};
+
+      // Vitessce's zarr loader calls `new URL(url)`, which rejects relative
+      // strings. Resolve each data file URL against this page's location so the
+      // portal works from whatever host/port serves the folder.
+      for (const ds of (config.datasets || [])) {
+        for (const f of (ds.files || [])) {
+          if (f.url && !/^https?:\/\//.test(f.url)) {
+            f.url = new URL(f.url, window.location.href).href;
+          }
+        }
+      }
+      return config;
+    }
+
+    const e = React.createElement;
+    const rootEl = document.getElementById('root');
+    const root = createRoot(rootEl);
+    function renderPortal(fov) {
+      root.render(
+        e(Vitessce, { config: makeConfig(fov), theme: 'light', height: rootEl.clientHeight })
+      );
+    }
+    renderPortal(2);
+    document.getElementById('fov-select').addEventListener('change', (ev) => {
+      renderPortal(parseInt(ev.target.value, 10));
+    });
+  </script>
+  <script>
+  (function () {
+    "use strict";
+    var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var chat = document.getElementById("rail-chat");
+    var replayBtn = document.getElementById("rail-replay");
+    if (!chat) return;
+    var FIGS = null;
+    var timers = [];
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+    function el(tag, cls, html) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (html !== undefined) n.innerHTML = html;
+      return n;
+    }
+    function esc(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+    function pin() { chat.scrollTop = chat.scrollHeight; }
+    function addUser(q) { chat.appendChild(el("div", "msg user", esc(q))); pin(); }
+    function addFig(f) {
+      var card = el("div", "figcard");
+      card.innerHTML =
+        '<a href="figs/' + f.file + '" target="_blank" rel="noreferrer">' +
+        '<img src="figs/' + f.file + '" alt="' + esc(f.title) + '" loading="lazy" />' +
+        '<div class="cap">' + esc(f.caption) + "</div></a>";
+      chat.appendChild(card);
+      pin();
+    }
+    function play() {
+      clearTimers();
+      chat.innerHTML = "";
+      replayBtn.hidden = true;
+      if (REDUCED) {
+        FIGS.forEach(function (f) { addUser(f.question); addFig(f); });
+        replayBtn.hidden = false;
+        return;
+      }
+      var t = 600;
+      FIGS.forEach(function (f, i) {
+        timers.push(setTimeout(function () { addUser(f.question); }, t));
+        t += 700;
+        timers.push(setTimeout(function () {
+          var ty = el("div", "typing", "<i></i><i></i><i></i>");
+          ty.id = "ty" + i;
+          chat.appendChild(ty); pin();
+        }, t));
+        t += 1500;
+        timers.push(setTimeout(function () {
+          var ty = document.getElementById("ty" + i);
+          if (ty) ty.remove();
+          addFig(f);
+          if (i === FIGS.length - 1) replayBtn.hidden = false;
+        }, t));
+        t += 900;
+      });
+    }
+    replayBtn.addEventListener("click", play);
+    fetch("figs/figures.json")
+      .then(function (r) { return r.json(); })
+      .then(function (d) { FIGS = d; play(); })
+      .catch(function () {
+        chat.appendChild(el("div", "msg ai", "analysis figures failed to load."));
+      });
+  })();
+  </script>
+</body>
+</html>
