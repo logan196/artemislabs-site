@@ -27,8 +27,8 @@ export default function Cta() {
       <Reveal className="max-w-5xl mx-auto border-t border-line pt-10 mt-16">
         <div className="grid sm:grid-cols-3 gap-6 text-center sm:text-left">
           <div>
-            <p className="font-mono text-[13px] text-violet">built by Logan Beharry</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">researcher-founder — who ran every analysis on this page before selling it.</p>
+            <p className="font-mono text-[13px] text-violet">built by Caltech researchers</p>
+            <p className="mt-1 text-dim text-[15px] leading-relaxed">who ran every analysis on this page themselves before selling it.</p>
           </div>
           <div>
             <p className="font-mono text-[13px] text-violet">pipelines that ran, not promises</p>

@@ -90,10 +90,7 @@ export default function Hero() {
           <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
             computational biology, accelerated.
           </p>
-          <p className="mt-6 font-mono text-[11.5px] tracking-[0.3em] text-violet uppercase">
-            Your computational biology core, reimagined
-          </p>
-          <p className="mt-3 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
+          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
             Every core your biotech would build or rent.
             <br className="hidden sm:block" />
             <span className="text-dim"> One AI-powered team.</span>
