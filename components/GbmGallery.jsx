@@ -148,7 +148,7 @@ export default function GbmGallery() {
               rel="noreferrer"
               className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
             >
-              seqFISH+ mouse cortex →
+              seqFISH+ mouse cortex — fluorescence + co-scientist →
             </a>
             {m && (
               <div className="flex gap-2 flex-wrap">

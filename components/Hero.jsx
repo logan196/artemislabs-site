@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import BioDodecahedron from "./BioDodecahedron";
 import FounderLock from "./FounderLock";
 import Decode from "./Decode";
@@ -18,6 +18,18 @@ const NAV = [
 
 export default function Hero() {
   const ref = useRef(null);
+  const [saluting, setSaluting] = useState(false);
+  const saluteTimer = useRef(null);
+  useEffect(() => () => clearTimeout(saluteTimer.current), []);
+  const salute = (e) => {
+    e.preventDefault();
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    window.dispatchEvent(new CustomEvent("artemis-salute"));
+    setSaluting(true);
+    clearTimeout(saluteTimer.current);
+    saluteTimer.current = setTimeout(() => setSaluting(false), 1200);
+  };
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
@@ -36,8 +48,14 @@ export default function Hero() {
       </div>
 
       <nav className="flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
-        <a href="#" aria-label="Artemis BioLabs — top of page">
-          <img src="artemis_lockup.svg" alt="Artemis BioLabs" className="h-8 md:h-11 w-auto" />
+        <a href="#" aria-label="Artemis BioLabs — top of page" onClick={salute}>
+          <img
+            src="artemis_lockup.svg"
+            alt="Artemis BioLabs"
+            className={`h-8 md:h-11 w-auto transition-all duration-300 ${
+              saluting ? "scale-105 [filter:drop-shadow(0_0_9px_rgba(15,118,110,0.75))]" : ""
+            }`}
+          />
         </a>
         <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
           <div className="hidden md:flex items-center gap-8 font-medium">

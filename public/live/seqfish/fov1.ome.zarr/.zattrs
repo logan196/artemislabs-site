@@ -1,0 +1,118 @@
+{
+    "multiscales": [
+        {
+            "axes": [
+                {
+                    "name": "c",
+                    "type": "channel"
+                },
+                {
+                    "name": "y",
+                    "type": "space",
+                    "unit": "micrometer"
+                },
+                {
+                    "name": "x",
+                    "type": "space",
+                    "unit": "micrometer"
+                }
+            ],
+            "datasets": [
+                {
+                    "coordinateTransformations": [
+                        {
+                            "type": "scale",
+                            "scale": [
+                                1.0,
+                                0.103,
+                                0.103
+                            ]
+                        }
+                    ],
+                    "path": "0"
+                },
+                {
+                    "coordinateTransformations": [
+                        {
+                            "type": "scale",
+                            "scale": [
+                                1.0,
+                                0.206,
+                                0.206
+                            ]
+                        }
+                    ],
+                    "path": "1"
+                },
+                {
+                    "coordinateTransformations": [
+                        {
+                            "type": "scale",
+                            "scale": [
+                                1.0,
+                                0.412,
+                                0.412
+                            ]
+                        }
+                    ],
+                    "path": "2"
+                },
+                {
+                    "coordinateTransformations": [
+                        {
+                            "type": "scale",
+                            "scale": [
+                                1.0,
+                                0.824,
+                                0.824
+                            ]
+                        }
+                    ],
+                    "path": "3"
+                },
+                {
+                    "coordinateTransformations": [
+                        {
+                            "type": "scale",
+                            "scale": [
+                                1.0,
+                                1.648,
+                                1.648
+                            ]
+                        }
+                    ],
+                    "path": "4"
+                }
+            ],
+            "name": "/",
+            "version": "0.4"
+        }
+    ],
+    "omero": {
+        "channels": [
+            {
+                "active": true,
+                "color": "0000FF",
+                "label": "DAPI (405)",
+                "window": {
+                    "end": 10613,
+                    "max": 65535,
+                    "min": 0,
+                    "start": 0
+                }
+            },
+            {
+                "active": true,
+                "color": "00FF00",
+                "label": "Nissl (488)",
+                "window": {
+                    "end": 27265,
+                    "max": 65535,
+                    "min": 0,
+                    "start": 0
+                }
+            }
+        ],
+        "name": "seqFISH+ cortex FOV Pos1 segmentation staining"
+    }
+}

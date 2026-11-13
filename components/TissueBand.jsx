@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Reveal, { Stagger, item } from "./Reveal";
 
@@ -46,15 +47,134 @@ const VIEWER_STATS = [
 ];
 
 const FILE_TYPES = [
-  "spatial counts (.h5ad)",
-  "paired H&E",
-  "cell-state labels",
-  "marker maps",
-  "OME-zarr portals",
-  "genome tracks (bigWig / BAM)",
-  "3D volumes",
-  "run reports (md)",
+  { id: "h5ad", label: "spatial counts (.h5ad)" },
+  { id: "he", label: "paired H&E" },
+  { id: "states", label: "cell-state labels" },
+  { id: "markers", label: "marker maps" },
+  { id: "zarr", label: "OME-zarr portals" },
+  { id: "tracks", label: "genome tracks (bigWig / BAM)" },
+  { id: "volume", label: "3D volumes" },
+  { id: "report", label: "run reports (md)" },
 ];
+
+/* Deterministic mini-glyphs — same conventions as StackMini (seeded PRNG,
+   single static draw, no text, no fake numbers). Okabe-Ito for cell states. */
+function glyphRng(seed) {
+  let a = 7;
+  for (const c of seed) a = (a * 33 + c.charCodeAt(0)) >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const OKABE = ["#0072B2", "#009E73", "#D55E00", "#CC79A7", "#E69F00", "#56B4E9"];
+
+const GLYPHS = {
+  h5ad(ctx, W, H, R) {
+    const n = 7, cell = Math.min(W, H - 10) / (n + 1);
+    for (let r = 0; r < n; r++)
+      for (let c = 0; c < n; c++) {
+        const a = 0.08 + R() * 0.8;
+        ctx.fillStyle = `rgba(15,118,110,${a.toFixed(2)})`;
+        ctx.fillRect(8 + c * cell, 6 + r * cell, cell - 2, cell - 2);
+      }
+  },
+  states(ctx, W, H, R) {
+    for (let k = 0; k < 6; k++) {
+      const cx = 14 + R() * (W - 28), cy = 12 + R() * (H - 24);
+      ctx.fillStyle = OKABE[k];
+      for (let i = 0; i < 9; i++) {
+        ctx.beginPath();
+        ctx.arc(cx + (R() - 0.5) * 16, cy + (R() - 0.5) * 14, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  },
+  markers(ctx, W, H) {
+    const g = ctx.createLinearGradient(8, 0, W - 8, 0);
+    g.addColorStop(0, "#d9e8e4");
+    g.addColorStop(1, "#0b3f3a");
+    ctx.fillStyle = g;
+    ctx.fillRect(8, H / 2 - 8, W - 16, 16);
+    ctx.strokeStyle = "rgba(28,26,21,0.35)";
+    ctx.strokeRect(8.5, H / 2 - 7.5, W - 17, 15);
+  },
+  zarr(ctx, W, H) {
+    const rows = [[1, 0.5], [2, 0.72], [4, 0.94]];
+    let y = 8;
+    for (const [n, wfrac] of rows) {
+      const rw = (W - 16) * wfrac, x0 = (W - rw) / 2, tw = rw / n;
+      for (let i = 0; i < n; i++) {
+        ctx.fillStyle = "rgba(15,118,110,0.18)";
+        ctx.strokeStyle = "rgba(15,118,110,0.7)";
+        ctx.fillRect(x0 + i * tw + 1, y, tw - 2, 14);
+        ctx.strokeRect(x0 + i * tw + 1.5, y + 0.5, tw - 3, 13);
+      }
+      y += 19;
+    }
+  },
+  tracks(ctx, W, H, R) {
+    ctx.beginPath();
+    ctx.moveTo(6, H * 0.55);
+    for (let x = 6; x <= W - 6; x += 3) {
+      const u = (x - 6) / (W - 12);
+      const peak = Math.exp(-Math.pow((u - 0.55) * 4.2, 2)) * 0.8 + Math.exp(-Math.pow((u - 0.2) * 7, 2)) * 0.3;
+      ctx.lineTo(x, H * 0.55 - (peak + R() * 0.06) * H * 0.42);
+    }
+    ctx.lineTo(W - 6, H * 0.55);
+    ctx.closePath();
+    ctx.fillStyle = "rgba(15,118,110,0.75)";
+    ctx.fill();
+    for (let i = 0; i < 4; i++) {
+      ctx.fillStyle = "rgba(95,91,80,0.5)";
+      ctx.fillRect(8 + R() * (W - 50), H * 0.62 + i * 6, 26 + R() * 18, 3.5);
+    }
+  },
+  volume(ctx, W, H) {
+    ctx.strokeStyle = "rgba(15,118,110,0.8)";
+    ctx.lineWidth = 1.2;
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.ellipse(W / 2, H / 2 + (i - 1) * 9, W * 0.3, H * 0.16, 0, 0, Math.PI * 2);
+      ctx.globalAlpha = 0.35 + i * 0.3;
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.beginPath();
+    ctx.ellipse(W / 2, H / 2, W * 0.09, H * 0.05, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#9a5b13";
+    ctx.fill();
+  },
+  report(ctx, W, H) {
+    const x0 = W / 2 - 22, y0 = 6;
+    ctx.fillStyle = "#fffdf7";
+    ctx.strokeStyle = "rgba(28,26,21,0.4)";
+    ctx.fillRect(x0, y0, 44, H - 12);
+    ctx.strokeRect(x0 + 0.5, y0 + 0.5, 43, H - 13);
+    ctx.fillStyle = "#0f766e";
+    ctx.fillRect(x0 + 6, y0 + 7, 20, 3);
+    ctx.fillStyle = "rgba(28,26,21,0.35)";
+    for (let i = 0; i < 5; i++) ctx.fillRect(x0 + 6, y0 + 15 + i * 6, 32 - (i % 2) * 8, 2);
+  },
+};
+
+function FileGlyph({ kind }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas || !GLYPHS[kind]) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = canvas.clientWidth, H = canvas.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    GLYPHS[kind](ctx, W, H, glyphRng(kind));
+  }, [kind]);
+  return <canvas ref={ref} className="w-full h-[64px]" aria-hidden />;
+}
 
 export default function TissueBand() {
   return (
@@ -159,14 +279,25 @@ export default function TissueBand() {
             </span>{" "}
             — the artifact types already live elsewhere on this page:
           </p>
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
             {FILE_TYPES.map((t) => (
-              <span
-                key={t}
-                className="font-mono text-xs text-dim border border-line rounded-full px-3.5 py-1.5 bg-ink-2/30"
+              <div
+                key={t.id}
+                className="rounded-[4px] border border-line bg-panel p-3 flex flex-col gap-2"
               >
-                {t}
-              </span>
+                {t.id === "he" ? (
+                  <img
+                    src="gbm/GBM1_he.jpg"
+                    alt=""
+                    width={120}
+                    height={64}
+                    className="w-full h-[64px] object-cover rounded-[2px]"
+                  />
+                ) : (
+                  <FileGlyph kind={t.id} />
+                )}
+                <span className="font-mono text-[10.5px] text-dim leading-snug">{t.label}</span>
+              </div>
             ))}
           </div>
         </div>

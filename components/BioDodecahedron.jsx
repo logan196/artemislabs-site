@@ -88,6 +88,8 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
     const drag = { on: false, x: 0, y: 0 };
     const hover = { i: -1 };
     let interacted = false;
+    let saluteT0 = -1e9; // logo-click "salute": orbit comet + ring flash
+    const SALUTE_MS = 1400;
     let hintA = reduced ? 0 : 1; // "drag to spin" cue, fades after first touch
     let lastNow = 0;
     let pts = [];
@@ -292,6 +294,37 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
       }
       if (hover.i >= 0) chip(hover.i, 1); // hovered label always on top, full alpha
 
+      // logo-click salute: a comet orbits the solid once, over a fading ring
+      {
+        const su = Math.max(0, now - saluteT0) / SALUTE_MS;
+        if (su < 1) {
+          const rr = R * 1.28;
+          const cxm = w / 2, cym = h / 2;
+          // ring flash
+          ctx.beginPath();
+          ctx.arc(cxm, cym, rr, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(15,118,110,${(0.35 * (1 - su)).toFixed(3)})`;
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+          if (!reduced) {
+            // comet head + trailing segments, one full eased revolution
+            const e = su < 0.5 ? 4 * su * su * su : 1 - Math.pow(-2 * su + 2, 3) / 2;
+            const th = -Math.PI / 2 + e * Math.PI * 2;
+            ctx.lineCap = "round";
+            for (let k = 0; k < 4; k++) {
+              const a0 = th - 0.34 * (k + 1);
+              const a1 = th - 0.34 * k;
+              ctx.beginPath();
+              ctx.arc(cxm, cym, rr, a0, a1);
+              ctx.strokeStyle = `rgba(15,118,110,${(0.9 * (1 - k * 0.24) * (1 - su * 0.3)).toFixed(3)})`;
+              ctx.lineWidth = 2.5 - k * 0.4;
+              ctx.stroke();
+            }
+            ctx.lineCap = "butt";
+          }
+        }
+      }
+
       // one-time affordance cue
       if (hintA > 0.02) {
         if (interacted) hintA *= 0.92;
@@ -313,7 +346,12 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
     };
     const stopIfIdle = () => {
       // reduced motion: only animate while dragging or coasting
-      if (reduced && !drag.on && Math.abs(rot.vx) + Math.abs(rot.vy) < 0.00005) {
+      if (
+        reduced &&
+        !drag.on &&
+        Math.abs(rot.vx) + Math.abs(rot.vy) < 0.00005 &&
+        performance.now() - saluteT0 > SALUTE_MS
+      ) {
         running = false;
         cancelAnimationFrame(raf);
         draw(performance.now()); // settle on a final frame
@@ -382,6 +420,11 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
       if (reduced) { start(); setTimeout(stopIfIdle, 60); }
     };
 
+    const onSalute = () => {
+      saluteT0 = performance.now();
+      start();
+    };
+    window.addEventListener("artemis-salute", onSalute);
     canvas.addEventListener("pointerdown", onDown);
     canvas.addEventListener("pointermove", onMove);
     canvas.addEventListener("pointerup", onUp);
@@ -400,6 +443,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerup", onUp);
+      window.removeEventListener("artemis-salute", onSalute);
       canvas.removeEventListener("pointercancel", onUp);
       canvas.removeEventListener("pointerleave", onLeave);
     };
