@@ -40,6 +40,9 @@ export default function BanksySection() {
 
     const { states, spots } = data;
     const stateRgb = states.map((name, i) => hexToRgb(stateColor(name, i)));
+    // the actual H&E slide this data came from — anchors "this is a tumor"
+    const heImg = new Image();
+    heImg.src = "gbm/GBM1_he.jpg";
     const counts = states.map(() => 0);
     let maxX = 0, maxY = 0;
     for (const [x, y, s] of spots) {
@@ -116,6 +119,26 @@ export default function BanksySection() {
         ctx.arc(px(sx), py(sy), 2.6, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${a})`;
         ctx.fill();
+      }
+
+      // H&E inset while in the expression view — the tissue these spots sit on
+      if (resolve < 0.6 && heImg.complete && heImg.naturalWidth > 0) {
+        const a = 1 - resolve / 0.6;
+        const iw = Math.min(190, w * 0.2);
+        const ih = iw * (heImg.naturalHeight / heImg.naturalWidth);
+        const ix = 18, iy = 16;
+        ctx.globalAlpha = a;
+        ctx.fillStyle = "#fffdf7";
+        ctx.strokeStyle = "#d8d2c2";
+        ctx.beginPath();
+        ctx.roundRect(ix - 5, iy - 5, iw + 10, ih + 28, 4);
+        ctx.fill();
+        ctx.stroke();
+        ctx.drawImage(heImg, ix, iy, iw, ih);
+        ctx.fillStyle = "#5f5b50";
+        ctx.font = "600 10.5px 'JetBrains Mono', ui-monospace, monospace";
+        ctx.fillText("GBM1 · the H&E slide", ix, iy + ih + 15);
+        ctx.globalAlpha = 1;
       }
 
       // GFAP ramp label while in the expression view
