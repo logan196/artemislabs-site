@@ -110,7 +110,7 @@ export default function Hero() {
               rel="noreferrer"
               className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
             >
-              Explore the 3.9M-cell mouse brain atlas →
+              3.9M cells, one mouse brain — explore it live →
             </a>
           </div>
           <p className="mt-4 font-mono text-[12.5px] text-dim">

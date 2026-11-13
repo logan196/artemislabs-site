@@ -17,11 +17,11 @@ export const metadata = {
   metadataBase: new URL("https://artemislabs.bio"),
   title: "Artemis BioLabs · Computational Biology, Accelerated",
   description:
-    "Drop in a spatial dataset, get an interactive Vitessce portal — BANKSY clustering, cell-state annotation, and an AI copilot that can run with a local model. Computational biology, delivered.",
+    "Every core your biotech would build or rent — one AI-powered team. Live spatial portals, a 3.9M-cell brain atlas, CUT&RUN in a live genome browser, and a co-scientist in every portal. Computational biology, accelerated.",
   icons: { icon: "artemis_mark.svg" },
   openGraph: {
     title: "Artemis BioLabs",
-    description: "Spatial transcriptomics, delivered — drop in a dataset, get a living atlas.",
+    description: "Every core your biotech would build or rent. One AI-powered team. Computational biology, accelerated.",
     url: "https://artemislabs.bio",
     siteName: "Artemis BioLabs",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Artemis BioLabs lockup" }],

@@ -99,17 +99,17 @@ export default function GbmGallery() {
             <motion.a
               key={s.id}
               variants={item}
-              href={`gbm/${s.id}_overlay.jpg`}
+              href={`live/${s.id}/index.html`}
               target="_blank"
               rel="noreferrer"
-              title="Open the full-resolution annotated section"
-              className="text-left shrink-0 rounded-2xl border border-line bg-panel/60 hover:border-violet/50 px-5 py-4 transition-all cursor-zoom-in"
+              title="Open this section's interactive Vitessce portal"
+              className="text-left shrink-0 rounded-2xl border border-line bg-panel/60 hover:border-violet/50 px-5 py-4 transition-all"
             >
               <p className="font-medium">{s.title}</p>
               <p className="font-mono text-xs text-dim mt-1">{s.source}</p>
               {meta[s.id] && (
                 <p className="font-mono text-xs text-violet/80 mt-2">
-                  {meta[s.id].n_spots.toLocaleString()} spots · {meta[s.id].n_clusters} domains · full res →
+                  {meta[s.id].n_spots.toLocaleString()} spots · {meta[s.id].n_clusters} domains · live portal →
                 </p>
               )}
             </motion.a>
