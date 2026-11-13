@@ -212,18 +212,17 @@ function StaticStory() {
 
 function Chip({ chip, progress, i }) {
   // patient: each chip waits its turn, rises gently into its slot
-  const a = 0.035 + i * 0.025;
-  const opacity = useTransform(progress, [a, a + 0.06, 0.2, 0.25], [0, 1, 1, 0]);
-  const y = useTransform(progress, [a, a + 0.08], [10, 0]);
+  const a = 0.03 + i * 0.02; // stays < 0.2 for all 6 chips — breakpoints must be monotonic
+  const opacity = useTransform(progress, [a, a + 0.045, 0.2, 0.25], [0, 1, 1, 0]);
+  const y = useTransform(progress, [a, a + 0.06], [10, 0]);
   return (
     <motion.span
       style={{ opacity, y }}
       className="flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-1 font-mono text-[10px] md:text-xs text-dim shadow-sm"
     >
-      <motion.span
-        className={`h-1.5 w-1.5 rounded-full ${chip.kind === "source" ? "bg-violet" : "bg-[#9a5b13]"}`}
-        animate={{ opacity: [0.45, 1, 0.45] }}
-        transition={{ repeat: Infinity, duration: 2.2, delay: i * 0.35, ease: "easeInOut" }}
+      <span
+        className={`h-1.5 w-1.5 rounded-full animate-pulse ${chip.kind === "source" ? "bg-violet" : "bg-[#9a5b13]"}`}
+        style={{ animationDelay: `${i * 0.35}s`, animationDuration: "2.2s" }}
         aria-hidden
       />
       {chip.label}
