@@ -14,8 +14,8 @@ export default function Cta() {
             <p className="mt-1 text-dim text-[15px] leading-relaxed">who ran these analyses before selling them.</p>
           </div>
           <div>
-            <p className="font-mono text-[13px] text-violet">pipelines in production</p>
-            <p className="mt-1 text-dim text-[15px] leading-relaxed">across academic spatial-omics labs — Xenium, Visium, CODEX, MRI.</p>
+            <p className="font-mono text-[13px] text-violet">pipelines that ran, not promises</p>
+            <p className="mt-1 text-dim text-[15px] leading-relaxed">every figure on this page came from an end-to-end run on public data — Visium and CODEX today, Xenium ingest in the same stack.</p>
           </div>
           <div>
             <p className="font-mono text-[13px] text-violet">GSE194329, reproduced</p>
@@ -35,7 +35,7 @@ export default function Cta() {
             first analysis is on us — pick a public or in-house dataset and we'll turn it
             around as a live portal.
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-10 flex items-center justify-center">
             <a
               href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
               target="_blank"
@@ -43,12 +43,6 @@ export default function Cta() {
               className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"
             >
               Book a demo
-            </a>
-            <a
-              href="mailto:sne@novaflowapp.com?subject=Artemis%20BioLabs%20%C2%B7%20spatial%20analysis"
-              className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:text-snow hover:border-violet transition-all"
-            >
-              Or start with an email
             </a>
           </div>
         </Reveal>

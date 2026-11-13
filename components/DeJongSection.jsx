@@ -30,16 +30,26 @@ export default function DeJongSection() {
   return (
     <section id="dejong" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">04 · DE JONG ET AL., NATURE 2026</p>
+        <p className="font-mono text-sm text-violet mb-4">04 · DE JONG ET AL. (NATURE 2026 · PREPRINT 2025)</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           A Nature paper, loaded overnight.
         </h2>
+        <blockquote className="mt-7 max-w-2xl border-l-2 border-violet pl-5">
+          <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-2">The claim in one line</p>
+          <p className="text-lg md:text-xl leading-relaxed italic">
+            GB heterogeneity is not chaos — one conserved, spatially patterned trajectory,
+            developmental-like → gliosis → hypoxia, organizes cancer cells, subclones and
+            the myeloid TME across tumours.
+          </p>
+        </blockquote>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          The GBM-space cohort mapped one conserved spatial trajectory — developmental-like
-          → gliosis → hypoxia — across glioblastomas. We pulled their public manuscript
-          sections and imported them into the portal <span className="text-snow">with the paper's own
-          analysis intact</span>: cell2location cell states, NMF spatial niches, and IvyGAP
-          histopathology, each explorable next to the H&E.
+          We pulled their public manuscript sections and imported them into the portal{" "}
+          <span className="text-snow">with the paper's own analysis intact</span>: cell2location
+          cell states, NMF spatial niches, and IvyGAP histopathology, each explorable next
+          to the H&E.{" "}
+          <a href="live/AT10/portal.html" target="_blank" rel="noreferrer" className="text-violet hover:underline font-medium">
+            Open AT10 live →
+          </a>
         </p>
       </Reveal>
 
@@ -114,7 +124,7 @@ export default function DeJongSection() {
           </a>
           <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
             <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> Imported unmodified — no re-clustering; the paper's own deconvolution and annotations drive every view.
-            Data: de Jong et al., <i>Nature</i> 2026 (open access) · gbmspace.org. Nine sections live in the portal.
+            Data: de Jong et al., <i>Nature</i> 2026 (preprint 2025; open access) · gbmspace.org · doi:10.1038/s41586-026-11234-8. Nine sections live in the portal.
           </p>
         </div>
       </div>

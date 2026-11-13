@@ -71,6 +71,14 @@ export default function GbmGallery() {
 
         <div className="rounded-3xl border border-line bg-panel/60 p-5 md:p-8">
           <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
+            <a
+              href="live/GBM3/portal.html"
+              target="_blank"
+              rel="noreferrer"
+              className="order-last w-full sm:w-auto sm:order-none rounded-[3px] bg-violet-deep text-ink px-5 py-2 text-[15px] font-medium hover:bg-violet transition-colors text-center"
+            >
+              Launch the interactive portal — GBM3, live →
+            </a>
             <div className="flex gap-2 flex-wrap">
               {VIEWS.map((v) => (
                 <button
@@ -115,7 +123,7 @@ export default function GbmGallery() {
             </AnimatePresence>
           </a>
           <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 2&nbsp;|</span> High-resolution H&E with BANKSY domains and cell states called by a local Qwen3-8B agent (the same pipeline runs on Claude when egress is fine) — click any view for full resolution. Public data: GSE194329 (Ren et al., <i>Nat Commun</i> 2023); 10x Genomics Parent Visium.
+            <span className="font-semibold text-snow">Fig. 2&nbsp;|</span> High-resolution H&E with BANKSY domains and cell states called by a local Qwen3-8B agent (the same pipeline runs on Claude when egress is fine) — click any view for full resolution. Public data: GSE194329 (Ren et al., <i>Nat Commun</i> 2023); 10x Genomics Parent Visium. Cell-state labels are model-annotated and not independently validated.
           </p>
         </div>
       </div>

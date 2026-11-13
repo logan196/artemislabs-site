@@ -4,6 +4,7 @@ import PipelineFlow from "@/components/PipelineFlow";
 import BanksySection from "@/components/BanksySection";
 import GbmGallery from "@/components/GbmGallery";
 import DeJongSection from "@/components/DeJongSection";
+import WhatWeDo from "@/components/WhatWeDo";
 import CatalogSection from "@/components/CatalogSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
@@ -19,6 +20,7 @@ export default function Home() {
       <BanksySection />
       <GbmGallery />
       <DeJongSection />
+      <WhatWeDo />
       <CatalogSection />
       <CopilotSection />
       <ToolsGrid />

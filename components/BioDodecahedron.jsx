@@ -11,7 +11,7 @@ const LABELS = [
   "UMAP", "Vitessce", "zarr", "Qwen3", "Claude",
 ];
 
-export default function BioDodecahedron({ size = 460 }) {
+export default function BioDodecahedron({ size = 460, labels = true }) {
   const ref = useRef(null);
 
   const { verts, edges } = useMemo(() => {
@@ -93,7 +93,7 @@ export default function BioDodecahedron({ size = 460 }) {
         ctx.arc(x, y, 2.6 + 1.6 * near, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(15, 118, 110, ${0.35 + 0.6 * near})`;
         ctx.fill();
-        if (near > 0.35) {
+        if (labels && near > 0.35) {
           // ramp in smoothly 0.35→0.55 instead of popping
           const la = Math.min(1, (near - 0.35) / 0.2);
           const label = LABELS[i % LABELS.length];
@@ -121,7 +121,7 @@ export default function BioDodecahedron({ size = 460 }) {
     };
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, [verts, edges, size]);
+  }, [verts, edges, size, labels]);
 
   return (
     <canvas

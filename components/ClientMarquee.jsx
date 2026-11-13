@@ -1,28 +1,33 @@
 "use client";
 
-// Institution marquee — text wordmarks in the manuscript voice (deliberately
-// not official logo files: trademark-safe, and classier on paper).
+// Institution marquee — plain text wordmarks only (logos removed per legal review).
 const NAMES = [
-  "Stanford", "Caltech", "MIT", "St. Jude", "A2 Biotherapeutics",
-  "Pfizer", "USC Keck", "UCSF",
+  "Stanford",
+  "Caltech",
+  "MIT",
+  "St. Jude",
+  "A2 Biotherapeutics",
+  "Pfizer",
+  "USC Keck",
+  "UCSF",
 ];
 
 export default function ClientMarquee() {
   const row = [...NAMES, ...NAMES];
   return (
-    <section aria-label="Institutions" className="border-y border-line bg-panel/60 py-5 overflow-hidden">
-      <p className="text-center font-mono text-[11px] tracking-[0.25em] text-dim uppercase mb-3">
+    <section aria-label="Institutions" className="border-y border-line bg-panel/70 py-6 overflow-hidden">
+      <p className="text-center font-mono text-[11px] tracking-[0.25em] text-dim uppercase mb-5">
         Our team has trained and worked with researchers at
       </p>
       <div className="marquee relative">
-        <div className="marquee-track flex items-center gap-12 whitespace-nowrap w-max">
-          {row.map((n, i) => (
+        <div className="marquee-track flex items-center gap-16 w-max pr-16">
+          {row.map((name, i) => (
             <span
               key={i}
               aria-hidden={i >= NAMES.length}
-              className="font-semibold tracking-[0.14em] text-[17px] text-dim hover:text-snow transition-colors uppercase"
+              className="uppercase tracking-wide text-dim hover:text-snow text-[17px] font-semibold whitespace-nowrap transition-colors duration-300"
             >
-              {n}
+              {name}
             </span>
           ))}
         </div>

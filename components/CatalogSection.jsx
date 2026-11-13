@@ -4,14 +4,14 @@ import Reveal from "./Reveal";
 import catalog from "@/lib/catalog.json";
 
 const LIVE = new Set([
-  "De Jong et al. 2025, GBM-Space (Visium + snRNA/snATAC)",
+  "De Jong et al. 2025 preprint (Nature 2026), GBM-Space (Visium + snRNA/snATAC)",
 ]);
 
 export default function CatalogSection() {
   return (
     <section id="catalog" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">05 · DATASET CATALOG</p>
+        <p className="font-mono text-sm text-violet mb-4">06 · DATASET CATALOG</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl rule-head inline-block">
           The public GBM spatial atlas, catalogued.
         </h2>

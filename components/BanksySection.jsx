@@ -1,68 +1,56 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// Deterministic PRNG so server/client render identically.
-function mulberry32(a) {
-  return function () {
-    a |= 0; a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-const NOISY = ["#0d9488", "#1d4ed8", "#15803d", "#b45309", "#7c3aed", "#be123c"];
-const DOMAINS = [
-  { cx: 0.26, cy: 0.3, color: "#0d9488", label: "OPC-like" },
-  { cx: 0.72, cy: 0.26, color: "#1d4ed8", label: "MES-like · hypoxic" },
-  { cx: 0.3, cy: 0.74, color: "#15803d", label: "AC-like" },
-  { cx: 0.74, cy: 0.72, color: "#b45309", label: "Immune · TAM" },
+// Fixed palette, assigned to real states in order (states are sorted by
+// descending count in the JSON). Repeats if there are more states than colors.
+const PALETTE = [
+  "#0d9488", "#b45309", "#1d4ed8", "#15803d",
+  "#7c3aed", "#be123c", "#0369a1", "#a16207",
 ];
 
-function makeSpots() {
-  const rand = mulberry32(2026);
-  const spots = [];
-  const COLS = 34, ROWS = 24;
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      const x = (c + 0.5 + (r % 2 ? 0.5 : 0)) / COLS;
-      const y = (r + 0.5) / ROWS;
-      if (Math.hypot(x - 0.5, (y - 0.5) * 1.4) > 0.52) continue; // tissue-ish blob
-      let best = 0, bd = 1e9;
-      DOMAINS.forEach((d, i) => {
-        const dist = Math.hypot(x - d.cx, y - d.cy) + (rand() - 0.5) * 0.16;
-        if (dist < bd) { bd = dist; best = i; }
-      });
-      spots.push({
-        x: x + (rand() - 0.5) * 0.012,
-        y: y + (rand() - 0.5) * 0.012,
-        noisy: NOISY[Math.floor(rand() * NOISY.length)],
-        domain: best,
-      });
-    }
-  }
-  return spots;
-}
+const INK = [28, 26, 21]; // neutral "expression without place" color
 
-function hexLerp(a, b, t) {
-  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16));
-  const pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
-  return `rgb(${pa.map((v, i) => Math.round(v + (pb[i] - v) * t)).join(",")})`;
+function hexToRgb(hex) {
+  return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 }
 
 export default function BanksySection() {
   const wrapRef = useRef(null);
   const canvasRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start start", "end end"] });
-  const spots = useMemo(makeSpots, []);
+  const [data, setData] = useState(null);
+
+  // Real GBM1 section exported by the pipeline (scripts/banksy_web_json.py).
+  useEffect(() => {
+    let alive = true;
+    fetch("banksy_gbm1.json")
+      .then((r) => r.json())
+      .then((d) => { if (alive) setData(d); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !data) return;
     const ctx = canvas.getContext("2d");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf;
+
+    const { states, spots } = data;
+    const stateRgb = states.map((_, i) => hexToRgb(PALETTE[i % PALETTE.length]));
+    const counts = states.map(() => 0);
+    let maxX = 0, maxY = 0;
+    for (const [x, y, s] of spots) {
+      counts[s]++;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+    const legend = states
+      .map((name, i) => ({ name, count: counts[i], rgb: stateRgb[i] }))
+      .slice(0, 6);
 
     const draw = () => {
       const p = scrollYProgress.get();
@@ -76,65 +64,86 @@ export default function BanksySection() {
       const resolve = Math.min(1, Math.max(0, (p - 0.5) / 0.35));
       const t = performance.now() / 1000;
 
-      // Aspect-corrected mapping: keep the tissue blob blob-shaped on tall
-      // (mobile) canvases instead of smearing into horizontal stripes.
-      const sh = Math.min(h, w * 0.78);
-      const oy = (h - sh) / 2;
-      const px = (nx) => nx * w;
-      const py = (ny) => oy + ny * sh;
+      // Aspect-corrected mapping: the JSON coords are already normalized with
+      // the true tissue aspect; fit them into a centered box on the canvas.
+      const scale = Math.min(w / maxX, h / maxY) * 0.92;
+      const ox = (w - maxX * scale) / 2;
+      const oy = (h - maxY * scale) / 2;
+      const px = (nx) => ox + nx * scale;
+      const py = (ny) => oy + ny * scale;
 
-      // neighbour rings on a rotating subset
-      if (ringPhase > 0 && resolve < 1) {
+      // neighbour rings on a rotating subset (skipped under reduced motion —
+      // they are the only time-driven animation)
+      if (!reduceMotion && ringPhase > 0 && resolve < 1) {
         const n = Math.floor(ringPhase * 10);
         for (let k = 0; k < n; k++) {
           const s = spots[(k * 97 + Math.floor(t) * 13) % spots.length];
           const pulse = 14 + Math.sin(t * 2.4 + k) * 3;
           ctx.beginPath();
-          ctx.arc(px(s.x), py(s.y), pulse, 0, Math.PI * 2);
+          ctx.arc(px(s[0]), py(s[1]), pulse, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(15,118,110,${0.5 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 1.2;
           ctx.stroke();
           // azimuthal sweep
           ctx.beginPath();
-          ctx.arc(px(s.x), py(s.y), pulse, t * 1.8 + k, t * 1.8 + k + 1.1);
-          ctx.strokeStyle = `rgba(154,91,19,${0.85 * ringPhase * (1 - resolve)})`;
+          ctx.arc(px(s[0]), py(s[1]), pulse, t * 1.8 + k, t * 1.8 + k + 1.1);
+          ctx.strokeStyle = `rgba(15,118,110,${0.85 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 2;
           ctx.stroke();
         }
       }
 
-      for (const s of spots) {
-        const color = resolve > 0 ? hexLerp(s.noisy, DOMAINS[s.domain].color, resolve) : s.noisy;
+      // spots: neutral ink before resolve, lerp to real state colors after
+      for (const [sx, sy, si] of spots) {
+        let fill;
+        if (resolve > 0) {
+          const c = stateRgb[si];
+          const r = Math.round(INK[0] + (c[0] - INK[0]) * resolve);
+          const g = Math.round(INK[1] + (c[1] - INK[1]) * resolve);
+          const b = Math.round(INK[2] + (c[2] - INK[2]) * resolve);
+          fill = `rgba(${r},${g},${b},${0.35 + 0.55 * resolve})`;
+        } else {
+          fill = "rgba(28,26,21,0.35)";
+        }
         ctx.beginPath();
-        ctx.arc(px(s.x), py(s.y), 3.1, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.globalAlpha = 0.9;
+        ctx.arc(px(sx), py(sy), 2.6, 0, Math.PI * 2);
+        ctx.fillStyle = fill;
         ctx.fill();
       }
-      ctx.globalAlpha = 1;
 
-      // domain labels once resolved — pill behind each so they read over dots.
+      // legend: real state names + counts, bottom-right, once resolved
       // NOTE: CSS vars are invalid in Canvas2D font strings; hardcode the face.
       if (resolve > 0.75) {
         const a = Math.min(1, (resolve - 0.75) * 4);
-        ctx.font = "600 13px 'JetBrains Mono', ui-monospace, monospace";
-        for (const d of DOMAINS) {
-          const tw = ctx.measureText(d.label).width;
-          const lx = px(d.cx) - tw / 2;
-          const ly = py(d.cy) - 30;
-          ctx.fillStyle = `rgba(255,253,247,${0.85 * a})`;
+        ctx.font = "600 12px 'JetBrains Mono', ui-monospace, monospace";
+        const rowH = 20, pad = 12;
+        let tw = 0;
+        for (const l of legend) {
+          tw = Math.max(tw, ctx.measureText(`${l.name}  ${l.count}`).width);
+        }
+        const boxW = tw + pad * 2 + 18;
+        const boxH = legend.length * rowH + pad * 2 - 6;
+        const bx = w - boxW - 16;
+        const by = h - boxH - 16;
+        ctx.fillStyle = `rgba(255,253,247,${0.9 * a})`;
+        ctx.beginPath();
+        ctx.roundRect(bx, by, boxW, boxH, 6);
+        ctx.fill();
+        legend.forEach((l, i) => {
+          const ly = by + pad + i * rowH + 5;
           ctx.beginPath();
-          ctx.roundRect(lx - 8, ly - 14, tw + 16, 21, 10);
+          ctx.arc(bx + pad + 4, ly - 4, 4, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${l.rgb.join(",")},${a})`;
           ctx.fill();
           ctx.fillStyle = `rgba(28,26,21,${a})`;
-          ctx.fillText(d.label, lx, ly + 2);
-        }
+          ctx.fillText(`${l.name}  ${l.count}`, bx + pad + 16, ly);
+        });
       }
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, [scrollYProgress, spots]);
+  }, [scrollYProgress, data]);
 
   // Contiguous windows — no dead zones where all three captions are ghosts.
   const cap1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
@@ -163,8 +172,9 @@ export default function BanksySection() {
               mean expression and an azimuthal gradient over the k-nearest ring.
             </motion.p>
             <motion.p style={{ opacity: cap3 }} className="absolute inset-4 text-dim text-lg leading-relaxed">
-              Domains emerge that follow the anatomy — tumor states, immune niches,
-              hypoxic zones — <span className="text-snow">ready for annotation.</span>
+              Domains emerge that follow the anatomy — this is the{" "}
+              <span className="text-snow">real GBM1 section</span>, 4,764 spots, states
+              model-annotated by the pipeline.
             </motion.p>
           </div>
         </div>
