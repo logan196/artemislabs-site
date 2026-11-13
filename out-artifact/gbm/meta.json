@@ -1,0 +1,112 @@
+{
+ "GBM1": {
+  "n_spots": 4764,
+  "n_clusters": 14,
+  "top_states": [
+   {
+    "label": "oligodendrocytes",
+    "n": 1482
+   },
+   {
+    "label": "astrocytes",
+    "n": 1355
+   },
+   {
+    "label": "NPC-like tumor cells",
+    "n": 1017
+   },
+   {
+    "label": "MES-like tumor cells",
+    "n": 523
+   }
+  ]
+ },
+ "GBM2": {
+  "n_spots": 2891,
+  "n_clusters": 20,
+  "top_states": [
+   {
+    "label": "OPC-like tumor cells",
+    "n": 691
+   },
+   {
+    "label": "proliferating tumor cells",
+    "n": 563
+   },
+   {
+    "label": "astrocytes",
+    "n": 345
+   },
+   {
+    "label": "endothelial cells",
+    "n": 336
+   }
+  ]
+ },
+ "GBM3": {
+  "n_spots": 1775,
+  "n_clusters": 15,
+  "top_states": [
+   {
+    "label": "oligodendrocytes",
+    "n": 453
+   },
+   {
+    "label": "NPC-like tumor cells",
+    "n": 439
+   },
+   {
+    "label": "endothelial cells",
+    "n": 247
+   },
+   {
+    "label": "astrocytes",
+    "n": 244
+   }
+  ]
+ },
+ "GBM4": {
+  "n_spots": 2540,
+  "n_clusters": 19,
+  "top_states": [
+   {
+    "label": "proliferating tumor cells",
+    "n": 1074
+   },
+   {
+    "label": "astrocytes",
+    "n": 371
+   },
+   {
+    "label": "OPC-like tumor cells",
+    "n": 346
+   },
+   {
+    "label": "pericytes/smooth muscle",
+    "n": 274
+   }
+  ]
+ },
+ "TenX_GBM": {
+  "n_spots": 3468,
+  "n_clusters": 22,
+  "top_states": [
+   {
+    "label": "NPC-like tumor cells",
+    "n": 893
+   },
+   {
+    "label": "microglia/TAMs",
+    "n": 621
+   },
+   {
+    "label": "pericytes/smooth muscle",
+    "n": 560
+   },
+   {
+    "label": "neurons",
+    "n": 255
+   }
+  ]
+ }
+}
