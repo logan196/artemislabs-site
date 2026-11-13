@@ -163,12 +163,12 @@ export default function Hero() {
               Book a demo
             </a>
             <a
-              href="live/GBM3/portal.html"
+              href="live/brain/index.html"
               target="_blank"
               rel="noreferrer"
               className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
             >
-              Open the live portal →
+              Explore the 3.9M-cell brain atlas →
             </a>
           </motion.div>
         </div>
