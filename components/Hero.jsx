@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Dodecahedron from "./Dodecahedron";
+import FounderLock from "./FounderLock";
 
 export default function Hero() {
   const ref = useRef(null);
@@ -36,6 +37,7 @@ export default function Hero() {
           >
             Work with us
           </a>
+          <FounderLock />
           <Dodecahedron size={56} />
         </div>
       </nav>
