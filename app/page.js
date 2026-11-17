@@ -4,6 +4,7 @@ import BanksySection from "@/components/BanksySection";
 import PrismaStory from "@/components/PrismaStory";
 import SpatialPrograms from "@/components/SpatialPrograms";
 import TissueBand from "@/components/TissueBand";
+import FigureBooklet from "@/components/FigureBooklet";
 import WhatWeDo from "@/components/WhatWeDo";
 import LoopSection from "@/components/LoopSection";
 import AgentTeam from "@/components/AgentTeam";
@@ -34,6 +35,7 @@ export default function Home() {
       <PrismaStory />
       <SpatialPrograms />
       <TissueBand />
+      <FigureBooklet />
       <WhatWeDo />
       <LoopSection />
       <AgentTeam />
