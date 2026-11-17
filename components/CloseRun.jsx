@@ -1,12 +1,11 @@
 "use client";
 
-// Closing demo in the spirit of a living instrument: a sample Artemis run
-// typed into a terminal, with a field of cells that scatter, pass QC, cluster
-// and settle in sync. Public data only (de Jong et al. Xenium, AT4-FO-2).
-// Not a product CLI, not an install command — a staged replay of a sample run.
+// Closing demo: real analysis code for the public Xenium section AT4-FO-2
+// (de Jong et al., Nature 2026), typed into a terminal, with a field of cells
+// that scatter, pass QC, cluster and settle in sync. Staged replay.
 import { useEffect, useRef, useState } from "react";
 
-const CMD = "artemis run --assay xenium --section AT4-FO-2";
+const CMD = "adata = sc.read_h5ad(\"AT4-FO-2.h5ad\")";
 
 const STEPS = [
   { id: "load", after: 0,    lines: [
@@ -255,12 +254,12 @@ export default function CloseRun() {
           </div>
           <pre
             className="px-5 py-4 font-mono text-[12.5px] leading-[1.65] text-snow/85 overflow-x-auto min-h-[280px] md:min-h-[340px]"
-            aria-label="Sample Artemis run on public Xenium section AT4-FO-2 from de Jong et al., Nature 2026. Typed command, then QC, BANKSY, clustering, figures and a portal-ready line."
+            aria-label="Real analysis code on public Xenium section AT4-FO-2 from de Jong et al., Nature 2026. Load the AnnData, then QC, BANKSY, clustering, figures and a portal-ready line."
           >
             <div className="text-dim"># de Jong et al., Nature 2026 · Xenium · AT4-FO-2</div>
             <div className="text-dim"># 50,000-cell subsample · gbmspace.org</div>
             <div className="mt-2">
-              <span className="text-violet">$ </span>
+              <span className="text-violet">&gt;&gt;&gt; </span>
               {typed}
               {step < 0 && <span className="inline-block w-[7px] h-[13px] ml-0.5 bg-violet align-[-1px] animate-pulse" />}
             </div>
@@ -290,7 +289,7 @@ export default function CloseRun() {
       </div>
       <p className="mt-3 text-[12.5px] text-dim leading-relaxed">
         A sample run on public data — Xenium section AT4-FO-2 from de Jong et al., <i>Nature</i> 2026 (gbmspace.org).
-        Staged replay of an analysis we performed; not an installable command or a product release.
+        Staged replay of the analysis code we ran on this section.
       </p>
     </div>
   );

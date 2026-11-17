@@ -87,7 +87,7 @@ export default function TerminalLive() {
   const boxRef = useRef(null);
   const reduced = useRef(false);
 
-  const CMD = "artemis run --input GBM3.h5ad --tissue-context glioblastoma";
+  const CMD = "adata = sc.read_h5ad(\"GBM3.h5ad\")";
   const CHAT_A =
     "Hypoxia-linked VEGFA is strongest in the endothelial-annotated domain and spatially contiguous — Moran's I 0.62 on this section's k-NN graph.";
 
@@ -150,23 +150,22 @@ export default function TerminalLive() {
         <span className="h-2.5 w-2.5 rounded-full bg-line" />
         <span className="h-2.5 w-2.5 rounded-full bg-line" />
         <span className="h-2.5 w-2.5 rounded-full bg-line" />
-        <span className="ml-3 font-mono text-[12px] text-dim">artemis — zsh</span>
+        <span className="ml-3 font-mono text-[12px] text-dim">python · GBM3</span>
       </div>
       <div
         ref={boxRef}
         className="bg-[#12101d] px-5 py-4 font-mono text-[13px] leading-[1.75] h-[380px] overflow-hidden whitespace-pre-wrap"
         role="img"
-        aria-label="Terminal replay of the Artemis pipeline running on the GBM3 section"
+        aria-label="Terminal replay of the analysis code run on the GBM3 Visium section"
       >
         <div>
-          <span style={{ color: DIM }}>$ </span>
+          <span style={{ color: DIM }}>&gt;&gt;&gt; </span>
           <span style={{ color: "#efeef8" }}>{typed}</span>
           {phase === 1 && <span className="animate-pulse" style={{ color: TEAL }}>▍</span>}
         </div>
         {phase >= 2 && (
           <div style={{ color: DIM }}>
-            {"\n"}  <span style={{ color: TEAL, fontWeight: 700 }}>ARTEMIS</span> BioLabs · spatial pipeline · artemislabs.bio
-            {"\n"}  input: GBM3.h5ad · 1,775 spots × 36,601 genes · Visium{"\n\n"}
+            {"\n"}  <span style={{ color: DIM }}># GBM3.h5ad · 1,775 spots × 36,601 genes · Visium</span>{"\n\n"}
           </div>
         )}
         {BARS.map(([label, dur], i) =>
@@ -187,8 +186,8 @@ export default function TerminalLive() {
         )}
         {phase >= 101 && (
           <div>
-            {"\n"}<span style={{ color: DIM }}>$ </span><span style={{ color: "#efeef8" }}>artemis chat "which regions look hypoxic?"</span>
-            {"\n"}<span style={{ color: AMBER }}>  ● </span><span style={{ color: DIM }}>qwen3:8b · local · grounded on output/GBM3</span>
+            {"\n"}<span style={{ color: DIM }}># which domains look hypoxic?</span>
+            {"\n"}<span style={{ color: DIM }}>&gt;&gt;&gt; </span><span style={{ color: "#efeef8" }}>print(markers.loc[markers.cluster == 1, "gene"].head())</span>
             {"\n"}<span style={{ color: "#cfcde0" }}>  {chatTyped}</span>
             {phase === 101 && <span className="animate-pulse" style={{ color: TEAL }}>▍</span>}
           </div>
