@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 const GEO_QUERY =
   '(glioblastoma) AND (spatial transcriptomics) AND "Homo sapiens"[organism] AND gse[entry type]';
 const ACCESSED = "2026-11-13";
-const N_IDENTIFIED = 62; // GEO series matching the query above
+const N_IDENTIFIED = 62; // GEO esearch Count, accessed 2026-11-13; re-verified 2026-11-17 still 62
 const N_NOT_INGESTED = 61; // 62 minus GSE194329, the one GEO series ingested
 const N_SECTIONS = 8; // sections actually shown on this page
 
@@ -38,17 +38,17 @@ const TILES = [
 ];
 
 const STACK_LOGOS = [
-  { src: "logos/r.svg", label: "R" },
-  { src: "logos/rstudio.svg", label: "RStudio", invert: true },
-  { src: "logos/python.svg", label: "Python" },
-  { src: "logos/nih.svg", label: "NIH" },
-  { src: "logos/ncbi.svg", label: "NCBI", invert: true },
-  { src: "logos/geo.svg", label: "GEO" },
-  { src: "logos/sra.svg", label: "SRA" },
-  { src: "logos/cellxgene.svg", label: "CELLxGENE", invert: true },
-  { src: "logos/allen.svg", label: "Allen Brain Atlas" },
-  { src: "logos/bioconductor.svg", label: "Bioconductor" },
-  { src: "logos/scanpy.svg", label: "Scanpy" },
+  { src: "logos/strip/r.png", label: "R" },
+  { src: "logos/strip/rstudio.png", label: "RStudio" },
+  { src: "logos/strip/python.png", label: "Python" },
+  { src: "logos/strip/nih.png", label: "NIH" },
+  { src: "logos/strip/ncbi.png", label: "NCBI" },
+  { src: "logos/strip/geo.png", label: "GEO" },
+  { src: "logos/strip/sra.png", label: "SRA" },
+  { src: "logos/strip/cellxgene.png", label: "CELLxGENE" },
+  { src: "logos/strip/allen.png", label: "Allen Institute" },
+  { src: "logos/strip/bioconductor.png", label: "Bioconductor" },
+  { src: "logos/strip/scanpy.png", label: "Scanpy" },
 ];
 
 const ACTS = ["search", "screen", "atlas", "portal"];
@@ -257,16 +257,13 @@ function LogoMark({ item, progress, i, n }) {
   return (
     <motion.span
       style={{ opacity, x, y, scale }}
-      className="flex items-center justify-center h-8 md:h-9 px-2"
+      className="flex items-center justify-center h-8 px-1.5"
       title={item.label}
     >
       <img
         src={item.src}
         alt={item.label}
-        className="h-7 md:h-8 w-auto max-w-[110px] object-contain"
-        style={{ filter: item.invert
-          ? "grayscale(1) invert(1) brightness(1.25) contrast(1.05)"
-          : "grayscale(1) brightness(1.5) contrast(1.08)" }}
+        className="h-7 w-auto max-h-7 object-contain object-center"
       />
       <span className="sr-only">{item.label}</span>
     </motion.span>
@@ -276,8 +273,8 @@ function LogoMark({ item, progress, i, n }) {
 function LogoRow({ progress }) {
   const lineOp = useTransform(progress, [0.04, 0.08, 0.21, 0.27], [0, 1, 1, 0]);
   return (
-    <div className="mb-6 w-full min-h-[96px] md:min-h-[110px]">
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 min-h-[44px] md:min-h-[52px]">
+    <div className="mb-6 w-full">
+      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
         {STACK_LOGOS.map((item, i) => (
           <LogoMark key={item.label} item={item} progress={progress} i={i} n={STACK_LOGOS.length} />
         ))}
@@ -298,16 +295,13 @@ function LogoRow({ progress }) {
 function StaticLogos() {
   return (
     <div className="mb-6">
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
         {STACK_LOGOS.map((item) => (
-          <span key={item.label} className="flex items-center justify-center h-8 px-2" title={item.label}>
+          <span key={item.label} className="flex items-center justify-center h-8 px-1.5" title={item.label}>
             <img
               src={item.src}
               alt={item.label}
-              className="h-7 w-auto max-w-[110px] object-contain"
-              style={{ filter: item.invert
-                ? "grayscale(1) invert(1) brightness(1.25) contrast(1.05)"
-                : "grayscale(1) brightness(1.5) contrast(1.08)" }}
+              className="h-7 w-auto max-h-7 object-contain object-center"
             />
           </span>
         ))}
@@ -467,7 +461,7 @@ export default function PrismaStory() {
       }
       if (countRef.current) {
         countRef.current.textContent = String(
-          Math.round(clamp01((p - 0.1) / 0.1) * N_IDENTIFIED)
+          Math.round(clamp01((p - 0.02) / 0.06) * N_IDENTIFIED)
         );
       }
       if (idRef.current) {
@@ -564,8 +558,9 @@ export default function PrismaStory() {
             style={{ opacity: o1 }}
             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           >
-            <div className="relative w-full max-w-3xl">
+            <div className="relative w-full max-w-5xl">
               <LogoRow progress={scrollYProgress} />
+              <div className="max-w-3xl mx-auto">
               <div className="flex flex-wrap justify-center gap-2.5 mb-6 min-h-[30px]">
                 {CHIPS.filter((c) => c.kind === "source").map((c, i) => (
                   <Chip key={c.label} chip={c} progress={scrollYProgress} i={i} />
@@ -588,6 +583,7 @@ export default function PrismaStory() {
                 {CHIPS.filter((c) => c.kind === "platform").map((c, i) => (
                   <Chip key={c.label} chip={c} progress={scrollYProgress} i={i + 3} />
                 ))}
+              </div>
               </div>
             </div>
           </motion.div>

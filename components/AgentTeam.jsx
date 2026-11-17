@@ -1,6 +1,7 @@
 "use client";
 
 // Show-not-say pipeline for the PhD-led agent team. Heading text is fixed.
+// Tissue is the same AT4-FO-2 BANKSY preview used in the sample run (2,500 points).
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion, useScroll } from "framer-motion";
 
@@ -14,11 +15,9 @@ function hexToRgb(hex) {
   return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 }
 
-function PipelineStage({ progress, reduced }) {
+function TissueCanvas({ reduced }) {
   const canvasRef = useRef(null);
-  const ptsRef = useRef(null);
-  const palRef = useRef(null);
-  const domainsRef = useRef(null);
+  const dataRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -28,9 +27,7 @@ function PipelineStage({ progress, reduced }) {
         if (cancelled) return;
         const pal = {};
         for (const d of data.domains) pal[d.id] = hexToRgb(d.color);
-        palRef.current = pal;
-        domainsRef.current = data.domains;
-        ptsRef.current = data.points.filter((_, i) => i % 8 === 0);
+        dataRef.current = { ...data, pal };
       })
       .catch(() => {});
     return () => {
@@ -59,79 +56,68 @@ function PipelineStage({ progress, reduced }) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const laneY = (i, n, h) => h * 0.22 + ((i % n) / n) * h * 0.56;
-
     function draw(p) {
       fit();
       const w = cssW;
       const h = cssH;
-      ctx.fillStyle = "#050607";
+      ctx.fillStyle = "#07080a";
       ctx.fillRect(0, 0, w, h);
+      const data = dataRef.current;
+      if (!data) return;
 
-      const nodeXs = [0.22, 0.5, 0.78].map((f) => w * f);
-      const nodeY = h * 0.5;
-      // lane
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.04, nodeY);
-      ctx.lineTo(w * 0.96, nodeY);
-      ctx.stroke();
+      const pts = data.points;
+      const pal = data.pal;
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const [x, y] of pts) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+      const pad = 16;
+      // Leave a reserved gutter on the right once the reviewer stage is on
+      const reviewer = p >= 0.62;
+      const rightGutter = reviewer ? Math.min(220, w * 0.32) : 0;
+      const sx = (x) => pad + ((x - minX) / (maxX - minX || 1)) * (w - pad * 2 - rightGutter);
+      const sy = (y) => pad + ((y - minY) / (maxY - minY || 1)) * (h - pad * 2);
+      const colorAmt = reduced ? 1 : Math.max(0, Math.min(1, (p - 0.28) / 0.2));
 
-      const pts = ptsRef.current;
-      const pal = palRef.current;
-      if (pts && pal) {
-        // Source tissue cloud on the left, flowing into the lane
-        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-        for (const [x, y] of pts) {
-          if (x < minX) minX = x;
-          if (x > maxX) maxX = x;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
-        }
-        const sx = (x) => 12 + ((x - minX) / (maxX - minX || 1)) * (w * 0.16);
-        const sy = (y) => h * 0.22 + ((y - minY) / (maxY - minY || 1)) * (h * 0.56);
-
-        for (let i = 0; i < pts.length; i++) {
-          const [x, y, d] = pts[i];
-          const [r, g, b] = pal[d] || [180, 180, 180];
-          const start = i / pts.length;
-          const travel = Math.max(0, Math.min(1, (p - start * 0.12) / 0.72));
-          const x0 = sx(x);
-          const y0 = sy(y);
-          const x1 = w * 0.96;
-          const y1 = laneY(i, 28, h);
-          const px = x0 + (x1 - x0) * travel;
-          const py = y0 + (y1 - y0) * Math.min(1, travel * 1.15);
-          const colored = travel > 0.42;
-          ctx.beginPath();
-          ctx.arc(px, py, 2.2, 0, Math.PI * 2);
-          ctx.fillStyle = colored
-            ? `rgba(${r},${g},${b},0.92)`
-            : "rgba(200,198,188,0.55)";
-          ctx.fill();
-        }
+      for (let i = 0; i < pts.length; i++) {
+        const [x, y, d] = pts[i];
+        const [r, g, b] = pal[d] || [180, 180, 180];
+        const pr = 210 + (r - 210) * colorAmt;
+        const pg = 208 + (g - 208) * colorAmt;
+        const pb = 198 + (b - 198) * colorAmt;
+        const px = sx(x);
+        const py = sy(y);
+        ctx.beginPath();
+        ctx.arc(px, py, 2.15, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${pr|0},${pg|0},${pb|0},${0.55 + 0.4 * colorAmt})`;
+        ctx.fill();
       }
 
-      // end-state figures + portal glyph
-      if (p > 0.78) {
-        const a = Math.min(1, (p - 0.78) / 0.14);
-        ctx.globalAlpha = a;
-        const fx = w * 0.86;
-        const fy = h * 0.18;
-        ctx.fillStyle = "rgba(18,20,24,0.95)";
-        ctx.strokeStyle = "rgba(255,255,255,0.18)";
-        ctx.lineWidth = 1;
-        for (let i = 0; i < 2; i++) {
-          ctx.fillRect(fx + i * 22, fy + i * 8, 36, 28);
-          ctx.strokeRect(fx + i * 22, fy + i * 8, 36, 28);
+      if (colorAmt > 0.55) {
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, (colorAmt - 0.55) / 0.45);
+        ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
+        const used = new Set();
+        for (const d of data.domains) {
+          if (used.has(d.cls) && ![2, 5, 4, 3, 1, 0].includes(d.id)) continue;
+          let accX = 0, accY = 0, n = 0;
+          for (const [x, y, id] of pts) {
+            if (id !== d.id) continue;
+            accX += sx(x);
+            accY += sy(y);
+            n += 1;
+            if (n > 80) break;
+          }
+          if (!n) continue;
+          used.add(d.id);
+          const [r, g, b] = pal[d.id];
+          ctx.fillStyle = `rgba(${r},${g},${b},0.95)`;
+          ctx.fillText(d.cls, accX / n - 22, accY / n);
         }
-        ctx.fillStyle = "rgba(126,239,224,0.9)";
-        ctx.fillRect(fx + 6, fy + 42, 48, 8);
-        ctx.font = "10px ui-monospace, monospace";
-        ctx.fillStyle = "rgba(243,239,228,0.8)";
-        ctx.fillText("portal", fx + 8, fy + 68);
-        ctx.globalAlpha = 1;
+        ctx.restore();
       }
     }
 
@@ -157,18 +143,69 @@ function PipelineStage({ progress, reduced }) {
 function ReviewPulse({ active, reduced }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 font-mono text-[10.5px] tracking-wide ${
-        active ? "text-[#7eefe0]" : "text-dim"
+      className={`relative inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] tracking-wide transition-colors ${
+        active
+          ? "border-[#7eefe0]/70 text-[#7eefe0] bg-[#7eefe0]/10"
+          : "border-white/15 text-dim bg-black/40"
       }`}
     >
-      <span
-        className={`h-1.5 w-1.5 rounded-full ${active ? "bg-[#7eefe0]" : "bg-white/20"} ${
-          active && !reduced ? "animate-pulse" : ""
-        }`}
-        aria-hidden
-      />
+      <span className="relative flex h-2.5 w-2.5" aria-hidden>
+        {active && !reduced && (
+          <span className="absolute inset-0 rounded-full bg-[#7eefe0] animate-ping opacity-70" />
+        )}
+        <span className={`relative h-2.5 w-2.5 rounded-full ${active ? "bg-[#7eefe0]" : "bg-white/25"}`} />
+      </span>
       human review ✓
     </span>
+  );
+}
+
+function PlanCard({ visible }) {
+  return (
+    <div
+      className={`absolute top-3 left-3 z-10 max-w-[240px] rounded-[4px] border border-white/15 bg-black/80 backdrop-blur-sm px-3.5 py-3 shadow-[0_8px_28px_rgba(0,0,0,0.45)] transition-opacity duration-500 ${
+        visible ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
+      <p className="font-mono text-[10px] uppercase tracking-widest text-[#7eefe0]">Plan</p>
+      <p className="mt-1.5 text-[13.5px] text-snow leading-snug">
+        Where is the hypoxic core in AT4-FO-2, and what sits beside it?
+      </p>
+      <p className="mt-2 font-mono text-[11px] text-dim leading-relaxed">
+        QC → BANKSY domains → composition
+      </p>
+    </div>
+  );
+}
+
+function ReviewerPanel({ visible }) {
+  return (
+    <div
+      className={`absolute top-3 right-3 bottom-3 z-10 w-[min(200px,32%)] flex flex-col gap-2 transition-opacity duration-500 ${
+        visible ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
+      <figure className="rounded-[3px] border border-white/15 bg-black/80 overflow-hidden flex-1 min-h-0">
+        <img
+          src="programs/at4_domains.jpg"
+          alt="BANKSY domains on AT4-FO-2"
+          className="w-full h-full object-cover"
+        />
+        <figcaption className="px-2 py-1 font-mono text-[10px] text-dim bg-black/70">
+          domains
+        </figcaption>
+      </figure>
+      <figure className="rounded-[3px] border border-white/15 bg-black/80 overflow-hidden flex-1 min-h-0">
+        <img
+          src="demo/poster.png"
+          alt="Live portal thumbnail"
+          className="w-full h-full object-cover object-top"
+        />
+        <figcaption className="px-2 py-1 font-mono text-[10px] text-dim bg-black/70">
+          portal
+        </figcaption>
+      </figure>
+    </div>
   );
 }
 
@@ -177,7 +214,7 @@ export default function AgentTeam() {
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: trackRef,
-    offset: ["start 0.7", "end 0.35"],
+    offset: ["start 0.7", "end 0.45"],
   });
   const [p, setP] = useState(reduced ? 1 : 0);
 
@@ -197,11 +234,13 @@ export default function AgentTeam() {
     };
   }, [scrollYProgress, reduced]);
 
-  const nodeOn = (i) => p >= 0.16 + i * 0.22;
-  const handoffOn = (i) => p >= 0.32 + i * 0.22;
+  const nodeOn = (i) => p >= 0.08 + i * 0.28;
+  const handoffOn = (i) => p >= 0.28 + i * 0.34;
+  const showPlan = reduced ? false : p < 0.36;
+  const showReviewer = reduced || p >= 0.62;
 
   return (
-    <section id="team" className="relative bg-black px-6 md:px-14 py-16 md:py-24">
+    <section id="team" className="relative bg-black px-6 md:px-14 pt-16 md:pt-20 pb-8 md:pb-10">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-6xl max-w-4xl">
           A PhD-led agent team for your spatial data
@@ -210,18 +249,17 @@ export default function AgentTeam() {
           Every result carries its source, method and decision trail.
         </p>
 
-        <div ref={trackRef} className={reduced ? "mt-10" : "mt-10 md:h-[180vh]"}>
-          <div className={reduced ? "relative" : "md:sticky md:top-[12vh]"}>
-            <div className="relative overflow-hidden rounded-[4px] border border-white/10 bg-[#050607] min-h-[320px] md:min-h-[420px]">
-              <PipelineStage progress={scrollYProgress} reduced={!!reduced} />
-              <div className="relative z-10 flex flex-col sm:flex-row sm:items-stretch gap-2 sm:gap-0 p-3 md:p-4">
+        <div ref={trackRef} className={reduced ? "mt-10" : "mt-10 md:h-[120vh]"}>
+          <div className={reduced ? "relative" : "md:sticky md:top-[10vh]"}>
+            <div className="rounded-[4px] border border-white/10 bg-[#07080a] overflow-hidden">
+              <div className="flex flex-col sm:flex-row sm:items-stretch gap-2 sm:gap-0 p-3 md:p-4 border-b border-white/10">
                 {NODES.map((n, i) => (
                   <div key={n.id} className="flex-1 flex flex-col sm:flex-row sm:items-center">
                     <div
-                      className={`flex-1 rounded-[4px] border px-4 py-3 md:px-5 md:py-3.5 backdrop-blur-[2px] transition-colors ${
+                      className={`flex-1 rounded-[4px] border px-4 py-3 md:px-5 md:py-3 transition-colors ${
                         nodeOn(i)
-                          ? "border-[#7eefe0]/50 bg-black/75"
-                          : "border-white/10 bg-black/55"
+                          ? "border-[#7eefe0]/50 bg-black/60"
+                          : "border-white/10 bg-black/40"
                       }`}
                     >
                       <p
@@ -240,10 +278,16 @@ export default function AgentTeam() {
                   </div>
                 ))}
               </div>
+
+              <div className="relative w-full aspect-[5/4] sm:aspect-[16/10] md:aspect-[16/9] max-h-[520px]">
+                <TissueCanvas reduced={!!reduced} />
+                <PlanCard visible={showPlan} />
+                <ReviewerPanel visible={showReviewer} />
+              </div>
             </div>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
               <p className="font-mono text-[11.5px] text-dim">
-                Real tissue from public Xenium section AT4-FO-2 (de Jong et al., Nature 2026) · ends on figures and a portal
+                Public Xenium section AT4-FO-2 (de Jong et al., Nature 2026) · 2,500 of 50,000 displayed cells · 8 BANKSY domains
               </p>
               <a
                 href="#contact"

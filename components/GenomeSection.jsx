@@ -173,7 +173,7 @@ export default function GenomeSection() {
   };
 
   return (
-    <section id="genomics" className="relative px-6 md:px-14 py-28 max-w-7xl mx-auto">
+    <section id="genomics" className="relative px-6 md:px-14 pt-12 md:pt-16 pb-20 max-w-7xl mx-auto">
       <Reveal>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Not just spatial.
