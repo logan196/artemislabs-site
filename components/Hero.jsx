@@ -8,12 +8,10 @@ import Decode from "./Decode";
 import { BOOKING } from "./AccessForms";
 
 export const NAV = [
-  ["#banksy", "BANKSY"],
-  ["#gallery", "Glioblastoma"],
-  ["#booklet", "Figures", "xl"], // third field: only show in the desktop bar from this breakpoint (bar is full at 1024px)
-  ["#whatwedo", "What we do"],
-  ["#portal", "Portal"],
-  ["#team", "Team"],
+  ["#use-case", "Use case"],
+  ["#umap-interrogated", "UMAP"],
+  ["#genomics", "Genome"],
+  ["#tissue", "Tissue"],
   ["/figures/", "Figures"],
 ];
 
@@ -38,7 +36,7 @@ export default function Hero() {
   return (
     <section ref={ref} className="relative flex-1 min-h-0 flex flex-col overflow-hidden bg-ink">
       <a
-        href="#banksy"
+        href="#use-case"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"
       >
         Skip to content

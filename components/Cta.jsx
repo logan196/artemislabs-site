@@ -79,11 +79,10 @@ export default function Cta() {
         <footer className="mt-20 border-t border-white/10 pt-8 flex flex-col gap-5 text-[12.5px] text-dim">
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2" aria-label="Footer">
             {[
-              ["#banksy", "BANKSY"],
-              ["#gallery", "Glioblastoma"],
-              ["#whatwedo", "What we do"],
-              ["#portal", "Portal"],
-              ["#team", "Team"],
+              ["#use-case", "Use case"],
+              ["#umap-interrogated", "UMAP"],
+              ["#genomics", "Genome"],
+              ["#tissue", "Tissue"],
               ["/figures/", "Figures"],
               ["#book", "Book"],
               ["#contact", "Contact"],

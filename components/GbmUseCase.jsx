@@ -1,8 +1,8 @@
 "use client";
 
 // Scroll-driven GBM use-case story. Every image is a real capture or figure:
-// Young Lab briefing pages, the /live GBM3 portal, Fig. 1 (AT4-FO-2 methods),
-// the Young Vitessce workspace, hosted public sections, and the GBM3 co-scientist.
+// the GBM3 (GSE194329) figure page and marker maps, the /live GBM3 portal,
+// the /live/explore visualizer, hosted public sections, and the GBM3 co-scientist.
 import { useEffect, useRef, useState } from "react";
 import { useScroll } from "framer-motion";
 
@@ -11,7 +11,7 @@ const STAGES = [
     id: "report",
     label: "Custom bioinformatics report",
     src: "usecase/report.jpg",
-    alt: "Pages from the Artemis briefing prepared for the Young Lab, UCSF: the title page and the AT4 BANKSY domain results, on public de Jong et al. Xenium data.",
+    alt: "Figure page for public Visium section GBM3 (Ren et al., Nature Communications 2023, GSE194329): H&E, BANKSY cell states, and EGFR, SOX2, GFAP and CD68 expression.",
   },
   {
     id: "portals",
@@ -22,14 +22,14 @@ const STAGES = [
   {
     id: "figures",
     label: "Figures",
-    src: "figbook/fig1_at4_methods.jpg",
-    alt: "Figure 1 for public Xenium section AT4-FO-2: authors’ Tangram types, BANKSY domains, position-only k-means, distance to hypoxia, held-out classifier, and domain composition.",
+    src: "usecase/figures.jpg",
+    alt: "Marker maps for public Visium section GBM3: EGFR, SOX2, GFAP and CD68.",
   },
   {
     id: "tools",
     label: "Analysis tools / software",
     src: "usecase/tools.jpg",
-    alt: "Young Lab Vitessce workspace on AT4-FO-2: BANKSY domains, distance to the nearest hypoxic cell, and EGFR expression by domain.",
+    alt: "The Artemis Explore tissue visualizer on a public glioblastoma Visium section, with paired H&E, expression-derived marker layers, and the annotate tool.",
   },
   {
     id: "public",
