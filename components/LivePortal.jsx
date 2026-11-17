@@ -327,9 +327,7 @@ export default function LivePortal() {
             <span className="hidden sm:inline font-mono text-[11px] text-white/70">3 agents · shared section</span>
             <a
               href="/"
-              aria-label="Back to the main page"
-              title="Back to the main page"
-              className="home-mark ml-auto"
+              className="ml-auto font-mono text-[11px] tracking-[0.12em] uppercase text-white/80 hover:text-white border-b border-white/25 hover:border-white pb-0.5"
               onClick={(e) => {
                 const path = window.location.pathname;
                 if (path === "/" || path.endsWith("/index.html")) {
@@ -339,7 +337,7 @@ export default function LivePortal() {
                 }
               }}
             >
-              <img src="artemis_mark.svg" alt="" className="h-8 w-8" />
+              Main page
             </a>
           </div>
 
@@ -417,7 +415,6 @@ export default function LivePortal() {
         </div>
         <p className="mt-4 text-[13px] text-white/75 leading-relaxed">
           Simulated console. Suggested replies quote figures and the GEO ledger already on this site.
-          The dodecahedron at the right of the bar returns to the top of the page.
         </p>
       </div>
     </section>
