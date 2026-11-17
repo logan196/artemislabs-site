@@ -40,8 +40,9 @@ export default function Cta() {
         <Reveal>
           <h2 className="text-3xl md:text-4xl max-w-3xl">Watch a sample run.</h2>
           <p className="mt-4 max-w-2xl text-lg text-dim leading-relaxed">
-            A staged replay of an analysis we ran on a public Xenium section. The cells
-            on the right move with each step — scatter, QC, BANKSY, then a portal.
+            A staged replay of an analysis we ran on a public Xenium section. The tissue
+            on the right steps with the code — raw coordinates, QC, eight BANKSY domains,
+            then the domain composition from the run.
           </p>
         </Reveal>
         <Reveal delay={0.06} className="mt-10">

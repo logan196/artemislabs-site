@@ -10,6 +10,7 @@ import { BOOKING } from "./AccessForms";
 export const NAV = [
   ["#banksy", "BANKSY"],
   ["#gallery", "Glioblastoma"],
+  ["#booklet", "Figures", "xl"], // third field: only show in the desktop bar from this breakpoint (bar is full at 1024px)
   ["#whatwedo", "What we do"],
   ["#portal", "Portal"],
   ["#team", "Team"],
@@ -64,8 +65,8 @@ export default function Hero() {
         </a>
         <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
           <div className="hidden lg:flex items-center gap-8 font-medium">
-            {NAV.map(([href, label]) => (
-              <a key={href} href={href} className="whitespace-nowrap text-snow hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors [text-shadow:0_1px_8px_rgba(0,0,0,0.85)]">
+            {NAV.map(([href, label, bp]) => (
+              <a key={href} href={href} className={`${bp === "xl" ? "hidden xl:inline " : ""}whitespace-nowrap text-snow hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors [text-shadow:0_1px_8px_rgba(0,0,0,0.85)]`}>
                 {label}
               </a>
             ))}
