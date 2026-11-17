@@ -4,11 +4,13 @@ import GbmUseCase from "@/components/GbmUseCase";
 import UmapExplorer from "@/components/UmapExplorer";
 import GenomeSection from "@/components/GenomeSection";
 import TissueBand from "@/components/TissueBand";
+import LiveHeViewer from "@/components/LiveHeViewer";
+import CoreCapabilities from "@/components/CoreCapabilities";
 import Cta from "@/components/Cta";
 import AccessForms from "@/components/AccessForms";
 
 // Homepage: living UMAP hero and logo strip, GBM use-case, tissue↔UMAP,
-// genome browser and multiplexed tissue, then the story, booking, and footer.
+// live H&E viewer, genome browser and multiplexed tissue, eight cores, then the story, booking, and footer.
 export default function Home() {
   return (
     <main className="grain">
@@ -19,8 +21,10 @@ export default function Home() {
       </div>
       <GbmUseCase />
       <UmapExplorer />
+      <LiveHeViewer />
       <GenomeSection />
       <TissueBand />
+      <CoreCapabilities />
       <Cta />
       <AccessForms />
     </main>

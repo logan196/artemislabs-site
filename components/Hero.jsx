@@ -10,8 +10,10 @@ import { BOOKING } from "./AccessForms";
 export const NAV = [
   ["#use-case", "Use case"],
   ["#umap-interrogated", "UMAP"],
+  ["#viewer", "H&E viewer"],
   ["#genomics", "Genome"],
-  ["#tissue", "Tissue"],
+  ["#tissue", "Tissue", "xl"],
+  ["#cores", "Cores"],
   ["/figures/", "Figures"],
 ];
 
