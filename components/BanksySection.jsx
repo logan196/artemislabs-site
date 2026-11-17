@@ -9,7 +9,7 @@ import { stateColor } from "../lib/stateColors";
 // Canonical per-state colors shared with the UMAP explorer, keyed by NAME —
 // the same state keeps the same color in every figure on the page.
 
-const INK = [28, 26, 21]; // neutral "expression without place" color
+const INK = [205, 200, 188]; // neutral "expression without place" color
 
 function hexToRgb(hex) {
   return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
@@ -113,13 +113,13 @@ export default function BanksySection() {
           const pulse = 14 + Math.sin(t * 2.4 + k) * 3;
           ctx.beginPath();
           ctx.arc(px(s[0]), py(s[1]), pulse, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(15,118,110,${0.5 * ringPhase * (1 - resolve)})`;
+          ctx.strokeStyle = `rgba(95,212,196,${0.5 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 1.2;
           ctx.stroke();
           // azimuthal sweep
           ctx.beginPath();
           ctx.arc(px(s[0]), py(s[1]), pulse, t * 1.8 + k, t * 1.8 + k + 1.1);
-          ctx.strokeStyle = `rgba(15,118,110,${0.85 * ringPhase * (1 - resolve)})`;
+          ctx.strokeStyle = `rgba(95,212,196,${0.85 * ringPhase * (1 - resolve)})`;
           ctx.lineWidth = 2;
           ctx.stroke();
         }
@@ -127,7 +127,7 @@ export default function BanksySection() {
 
       // spots: beat 1 = REAL per-spot GFAP intensity (sepia ramp — the blur the
       // caption describes), lerped to real state colors as BANKSY resolves.
-      const SEPIA = [154, 91, 19];
+      const SEPIA = [217, 164, 91];
       for (const [sx, sy, si, gf] of spots) {
         const g0 = gf ?? 0;
         // GFAP view: ink -> sepia by expression
@@ -204,19 +204,19 @@ export default function BanksySection() {
             ctx.beginPath();
             ctx.moveTo(rx, ry);
             ctx.lineTo(nx, ny);
-            ctx.strokeStyle = `rgba(154,91,19,${spokeA})`;
+            ctx.strokeStyle = `rgba(217,164,91,${spokeA})`;
             ctx.lineWidth = 1;
             ctx.stroke();
             ctx.beginPath();
             ctx.arc(nx, ny, 5, 0, Math.PI * 2);
-            ctx.strokeStyle = `rgba(154,91,19,${spokeA})`;
+            ctx.strokeStyle = `rgba(217,164,91,${spokeA})`;
             ctx.lineWidth = 1.2;
             ctx.stroke();
           }
           // focus ring
           ctx.beginPath();
           ctx.arc(rx, ry, 12, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(17,94,89,${0.95 * ringAlpha})`;
+          ctx.strokeStyle = `rgba(43,179,163,${0.95 * ringAlpha})`;
           ctx.lineWidth = 1.6;
           ctx.stroke();
           // tiny mono label, paper halo so it reads over the dots; flips to
@@ -227,11 +227,11 @@ export default function BanksySection() {
           let lx = rx + 18;
           if (lx + lw > w - 8) lx = rx - 18 - lw;
           const ly = Math.min(Math.max(ry - 16, 14), h - 10);
-          ctx.strokeStyle = `rgba(255,253,247,${0.9 * ringAlpha})`;
+          ctx.strokeStyle = `rgba(17,20,24,${0.9 * ringAlpha})`;
           ctx.lineWidth = 3;
           ctx.lineJoin = "round";
           ctx.strokeText(label, lx, ly);
-          ctx.fillStyle = `rgba(95,91,80,${0.9 * ringAlpha})`;
+          ctx.fillStyle = `rgba(154,151,141,${0.9 * ringAlpha})`;
           ctx.fillText(label, lx, ly);
         }
       }
@@ -243,14 +243,14 @@ export default function BanksySection() {
         const ih = iw * (heImg.naturalHeight / heImg.naturalWidth);
         const ix = 18, iy = 16;
         ctx.globalAlpha = a;
-        ctx.fillStyle = "#fffdf7";
-        ctx.strokeStyle = "#d8d2c2";
+        ctx.fillStyle = "#111418";
+        ctx.strokeStyle = "#2a2f36";
         ctx.beginPath();
         ctx.roundRect(ix - 5, iy - 5, iw + 10, ih + 28, 4);
         ctx.fill();
         ctx.stroke();
         ctx.drawImage(heImg, ix, iy, iw, ih);
-        ctx.fillStyle = "#5f5b50";
+        ctx.fillStyle = "#9a978d";
         ctx.font = "600 10.5px 'JetBrains Mono', ui-monospace, monospace";
         ctx.fillText("GBM1 · the H&E slide", ix, iy + ih + 15);
         ctx.globalAlpha = 1;
@@ -261,7 +261,7 @@ export default function BanksySection() {
         const a = 1 - resolve / 0.6;
         ctx.font = "600 12px 'JetBrains Mono', ui-monospace, monospace";
         const lx = w - 170, ly = 26;
-        ctx.fillStyle = `rgba(28,26,21,${0.75 * a})`;
+        ctx.fillStyle = `rgba(243,239,228,${0.75 * a})`;
         ctx.fillText("GFAP expression", lx, ly);
         for (let k = 0; k < 60; k++) {
           const f = k / 59;
@@ -270,7 +270,7 @@ export default function BanksySection() {
           )},${Math.round(INK[2] + (SEPIA[2] - INK[2]) * f)},${(0.25 + 0.6 * f) * a})`;
           ctx.fillRect(lx + k * 1.9, ly + 8, 1.9, 6);
         }
-        ctx.fillStyle = `rgba(95,91,80,${0.8 * a})`;
+        ctx.fillStyle = `rgba(154,151,141,${0.8 * a})`;
         ctx.font = "500 10px 'JetBrains Mono', ui-monospace, monospace";
         ctx.fillText("0", lx, ly + 26);
         ctx.fillText("p99", lx + 100, ly + 26);
@@ -291,7 +291,7 @@ export default function BanksySection() {
         const boxH = nVisible * rowH + pad * 2 - 6;
         const bx = w - boxW - 16;
         const by = h - boxH - 16;
-        ctx.fillStyle = `rgba(255,253,247,${0.9 * a})`;
+        ctx.fillStyle = `rgba(17,20,24,${0.9 * a})`;
         ctx.beginPath();
         ctx.roundRect(bx, by, boxW, boxH, 6);
         ctx.fill();
@@ -304,7 +304,7 @@ export default function BanksySection() {
           ctx.arc(bx + pad + 4, ly - 4, 4, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${l.rgb.join(",")},${ra})`;
           ctx.fill();
-          ctx.fillStyle = `rgba(28,26,21,${ra})`;
+          ctx.fillStyle = `rgba(243,239,228,${ra})`;
           ctx.fillText(`${l.name}  ${l.count}`, bx + pad + 16, ly);
         });
       }
@@ -323,7 +323,6 @@ export default function BanksySection() {
     <section id="banksy" ref={wrapRef} className="relative h-[180vh] md:h-[240vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         <div className="px-6 md:px-14 pt-16 md:pt-20 max-w-7xl mx-auto w-full">
-          <p className="font-mono text-sm text-violet mb-3">01 · BANKSY — A GBM USE CASE</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Clustering that <span className="text-violet">sees the tissue.</span>
           </h2>

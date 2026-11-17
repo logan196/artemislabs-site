@@ -1,74 +1,76 @@
 "use client";
 
+// Closing section: one headline, one line of value, three equal options.
 import Reveal from "./Reveal";
+import { BOOKING, CONTACT } from "./AccessForms";
+
+const OPTIONS = [
+  {
+    k: "For labs",
+    t: "Request early access",
+    b: "Tell us your data type and question; we reply with a proposed first analysis.",
+    href: "#early-access",
+    cta: "Request early access",
+    primary: true,
+  },
+  {
+    k: "For collaborators",
+    t: "Suggest a collaboration",
+    b: "A dataset, a method or a joint project. Propose it and we come back with a plan.",
+    href: "#collaborate",
+    cta: "Suggest a collaboration",
+  },
+  {
+    k: "Talk first",
+    t: "Book a 30-minute call",
+    b: "Walk us through the project and the data; leave with a concrete next step.",
+    href: BOOKING,
+    cta: "Book a call ↗",
+    external: true,
+  },
+];
 
 export default function Cta() {
   return (
-    <section id="contact" className="relative px-6 md:px-14 py-28 md:py-40 overflow-hidden">
-      
-
-      <Reveal className="max-w-5xl mx-auto">
-        <p className="font-mono text-sm text-violet mb-4 text-center">HOW AN ENGAGEMENT WORKS</p>
-        <div className="grid sm:grid-cols-4 gap-4">
-          {[
-            ["1 · pilot", "Send one dataset — Visium, Xenium, MERFISH or .h5ad — and get back a hosted live portal plus the marker report, free."],
-            ["2 · scope", "One call. We map your assays and questions to a concrete deliverable list."],
-            ["3 · deliverables", "A live portal, the written report, the figures — and the code that made all three."],
-            ["4 · your data stays yours", "Local-mode runs mean zero egress; cloud models are opt-in per project; deletion on request."],
-          ].map(([t, b]) => (
-            <div key={t} className="rounded-[3px] border border-line bg-panel/80 p-5">
-              <p className="font-mono text-[12px] tracking-[0.15em] text-violet uppercase mb-2">{t}</p>
-              <p className="text-[14px] text-dim leading-relaxed">{b}</p>
-            </div>
-          ))}
-        </div>
-      </Reveal>
-
-      <Reveal className="max-w-5xl mx-auto mt-16">
-        <p className="font-mono text-[14px] tracking-[0.2em] text-violet text-center uppercase">
-          built by Caltech researchers
-        </p>
-      </Reveal>
-
-      <div className="max-w-3xl mx-auto text-center mt-24">
+    <section id="contact" className="relative bg-black border-t border-white/[0.06] px-6 md:px-14 pt-20 md:pt-28 pb-10 overflow-hidden">
+      <div className="max-w-6xl mx-auto">
         <Reveal>
-          <img src="artemis_mark.svg" alt="" className="h-16 w-16 mx-auto mb-8" />
-          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            Your data has a story.
-          </h2>
-          <p className="mt-6 text-lg text-dim leading-relaxed">
-            If your lab is sitting on spatial data and short on computational hands, the
-            first analysis is on us — pick a public or in-house dataset and we'll turn it
-            around as a live portal.
+          <h2 className="text-4xl md:text-5xl max-w-3xl">Start with one dataset.</h2>
+          <p className="mt-4 max-w-xl text-lg text-dim leading-relaxed">
+            Tell us the assay and the question. We scope the analysis and show you the result in a live portal.
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"
-            >
-              Book a demo
-            </a>
-            <a
-              href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20analysis"
-              className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:text-snow hover:border-violet transition-all"
-            >
-              Or start with an email
-            </a>
-          </div>
         </Reveal>
-      </div>
 
-      <footer className="mt-24 border-t border-line pt-8 flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
-        <span className="flex items-center gap-3">
-          <img src="artemis_mark.svg" alt="" className="h-8" />
-          <span className="font-semibold tracking-[0.18em] text-[14px]">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
-        </span>
-        <p className="font-mono text-[13px] text-dim">
-          © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
-        </p>
-      </footer>
+        <Reveal delay={0.08}>
+          <div id="book" className="mt-14 grid md:grid-cols-3 border border-white/10 rounded-[14px] overflow-hidden">
+            {OPTIONS.map((o, i) => (
+              <div key={o.t} className={`flex flex-col p-7 md:p-8 bg-white/[0.015] ${i < 2 ? "border-b md:border-b-0 md:border-r border-white/10" : ""}`}>
+                <p className="font-mono text-[10.5px] tracking-[0.22em] uppercase text-dim">{o.k}</p>
+                <h3 className="mt-4 text-[1.7rem] leading-tight text-snow" style={{ fontFamily: "var(--font-serif), serif" }}>{o.t}</h3>
+                <p className="mt-3 text-[14.5px] text-dim leading-relaxed flex-1">{o.b}</p>
+                <a
+                  href={o.href}
+                  {...(o.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                  className={`mt-8 inline-flex justify-center items-center rounded-full px-5 py-2.5 text-[14px] font-medium transition-colors ${
+                    o.primary ? "bg-snow text-ink hover:bg-white" : "border border-white/20 text-snow hover:border-white/50"
+                  }`}
+                >
+                  {o.cta}
+                </a>
+              </div>
+            ))}
+          </div>
+          <p className="mt-5 text-[13px] text-dim">
+            Or email <a href={`mailto:${CONTACT}?subject=Artemis%20BioLabs`} className="hair-link text-snow/80 hover:text-snow">{CONTACT}</a>
+          </p>
+        </Reveal>
+
+        <footer className="mt-20 border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[12.5px] text-dim">
+          <span>Artemis BioLabs</span>
+          <span>spatial · single-cell · genomics</span>
+          <span>© 2026 · artemislabs.bio</span>
+        </footer>
+      </div>
     </section>
   );
 }

@@ -67,7 +67,7 @@ export default function DataMorph({ height = 420 }) {
         const y = gy + (ty - gy) * f;
         if (f < 0.6) {
           ctx.globalAlpha = (1 - f) * 0.55;
-          ctx.fillStyle = "#5f5b50";
+          ctx.fillStyle = "#9a978d";
           ctx.fillText(p.ch, x, y);
         }
         if (f > 0.25) {
@@ -85,12 +85,12 @@ export default function DataMorph({ height = 420 }) {
         const label = "GBM1 · 4,764 spots · real coordinates, real states";
         ctx.font = "600 12px 'JetBrains Mono', ui-monospace, monospace";
         const tw = ctx.measureText(label).width;
-        ctx.fillStyle = `rgba(255,253,247,${0.9 * a})`;
-        ctx.strokeStyle = `rgba(216,210,194,${0.8 * a})`;
+        ctx.fillStyle = `rgba(17,20,24,${0.9 * a})`;
+        ctx.strokeStyle = `rgba(42,47,54,${0.8 * a})`;
         ctx.beginPath();
         ctx.roundRect(w - tw - 34, h - 38, tw + 18, 24, 4);
         ctx.fill(); ctx.stroke();
-        ctx.fillStyle = `rgba(28,26,21,${a})`;
+        ctx.fillStyle = `rgba(243,239,228,${a})`;
         ctx.fillText(label, w - tw - 25, h - 22);
       }
       raf = requestAnimationFrame(draw);

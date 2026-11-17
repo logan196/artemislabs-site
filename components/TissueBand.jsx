@@ -77,7 +77,7 @@ const GLYPHS = {
     for (let r = 0; r < n; r++)
       for (let c = 0; c < n; c++) {
         const a = 0.08 + R() * 0.8;
-        ctx.fillStyle = `rgba(15,118,110,${a.toFixed(2)})`;
+        ctx.fillStyle = `rgba(95,212,196,${a.toFixed(2)})`;
         ctx.fillRect(8 + c * cell, 6 + r * cell, cell - 2, cell - 2);
       }
   },
@@ -98,7 +98,7 @@ const GLYPHS = {
     g.addColorStop(1, "#0b3f3a");
     ctx.fillStyle = g;
     ctx.fillRect(8, H / 2 - 8, W - 16, 16);
-    ctx.strokeStyle = "rgba(28,26,21,0.35)";
+    ctx.strokeStyle = "rgba(243,239,228,0.35)";
     ctx.strokeRect(8.5, H / 2 - 7.5, W - 17, 15);
   },
   zarr(ctx, W, H) {
@@ -107,8 +107,8 @@ const GLYPHS = {
     for (const [n, wfrac] of rows) {
       const rw = (W - 16) * wfrac, x0 = (W - rw) / 2, tw = rw / n;
       for (let i = 0; i < n; i++) {
-        ctx.fillStyle = "rgba(15,118,110,0.18)";
-        ctx.strokeStyle = "rgba(15,118,110,0.7)";
+        ctx.fillStyle = "rgba(95,212,196,0.18)";
+        ctx.strokeStyle = "rgba(95,212,196,0.7)";
         ctx.fillRect(x0 + i * tw + 1, y, tw - 2, 14);
         ctx.strokeRect(x0 + i * tw + 1.5, y + 0.5, tw - 3, 13);
       }
@@ -125,15 +125,15 @@ const GLYPHS = {
     }
     ctx.lineTo(W - 6, H * 0.55);
     ctx.closePath();
-    ctx.fillStyle = "rgba(15,118,110,0.75)";
+    ctx.fillStyle = "rgba(95,212,196,0.75)";
     ctx.fill();
     for (let i = 0; i < 4; i++) {
-      ctx.fillStyle = "rgba(95,91,80,0.5)";
+      ctx.fillStyle = "rgba(154,151,141,0.5)";
       ctx.fillRect(8 + R() * (W - 50), H * 0.62 + i * 6, 26 + R() * 18, 3.5);
     }
   },
   volume(ctx, W, H) {
-    ctx.strokeStyle = "rgba(15,118,110,0.8)";
+    ctx.strokeStyle = "rgba(95,212,196,0.8)";
     ctx.lineWidth = 1.2;
     for (let i = 0; i < 3; i++) {
       ctx.beginPath();
@@ -144,18 +144,18 @@ const GLYPHS = {
     ctx.globalAlpha = 1;
     ctx.beginPath();
     ctx.ellipse(W / 2, H / 2, W * 0.09, H * 0.05, 0, 0, Math.PI * 2);
-    ctx.fillStyle = "#9a5b13";
+    ctx.fillStyle = "#d9a45b";
     ctx.fill();
   },
   report(ctx, W, H) {
     const x0 = W / 2 - 22, y0 = 6;
-    ctx.fillStyle = "#fffdf7";
-    ctx.strokeStyle = "rgba(28,26,21,0.4)";
+    ctx.fillStyle = "#111418";
+    ctx.strokeStyle = "rgba(243,239,228,0.4)";
     ctx.fillRect(x0, y0, 44, H - 12);
     ctx.strokeRect(x0 + 0.5, y0 + 0.5, 43, H - 13);
-    ctx.fillStyle = "#0f766e";
+    ctx.fillStyle = "#5fd4c4";
     ctx.fillRect(x0 + 6, y0 + 7, 20, 3);
-    ctx.fillStyle = "rgba(28,26,21,0.35)";
+    ctx.fillStyle = "rgba(243,239,228,0.35)";
     for (let i = 0; i < 5; i++) ctx.fillRect(x0 + 6, y0 + 15 + i * 6, 32 - (i % 2) * 8, 2);
   },
 };
@@ -248,7 +248,7 @@ export default function TissueBand() {
             target="_blank"
             rel="noreferrer"
             title="Open the source study on the BioImage Archive"
-            className={`block rounded-[4px] border border-line bg-panel p-3 pb-4 shadow-[0_14px_38px_-24px_rgba(28,26,21,0.45)] ${im.tilt} hover:rotate-0 hover:border-violet/50 transition-all duration-300`}
+            className={`block rounded-[4px] border border-line bg-panel p-3 pb-4 shadow-[0_14px_38px_-24px_rgba(0,0,0,0.6)] ${im.tilt} hover:rotate-0 hover:border-violet/50 transition-all duration-300`}
           >
             <span className="block aspect-square overflow-hidden rounded-[2px] bg-snow">
               <img

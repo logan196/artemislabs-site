@@ -5,9 +5,8 @@ import Reveal from "./Reveal";
 // LatchBio-style product block: real UI screenshot carrying the section.
 export default function PortalFeature() {
   return (
-    <section id="portal" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
+    <section id="portal" className="relative px-6 md:px-14 py-16 md:py-20 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">THE PORTAL</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           One selection, every view.
         </h2>
@@ -18,7 +17,7 @@ export default function PortalFeature() {
         </p>
       </Reveal>
       <Reveal delay={0.08} className="mt-10">
-        <div className="rounded-lg border border-snow/60 overflow-hidden shadow-[0_24px_60px_-28px_rgba(28,26,21,0.45)]">
+        <div className="rounded-lg border border-snow/60 overflow-hidden shadow-[0_24px_60px_-28px_rgba(0,0,0,0.6)]">
           <img
             src="demo/still_GBM1_portal.png"
             alt="Artemis BioLabs portal: GBM1 open with linked UMAP and spatial scatterplots, cell-set controls, gene list, Moran's heatmap and the copilot rail"

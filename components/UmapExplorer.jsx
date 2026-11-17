@@ -6,8 +6,8 @@ import Reveal from "./Reveal";
 // Sequential teal ramp for marker expression — one hue, light→dark, on cream.
 const RAMP_LO = [217, 232, 228]; // barely-teal paper
 const RAMP_HI = [11, 63, 58]; // deep teal ink
-const INK = "rgba(28,26,21,0.92)";
-const HALO = "rgba(255,253,247,0.9)";
+const INK = "rgba(243,239,228,0.92)";
+const HALO = "rgba(17,20,24,0.9)";
 
 // The breathing cycle: hold the tissue, fold into the embedding, hold, unfold.
 const HOLD_TISSUE = 2200;
@@ -222,14 +222,14 @@ export default function UmapExplorer() {
         const ih = iw * (a.he.height / a.he.width);
         ctx.save();
         ctx.globalAlpha = heA;
-        ctx.fillStyle = "#fffdf7";
-        ctx.strokeStyle = "#d8d2c2";
+        ctx.fillStyle = "#111418";
+        ctx.strokeStyle = "#2a2f36";
         ctx.lineWidth = 1;
         ctx.fillRect(10, 10, iw + 12, ih + 30);
         ctx.strokeRect(10.5, 10.5, iw + 11, ih + 29);
         ctx.drawImage(a.he, 16, 16, iw, ih);
         ctx.font = "500 10px 'JetBrains Mono', ui-monospace, monospace";
-        ctx.fillStyle = "rgba(95,91,80,1)";
+        ctx.fillStyle = "rgba(154,151,141,1)";
         ctx.fillText("GBM3 · the H&E slide", 16, ih + 30);
         ctx.restore();
       }
@@ -240,14 +240,14 @@ export default function UmapExplorer() {
         const y = pad + (1 - a.pos[tp.i * 2 + 1]) * sh;
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(28,26,21,0.85)";
+        ctx.strokeStyle = "rgba(243,239,228,0.85)";
         ctx.lineWidth = 1.4;
         ctx.stroke();
       }
 
       // watermark of where we are between the two spaces
       ctx.font = "500 11px 'JetBrains Mono', ui-monospace, monospace";
-      ctx.fillStyle = "rgba(95,91,80,0.9)";
+      ctx.fillStyle = "rgba(154,151,141,0.9)";
       ctx.textAlign = "left";
       const st = data.settings[view.current.active];
       const where =
@@ -391,9 +391,8 @@ export default function UmapExplorer() {
   const setting = data ? data.settings[active] : null;
 
   return (
-    <section id="umap-interrogated" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
+    <section id="umap-interrogated" className="px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">07 · DEMOCRATIZING BIOINFORMATICS</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Your computational biology core, <span className="text-violet">reimagined.</span>
         </h2>
@@ -425,7 +424,7 @@ export default function UmapExplorer() {
                 onInput={onSlider}
                 onPointerDown={() => setAuto(false)}
                 aria-label="Morph between tissue coordinates and UMAP embedding"
-                className="flex-1 accent-[#115e59] cursor-pointer"
+                className="flex-1 accent-[#2bb3a3] cursor-pointer"
               />
               <span className="font-mono text-[11px] tracking-[0.15em] text-dim uppercase shrink-0">
                 embedding

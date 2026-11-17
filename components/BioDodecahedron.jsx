@@ -138,7 +138,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         ctx.beginPath();
         f.forEach((i, k) => (k ? ctx.lineTo(pts[i][0], pts[i][1]) : ctx.moveTo(pts[i][0], pts[i][1])));
         ctx.closePath();
-        ctx.fillStyle = `rgba(15, 118, 110, ${0.018 + 0.05 * facing})`;
+        ctx.fillStyle = `rgba(95, 212, 196, ${0.018 + 0.05 * facing})`;
         ctx.fill();
       }
 
@@ -148,8 +148,8 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         const near = 1 - ((pts[i][2] + pts[j][2]) / 2 + 1.7) / 3.4;
         const hot = hover.i >= 0 && (i === hover.i || j === hover.i);
         ctx.strokeStyle = hot
-          ? "rgba(17, 94, 89, 0.9)"
-          : `rgba(17, 94, 89, ${0.14 + 0.45 * near})`;
+          ? "rgba(43, 179, 163, 0.9)"
+          : `rgba(43, 179, 163, ${0.14 + 0.45 * near})`;
         ctx.lineWidth = hot ? 1.8 : 1.1;
         ctx.beginPath();
         ctx.moveTo(pts[i][0], pts[i][1]);
@@ -165,7 +165,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
           const f = (t * speed + c * 37) % 1;
           const px = pts[i][0] + (pts[j][0] - pts[i][0]) * f;
           const py = pts[i][1] + (pts[j][1] - pts[i][1]) * f;
-          const col = c % 2 ? "#0f766e" : "#9a5b13";
+          const col = c % 2 ? "#5fd4c4" : "#d9a45b";
           // comet trail behind each carrier
           for (let tr = 1; tr <= 3; tr++) {
             const ft = Math.max(0, f - tr * 0.045);
@@ -209,7 +209,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         for (let k = 2; k < N; k += 4) {
           const a = s1[k], b = s2[k];
           const front = (a[2] + b[2]) / 2 > 0;
-          ctx.strokeStyle = front ? "rgba(154,91,19,0.65)" : "rgba(154,91,19,0.22)";
+          ctx.strokeStyle = front ? "rgba(217,164,91,0.65)" : "rgba(217,164,91,0.22)";
           ctx.lineWidth = 1.4;
           ctx.beginPath();
           ctx.moveTo(a[0], a[1]);
@@ -219,7 +219,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         for (const s of [s1, s2]) {
           ctx.beginPath();
           s.forEach(([x, y], k) => (k ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-          ctx.strokeStyle = "rgba(15,118,110,0.7)";
+          ctx.strokeStyle = "rgba(95,212,196,0.7)";
           ctx.lineWidth = 1.8;
           ctx.stroke();
           // depth highlights
@@ -227,7 +227,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
             if (d > 0.6) {
               ctx.beginPath();
               ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-              ctx.fillStyle = "rgba(17,94,89,0.85)";
+              ctx.fillStyle = "rgba(43,179,163,0.85)";
               ctx.fill();
             }
           }
@@ -241,7 +241,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
             const dx = (g % 2 ? 1 : -1) * u * Math.min(w, h) * 0.3;
             const dy = -u * Math.min(w, h) * 0.18;
             ctx.globalAlpha = Math.pow(1 - u, 0.7) * 0.85;
-            ctx.fillStyle = "#115e59";
+            ctx.fillStyle = "#2bb3a3";
             ctx.fillText("ACGT"[g], src[0] + dx, src[1] + dy);
             ctx.globalAlpha = 1;
           }
@@ -257,19 +257,19 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         const tw = ctx.measureText(label).width;
         const flip = x > w - tw - 28; // keep chips inside the right edge
         const cx0 = flip ? x - tw - 19 : x + 11;
-        ctx.strokeStyle = `rgba(17,94,89,${0.5 * la})`;
+        ctx.strokeStyle = `rgba(43,179,163,${0.5 * la})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(x + (flip ? -4 : 4), y);
         ctx.lineTo(flip ? cx0 + tw + 4 : cx0 - 4, y);
         ctx.stroke();
-        ctx.fillStyle = `rgba(255,253,247,${0.85 * la})`;
-        ctx.strokeStyle = `rgba(216,210,194,${0.8 * la})`;
+        ctx.fillStyle = `rgba(17,20,24,${0.85 * la})`;
+        ctx.strokeStyle = `rgba(42,47,54,${0.8 * la})`;
         ctx.beginPath();
         ctx.roundRect(cx0 - 5, y - 8.5, tw + 10, 16, 3);
         ctx.fill();
         ctx.stroke();
-        ctx.fillStyle = `rgba(28, 26, 21, ${0.3 + 0.7 * la})`;
+        ctx.fillStyle = `rgba(243, 239, 228, ${0.3 + 0.7 * la})`;
         ctx.fillText(label, cx0, y + 3.5);
       };
       for (const [, i] of order) {
@@ -278,12 +278,12 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         const hot = i === hover.i;
         ctx.beginPath();
         ctx.arc(x, y, (hot ? 4.2 : 2.6) + 1.6 * near, 0, Math.PI * 2);
-        ctx.fillStyle = hot ? "#115e59" : `rgba(15, 118, 110, ${0.35 + 0.6 * near})`;
+        ctx.fillStyle = hot ? "#2bb3a3" : `rgba(95, 212, 196, ${0.35 + 0.6 * near})`;
         ctx.fill();
         if (hot) {
           ctx.beginPath();
           ctx.arc(x, y, 8 + 1.6 * near, 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(17,94,89,0.5)";
+          ctx.strokeStyle = "rgba(43,179,163,0.5)";
           ctx.lineWidth = 1.2;
           ctx.stroke();
         }
@@ -303,7 +303,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
           // ring flash
           ctx.beginPath();
           ctx.arc(cxm, cym, rr, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(15,118,110,${(0.35 * (1 - su)).toFixed(3)})`;
+          ctx.strokeStyle = `rgba(95,212,196,${(0.35 * (1 - su)).toFixed(3)})`;
           ctx.lineWidth = 1.4;
           ctx.stroke();
           if (!reduced) {
@@ -316,7 +316,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
               const a1 = th - 0.34 * k;
               ctx.beginPath();
               ctx.arc(cxm, cym, rr, a0, a1);
-              ctx.strokeStyle = `rgba(15,118,110,${(0.9 * (1 - k * 0.24) * (1 - su * 0.3)).toFixed(3)})`;
+              ctx.strokeStyle = `rgba(95,212,196,${(0.9 * (1 - k * 0.24) * (1 - su * 0.3)).toFixed(3)})`;
               ctx.lineWidth = 2.5 - k * 0.4;
               ctx.stroke();
             }
@@ -329,7 +329,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
       if (hintA > 0.02) {
         if (interacted) hintA *= 0.92;
         ctx.font = "500 11px 'JetBrains Mono', ui-monospace, monospace";
-        ctx.fillStyle = `rgba(95,91,80,${0.75 * hintA})`;
+        ctx.fillStyle = `rgba(154,151,141,${0.75 * hintA})`;
         ctx.textAlign = "center";
         ctx.fillText("⟲ drag to spin · hover a vertex", w / 2, h - 6);
         ctx.textAlign = "left";

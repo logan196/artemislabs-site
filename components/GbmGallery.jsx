@@ -39,7 +39,7 @@ function LivingFigure() {
     return () => { io.disconnect(); clearTimeout(t0); clearInterval(iv); };
   }, []);
   return (
-    <figure ref={figRef} className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(28,26,21,0.4)] bg-panel">
+    <figure ref={figRef} className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(0,0,0,0.6)] bg-panel">
       <span className="relative block aspect-[16/8] overflow-hidden">
         <img
           src="dejong/AT15-BRA-4-FO-B2-S25_he.jpg"
@@ -74,9 +74,8 @@ export default function GbmGallery() {
   const m = meta[active];
 
   return (
-    <section id="gallery" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
+    <section id="gallery" className="relative px-6 md:px-14 py-20 md:py-24 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">03 · GLIOBLASTOMA, LIVE</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Five sections, one afternoon.
         </h2>

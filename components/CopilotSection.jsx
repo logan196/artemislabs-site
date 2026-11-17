@@ -104,10 +104,9 @@ export default function CopilotSection() {
   const done = shown >= CHAT.length;
 
   return (
-    <section id="copilot" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
+    <section id="copilot" className="relative px-6 md:px-14 py-20 md:py-24 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">09 · YOUR CO-SCIENTIST</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Text us like your core.
           </h2>

@@ -221,7 +221,7 @@ function Chip({ chip, progress, i }) {
       className="flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-1 font-mono text-[10px] md:text-xs text-dim shadow-sm"
     >
       <span
-        className={`h-1.5 w-1.5 rounded-full animate-pulse ${chip.kind === "source" ? "bg-violet" : "bg-[#9a5b13]"}`}
+        className={`h-1.5 w-1.5 rounded-full animate-pulse ${chip.kind === "source" ? "bg-violet" : "bg-[#d9a45b]"}`}
         style={{ animationDelay: `${i * 0.35}s`, animationDuration: "2.2s" }}
         aria-hidden
       />
@@ -241,7 +241,7 @@ function WfRow({ progress, range, name, right, tone = "main", children }) {
     <motion.div style={{ opacity }} className="pointer-events-none">
       <div className="flex items-baseline gap-3">
         <span className="relative w-[14px] shrink-0 font-mono text-[12px] leading-none">
-          <motion.span style={{ opacity: runOp }} className="absolute inset-0 text-[#9a5b13]">●</motion.span>
+          <motion.span style={{ opacity: runOp }} className="absolute inset-0 text-[#d9a45b]">●</motion.span>
           <motion.span style={{ opacity: doneOp }} className={excl ? "text-magma" : "text-violet"}>
             {excl ? "⊘" : "✓"}
           </motion.span>
@@ -290,7 +290,7 @@ function Connector({ progress, range, vertical = true, dashedTone = false, class
         y1={vertical ? 0 : 1}
         x2={vertical ? 1 : 56}
         y2={vertical ? 28 : 1}
-        stroke={dashedTone ? "#9a5b13" : "#0f766e"}
+        stroke={dashedTone ? "#d9a45b" : "#5fd4c4"}
         strokeWidth="2"
         strokeDasharray={dashedTone ? "4 4" : undefined}
         style={{ pathLength }}
@@ -411,8 +411,7 @@ export default function PrismaStory() {
 
   if (reduced) {
     return (
-      <section id="pipeline" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
-        <p className="font-mono text-sm text-violet mb-4">02 · FROM SEARCH TO PORTAL</p>
+      <section id="pipeline" className="relative px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           One query, <span className="text-violet">eight sections</span>, one portal.
         </h2>
@@ -434,7 +433,6 @@ export default function PrismaStory() {
           style={{ opacity: headerFade }}
           className="px-6 md:px-14 pt-14 md:pt-20 max-w-7xl mx-auto w-full"
         >
-          <p className="font-mono text-sm text-violet mb-4">02 · FROM SEARCH TO PORTAL</p>
           <h2 className="text-3xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             One query, <span className="text-violet">eight sections</span>, one portal.
           </h2>

@@ -186,7 +186,7 @@ export default function CodePanel() {
         <div className="flex items-end gap-0 px-3 pt-2 font-mono text-[12px]" style={{ background: "#17171f" }} aria-hidden>
           <div
             className="px-4 py-2 rounded-t-md border-t-2"
-            style={{ background: "#1e1e2a", color: "#e8e6df", borderTopColor: "#0f766e" }}
+            style={{ background: "#1e1e2a", color: "#e8e6df", borderTopColor: "#5fd4c4" }}
           >
             run_pipeline.py
           </div>

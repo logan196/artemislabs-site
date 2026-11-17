@@ -65,7 +65,7 @@ export default function Dodecahedron({ size = 72 }) {
       for (const [i, j] of edges) {
         const depth = (pts[i][2] + pts[j][2]) / 2; // -c..c
         const near = 1 - (depth + 1.7) / 3.4;
-        ctx.strokeStyle = `rgba(17, 94, 89, ${0.3 + 0.6 * near * pulse})`;
+        ctx.strokeStyle = `rgba(43, 179, 163, ${0.3 + 0.6 * near * pulse})`;
         ctx.beginPath();
         ctx.moveTo(pts[i][0], pts[i][1]);
         ctx.lineTo(pts[j][0], pts[j][1]);

@@ -58,7 +58,7 @@ const IGV_CONFIG = {
       type: "wig",
       format: "bigwig",
       url: CUTRUN_URL,
-      color: "#0f766e",
+      color: "#5fd4c4",
       height: 92,
       autoscale: true,
     },
@@ -70,7 +70,7 @@ const IGV_CONFIG = {
       indexURL: `${HIFI_BAM}.bai`,
       height: 236,
       visibilityWindow: 65000,
-      coverageColor: "#9a5b13",
+      coverageColor: "#d9a45b",
       color: "#b9ae94",
     },
   ],
@@ -175,7 +175,6 @@ export default function GenomeSection() {
   return (
     <section id="genomics" className="relative px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">05 · GENOMICS, LIVE</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Not just spatial.
         </h2>
@@ -241,7 +240,7 @@ export default function GenomeSection() {
               </div>
             </div>
           ) : (
-            <div className="relative min-h-[420px] bg-white/40">
+            <div className="relative min-h-[420px] bg-white/[0.03]">
               {status !== "ready" && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <p className="font-mono text-[13px] text-dim">

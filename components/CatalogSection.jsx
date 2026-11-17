@@ -9,9 +9,8 @@ const LIVE = new Set([
 
 export default function CatalogSection() {
   return (
-    <section id="catalog" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
+    <section id="catalog" className="relative px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">06 · DATASET CATALOG</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl rule-head inline-block">
           The public GBM spatial atlas, catalogued.
         </h2>

@@ -3,7 +3,7 @@
 import Reveal from "./Reveal";
 
 const BOOKING =
-  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
+  "https://calendar.app.google/B8F2J5LoB1bMohZg7";
 
 const MODALITIES = [
   ["Single-cell & single-nucleus", "scRNA/snRNA-seq (10x, Smart-seq), scATAC, multiome, CITE-seq — annotation, trajectories, DE, pathways, cell–cell communication."],
@@ -25,9 +25,8 @@ const INCLUDED = [
 
 export default function PricingSection() {
   return (
-    <section id="engagement" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
+    <section id="engagement" className="relative px-6 md:px-14 py-16 md:py-20 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">09 · THE ENGAGEMENT</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           An embedded bioinformatics team.
         </h2>

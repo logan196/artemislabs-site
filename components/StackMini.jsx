@@ -12,9 +12,9 @@ function mulberry32(a) {
   };
 }
 const seedOf = (s) => { let h = 7; for (const c of s) h = (h * 33 + c.charCodeAt(0)) >>> 0; return h; };
-const INK = (a) => `rgba(28,26,21,${a})`;
-const PANEL = "#fffdf7";
-const TEAL = "#0f766e", SEPIA = "#9a5b13", BLUE = "#1d4ed8", GREEN = "#15803d", AMBER = "#b45309";
+const INK = (a) => `rgba(243,239,228,${a})`;
+const PANEL = "#111418";
+const TEAL = "#5fd4c4", SEPIA = "#d9a45b", BLUE = "#1d4ed8", GREEN = "#15803d", AMBER = "#b45309";
 const CLUST = [TEAL, AMBER, BLUE, GREEN];
 const lerp = (a, b, p) => a + (b - a) * p;
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
@@ -251,7 +251,7 @@ const DRAW = {
       const pm = ease(clamp01((t - 0.4) / 0.28));
       const cx = lerp(x0 + colW * 0.3, dx + 2, pm), cy = lerp(H / 2 - 7, dy + 2, pm);
       ctx.globalAlpha = vis;
-      ctx.fillStyle = "rgba(15,118,110,0.12)"; ctx.strokeStyle = TEAL; ctx.lineWidth = 1;
+      ctx.fillStyle = "rgba(95,212,196,0.12)"; ctx.strokeStyle = TEAL; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.roundRect(cx, cy, 20, 12, 2); ctx.fill(); ctx.stroke();
       ctx.globalAlpha = vis * 0.8;
       ctx.beginPath();

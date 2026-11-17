@@ -21,14 +21,13 @@ export default function ToolsGrid() {
     <section className="relative bg-ink-2/60 border-y border-line">
       <div className="px-6 md:px-14 py-20 md:py-28 max-w-7xl mx-auto">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">10 · THE STACK</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             Eight capabilities, one stack.
           </h2>
           <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
             Everything above — the domains, the labels, the portals, the copilot — came
             out of these eight pieces. Welcome to the machine room.{" "}
-            <a href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20run%20my%20.h5ad" className="text-violet hover:text-snow underline underline-offset-4 transition-colors whitespace-nowrap">Try it with your .h5ad →</a>
+            <a href="mailto:lbeharry@alumni.caltech.edu?subject=Artemis%20BioLabs%20%C2%B7%20run%20my%20.h5ad" className="text-violet hover:text-snow underline underline-offset-4 transition-colors whitespace-nowrap">Try it with your .h5ad →</a>
           </p>
         </Reveal>
 
@@ -39,7 +38,7 @@ export default function ToolsGrid() {
               variants={item}
               className="grid md:grid-cols-[96px_180px_1fr_70px] items-baseline gap-2 md:gap-6 px-3 py-3.5 border-b border-line/60 last:border-b-0 hover:bg-panel rounded-lg transition-colors"
             >
-              <div className="hidden md:block self-center w-[96px] shrink-0 bg-[#efeadd66] rounded-[3px] overflow-hidden">
+              <div className="hidden md:block self-center w-[96px] shrink-0 bg-white/[0.03] rounded-[3px] overflow-hidden">
                 <StackMini kind={t.glyph} height={56} />
               </div>
               <span className="text-violet">{t.name}</span>

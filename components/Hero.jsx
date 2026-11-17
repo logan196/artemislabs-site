@@ -1,26 +1,32 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import BioDodecahedron from "./BioDodecahedron";
+import { useCallback, useEffect, useRef, useState } from "react";
 import FounderLock from "./FounderLock";
-import Decode from "./Decode";
+import HeroCloud from "./HeroCloud";
+import { BOOKING } from "./AccessForms";
 
-const BOOKING =
-  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
-
-const NAV = [
-  ["#banksy", "BANKSY"],
-  ["#pipeline", "Pipeline"],
+export const NAV = [
+  ["#loop", "Process"],
   ["#gallery", "Glioblastoma"],
   ["#whatwedo", "What we do"],
+  ["#team", "Team"],
+  ["#stack", "Stack"],
 ];
+
+const STATE_LABEL = {
+  noise: "state 0 · unordered expression",
+  umap: "state 1 · 3D UMAP — cells grouped by what they express",
+  tissue: "state 2 · the same cells at their measured positions in the brain",
+};
 
 export default function Hero() {
   const ref = useRef(null);
   const [saluting, setSaluting] = useState(false);
+  const [cloudState, setCloudState] = useState("noise");
   const saluteTimer = useRef(null);
   useEffect(() => () => clearTimeout(saluteTimer.current), []);
+  const onState = useCallback((s) => setCloudState((p) => (p === s ? p : s)), []);
   const salute = (e) => {
     e.preventDefault();
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -31,36 +37,37 @@ export default function Hero() {
     saluteTimer.current = setTimeout(() => setSaluting(false), 1200);
   };
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
+    <section ref={ref} className="relative min-h-[100svh] flex flex-col overflow-hidden bg-ink">
       <a
-        href="#pipeline"
+        href="#banksy"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"
       >
         Skip to content
       </a>
-      <div className="absolute inset-0 -z-10">
-        <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#f7f4ec_78%)]" />
+
+      {/* background: real 3D UMAP point cloud */}
+      <div className="absolute inset-0 -z-0">
+        <div className="absolute inset-0 opacity-70"><HeroCloud onState={onState} /></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_55%,rgba(0,0,0,0.86)_0%,rgba(0,0,0,0.45)_45%,transparent_75%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink" />
       </div>
 
-      <nav className="flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
-        <a href="#" aria-label="Artemis BioLabs — top of page" onClick={salute}>
+      <nav className="relative z-20 flex items-center justify-between px-5 md:px-12 py-4 border-b border-white/[0.06] bg-ink/40 backdrop-blur-md">
+        <a href="#" aria-label="Artemis BioLabs — top of page" onClick={salute} className="flex items-center gap-3">
           <img
-            src="artemis_lockup.svg"
-            alt="Artemis BioLabs"
-            className={`h-8 md:h-11 w-auto transition-all duration-300 ${
-              saluting ? "scale-105 [filter:drop-shadow(0_0_9px_rgba(15,118,110,0.75))]" : ""
-            }`}
+            src="artemis_mark.svg"
+            alt=""
+            className={`h-8 w-8 transition-all duration-300 ${saluting ? "scale-110 [filter:drop-shadow(0_0_9px_rgba(111,216,200,0.85))]" : ""}`}
           />
+          <span className="text-[16px] font-semibold tracking-[0.02em] text-snow">Artemis BioLabs</span>
         </a>
-        <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
-          <div className="hidden md:flex items-center gap-8 font-medium">
+        <div className="flex items-center gap-3 md:gap-7 text-[14px] text-snow">
+          <div className="hidden lg:flex items-center gap-7">
             {NAV.map(([href, label]) => (
-              <a key={href} href={href} className="whitespace-nowrap hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
+              <a key={href} href={href} className="hair-link whitespace-nowrap text-snow/75 hover:text-snow focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
                 {label}
               </a>
             ))}
@@ -69,89 +76,70 @@ export default function Hero() {
             href={BOOKING}
             target="_blank"
             rel="noreferrer"
-            className="rounded-[3px] border border-snow/50 px-4 py-1.5 text-snow hover:border-violet hover:bg-violet/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all whitespace-nowrap"
+            className="hidden sm:inline hair-link text-snow/75 hover:text-snow whitespace-nowrap"
           >
-            Book a demo
+            Book a call
+          </a>
+          <a
+            href="#early-access"
+            className="rounded-full bg-snow text-ink px-4 py-1.5 font-medium hover:bg-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors whitespace-nowrap"
+          >
+            Request early access
           </a>
           <FounderLock />
-          <details className="relative md:hidden">
-            <summary className="list-none cursor-pointer rounded-[3px] border border-snow/50 px-3 py-1.5 text-snow select-none" aria-label="Open navigation menu">
+          <details className="relative lg:hidden">
+            <summary className="list-none cursor-pointer rounded-full border border-white/20 px-3 py-1.5 text-snow select-none" aria-label="Open navigation menu">
               Menu
             </summary>
-            <div className="absolute right-0 top-11 z-50 w-44 rounded-[4px] border border-line bg-panel shadow-xl p-2 flex flex-col">
+            <div className="absolute right-0 top-11 z-50 w-48 rounded-[6px] border border-line bg-panel/95 backdrop-blur shadow-xl p-2 flex flex-col">
               {NAV.map(([href, label]) => (
-                <a key={href} href={href} className="px-3 py-2 rounded-sm hover:bg-ink-2 text-snow">{label}</a>
+                <a key={href} href={href} className="px-3 py-2 rounded-sm hover:bg-white/5 text-snow">{label}</a>
               ))}
-              <a href="#contact" className="px-3 py-2 rounded-sm hover:bg-ink-2 text-violet font-medium">Work with us</a>
+              <a href="#collaborate" className="px-3 py-2 rounded-sm hover:bg-white/5 text-snow">Suggest a collaboration</a>
+              <a href={BOOKING} target="_blank" rel="noreferrer" className="px-3 py-2 rounded-sm hover:bg-white/5 text-violet font-medium">Book a call ↗</a>
             </div>
           </details>
         </div>
       </nav>
 
-      {/* THE OPENING: the moving dodecahedron introduces the company */}
-      <motion.div style={{ opacity: fade }} className="flex-1 flex flex-col items-center justify-center px-6 text-center relative">
-        <motion.div style={{ scale }} className="relative w-full max-w-[560px] -mb-10 md:-mb-14" aria-hidden>
-          <BioDodecahedron size={400} labels={false} helix />
-        </motion.div>
-
+      <motion.div style={{ opacity: fade }} className="relative z-10 flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 max-w-7xl w-full">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: [0.21, 0.6, 0.27, 1] }}
-          className="relative"
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="max-w-3xl"
         >
-          <h1
-            className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5rem] font-semibold tracking-[0.015em]"
-            style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
-          >
-            <Decode text="ARTEMIS" delay={500} />{" "}
-            <Decode text="BIOLABS" delay={1200} className="text-violet" />
+          <h1 className="text-[2.3rem] sm:text-5xl xl:text-[3.6rem] text-snow">
+            Spatial, single-cell and genomics analysis for labs without a bioinformatics core.
           </h1>
-          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
-            computational biology, accelerated.
+          <p className="mt-6 max-w-xl text-lg text-snow/75 leading-relaxed">
+            Send us your data or point us at your GEO series. We run the pipelines, compare
+            methods, review the results and hand back figures, code and a live portal you
+            can share.
           </p>
-          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
-            Every core service your lab needs.
-            <br className="hidden sm:block" />
-            <span className="text-dim"> One AI-powered team.</span>
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={BOOKING}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[3px] bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-snow transition-colors"
-            >
-              Book a demo
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <a href="#early-access" className="rounded-full bg-snow text-ink px-6 py-2.5 font-medium hover:bg-white transition-colors">
+              Request early access
             </a>
-            <a
-              href="live/brain/index.html"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
-            >
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-600 animate-pulse mr-2 align-middle" aria-hidden />3.9M cells, one mouse brain — explore it live →
+            <a href={BOOKING} target="_blank" rel="noreferrer" className="rounded-full border border-white/20 px-6 py-2.5 text-snow/90 hover:border-white/50 transition-colors">
+              Book a 30-min call
             </a>
           </div>
-          <p className="mt-4 font-mono text-[12.5px] text-dim">
-            The first analysis is on us.
+          <p className="mt-6 text-[14px] text-dim">
+            See it on real data:{" "}
+            <a href="live/brain/index.html" target="_blank" rel="noreferrer" className="hair-link text-snow/85 hover:text-snow">3.9M-cell mouse brain atlas ↗</a>
+            {" · "}
+            <a href="#gallery" className="hair-link text-snow/85 hover:text-snow">glioblastoma spatial programs</a>
           </p>
         </motion.div>
       </motion.div>
 
-      <div className="md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
-        <a href="#pipeline" className="hover:text-snow">Pipeline</a>
-        <a href="#gallery" className="hover:text-snow">Demo</a>
+      <div className="relative z-10 px-6 md:px-12 pb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+        <p className="max-w-xl text-[11.5px] leading-relaxed text-dim/80">
+          Background: 3D UMAP of 120,000 cells from the Allen Brain Cell Atlas MERFISH mouse brain
+          (Yao et al., <i>Nature</i> 2023), computed by Artemis; cells drift to their positions in the brain and back.
+        </p>
       </div>
-
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 2.2 }}
-        className="pb-5 text-center text-dim text-xl"
-        aria-hidden
-      >
-        ↓
-      </motion.div>
     </section>
   );
 }

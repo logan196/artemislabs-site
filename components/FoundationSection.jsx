@@ -71,7 +71,7 @@ function ScanReticle({ patchRef, chipText }) {
       className="absolute left-0 top-0 pointer-events-none will-change-transform opacity-0 transition-opacity duration-500"
       style={{ width: PATCH, height: PATCH }}
     >
-      <div className="absolute inset-0 rounded-[6px] border border-[#2dd4bf]/90 bg-[#0f766e]/10 shadow-[0_0_24px_rgba(45,212,191,0.45)]" />
+      <div className="absolute inset-0 rounded-[6px] border border-[#2dd4bf]/90 bg-[#5fd4c4]/10 shadow-[0_0_24px_rgba(45,212,191,0.45)]" />
       {/* faint teal attention grid */}
       <svg viewBox="0 0 140 140" className="absolute inset-0 w-full h-full" fill="none">
         {TICKS.map((v) => (
@@ -291,7 +291,7 @@ function CompareSlider() {
           className="absolute top-0 bottom-0 w-px bg-snow/90 pointer-events-none"
           style={{ left: `${pos}%` }}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-panel border border-snow/70 shadow-[0_2px_10px_rgba(28,26,21,0.35)] flex items-center justify-center text-snow text-sm font-mono">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-panel border border-snow/70 shadow-[0_2px_10px_rgba(0,0,0,0.6)] flex items-center justify-center text-snow text-sm font-mono">
             ⟷
           </div>
         </div>
@@ -316,9 +316,8 @@ function CompareSlider() {
 
 export default function FoundationSection() {
   return (
-    <section id="foundation" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
+    <section id="foundation" className="px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">08 · H&E × FOUNDATION MODELS</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           The slide already knows.
         </h2>
@@ -332,7 +331,7 @@ export default function FoundationSection() {
       </Reveal>
 
       <Reveal delay={0.08}>
-        <figure className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(28,26,21,0.4)] bg-panel">
+        <figure className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(0,0,0,0.6)] bg-panel">
           <CompareSlider />
           <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
             <span className="font-semibold text-snow">Fig. 7&nbsp;|</span> AT14 section,
@@ -354,7 +353,7 @@ export default function FoundationSection() {
             measured spatial runs as the labels, your archive unlocked.
           </p>
           <a
-            href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20virtual%20staining%20early%20access"
+            href="mailto:lbeharry@alumni.caltech.edu?subject=Artemis%20BioLabs%20%C2%B7%20virtual%20staining%20early%20access"
             className="mt-4 inline-block rounded-[3px] bg-violet-deep text-ink px-5 py-2.5 text-[14px] font-medium hover:bg-violet transition-colors"
           >
             Request early access →

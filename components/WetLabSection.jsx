@@ -7,9 +7,8 @@ import Reveal from "./Reveal";
 export default function WetLabSection() {
   return (
     <section id="wetlab" className="relative bg-ink-2/60 border-y border-line">
-      <div className="px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
+      <div className="px-6 md:px-14 py-16 md:py-20 max-w-7xl mx-auto">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">NOT JUST SPATIAL</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             Built for wet labs, whatever the assay.
           </h2>

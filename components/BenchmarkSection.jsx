@@ -148,10 +148,9 @@ export default function BenchmarkSection() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="benchmark" className="relative px-6 md:px-14 py-28 md:py-36 max-w-7xl mx-auto">
+    <section id="benchmark" className="relative px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">09 · ARTEMIS BENCHMARKING</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Optimize your next experiment <span className="text-violet">before you run it.</span>
           </h2>
@@ -207,7 +206,7 @@ export default function BenchmarkSection() {
                       <motion.line
                         x1="50%" y1="50%"
                         x2={`${x}%`} y2={`${y}%`}
-                        stroke="#0f766e" strokeWidth="1" strokeDasharray="3 5"
+                        stroke="#5fd4c4" strokeWidth="1" strokeDasharray="3 5"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 0.45 }}
                         viewport={{ once: true }}
@@ -216,7 +215,7 @@ export default function BenchmarkSection() {
                       {!reduced && (
                         <motion.circle
                           r="3.5"
-                          fill="#0f766e"
+                          fill="#5fd4c4"
                           initial={{ cx: `${x}%`, cy: `${y}%`, opacity: 0 }}
                           animate={{
                             cx: [`${x}%`, "50%"],

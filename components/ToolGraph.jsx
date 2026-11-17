@@ -221,7 +221,7 @@ function TileFace({ t, compact }) {
     <>
       {t.img ? (
         <span
-          className={`flex items-center justify-center rounded-[6px] bg-[#f7f4ec] ${
+          className={`flex items-center justify-center rounded-[6px] bg-[#f3efe4] ${
             compact ? "h-[30px] w-[52px] px-[5px]" : "h-[34px] w-[58px] px-[6px]"
           }`}
         >
@@ -312,9 +312,8 @@ export default function ToolGraph() {
   });
 
   return (
-    <section id="stack" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
+    <section id="stack" className="relative px-6 md:px-14 py-16 md:py-20 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">11 · THE STACK, CONNECTED</p>
         <h3 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-3xl">
           Speaks the tools you already trust.
         </h3>

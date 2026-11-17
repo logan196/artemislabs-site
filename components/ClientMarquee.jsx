@@ -18,7 +18,7 @@ const LOGOS = [
 export default function ClientMarquee() {
   const row = [...LOGOS, ...LOGOS];
   return (
-    <section aria-label="Institutions" className="border-y border-line bg-panel/70 py-6 overflow-hidden">
+    <section aria-label="Institutions" className="border-y border-line bg-black py-7 overflow-hidden">
       <p className="text-center font-mono text-[11px] tracking-[0.25em] text-dim uppercase mb-5">
         Where our team has trained and collaborated
       </p>
@@ -30,7 +30,7 @@ export default function ClientMarquee() {
               src={l.src}
               alt={i < LOGOS.length ? l.alt : ""}
               aria-hidden={i >= LOGOS.length}
-              className={`${l.h} w-auto opacity-95 hover:opacity-100 transition-all duration-300`}
+              className={`${l.h} w-auto opacity-70 hover:opacity-100 [filter:grayscale(1)_brightness(0)_invert(0.93)] transition-all duration-300`}
             />
           ))}
         </div>

@@ -1,30 +1,61 @@
 @import "tailwindcss";
 
-/* Academic-manuscript theme: LaTeX paper ground, serif voice, teal accent.
-   Token NAMES are unchanged so every component restyles automatically. */
+/* Artemis dark theme — deep neutral ground, warm cream ink, one restrained
+   teal accent. Token NAMES are unchanged so every component restyles. */
 @theme {
-  --color-ink: #f7f4ec;          /* paper ground */
-  --color-ink-2: #efeadd;        /* deeper paper band */
-  --color-panel: #fffdf7;        /* card / figure panel */
-  --color-line: #d8d2c2;         /* hairline rules */
-  --color-snow: #1c1a15;         /* body ink */
-  --color-dim: #5f5b50;          /* secondary ink */
-  --color-violet: #0f766e;       /* accent — deep teal */
-  --color-violet-deep: #115e59;  /* buttons */
-  --color-magma: #9a5b13;        /* secondary accent — sepia amber */
-  --color-mint: #047857;
-  --color-amber: #b45309;
-  --font-sans: var(--font-serif), "Source Serif 4", Georgia, serif;
+  --color-ink: #000000;          /* ground — pure black */
+  --color-ink-2: #08090b;        /* deeper band */
+  --color-panel: #0c0e11;        /* card / figure panel */
+  --color-line: #22262d;         /* hairline rules */
+  --color-snow: #f1ede2;         /* body ink — warm cream */
+  --color-dim: #9b988f;          /* secondary ink */
+  --color-violet: #5fc9b8;       /* the one accent: teal */
+  --color-violet-deep: #3cc0ad;  /* buttons */
+  --color-magma: #d9a45b;        /* rare secondary — amber */
+  --color-mint: #5ee0b0;
+  --color-amber: #e0a24a;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
+
+/* Editorial serif display for every section headline (unlayered, so it wins
+   over per-component weight utilities). */
+h1, h2 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 500 !important;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+}
+h3 { letter-spacing: -0.01em; }
+
+/* chapter label: mono, spaced, with a short accent rule */
+.chapter {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--color-violet);
+}
+.chapter::before { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .7; }
+
+/* faint engineering grid */
+.grid-bg {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* light figure plates: data figures drawn for a paper ground keep it */
+.plate { background: #f3efe4; color: #1c1a15; }
 
 html {
   scroll-behavior: smooth;
 }
 
 ::selection {
-  background: #0f766e;
-  color: #f7f4ec;
+  background: #6fd8c8;
+  color: #000000;
 }
 
 /* paper grain */
@@ -34,12 +65,12 @@ html {
   inset: 0;
   pointer-events: none;
   z-index: 50;
-  opacity: 0.05;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, #1c1a15 10%, #0f766e 60%, #115e59 95%);
+  background: linear-gradient(100deg, #f1ede2 10%, #6fd8c8 60%, #3cc0ad 95%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -47,8 +78,8 @@ html {
 
 .glow-ring {
   box-shadow:
-    0 0 0 1px rgb(15 118 110 / 0.22),
-    0 14px 40px -18px rgb(28 26 21 / 0.35);
+    0 0 0 1px rgb(111 216 200 / 0.22),
+    0 14px 40px -18px rgb(0 0 0 / 0.6);
 }
 
 /* translate-only: scaling/rotating a blurred layer defeats the compositor's
@@ -74,7 +105,7 @@ html {
   inset: 0;
   z-index: -20;
   overflow: hidden;
-  background: #f7f4ec;
+  background: #000000;
 }
 .bg-sea::before,
 .bg-sea::after {
@@ -89,21 +120,19 @@ html {
   height: 65vh;
   left: -12vw;
   top: 8vh;
-  background: rgb(15 118 110 / 0.07);
-  animation: drift 26s ease-in-out infinite;
+  background: rgb(60 192 173 / 0.06);
 }
 .bg-sea::after {
   width: 55vw;
   height: 55vh;
   right: -14vw;
   bottom: -8vh;
-  background: rgb(154 91 19 / 0.05);
-  animation: drift2 32s ease-in-out infinite;
+  background: rgb(70 90 160 / 0.06);
 }
 
 /* LaTeX-style ruled section header */
 .rule-head {
-  border-bottom: 1px solid #1c1a15;
+  border-bottom: 1px solid #22262d;
   padding-bottom: 0.35rem;
 }
 
@@ -132,3 +161,23 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .marquee-track-rev { animation: none; }
 }
+
+/* loop stage card cross-fade */
+@keyframes loopIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.loop-card { animation: loopIn .7s cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) { .loop-card { animation: none; } }
+
+/* poster fallback for the hero cloud: a very slow pan */
+@keyframes posterPan { 0% { transform: scale(1.04) translate3d(0,0,0); } 50% { transform: scale(1.08) translate3d(-1.5%,-1%,0); } 100% { transform: scale(1.04) translate3d(0,0,0); } }
+.hero-poster { animation: posterPan 40s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .hero-poster { animation: none; } }
+
+/* access dialog */
+.access-dialog::backdrop { background: rgb(0 0 0 / 0.72); backdrop-filter: blur(6px); }
+.access-dialog[open] { animation: dlgIn .35s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes dlgIn { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .access-dialog[open] { animation: none; } }
+
+/* premium micro-interaction: hairline underline that draws in */
+.hair-link { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .45s cubic-bezier(.2,.7,.2,1), color .3s; }
+.hair-link:hover { background-size: 100% 1px; }

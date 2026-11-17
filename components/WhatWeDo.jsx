@@ -16,16 +16,15 @@ const CORES = [
 
 export default function WhatWeDo() {
   return (
-    <section id="whatwedo" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
+    <section id="whatwedo" className="relative px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">04 · WHAT WE DO</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Eight cores. <span className="text-violet">One embedded team.</span>
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          That was the promise at the top of the page — and you have now watched one
-          core run end-to-end. The rest work the same way: real pipeline, live portal,
-          a report you can hand a reviewer.
+          The services a well-funded institute core provides, available to any lab
+          that has the data. Each one works the way you have just seen: real pipeline,
+          live portal, a report you can hand a reviewer.
         </p>
       </Reveal>
 
@@ -33,7 +32,7 @@ export default function WhatWeDo() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
           {CORES.map((c) => (
             <div key={c.name} className="rounded-[4px] border border-line bg-panel/70 p-5">
-              <div className="rounded-[3px] bg-[#efeadd66] mb-3 overflow-hidden">
+              <div className="rounded-[3px] bg-white/[0.03] mb-3 overflow-hidden">
                 <AssayMini kind={c.kind} height={110} />
               </div>
               <p className="font-medium text-[17px]">{c.name}</p>
@@ -55,7 +54,7 @@ export default function WhatWeDo() {
         </div>
         <p className="mt-6 text-[15px] text-dim">
           Also bulk RNA-seq, variants, proteomics, metabolomics, cytometry and microbiome.{" "}
-          <a href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20sample%20report" className="text-violet hover:text-snow underline underline-offset-4 transition-colors">Request a sample report →</a>
+          <a href="mailto:lbeharry@alumni.caltech.edu?subject=Artemis%20BioLabs%20%C2%B7%20sample%20report" className="text-violet hover:text-snow underline underline-offset-4 transition-colors">Request a sample report →</a>
         </p>
       </Reveal>
     </section>

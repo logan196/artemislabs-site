@@ -28,9 +28,8 @@ export default function DeJongSection() {
   const m = meta[active];
 
   return (
-    <section id="dejong" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
+    <section id="dejong" className="relative px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">04 · DE JONG ET AL. (NATURE 2026 · PREPRINT 2025)</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           A Nature paper, loaded overnight.
         </h2>

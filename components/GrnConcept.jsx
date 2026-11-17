@@ -87,7 +87,7 @@ export default function GrnConcept({ height = 340 }) {
         const [x1, y1] = px(nodes[i]);
         const [x2, y2] = px(nodes[j]);
         const pulse = reduced ? 0.5 : 0.35 + 0.3 * Math.sin(t * 1.4 + k);
-        ctx.strokeStyle = `rgba(95,91,80,${(strong ? 0.4 : 0.18) * pulse + 0.08})`;
+        ctx.strokeStyle = `rgba(154,151,141,${(strong ? 0.4 : 0.18) * pulse + 0.08})`;
         ctx.lineWidth = strong ? 1 : 0.7;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -102,7 +102,7 @@ export default function GrnConcept({ height = 340 }) {
         ctx.fillStyle = MODULES[n.m].color + (n.hub ? "" : "cc");
         ctx.fill();
         if (n.hub) {
-          ctx.strokeStyle = "#fffdf7";
+          ctx.strokeStyle = "#111418";
           ctx.lineWidth = 1.5;
           ctx.stroke();
         }
