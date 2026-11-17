@@ -1,6 +1,7 @@
 /* Artemis Explore — vanilla JS spatial tissue viewer.
    Data: de Jong et al., Nature 2026 (gbmspace.org). All numbers shown in the
-   agent pane are precomputed at export time from the run itself. */
+   agent pane shows the real analysis code and the numbers computed from
+   the official run export (verified against the gbmspace Visium zarr). */
 "use strict";
 
 (() => {
@@ -338,15 +339,91 @@
     syncUI();
   }
 
-  /* ---------------- agent typewriter ---------------- */
+  /* ---------------- agent typewriter (real analysis code) ---------------- */
+  const PY_KW = /^(import|from|as|def|class|return|if|elif|else|for|in|with|print|True|False|None|and|or|not|lambda)$/;
+
+  function esc(s) {
+    return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  }
+
+  function highlightPython(src) {
+    // Tokenize line-by-line: comments, strings, numbers, keywords, names.
+    return src.split("\n").map((line) => {
+      if (/^\s*#/.test(line)) return `<span class="tok-cmt">${esc(line)}</span>`;
+      let out = "", i = 0;
+      while (i < line.length) {
+        const rest = line.slice(i);
+        const str = rest.match(/^(['"])(?:\\.|(?!\1).)*\1/);
+        if (str) { out += `<span class="tok-str">${esc(str[0])}</span>`; i += str[0].length; continue; }
+        const cmt = rest.match(/^#.*$/);
+        if (cmt) { out += `<span class="tok-cmt">${esc(cmt[0])}</span>`; break; }
+        const num = rest.match(/^[0-9]+(?:\.[0-9]+)?/);
+        if (num && (i === 0 || /[^\w]/.test(line[i - 1] || ""))) {
+          out += `<span class="tok-num">${esc(num[0])}</span>`; i += num[0].length; continue;
+        }
+        const id = rest.match(/^[A-Za-z_][\w.]*/);
+        if (id) {
+          const w = id[0];
+          const cls = PY_KW.test(w.split(".")[0]) ? "tok-kw"
+            : /^(adata|c2l|section|abund|dominant|genes|pct|X|pd|np|ad)$/.test(w.split(".")[0]) ? "tok-var"
+            : /^(read_zarr|read_h5ad|DataFrame|idxmax|value_counts|nunique|head|asarray|Series|to_string)$/.test(w.split(".").pop()) ? "tok-fn"
+            : "";
+          out += cls ? `<span class="${cls}">${esc(w)}</span>` : esc(w);
+          i += w.length; continue;
+        }
+        out += esc(rest[0]); i += 1;
+      }
+      return out;
+    }).join("\n");
+  }
+
+  function scriptBlocks() {
+    const raw = S.data.agent_script || [];
+    // New format: [{kind, text}]. Legacy: string lines of a fake CLI.
+    if (raw.length && typeof raw[0] === "object" && raw[0].kind) return raw;
+    return [{ kind: "out", text: raw.join("\n") }];
+  }
+
+  function renderAgent(blocks, limitChars, showCursor) {
+    let left = limitChars;
+    let html = "";
+    let used = 0;
+    let sawCounts = false;
+    for (const b of blocks) {
+      const text = b.text || "";
+      const take = text.slice(0, Math.max(0, left));
+      const kind = b.kind || "out";
+      if (take) {
+        if (kind === "code") html += `<span class="tok-code">${highlightPython(take)}</span>`;
+        else if (kind === "comment") html += `<span class="tok-cmt">${esc(take)}</span>`;
+        else html += `<span class="tok-out">${esc(take)}</span>`;
+        if (kind !== "code" && /Gliosis-like/.test(take) && /1862/.test(take)) sawCounts = true;
+      }
+      used += take.length;
+      left -= take.length;
+      if (left <= 0) break;
+      html += "\n";
+      used += 1;
+      left -= 1;
+    }
+    if (showCursor) html += `<span class="cursor"></span>`;
+    return { html, used, sawCounts };
+  }
+
   let typing = false;
   function annotate() {
     if (typing) return;
     const body = $("agentBody");
-    const text = S.data.agent_script.join("\n");
-    const triggerAt = text.indexOf("top cell states");
+    const blocks = scriptBlocks();
+    const total = blocks.reduce((n, b, i) => n + (b.text || "").length + (i ? 1 : 0), 0);
+    const paint = (n, cursor) => {
+      const r = renderAgent(blocks, n, cursor);
+      body.innerHTML = r.html;
+      body.scrollTop = body.scrollHeight;
+      return r;
+    };
     if (REDUCED) {
-      body.textContent = text;
+      paint(total, false);
       setStates(true, true);
       $("statesGroup").scrollIntoView({ block: "start" });
       body.scrollTop = body.scrollHeight;
@@ -356,21 +433,17 @@
     $("btnAnnotate").disabled = true;
     let i = 0, fired = false;
     body.textContent = "";
-    const cursor = document.createElement("span");
-    cursor.className = "cursor";
     const tick = () => {
-      i = Math.min(i + 3, text.length);           // ~180 chars/s, deterministic text
-      body.textContent = text.slice(0, i);
-      body.appendChild(cursor);
-      body.scrollTop = body.scrollHeight;
-      if (!fired && triggerAt >= 0 && i >= triggerAt) {
+      i = Math.min(i + 4, total);                 // slightly faster: real code is longer
+      const r = paint(i, true);
+      if (!fired && r.sawCounts) {
         fired = true;
-        setStates(true, true);                    // agent turns the overlay on
+        setStates(true, true);
         $("statesGroup").scrollIntoView({ behavior: "smooth", block: "start" });
       }
-      if (i < text.length) requestAnimationFrame(tick);
+      if (i < total) requestAnimationFrame(tick);
       else {
-        cursor.remove();
+        paint(total, false);
         typing = false;
         $("btnAnnotate").disabled = false;
       }

@@ -169,11 +169,11 @@ input:checked + .box::after {
 /* ---------- agent pane ---------- */
 .agent {
   flex: none; border-top: 1px solid var(--line);
-  background: #0d1210; display: flex; flex-direction: column; max-height: 42%;
+  background: #0d1210; display: flex; flex-direction: column; max-height: 58%;
 }
 .agent-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px 6px; }
 .agent-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); flex: none; }
-.agent-title { font: 600 10px var(--mono); letter-spacing: .18em; color: var(--accent); flex: 1; }
+.agent-title { font: 600 10px var(--mono); letter-spacing: .10em; color: var(--accent); flex: 1; min-width: 0; }
 .agent-btn {
   font: 600 11px var(--mono); color: #04100e; background: var(--accent);
   border: 0; border-radius: 5px; padding: 4px 12px; cursor: pointer; letter-spacing: .04em;
@@ -182,8 +182,16 @@ input:checked + .box::after {
 .agent-btn:disabled { opacity: .45; cursor: default; }
 .agent-body {
   font: 10.5px/1.55 var(--mono); color: #b9e8db; white-space: pre-wrap; word-break: break-word;
-  padding: 2px 12px 8px; overflow-y: auto; min-height: 56px;
+  padding: 2px 12px 8px; overflow-y: auto; min-height: 72px;
 }
+.agent-body .tok-code { color: #d7efe8; }
+.agent-body .tok-kw { color: #7ec8ff; }
+.agent-body .tok-fn { color: #9ad7b8; }
+.agent-body .tok-var { color: #e8d7a3; }
+.agent-body .tok-str { color: #f0c27a; }
+.agent-body .tok-num { color: #ffb4a2; }
+.agent-body .tok-cmt { color: #6f8f86; font-style: italic; }
+.agent-body .tok-out { color: #c8f5a8; }
 .agent-body .cursor { display: inline-block; width: 6px; height: 11px; background: var(--accent); vertical-align: -1px; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .agent-body .cursor { animation: none; } }
