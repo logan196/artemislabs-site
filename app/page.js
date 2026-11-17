@@ -17,11 +17,9 @@ import Cta from "@/components/Cta";
 import CredStrip from "@/components/CredStrip";
 import AccessForms from "@/components/AccessForms";
 
-// Section order follows the Nov 13 site (hero, logos, BANKSY, pipeline, GBM,
-// tissue, cores, genomics, UMAP, foundation, copilot, tools, close).
-// Kept from the redesign: credibility strip, compact process row (after the
-// cores, not in front of the work), PhD-led team, spatial programs in place
-// of the purple portal screenshots, no DTI section, one booking close.
+// Section order: hero, logos, BANKSY, tissue↔UMAP, pipeline, GBM/tissue,
+// cores, PhD-led team, genomics, foundation, copilot, tools, close.
+// No DTI section, one booking close.
 export default function Home() {
   return (
     <main className="grain">
@@ -32,6 +30,7 @@ export default function Home() {
         <ClientMarquee />
       </div>
       <BanksySection />
+      <UmapExplorer />
       <PrismaStory />
       <SpatialPrograms />
       <TissueBand />
@@ -39,7 +38,6 @@ export default function Home() {
       <LoopSection />
       <AgentTeam />
       <GenomeSection />
-      <UmapExplorer />
       <FoundationSection />
       <CopilotSection />
       <ToolsGrid />

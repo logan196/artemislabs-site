@@ -1,45 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import Reveal, { Stagger, item } from "./Reveal";
+import Reveal from "./Reveal";
+import TissueViewer from "./TissueViewer";
 
 // Public multiplexed-tissue imagery, BioImage Archive. Licenses verified on
 // each study's BioStudies record (License attribute): S-BIAD605 = CC0,
 // S-BIAD1237 = CC BY 4.0, S-BIAD1641 = CC BY 4.0.
-const TISSUE_IMAGES = [
-  {
-    src: "tissue/sbiad605_ccrcc_mif.jpg",
-    w: 700,
-    h: 700,
-    alt: "Multiplex immunofluorescence of clear cell renal cell carcinoma: Hoechst, MCM2, CD3 and CD8 channels composited in blue, green and red",
-    caption: "ccRCC · Hoechst / MCM2 / CD3 / CD8 — composited from the study's OME-zarr",
-    credit: "BioImage Archive S-BIAD605 · Wölflein et al. · CC0",
-    href: "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD605",
-    tilt: "md:-rotate-[1.4deg]",
-  },
-  {
-    src: "tissue/sbiad1237_luad_mif.jpg",
-    w: 512,
-    h: 512,
-    alt: "Multiplex immunofluorescence whole-slide image of lung adenocarcinoma tissue in magenta, green and red",
-    caption: "Lung adenocarcinoma · multiplex IF whole-slide image",
-    credit: "BioImage Archive S-BIAD1237 · Um et al. · CC BY 4.0",
-    href: "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1237",
-    tilt: "md:rotate-[1deg]",
-  },
-  {
-    src: "tissue/sbiad1641_thalamus_mf.png",
-    w: 512,
-    h: 512,
-    alt: "Multiplexed fluorescence microscopy of human thalamus showing neuronal and glial fiber architecture",
-    caption: "Human thalamus · neuronal, vascular and glial markers",
-    credit: "BioImage Archive S-BIAD1641 · John et al. · CC BY 4.0",
-    href: "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1641",
-    tilt: "md:-rotate-[0.6deg]",
-  },
-];
-
 const VIEWER_STATS = [
   { value: "8", label: "marker channels, composited" },
   { value: "66", label: "mapped cell states" },
@@ -233,42 +200,29 @@ export default function TissueBand() {
         </div>
       </Reveal>
 
-      {/* 2 · Public multiplexed-tissue imagery */}
-      <Reveal delay={0.08}>
-        <p className="mt-16 font-mono text-xs text-dim tracking-wide">
-          PUBLIC MULTIPLEXED TISSUE · BIOIMAGE ARCHIVE
-        </p>
+      {/* 2 · Public multiplexed-tissue imagery — live deep zoom */}
+      <Reveal delay={0.08} className="mt-16">
+        <TissueViewer />
       </Reveal>
-      <Stagger className="mt-5 grid sm:grid-cols-3 gap-6 md:gap-8">
-        {TISSUE_IMAGES.map((im) => (
-          <motion.a
-            key={im.src}
-            variants={item}
-            href={im.href}
-            target="_blank"
-            rel="noreferrer"
-            title="Open the source study on the BioImage Archive"
-            className={`block rounded-[4px] border border-line bg-panel p-3 pb-4 shadow-[0_14px_38px_-24px_rgba(0,0,0,0.6)] ${im.tilt} hover:rotate-0 hover:border-violet/50 transition-all duration-300`}
-          >
-            <span className="block aspect-square overflow-hidden rounded-[2px] bg-snow">
-              <img
-                src={im.src}
-                width={im.w}
-                height={im.h}
-                alt={im.alt}
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
-            </span>
-            <span className="block mt-3 font-mono text-[11px] text-snow leading-relaxed">
-              {im.caption}
-            </span>
-            <span className="block mt-1 font-mono text-[10.5px] text-dim leading-relaxed">
-              {im.credit}
-            </span>
-          </motion.a>
-        ))}
-      </Stagger>
+
+      {/* Featured figure from the most recent image-book Fig. 1 */}
+      <Reveal delay={0.08}>
+        <figure id="figure-book" className="mt-16 rounded-[4px] border border-line bg-panel p-3 md:p-5">
+          <img
+            src="figbook/fig1_at4_methods.jpg"
+            alt="Figure 1 of the AT4 methods image book: authors’ Tangram types, BANKSY domains, position-only k-means, distance to hypoxic, held-out classifier, and domain composition on Xenium section AT4-FO-2"
+            className="w-full h-auto rounded-[2px] bg-black"
+          />
+          <figcaption className="mt-3 text-[13.5px] text-dim leading-relaxed max-w-4xl">
+            <span className="font-semibold text-snow">Fig. 1&nbsp;|</span> Methods
+            figure for public Xenium section AT4-FO-2 (de Jong et al., Nature 2026).
+            Panels: (a) authors’ Tangram cell types, (b) BANKSY domains, (c)
+            position-only k-means (k=8), (d) distance to hypoxic, (e) held-out
+            classifier, (f) domain composition. Source file:
+            <span className="font-mono text-[12px]"> young-deck/deploy/fig/fig1_at4_methods.png</span>.
+          </figcaption>
+        </figure>
+      </Reveal>
 
       {/* 3 · Standardized file types */}
       <Reveal delay={0.08}>

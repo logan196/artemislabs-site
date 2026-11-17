@@ -21,6 +21,11 @@ function hexToRgb(hex) {
   return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 }
 
+// Lift palette midtones for contrast on black. Positions and timing are unchanged.
+function liftRgb(rgb) {
+  return rgb.map((c) => Math.min(255, Math.round(c * 1.28 + 22)));
+}
+
 function easeInOut(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
@@ -132,7 +137,7 @@ export default function UmapExplorer() {
       const sh = h - pad * 2;
       const n = data.n_shown;
       const labels = data.labels;
-      const pal = data.palette.map(hexToRgb);
+      const pal = data.palette.map(hexToRgb).map(liftRgb);
       const m = a.morph;
       const jitterAmp = reduced ? 0 : 0.0022 * (1 - 0.5 * m); // calmer in embedding
 
@@ -394,16 +399,13 @@ export default function UmapExplorer() {
     <section id="umap-interrogated" className="px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
       <Reveal>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
-          Your computational biology core, <span className="text-violet">reimagined.</span>
+          Your computational biology core,{" "}
+          <span className="text-[#7eefe0]">reimagined.</span>
         </h2>
-        <p className="mt-5 max-w-2xl text-lg text-dim leading-relaxed">
-          <span className="text-snow">The analysis isn&rsquo;t a PDF you receive — it&rsquo;s an
-          instrument you hold.</span> Below, 1,775 spots from a public GBM section breathe
-          between the tissue they were cut from and the embedding that organizes them.
-          Cell types keep their colors and their names the whole way, so you can watch
-          morphology become biology — then take the dials yourself: drag the slider,
-          switch the parameterization, color by SOX2 — the same stemness factor caught
-          sitting on its own gene in the browser above.
+        <p className="mt-5 max-w-2xl text-lg text-snow/90 leading-relaxed">
+          The analysis isn&rsquo;t a PDF you receive — it&rsquo;s an instrument you hold.
+          Below, 1,775 spots from a public GBM section breathe between the tissue they
+          were cut from and the embedding that organizes them.
         </p>
       </Reveal>
 

@@ -37,6 +37,20 @@ const TILES = [
   { src: "dejong/AT15-BRA-4-FO-B2-S25_he.jpg", label: "AT15 · gbmspace.org", sx: -60, sy: -240, r: 8 },
 ];
 
+const STACK_LOGOS = [
+  { src: "logos/r.svg", label: "R" },
+  { src: "logos/rstudio.svg", label: "RStudio", invert: true },
+  { src: "logos/python.svg", label: "Python" },
+  { src: "logos/nih.svg", label: "NIH" },
+  { src: "logos/ncbi.svg", label: "NCBI", invert: true },
+  { src: "logos/geo.svg", label: "GEO" },
+  { src: "logos/sra.svg", label: "SRA" },
+  { src: "logos/cellxgene.svg", label: "CELLxGENE", invert: true },
+  { src: "logos/allen.svg", label: "Allen Brain Atlas" },
+  { src: "logos/bioconductor.svg", label: "Bioconductor" },
+  { src: "logos/scanpy.svg", label: "Scanpy" },
+];
+
 const ACTS = ["search", "screen", "atlas", "portal"];
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
@@ -149,6 +163,7 @@ function StaticStory() {
       {/* 1 · search */}
       <div>
         <p className="font-mono text-xs uppercase tracking-widest text-violet mb-3">01 · search</p>
+        <StaticLogos />
         <div className="rounded-[3px] border border-line bg-panel p-4 font-mono text-[12px] md:text-sm text-snow">
           <span className="text-dim">geo/gds&nbsp;»&nbsp;</span>
           {GEO_QUERY}
@@ -227,6 +242,83 @@ function Chip({ chip, progress, i }) {
       />
       {chip.label}
     </motion.span>
+  );
+}
+
+function LogoMark({ item, progress, i, n }) {
+  const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+  const sx = Math.cos(angle) * (220 + (i % 3) * 40);
+  const sy = Math.sin(angle) * (110 + (i % 2) * 30);
+  const a = 0.004 + i * 0.007;
+  const opacity = useTransform(progress, [a, a + 0.025, 0.21, 0.27], [0, 1, 1, 0]);
+  const x = useTransform(progress, [a, 0.12], [sx, 0]);
+  const y = useTransform(progress, [a, 0.12], [sy, 0]);
+  const scale = useTransform(progress, [a, 0.12], [0.7, 1]);
+  return (
+    <motion.span
+      style={{ opacity, x, y, scale }}
+      className="flex items-center justify-center h-8 md:h-9 px-2"
+      title={item.label}
+    >
+      <img
+        src={item.src}
+        alt={item.label}
+        className="h-7 md:h-8 w-auto max-w-[110px] object-contain"
+        style={{ filter: item.invert
+          ? "grayscale(1) invert(1) brightness(1.25) contrast(1.05)"
+          : "grayscale(1) brightness(1.5) contrast(1.08)" }}
+      />
+      <span className="sr-only">{item.label}</span>
+    </motion.span>
+  );
+}
+
+function LogoRow({ progress }) {
+  const lineOp = useTransform(progress, [0.04, 0.08, 0.21, 0.27], [0, 1, 1, 0]);
+  return (
+    <div className="mb-6 w-full min-h-[96px] md:min-h-[110px]">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 min-h-[44px] md:min-h-[52px]">
+        {STACK_LOGOS.map((item, i) => (
+          <LogoMark key={item.label} item={item} progress={progress} i={i} n={STACK_LOGOS.length} />
+        ))}
+      </div>
+      <motion.p
+        style={{ opacity: lineOp }}
+        className="mt-3 text-center font-mono text-[10.5px] md:text-[11px] text-dim leading-relaxed max-w-xl mx-auto"
+      >
+        Built on public archives and established open-source tools.
+        <span className="block text-dim/80 mt-0.5">
+          Logos identify tools and archives in this work — no partnership or endorsement is implied.
+        </span>
+      </motion.p>
+    </div>
+  );
+}
+
+function StaticLogos() {
+  return (
+    <div className="mb-6">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+        {STACK_LOGOS.map((item) => (
+          <span key={item.label} className="flex items-center justify-center h-8 px-2" title={item.label}>
+            <img
+              src={item.src}
+              alt={item.label}
+              className="h-7 w-auto max-w-[110px] object-contain"
+              style={{ filter: item.invert
+                ? "grayscale(1) invert(1) brightness(1.25) contrast(1.05)"
+                : "grayscale(1) brightness(1.5) contrast(1.08)" }}
+            />
+          </span>
+        ))}
+      </div>
+      <p className="mt-3 text-center font-mono text-[11px] text-dim leading-relaxed max-w-xl mx-auto">
+        Built on public archives and established open-source tools.
+        <span className="block text-dim/80 mt-0.5">
+          Logos identify tools and archives in this work — no partnership or endorsement is implied.
+        </span>
+      </p>
+    </div>
   );
 }
 
@@ -473,6 +565,7 @@ export default function PrismaStory() {
             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           >
             <div className="relative w-full max-w-3xl">
+              <LogoRow progress={scrollYProgress} />
               <div className="flex flex-wrap justify-center gap-2.5 mb-6 min-h-[30px]">
                 {CHIPS.filter((c) => c.kind === "source").map((c, i) => (
                   <Chip key={c.label} chip={c} progress={scrollYProgress} i={i} />
