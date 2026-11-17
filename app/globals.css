@@ -221,19 +221,6 @@ html {
 .lift-card { transition: background-color .35s ease, transform .35s ease; }
 .lift-card:hover { background-color: rgb(255 255 255 / 0.03); }
 
-.home-mark {
-  display: inline-flex;
-  border-radius: 8px;
-  padding: 2px;
-  transition: transform .2s ease, filter .2s ease;
-}
-.home-mark:hover,
-.home-mark:focus-visible {
-  transform: scale(1.08);
-  filter: drop-shadow(0 0 8px rgba(247, 244, 234, 0.95)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.75));
-  outline: none;
-}
-
 .spatial-shot { transform-origin: center; transition: transform .55s cubic-bezier(.2,.7,.2,1); }
 .spatial-wash {
   position: absolute; inset: 0; opacity: 0; pointer-events: none;
