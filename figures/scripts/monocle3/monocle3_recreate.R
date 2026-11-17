@@ -1,0 +1,12 @@
+# monocle3 trajectory on the oligodendrocyte lineage (Zeisel level2class Oligo1-6)
+suppressPackageStartupMessages({library(monocle3); library(Seurat); library(ggplot2)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+so <- readRDS("../_data/zeisel_seurat.rds"); ol <- subset(so, subset = celltype == "oligodendrocytes")
+cds <- new_cell_data_set(GetAssayData(ol, layer = "counts"), cell_metadata = ol@meta.data, gene_metadata = data.frame(gene_short_name = rownames(ol), row.names = rownames(ol)))
+cds <- preprocess_cds(cds, num_dim = 20); cds <- reduce_dimension(cds, preprocess_method = "PCA"); cds <- cluster_cells(cds, resolution = 1e-2); cds <- learn_graph(cds, use_partition = FALSE)
+root <- colnames(cds)[cds$level2class == "Oligo1"]; cds <- order_cells(cds, root_cells = root)
+ggsave("v1_trajectory_subclass.png", plot_cells(cds, color_cells_by = "level2class", label_groups_by_cluster = FALSE, label_leaves = TRUE, label_branch_points = TRUE, group_label_size = 3, cell_size = .8), width = 6.5, height = 5, dpi = 150, bg = "white")
+ggsave("v2_pseudotime.png", plot_cells(cds, color_cells_by = "pseudotime", label_cell_groups = FALSE, label_leaves = FALSE, label_branch_points = FALSE, cell_size = .8), width = 6.5, height = 5, dpi = 150, bg = "white")
+g <- c("Pdgfra","Bmp4","Enpp6","Mbp","Mog","Klk6"); g <- g[g %in% rownames(cds)]
+ggsave("v3_genes_in_pseudotime.png", plot_genes_in_pseudotime(cds[g,], color_cells_by = "level2class", min_expr = .5, ncol = 2), width = 8, height = 7, dpi = 130, bg = "white")
+ggsave("v4_genes_on_trajectory.png", plot_cells(cds, genes = g[1:4], show_trajectory_graph = TRUE, label_cell_groups = FALSE, label_leaves = FALSE, cell_size = .8), width = 8, height = 6.5, dpi = 130, bg = "white")

@@ -1,0 +1,13 @@
+# ReactomePA: Reactome pathway enrichment of Zeisel 2015 cell-type markers (mouse; compareCluster dotplot,
+# enrichment map and gene-concept network for interneurons)
+suppressPackageStartupMessages({library(ReactomePA); library(clusterProfiler); library(enrichplot); library(org.Mm.eg.db); library(dplyr); library(ggplot2)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE)))); if (!file.exists("../_data/zeisel_markers.csv")) system("Rscript ../_data/zeisel_de.R")
+m <- read.csv("../_data/zeisel_markers.csv") %>% filter(p_val_adj < .01) %>% group_by(cluster) %>% slice_max(avg_log2FC, n = 200) %>% ungroup()
+ids <- bitr(unique(m$gene), "SYMBOL", "ENTREZID", OrgDb = org.Mm.eg.db); m <- inner_join(m, ids, by = c(gene = "SYMBOL"))
+L <- split(m$ENTREZID, m$cluster)
+cc <- compareCluster(L, fun = "enrichPathway", organism = "mouse", pvalueCutoff = .05)
+ggsave("v1_compareCluster_dotplot.png", dotplot(cc, showCategory = 4, label_format = 45) + ggtitle("ReactomePA: cell-type marker pathways") + theme(axis.text.x = element_text(angle = 30, hjust = 1)), width = 11, height = 9, dpi = 120, bg = "white")
+ep <- setReadable(enrichPathway(L[["interneurons"]], organism = "mouse", pvalueCutoff = .05), org.Mm.eg.db, "ENTREZID")
+fc <- setNames(m$avg_log2FC[m$cluster == "interneurons"], m$gene[m$cluster == "interneurons"])
+ggsave("v2_emapplot.png", emapplot(pairwise_termsim(ep), showCategory = 25) + ggtitle("Interneuron Reactome enrichment map"), width = 9, height = 8, dpi = 130, bg = "white")
+ggsave("v3_cnetplot.png", cnetplot(ep, showCategory = 5, foldChange = fc, node_label = "all") + ggtitle("Gene-concept network (colour = log2FC)"), width = 10, height = 8, dpi = 130, bg = "white")

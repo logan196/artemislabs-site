@@ -1,0 +1,15 @@
+# circlize: chord diagram of LIANA+ LR counts (Zeisel) + circos genome rings (airway DE genes, hg19)
+suppressPackageStartupMessages({library(circlize); library(ComplexHeatmap)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+m <- as.matrix(read.csv("../LIANA_plus/lr_counts_matrix.csv", row.names = 1, check.names = FALSE)); grid.col <- setNames(hcl.colors(length(union(rownames(m), colnames(m))), "Dark 3"), union(rownames(m), colnames(m)))
+png("v1_chord_directional.png", 1300, 1300, res = 170); circos.par(gap.after = 4); chordDiagram(m, grid.col = grid.col, directional = 1, direction.type = c("diffHeight","arrows"), link.arr.type = "big.arrow", annotationTrack = c("grid","name"), transparency = .3); title("Cell-cell LR pair counts (LIANA+)"); circos.clear(); dev.off()
+res <- as.data.frame(readRDS("../_data/airway_deseq2.rds")$res); res <- res[!is.na(res$padj) & !is.na(res$entrez),]
+suppressPackageStartupMessages({library(TxDb.Hsapiens.UCSC.hg19.knownGene); library(GenomicFeatures)})
+g <- genes(TxDb.Hsapiens.UCSC.hg19.knownGene); g <- g[g$gene_id %in% res$entrez & seqnames(g) %in% paste0("chr", c(1:22,"X"))]; r <- res[match(g$gene_id, res$entrez),]
+bed <- data.frame(chr = as.character(seqnames(g)), start = start(g), end = end(g), lfc = r$log2FoldChange, p = -log10(r$padj), sym = r$symbol); bed$lfc <- pmax(-5, pmin(5, bed$lfc))
+sig <- bed[bed$p > 2,]; top <- head(sig[order(-sig$p),], 20)
+png("v2_circos_genome_rings.png", 1400, 1400, res = 170)
+circos.initializeWithIdeogram(species = "hg19", chromosome.index = paste0("chr", c(1:22,"X")), plotType = c("ideogram","labels"))
+circos.genomicLabels(top[,c("chr","start","end","sym")], labels.column = 4, side = "outside", cex = .55)
+circos.genomicTrack(sig[,c("chr","start","end","lfc")], ylim = c(-5,5), panel.fun = function(region, value, ...) circos.genomicPoints(region, value, pch = 16, cex = .3, col = ifelse(value[[1]] > 0, "#d73027", "#4575b4")), track.height = .15)
+circos.genomicDensity(sig[,1:3], col = "#7a0177", track.height = .1); circos.clear(); title("DE genes: log2FC ring + density ring"); dev.off()

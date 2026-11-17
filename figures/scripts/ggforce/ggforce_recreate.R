@@ -1,0 +1,10 @@
+suppressPackageStartupMessages({library(ggforce); library(ggplot2); library(dplyr)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+md <- readRDS("../_data/zeisel_seurat.rds")@meta.data; md$UMAP_1 <- read.csv("../_data/zeisel_obs.csv")$UMAP_1; md$UMAP_2 <- read.csv("../_data/zeisel_obs.csv")$UMAP_2
+g <- ggplot(md, aes(UMAP_1, UMAP_2)) + geom_point(aes(color = celltype), size = .4) + geom_mark_hull(aes(fill = celltype, label = celltype), concavity = 3, expand = unit(2,"mm"), alpha = .12, label.fontsize = 8, con.cap = 0) + theme_void() + theme(legend.position = "none") + labs(title = "geom_mark_hull: annotated cluster hulls")
+ggsave("v1_mark_hull.png", g, width = 8, height = 7, dpi = 140, bg = "white")
+g <- ggplot(md, aes(UMAP_1, UMAP_2, color = celltype)) + geom_point(size = .4) + facet_zoom(xy = celltype == "microglia", zoom.size = 1) + theme_bw() + guides(color = guide_legend(override.aes = list(size = 3)))
+ggsave("v2_facet_zoom.png", g, width = 10, height = 5.5, dpi = 130, bg = "white")
+d <- md %>% count(tissue, celltype, sex = ifelse(is.na(sex), "NA", as.character(sex))) %>% gather_set_data(1:3)
+g <- ggplot(d, aes(x, id = id, split = y, value = n)) + geom_parallel_sets(aes(fill = celltype), alpha = .5, axis.width = .15) + geom_parallel_sets_axes(axis.width = .15, fill = "grey85") + geom_parallel_sets_labels(colour = "black", angle = 0, size = 2.8) + theme_minimal() + labs(title = "geom_parallel_sets", x = NULL)
+ggsave("v3_parallel_sets.png", g, width = 9, height = 6, dpi = 130, bg = "white")

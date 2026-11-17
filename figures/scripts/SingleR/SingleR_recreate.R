@@ -1,0 +1,10 @@
+suppressPackageStartupMessages({library(SingleR); library(celldex); library(Seurat); library(pheatmap)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+so <- readRDS("../_data/zeisel_seurat.rds"); ref <- MouseRNAseqData()
+pred <- SingleR(test = GetAssayData(so, layer = "data"), ref = ref, labels = ref$label.main)
+png("v1_plotScoreHeatmap.png", 1400, 900, res = 140); print(plotScoreHeatmap(pred, annotation_col = data.frame(Author = so$celltype, row.names = colnames(so)))); dev.off()
+png("v2_plotDeltaDistribution.png", 1400, 900, res = 140); print(plotDeltaDistribution(pred, ncol = 4)); dev.off()
+tab <- table(SingleR = pred$pruned.labels, Author = so$celltype)
+pheatmap(log10(tab + 10), color = colorRampPalette(c("white","#08306B"))(100), display_numbers = tab, number_color = "grey20", main = "SingleR labels vs author annotation", filename = "v3_confusion.png", width = 6.5, height = 5)
+so$SingleR <- pred$pruned.labels
+ggplot2::ggsave("v4_umap_labels.png", DimPlot(so, group.by = "SingleR", label = TRUE, repel = TRUE) + ggplot2::ggtitle("SingleR (MouseRNAseqData) labels"), width = 7, height = 5.5, dpi = 140, bg = "white")

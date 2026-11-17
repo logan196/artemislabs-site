@@ -1,0 +1,11 @@
+# spatialLIBD look on DLPFC 151673: layer annotation on H&E, gene on H&E, layer-wise marker boxplots
+suppressPackageStartupMessages({library(spatialLIBD); library(ggplot2); library(SpatialExperiment); library(scater)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE)))); source("../_data/dlpfc_prep.R")
+spe <- load_dlpfc(); rowData(spe)$gene_search <- paste0(rowData(spe)$gene_name, "; ", rowData(spe)$gene_id); spe$key <- paste0(spe$sample_id, "_", colnames(spe))
+spe$layer <- factor(spe$ground_truth); cols <- setNames(c("#F0027F","#377EB8","#4DAF4A","#984EA3","#FFD700","#FF7F00","#1A1A1A"), levels(spe$layer))
+ggsave("v1_vis_clus_layers.png", vis_clus(spe, sampleid = "sample_151673", clustervar = "layer", colors = cols, spatial = TRUE, point_size = 1.6, image_id = "lowres") + ggtitle("vis_clus: manual cortical layers"), width = 7, height = 6.5, dpi = 140, bg = "white")
+ggsave("v2_vis_gene_MOBP.png", vis_gene(spe, sampleid = "sample_151673", geneid = grep("^MOBP;", rowData(spe)$gene_search, value = TRUE), assayname = "logcounts", point_size = 1.6, image_id = "lowres"), width = 7, height = 6.5, dpi = 140, bg = "white")
+ggsave("v3_vis_grid_genes.png", cowplot::plot_grid(plotlist = lapply(c("SNAP25","PCP4","CCK","MOBP"), function(g) vis_gene(spe, sampleid = "sample_151673", geneid = grep(paste0("^", g, ";"), rowData(spe)$gene_search, value = TRUE), point_size = .9, image_id = "lowres") + theme(legend.position = "none")), ncol = 2), width = 9, height = 9, dpi = 120, bg = "white")
+d <- data.frame(layer = spe$layer, t(as.matrix(logcounts(spe)[c("SNAP25","PCP4","CCK","MOBP"),])))
+d <- tidyr::pivot_longer(d, -layer); g <- ggplot(d, aes(layer, value, fill = layer)) + geom_boxplot(outlier.size = .2) + facet_wrap(~ name, scales = "free_y") + scale_fill_manual(values = cols) + theme_bw() + theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1)) + labs(title = "Layer-wise expression (spatialLIBD-style boxplots)", y = "logcounts")
+ggsave("v4_layer_boxplots.png", g, width = 8, height = 6, dpi = 140, bg = "white")

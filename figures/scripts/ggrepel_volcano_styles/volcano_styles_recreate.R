@@ -1,0 +1,14 @@
+# Volcano-plot styles seen in recent neuro papers (ggplot2 + ggrepel), airway DESeq2 results
+suppressPackageStartupMessages({library(ggplot2); library(ggrepel); library(dplyr)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+res <- read.csv("../_data/airway_deseq2_results.csv") |> filter(!is.na(padj)) |> mutate(nl = -log10(padj), sig = padj < .05 & abs(log2FoldChange) > 1, dir = ifelse(log2FoldChange > 0, "up", "down"))
+lab <- res |> filter(sig) |> group_by(dir) |> slice_min(padj, n = 8)
+g <- ggplot(res, aes(log2FoldChange, nl)) + geom_point(data = filter(res, !sig), color = "grey85", size = .6) + geom_point(data = filter(res, sig), aes(color = log2FoldChange, size = nl), alpha = .8) + scale_color_gradient2(low = "#2166ac", mid = "grey90", high = "#b2182b") + scale_size(range = c(.4, 3), guide = "none") +
+  geom_label_repel(data = lab, aes(label = symbol, fill = dir), color = "white", size = 3, segment.color = "grey40", min.segment.length = 0, box.padding = .5) + scale_fill_manual(values = c(up = "#b2182b", down = "#2166ac"), guide = "none") + theme_classic() + labs(title = "Gradient + sized points + filled repel labels")
+ggsave("v1_gradient_labels.png", g, width = 7, height = 6, dpi = 140, bg = "white")
+g <- ggplot(res, aes(log2FoldChange, nl)) + geom_point(aes(color = sig), size = .7) + scale_color_manual(values = c("grey80","#7a0177"), guide = "none") + geom_text_repel(data = filter(res, sig, log2FoldChange > 0) |> slice_min(padj, n = 12), aes(label = symbol), nudge_x = 7 - filter(res, sig, log2FoldChange > 0)|> slice_min(padj, n = 12) |> pull(log2FoldChange), direction = "y", hjust = 0, segment.size = .2, size = 3) +
+  geom_text_repel(data = filter(res, sig, log2FoldChange < 0) |> slice_min(padj, n = 12), aes(label = symbol), nudge_x = -7 - filter(res, sig, log2FoldChange < 0)|> slice_min(padj, n = 12) |> pull(log2FoldChange), direction = "y", hjust = 1, segment.size = .2, size = 3) + xlim(-10, 10) + theme_minimal() + labs(title = "Side-aligned labels (direction = 'y')")
+ggsave("v2_side_aligned.png", g, width = 8, height = 6, dpi = 140, bg = "white")
+g <- ggplot(res, aes(log2FoldChange, nl, color = sig)) + geom_point(size = .6) + scale_color_manual(values = c("grey75","#e66101"), guide = "none") + annotate("rect", xmin = 1, xmax = Inf, ymin = -log10(.05), ymax = Inf, alpha = .06, fill = "red") + annotate("rect", xmin = -Inf, xmax = -1, ymin = -log10(.05), ymax = Inf, alpha = .06, fill = "blue") +
+  annotate("text", x = c(-8, 8), y = max(res$nl) * .95, label = c(paste0("down: ", sum(res$sig & res$dir == "down")), paste0("up: ", sum(res$sig & res$dir == "up"))), size = 5, fontface = "bold") + scale_y_continuous(trans = "sqrt") + theme_bw() + labs(title = "Shaded quadrants, sqrt-y, gene counts")
+ggsave("v3_quadrants_counts.png", g, width = 7, height = 6, dpi = 140, bg = "white")

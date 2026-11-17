@@ -1,0 +1,11 @@
+suppressPackageStartupMessages({library(edgeR); library(DESeq2)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+dds <- readRDS("../_data/airway_deseq2.rds")$dds; grp <- dds$dex
+y <- DGEList(counts(dds), group = grp); y <- y[filterByExpr(y), , keep.lib.sizes = FALSE]; y <- normLibSizes(y)
+design <- model.matrix(~ dds$cell + grp); y <- estimateDisp(y, design)
+png("v1_plotBCV.png", 1000, 800, res = 150); plotBCV(y, main = "edgeR plotBCV"); dev.off()
+png("v2_plotMDS.png", 1000, 850, res = 150); plotMDS(y, col = ifelse(grp == "trt", "#984EA3", "#4DAF4A"), labels = paste(grp, dds$cell), main = "edgeR plotMDS (logFC distance)"); dev.off()
+fit <- glmQLFit(y, design)
+png("v3_plotQLDisp.png", 1000, 800, res = 150); plotQLDisp(fit, main = "plotQLDisp"); dev.off()
+qlf <- glmQLFTest(fit); de <- decideTests(qlf)
+png("v4_plotSmear.png", 1000, 800, res = 150); plotSmear(qlf, de.tags = rownames(qlf)[as.logical(de)], main = "plotSmear (QL F-test DE in red)"); abline(h = c(-1,1), col = "blue"); dev.off()

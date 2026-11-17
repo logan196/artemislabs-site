@@ -1,0 +1,8 @@
+suppressPackageStartupMessages({library(dittoSeq); library(Seurat); library(ggplot2)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+so <- readRDS("../_data/zeisel_seurat.rds"); mk <- c("Snap25","Gad1","Gad2","Pvalb","Sst","Satb2","Neurod6","Wfs1","Aqp4","Gfap","Mbp","Plp1","Cx3cr1","C1qa","Cldn5","Acta2")
+ggsave("v1_dittoDimPlot_letters.png", dittoDimPlot(so, "celltype", do.label = TRUE, labels.highlight = TRUE, legend.show = FALSE, do.letter = FALSE, size = .8), width = 6.5, height = 6, dpi = 140, bg = "white")
+ggsave("v2_dittoBarPlot.png", dittoBarPlot(so, "celltype", group.by = "tissue", scale = "percent"), width = 5, height = 5, dpi = 140, bg = "white")
+ggsave("v3_dittoPlot_ridgejitter.png", dittoPlot(so, "Mbp", group.by = "celltype", plots = c("ridgeplot","jitter")), width = 7, height = 6, dpi = 140, bg = "white")
+ggsave("v4_dittoDimHex.png", dittoDimHex(so, "Gad1"), width = 6.5, height = 5.5, dpi = 140, bg = "white")
+png("v5_dittoHeatmap.png", 1300, 1000, res = 140); print(dittoHeatmap(subset(so, downsample = 60), mk, annot.by = c("celltype","tissue"), scaled.to.max = TRUE, order.by = "celltype")); dev.off()
