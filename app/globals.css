@@ -178,6 +178,33 @@ html {
 @keyframes dlgIn { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .access-dialog[open] { animation: none; } }
 
+.fig-lightbox {
+  width: min(1120px, 96vw);
+  height: min(860px, 92vh);
+  max-width: 96vw;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: #0b0e10;
+  color: #f4f1ea;
+  display: flex;
+  flex-direction: column;
+}
+.fig-lightbox::backdrop {
+  background: rgba(0, 0, 0, 0.78);
+}
+.fig-lightbox-btn {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 12px;
+  color: #f4f1ea;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  border-radius: 3px;
+  padding: 6px 10px;
+  text-decoration: none;
+}
+.fig-lightbox-btn:hover { border-color: #5fc9b8; color: white; }
+
 /* premium micro-interaction: hairline underline that draws in */
 .hair-link { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .45s cubic-bezier(.2,.7,.2,1), color .3s; }
 .hair-link:hover { background-size: 100% 1px; }

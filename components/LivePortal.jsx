@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import FigureLightbox from "./FigureLightbox";
 
 // Okabe–Ito, minus black (it disappears on the teal field).
 const OKABE = ["#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#F7F4EA"];
@@ -350,14 +351,14 @@ export default function LivePortal() {
           </div>
 
           <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-0 border-t border-white/15 bg-[#042826]">
-            <div className="relative min-h-[220px] bg-black">
+            <FigureLightbox src={current.src} alt={current.alt} caption={current.body} className="relative min-h-[220px] bg-black">
               <img
                 key={current.src}
                 src={current.src}
-                alt={current.alt}
+                alt=""
                 className="h-full w-full object-cover object-left max-h-[320px] portal-slide"
               />
-            </div>
+            </FigureLightbox>
             <div className="flex flex-col justify-between gap-4 p-5 md:p-6">
               <div>
                 <p className="font-mono text-[10.5px] tracking-[0.2em] uppercase text-[#b7fff0]">{current.kicker}</p>

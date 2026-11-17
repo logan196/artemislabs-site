@@ -1,119 +1,118 @@
 "use client";
 
-// Closing demo in the spirit of a living instrument: a sample Artemis run
-// typed into a terminal, with a field of cells that scatter, pass QC, cluster
-// and settle in sync. Public data only (de Jong et al. Xenium, AT4-FO-2).
-// Not a product CLI, not an install command — a staged replay of a sample run.
+// Closing demo: real analysis excerpts for public Xenium section AT4-FO-2
+// (de Jong et al., Nature 2026). Numbers come from the BANKSY viewer export
+// (banksy/workspace/vit/index.json) and section coordinates
+// (site/data/v3/sections/AT4-FO-2.json). Domain "top" strings are author-type
+// composition from that run, not Wilcoxon gene markers.
 import { useEffect, useRef, useState } from "react";
 
-const CMD = "artemis run --assay xenium --section AT4-FO-2";
+const CMD = 'adata = sc.read_h5ad("AT4-FO-2.h5ad")';
 
 const STEPS = [
-  { id: "load", after: 0,    lines: [
-      "loading AT4-FO-2  ·  de Jong et al., Nature 2026  ·  gbmspace.org",
-      "  50,000-cell subsample  ·  4,801 genes  ·  coordinates OK",
-    ]},
-  { id: "qc", after: 1400,   lines: [
+  {
+    id: "load",
+    after: 0,
+    lines: [
+      "# de Jong et al., Nature 2026 · Xenium · AT4-FO-2 · gbmspace.org",
+      "# source: BANKSY viewer export · banksy/workspace/vit/index.json",
+      ">>> adata.n_obs",
+      "126738",
+    ],
+  },
+  {
+    id: "qc",
+    after: 1600,
+    lines: [
       "",
-      "QC",
-      "  median transcripts / cell   187",
-      "  cells passing filters    48,612",
-    ]},
-  { id: "banksy", after: 2800, lines: [
+      ">>> int(adata.n_obs)",
+      "126738",
+      ">>> float(adata.obs[\"total_counts\"].median())",
+      "232.0",
+      "# 50,000 cells shown in the source viewer; 2,500 plotted here",
+    ],
+  },
+  {
+    id: "banksy",
+    after: 3200,
+    lines: [
       "",
-      "BANKSY  λ=0.2  ·  50 PCs",
-      "  neighborhood graph built",
-      "  spatially-aware embedding ready",
-    ]},
-  { id: "cluster", after: 4400, lines: [
+      ">>> adata.obs[\"banksy_domain\"].nunique()",
+      "8",
+      ">>> adata.obs[\"banksy_domain\"].value_counts()",
+      "D5 Cellular tumour    39397",
+      "D2 Hypoxic core       31935",
+      "D1 Infiltrated        19285",
+      "D0 Infiltrated        15223",
+      "D6 Cellular tumour    10153",
+      "D7 Infiltrated         4317",
+      "D4 Non-malignant       3399",
+      "D3 Non-malignant       3029",
+    ],
+  },
+  {
+    id: "labels",
+    after: 5000,
+    lines: [
       "",
-      "Leiden clustering",
-      "  14 domains",
-    ]},
-  { id: "annot", after: 5800, lines: [
+      "# domain labels from the run export, with % malignant",
+      "D2 Hypoxic core        31,935  ·  92.1%",
+      "D5 Cellular tumour     39,397  ·  89.0%",
+      "D6 Cellular tumour     10,153  ·  82.3%",
+      "D1 Infiltrated         19,285  ·  49.1%",
+    ],
+  },
+  {
+    id: "composition",
+    after: 6800,
+    lines: [
       "",
-      "cell-state annotation",
-      "  AC-like  MES-like  NPC-like  OPC-like  ·  TME",
-    ]},
-  { id: "figures", after: 7200, lines: [
-      "",
-      "writing figures",
-      "  domains.png  programs.png  overlay.png",
-    ]},
-  { id: "portal", after: 8600, lines: [
+      "# top author cell-type composition per domain (not gene DE)",
+      "D2  Hypoxic 49%, Gliosis-like 8%, AC-gliosis-like 7%",
+      "D5  OPC-like 20%, AC-progenitor-like 18%, Proliferative 17%",
+      "D4  Oligodendrocytes 88%, Gliosis-like 4%, Lymphocytes 4%",
+      "D3  Macrophages 89%, Lymphocytes 6%, OPC-NPC-like 1%",
+    ],
+  },
+  {
+    id: "portal",
+    after: 8600,
+    lines: [
       "",
       "portal ready",
-      "  AT4-FO-2  ·  14 domains  ·  open in browser",
-    ]},
+      "AT4-FO-2  ·  8 BANKSY domains  ·  126,738 cells",
+    ],
+  },
 ];
 
-const COLORS = [
-  [95, 201, 184],
-  [217, 164, 91],
-  [94, 180, 224],
-  [224, 122, 122],
-  [176, 140, 214],
-  [90, 196, 130],
-  [232, 186, 92],
-  [120, 160, 220],
-];
+function hexToRgb(hex) {
+  return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+}
 
-const STEP_INDEX = { load: 0, qc: 1, banksy: 2, cluster: 3, annot: 4, figures: 5, portal: 6 };
-
-function CellField({ step, reduced }) {
+function CellField({ step, reduced, data }) {
   const ref = useRef(null);
   const stepRef = useRef(step);
   stepRef.current = step;
 
   useEffect(() => {
     const canvas = ref.current;
-    if (!canvas) return;
+    if (!canvas || !data) return;
     const ctx = canvas.getContext("2d", { alpha: false });
     const reducedMotion = reduced || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const N = 640;
-    const K = 8;
-    const cells = [];
-    const rng = (s) => { s = Math.sin(s * 12.9898) * 43758.5453; return s - Math.floor(s); };
-
-    for (let i = 0; i < N; i++) {
-      const seed = i * 1.7 + 0.13;
-      const cx = rng(seed), cy = rng(seed + 2);
-      const ki = i % K;
-      const ang = (ki / K) * Math.PI * 2 + rng(seed + 4) * 0.4;
-      const rad = 0.22 + rng(seed + 5) * 0.16;
-      cells.push({
-        x: cx, y: cy,
-        tx: cx, ty: cy,
-        homeX: cx, homeY: cy,
-        clx: 0.5 + Math.cos(ang) * rad,
-        cly: 0.5 + Math.sin(ang) * rad * 0.85,
-        jitter: rng(seed + 6),
-        k: ki,
-        fail: rng(seed + 8) < 0.05,
-        a: 1,
-      });
+    const pal = {};
+    const labels = {};
+    for (const d of data.domains) {
+      pal[d.id] = hexToRgb(d.color);
+      labels[d.id] = d;
     }
-
-    const setTargets = (s) => {
-      for (const c of cells) {
-        if (s <= 0) { c.tx = c.homeX; c.ty = c.homeY; c.a = 0.95; }
-        else if (s === 1) { c.tx = c.homeX; c.ty = c.homeY; c.a = c.fail ? 0.12 : 1; }
-        else if (s === 2) {
-          c.tx = c.clx * 0.45 + c.homeX * 0.55;
-          c.ty = c.cly * 0.45 + c.homeY * 0.55;
-          c.a = c.fail ? 0.08 : 1;
-        } else {
-          const tight = s >= 5 ? 0.92 : s >= 3 ? 0.82 : 0.7;
-          const j = (c.jitter - 0.5) * (1 - tight) * 0.18;
-          c.tx = c.clx + j;
-          c.ty = c.cly + j * 0.8;
-          c.a = c.fail ? 0.06 : 1;
-        }
-      }
-    };
-
-    setTargets(reducedMotion ? 6 : 0);
-    if (reducedMotion) for (const c of cells) { c.x = c.tx; c.y = c.ty; }
+    const pts = data.points;
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const [x, y] of pts) {
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
 
     let raf = 0, last = performance.now(), t = 0, disposed = false, visible = true;
     let cssW = 0, cssH = 0;
@@ -128,71 +127,117 @@ function CellField({ step, reduced }) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) loop(performance.now()); });
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible && !raf) loop(performance.now());
+    });
     io.observe(canvas);
-    const ro = new ResizeObserver(() => { fit(); if (visible && !raf) loop(performance.now()); });
+    const ro = new ResizeObserver(() => {
+      fit();
+      if (visible && !raf) loop(performance.now());
+    });
     ro.observe(canvas);
     fit();
 
     function loop(now) {
       raf = 0;
       if (disposed || !visible) return;
-      const dt = Math.min(40, now - last); last = now; t += dt / 1000;
+      const dt = Math.min(40, now - last);
+      last = now;
+      t += dt / 1000;
       fit();
-      if (!reducedMotion) setTargets(stepRef.current);
       const w = cssW, h = cssH;
+      const pad = 16;
+      const sx = (x) => pad + ((x - minX) / (maxX - minX || 1)) * (w - pad * 2);
+      const sy = (y) => pad + ((y - minY) / (maxY - minY || 1)) * (h - pad * 2);
       ctx.fillStyle = "#07080a";
       ctx.fillRect(0, 0, w, h);
-      for (const c of cells) {
-        if (!reducedMotion) {
-          c.x += (c.tx - c.x) * 0.05;
-          c.y += (c.ty - c.y) * 0.05;
-        }
-        const breathe = reducedMotion ? 0 : Math.sin(t * 1.4 + c.jitter * 6) * 0.006;
-        const px = (c.x + breathe) * w;
-        const py = (c.y + breathe * 0.6) * h;
-        const [r, g, b] = COLORS[c.k];
-        const s = stepRef.current;
-        const rad = 2.8 + (s >= 3 ? 0.6 : 0) + (s >= 5 ? 0.5 : 0);
+      const s = stepRef.current;
+      for (let i = 0; i < pts.length; i++) {
+        const [x, y, d] = pts[i];
+        const [r, g, b] = pal[d] || [180, 180, 180];
+        const breathe = reducedMotion ? 0 : Math.sin(t * 1.2 + i * 0.015) * 0.6;
+        const px = sx(x) + breathe;
+        const py = sy(y) + breathe * 0.5;
+        const colored = s >= 2;
+        const rad = s >= 2 ? 2.4 : 2.15;
         ctx.beginPath();
         ctx.arc(px, py, rad, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r},${g},${b},${c.a})`;
+        ctx.fillStyle = colored
+          ? `rgba(${r},${g},${b},0.95)`
+          : "rgba(230,226,214,0.9)";
         ctx.fill();
-        if (s >= 4 && c.a > 0.5) {
-          ctx.beginPath();
-          ctx.arc(px, py, rad * 2.6, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${r},${g},${b},${0.16 * c.a})`;
-          ctx.fill();
+      }
+      if (s >= 3) {
+        ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
+        const used = new Set();
+        for (const d of data.domains) {
+          if (used.has(d.cls) && (d.id !== 2 && d.id !== 5 && d.id !== 4 && d.id !== 3 && d.id !== 1 && d.id !== 0)) continue;
+          // place a label near the first preview point of this domain
+          let accX = 0, accY = 0, n = 0;
+          for (const [x, y, id] of pts) {
+            if (id !== d.id) continue;
+            accX += sx(x);
+            accY += sy(y);
+            n += 1;
+            if (n > 80) break;
+          }
+          if (!n) continue;
+          used.add(d.id);
+          const lx = accX / n;
+          const ly = accY / n;
+          const [r, g, b] = pal[d.id];
+          ctx.fillStyle = `rgba(${r},${g},${b},0.95)`;
+          ctx.fillText(d.cls, lx - 22, ly);
         }
       }
       raf = requestAnimationFrame(loop);
     }
     raf = requestAnimationFrame(loop);
-    return () => { disposed = true; cancelAnimationFrame(raf); io.disconnect(); ro.disconnect(); };
-  }, [reduced]);
+    return () => {
+      disposed = true;
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      ro.disconnect();
+    };
+  }, [reduced, data]);
 
   return <canvas ref={ref} className="absolute inset-0 h-full w-full" style={{ width: "100%", height: "100%" }} aria-hidden />;
+}
+
+function toneLine(ln) {
+  if (!ln) return "text-snow/75";
+  if (ln.startsWith(">>>") || ln.startsWith("portal ready")) return "text-[#7eefe0]";
+  if (ln.startsWith("#")) return "text-dim";
+  return "text-snow/80";
 }
 
 export default function CloseRun() {
   const rootRef = useRef(null);
   const [typed, setTyped] = useState("");
-  const [step, setStep] = useState(-1); // -1 typing, 0..6 running
+  const [step, setStep] = useState(-1);
   const [log, setLog] = useState([]);
   const [done, setDone] = useState(false);
+  const [preview, setPreview] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("dejong/at4_fo2_preview.json")
+      .then((r) => r.json())
+      .then((d) => { if (!cancelled) setPreview(d); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       setTyped(CMD);
       setLog(STEPS.flatMap((s) => s.lines));
-      setStep(6);
+      setStep(STEPS.length - 1);
       setDone(true);
       return;
     }
-
-    // Wall-clock timeline from mount so a late scroll (or a throttled
-    // headless tab) lands mid-cycle instead of restarting the type-out.
     const TYPE_DELAY = 400;
     const typedAt = new Array(CMD.length + 1);
     typedAt[0] = 0;
@@ -202,7 +247,7 @@ export default function CloseRun() {
     }
     const typedDone = typedAt[CMD.length];
     const stepAt = STEPS.map((s) => typedDone + 700 + s.after);
-    const CYCLE = stepAt[stepAt.length - 1] + 4200;
+    const CYCLE = stepAt[stepAt.length - 1] + 4800;
     const t0 = performance.now();
     let raf = 0;
     let lastKey = "";
@@ -241,6 +286,15 @@ export default function CloseRun() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const caption = [
+    "cells · AT4-FO-2 coordinates",
+    "QC · 126,738 cells · median 232",
+    "BANKSY · 8 domains",
+    "domains labeled",
+    "author-type composition",
+    "portal · 8 domains",
+  ];
+
   return (
     <div id="sample-run" ref={rootRef} className="max-w-6xl mx-auto">
       <div className="grid md:grid-cols-2 border border-white/10 rounded-[4px] overflow-hidden">
@@ -250,47 +304,45 @@ export default function CloseRun() {
             <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
             <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
             <span className="ml-3 font-mono text-[11px] tracking-[0.14em] uppercase text-dim">
-              sample run · public data
+              python · AT4-FO-2
             </span>
           </div>
           <pre
-            className="px-5 py-4 font-mono text-[12.5px] leading-[1.65] text-snow/85 overflow-x-auto min-h-[280px] md:min-h-[340px]"
-            aria-label="Sample Artemis run on public Xenium section AT4-FO-2 from de Jong et al., Nature 2026. Typed command, then QC, BANKSY, clustering, figures and a portal-ready line."
+            className="px-5 py-4 font-mono text-[12.5px] leading-[1.65] text-snow/85 overflow-x-auto min-h-[300px] md:min-h-[400px]"
+            aria-label="Real analysis excerpts on public Xenium section AT4-FO-2 from de Jong et al., Nature 2026. Numbers from the BANKSY run export: 126,738 cells, median 232 transcripts, 8 domains."
           >
-            <div className="text-dim"># de Jong et al., Nature 2026 · Xenium · AT4-FO-2</div>
-            <div className="text-dim"># 50,000-cell subsample · gbmspace.org</div>
-            <div className="mt-2">
-              <span className="text-violet">$ </span>
+            <div>
+              <span className="text-[#7eefe0]">{">>> "}</span>
               {typed}
-              {step < 0 && <span className="inline-block w-[7px] h-[13px] ml-0.5 bg-violet align-[-1px] animate-pulse" />}
+              {step < 0 && (
+                <span className="inline-block w-[7px] h-[13px] ml-0.5 bg-[#7eefe0] align-[-1px] animate-pulse" />
+              )}
             </div>
             {log.length > 0 && (
-              <div className="mt-3 text-snow/75">
+              <div className="mt-3">
                 {log.map((ln, i) => (
-                  <div key={i} className={ln.startsWith("portal ready") || ln.trim() === "QC" || ln.startsWith("BANKSY") || ln.startsWith("Leiden") || ln.startsWith("cell-state") || ln.startsWith("writing") ? "text-violet" : ""}>
+                  <div key={i} className={toneLine(ln)}>
                     {ln || "\u00a0"}
                   </div>
                 ))}
-                {done && <div className="text-violet mt-1">{"\u2713"} sample complete</div>}
+                {done && <div className="text-[#7eefe0] mt-1">{"\u2713"} sample complete</div>}
               </div>
             )}
           </pre>
         </div>
-        <div className="relative min-h-[240px] md:min-h-[340px] bg-[#07080a]">
-          <CellField step={Math.max(0, step)} reduced={false} />
-          <div className="absolute left-3 bottom-3 font-mono text-[10.5px] tracking-[0.16em] uppercase text-dim/90 pointer-events-none">
-            {step <= 0 && "cells · unordered"}
-            {step === 1 && "QC · filters applied"}
-            {step === 2 && "BANKSY · neighborhoods"}
-            {step === 3 && "Leiden · 14 domains"}
-            {step === 4 && "states · annotated"}
-            {step >= 5 && "portal · figures ready"}
+        <div className="relative min-h-[260px] md:min-h-[400px] bg-[#07080a]">
+          {preview && <CellField step={Math.max(0, step)} reduced={false} data={preview} />}
+          <div className="absolute left-3 bottom-3 font-mono text-[10.5px] tracking-[0.12em] uppercase text-dim/90 pointer-events-none">
+            {caption[Math.max(0, step)] || caption[0]}
           </div>
         </div>
       </div>
       <p className="mt-3 text-[12.5px] text-dim leading-relaxed">
-        A sample run on public data — Xenium section AT4-FO-2 from de Jong et al., <i>Nature</i> 2026 (gbmspace.org).
-        Staged replay of an analysis we performed; not an installable command or a product release.
+        Public Xenium section AT4-FO-2 from de Jong et al., <i>Nature</i> 2026 (gbmspace.org).
+        Counts and domain composition are from the BANKSY viewer export
+        (<span className="font-mono text-[11.5px]">banksy/workspace/vit/index.json</span>);
+        coordinates from the v3 section JSON. 2,500 of 50,000 displayed cells are plotted.
+        Domain “top” lines are author cell-type composition from that run, not gene markers.
       </p>
     </div>
   );
