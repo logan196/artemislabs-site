@@ -11,7 +11,6 @@ import WhatWeDo from "@/components/WhatWeDo";
 import AgentTeam from "@/components/AgentTeam";
 import CopilotSection from "@/components/CopilotSection";
 import GenomeSection from "@/components/GenomeSection";
-import ImagingSection from "@/components/ImagingSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import ToolGraph from "@/components/ToolGraph";
 import Cta from "@/components/Cta";
@@ -36,7 +35,6 @@ export default function Home() {
       <WhatWeDo />
       <AgentTeam />
       <GenomeSection />
-      <ImagingSection />
       <UmapExplorer />
       <FoundationSection />
       <CopilotSection />
