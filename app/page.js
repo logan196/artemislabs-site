@@ -15,13 +15,14 @@ import FoundationSection from "@/components/FoundationSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import ToolGraph from "@/components/ToolGraph";
+import GbmUseCase from "@/components/GbmUseCase";
 import Cta from "@/components/Cta";
 import CredStrip from "@/components/CredStrip";
 import AccessForms from "@/components/AccessForms";
 
-// Opening: living UMAP hero, credibility strip, logos, then BANKSY and the
-// tissue↔UMAP explorer plus the PRISMA story. Live portal stays after the
-// agent team. The nav does not link a separate Pipeline item.
+// Opening: living UMAP hero, credibility strip, logos, then the GBM use-case
+// story, BANKSY, tissue↔UMAP, and the PRISMA story. Live portal stays after the
+// agent team. No DTI section, one booking close.
 export default function Home() {
   return (
     <main className="grain">
@@ -31,6 +32,7 @@ export default function Home() {
         <CredStrip />
         <ClientMarquee />
       </div>
+      <GbmUseCase />
       <BanksySection />
       <UmapExplorer />
       <PrismaStory />

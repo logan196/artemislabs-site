@@ -1,7 +1,7 @@
 "use client";
 
 // Show-not-say pipeline for the PhD-led agent team. Heading text is fixed.
-// Tissue is the same AT4-FO-2 BANKSY preview used in the sample run (2,500 points).
+// Tissue is the AT4-FO-2 BANKSY preview (2,500 of 50,000 displayed cells).
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion, useScroll } from "framer-motion";
 
@@ -100,22 +100,60 @@ function TissueCanvas({ reduced }) {
         ctx.save();
         ctx.globalAlpha = Math.min(1, (colorAmt - 0.55) / 0.45);
         ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
-        const used = new Set();
+        const raw = [];
         for (const d of data.domains) {
-          if (used.has(d.cls) && ![2, 5, 4, 3, 1, 0].includes(d.id)) continue;
           let accX = 0, accY = 0, n = 0;
           for (const [x, y, id] of pts) {
             if (id !== d.id) continue;
             accX += sx(x);
             accY += sy(y);
             n += 1;
-            if (n > 80) break;
           }
           if (!n) continue;
-          used.add(d.id);
-          const [r, g, b] = pal[d.id];
+          raw.push({
+            text: `D${d.id} · ${d.cls}`,
+            x: accX / n,
+            y: accY / n,
+            color: pal[d.id],
+            n,
+          });
+        }
+        raw.sort((a, b) => b.n - a.n);
+        let gx = 0, gy = 0, gt = 0;
+        for (const L of raw) { gx += L.x * L.n; gy += L.y * L.n; gt += L.n; }
+        if (gt) { gx /= gt; gy /= gt; }
+        const placed = [];
+        const lineH = 18;
+        for (const L of raw) {
+          const tw = ctx.measureText(L.text).width;
+          let dx = L.x - gx, dy = L.y - gy;
+          const len = Math.hypot(dx, dy) || 1;
+          dx /= len; dy /= len;
+          let x = L.x + dx * 56;
+          let y = L.y + dy * 42;
+          let tries = 0;
+          const hits = () =>
+            placed.some(
+              (p) => Math.abs(p.x - x) < (p.w + tw) / 2 + 12 && Math.abs(p.y - y) < lineH
+            );
+          while (hits() && tries < 28) {
+            const step = 1 + Math.floor(tries / 2);
+            if (tries % 2 === 0) y += (dy >= 0 ? 1 : -1) * lineH;
+            else x += (dx >= 0 ? 1 : -1) * 16;
+            tries += 1;
+          }
+          if (x - tw / 2 < 6) x = tw / 2 + 6;
+          if (x + tw / 2 > w - 6) x = w - tw / 2 - 6;
+          if (y < 14) y = 14;
+          if (y > h - 8) y = h - 8;
+          placed.push({ x, y, w: tw });
+          const [r, g, b] = L.color;
+          const tx = x - tw / 2;
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "rgba(0,0,0,0.75)";
+          ctx.strokeText(L.text, tx, y);
           ctx.fillStyle = `rgba(${r},${g},${b},0.95)`;
-          ctx.fillText(d.cls, accX / n - 22, accY / n);
+          ctx.fillText(L.text, tx, y);
         }
         ctx.restore();
       }

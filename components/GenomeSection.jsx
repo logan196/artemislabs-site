@@ -54,24 +54,24 @@ const IGV_CONFIG = {
   locus: LOCUS,
   tracks: [
     {
-      name: "SOX2 CUT&RUN · binding signal",
+      name: "SOX2 CUT&RUN · NCI-H520 · GEO GSM8782600 (RPKM)",
       type: "wig",
       format: "bigwig",
       url: CUTRUN_URL,
-      color: "#f0a202",
-      height: 100,
+      color: "#5fd4c4",
+      height: 92,
       autoscale: true,
     },
     {
-      name: "PacBio HiFi long reads · 48×",
+      name: "PacBio HiFi long reads · GIAB HG002 · Revio 48×",
       type: "alignment",
       format: "bam",
       url: HIFI_BAM,
       indexURL: `${HIFI_BAM}.bai`,
       height: 236,
       visibilityWindow: 65000,
-      coverageColor: "#2bb3a3",
-      color: "#3ec6c0",
+      coverageColor: "#d9a45b",
+      color: "#b9ae94",
     },
   ],
 };
@@ -173,20 +173,26 @@ export default function GenomeSection() {
   };
 
   return (
-    <section id="genomics" className="relative px-6 md:px-14 pt-12 md:pt-16 pb-20 max-w-7xl mx-auto">
+    <section id="genomics" className="relative px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Not just spatial.
         </h2>
-        <p className="mt-6 text-lg text-snow/90 leading-relaxed max-w-2xl">
-          CUT&amp;RUN, long reads, bulk — fastq to a browser you can share.
+        <p className="mt-6 text-lg text-dim leading-relaxed max-w-2xl">
+          CUT&amp;RUN, long reads, bulk — the same embedded team takes your assay from
+          fastq to a browser you can hand a collaborator. The panel below is not a
+          screenshot: it is a live igv.js genome browser streaming two public datasets
+          into this page, opened on SOX2 — the stemness factor this site keeps meeting
+          in tumor tissue — caught sitting on its own gene.
         </p>
-        <div className="mt-5 flex gap-3 flex-wrap font-mono text-[13px] text-dim">
+        <div className="mt-6 flex gap-3 flex-wrap font-mono text-[13px] text-dim">
           <span>CUT&amp;RUN</span>
           <span aria-hidden>·</span>
           <span>PacBio HiFi</span>
           <span aria-hidden>·</span>
-          <span>live, nothing pre-rendered</span>
+          <span>streamed by range request</span>
+          <span aria-hidden>·</span>
+          <span>nothing pre-rendered</span>
         </div>
       </Reveal>
 
@@ -234,50 +240,29 @@ export default function GenomeSection() {
               </div>
             </div>
           ) : (
-            <>
-            <div className="relative min-h-[420px] bg-black">
+            <div className="relative min-h-[420px] bg-white/[0.03]">
               {status !== "ready" && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <p className="font-mono text-[13px] text-dim">
                     streaming reference + tracks from igv.org · GEO · GIAB…
                   </p>
                 </div>
               )}
               <div ref={hostRef} className="px-2 py-2" />
-              {status === "ready" && (
-                <div
-                  className="absolute top-[4.75rem] right-4 md:right-8 max-w-[200px] pointer-events-none z-10"
-                  aria-hidden
-                >
-                  <div className="rounded-[3px] border border-[#f0a202]/70 bg-black/80 px-2.5 py-1.5 font-mono text-[11px] text-[#f0a202] shadow-[0_0_18px_rgba(240,162,2,0.18)]">
-                    SOX2 binds its own gene
-                    <span className="block text-[10px] text-snow/70 font-normal mt-0.5">
-                      ~800 RPKM peak · gene body
-                    </span>
-                  </div>
-                </div>
-              )}
             </div>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-line px-4 py-2.5 font-mono text-[11px] text-dim">
-              <span className="inline-flex items-center gap-2">
-                <span className="h-2 w-5 rounded-sm bg-[#f0a202]" aria-hidden />
-                SOX2 CUT&amp;RUN · binding signal
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-2 w-5 rounded-sm bg-[#2bb3a3]" aria-hidden />
-                PacBio HiFi long reads · 48×
-              </span>
-              <span className="text-snow/50">shaded: SOX2 locus</span>
-            </div>
-            </>
           )}
         </div>
 
         <p className="mt-2.5 text-[13.5px] text-dim leading-relaxed max-w-4xl">
-          <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> Live igv.js
-          browser, hg38, SOX2 locus chr3:181,695,000–181,730,000. Amber: SOX2 CUT&amp;RUN
-          binding signal, NCI-H520, GEO GSM8782600 (GSE289046), RPKM. Teal: PacBio HiFi
-          Revio 48× reads, GIAB HG002. Drag to pan, scroll to zoom.
+          <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> Live genome
+          browser (igv.js, hg38) at the SOX2 locus, chr3:181,695,000–181,730,000. Top
+          track: SOX2 CUT&amp;RUN coverage in NCI-H520 lung squamous carcinoma cells —
+          GEO accession GSM8782600 (series GSE289046), RPKM-normalized; the ~800-RPKM
+          peak over the gene body is the factor binding its own locus. Bottom track:
+          PacBio HiFi Revio long-read alignments at 48× from the GIAB HG002 reference
+          sample (NIST ftp-trace mirror, GRCh38) — single reads span tens of kilobases.
+          Both are public datasets streamed live into the browser by HTTP range
+          request; drag to pan, scroll to zoom.
         </p>
       </Reveal>
     </section>

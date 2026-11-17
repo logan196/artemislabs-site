@@ -1,10 +1,9 @@
 "use client";
 
-// Close of the page: a sample run (terminal + living cells), the Nov 13
-// dodecahedron with "Your data has a story.", then the three booking options.
+// Close of the page: the Nov 13 dodecahedron with "Your data has a story.",
+// then the three booking options.
 import Reveal from "./Reveal";
 import BioDodecahedron from "./BioDodecahedron";
-import CloseRun from "./CloseRun";
 import { BOOKING, CONTACT } from "./AccessForms";
 
 const OPTIONS = [
@@ -37,19 +36,7 @@ export default function Cta() {
   return (
     <section id="contact" className="relative bg-black border-t border-white/[0.06] px-6 md:px-14 pt-20 md:pt-28 pb-10 overflow-hidden">
       <div className="max-w-6xl mx-auto">
-        <Reveal>
-          <h2 className="text-3xl md:text-4xl max-w-3xl">Watch a sample run.</h2>
-          <p className="mt-4 max-w-2xl text-lg text-dim leading-relaxed">
-            A staged replay of an analysis we ran on a public Xenium section. The tissue
-            on the right steps with the code — raw coordinates, QC, eight BANKSY domains,
-            then the domain composition from the run.
-          </p>
-        </Reveal>
-        <Reveal delay={0.06} className="mt-10">
-          <CloseRun />
-        </Reveal>
-
-        <div id="story" className="mt-24 md:mt-32 text-center">
+        <div id="story" className="text-center">
           <Reveal>
             <div className="relative mx-auto w-full max-w-[520px] mb-2" aria-hidden>
               <BioDodecahedron size={400} labels={false} helix />
