@@ -1,0 +1,190 @@
+{
+ "sample": "AT15-BRA-4-FO-B2-S25",
+ "title": "Artemis Explore",
+ "subtitle": "human glioblastoma \u00b7 Visium spatial transcriptomics",
+ "citation": "de Jong et al., Nature 2026 \u00b7 gbmspace.org",
+ "width": 2000,
+ "height": 1781,
+ "um_per_px": 6.8407,
+ "spot_diameter_px": 8.04,
+ "n_spots": 10356,
+ "he": "he.jpg",
+ "markers": [
+  {
+   "name": "EGFR",
+   "file": "layers/EGFR.png",
+   "color": "#4da3ff",
+   "role": "tumor RTK",
+   "p99": 0.3143,
+   "pct_detected": 45.6,
+   "mean_lognorm": 0.302
+  },
+  {
+   "name": "SOX2",
+   "file": "layers/SOX2.png",
+   "color": "#ffd24d",
+   "role": "stemness",
+   "p99": 0.4401,
+   "pct_detected": 55.7,
+   "mean_lognorm": 0.736
+  },
+  {
+   "name": "GFAP",
+   "file": "layers/GFAP.png",
+   "color": "#3ddc97",
+   "role": "astrocyte",
+   "p99": 0.8519,
+   "pct_detected": 78.0,
+   "mean_lognorm": 3.404
+  },
+  {
+   "name": "CD68",
+   "file": "layers/CD68.png",
+   "color": "#ff7a59",
+   "role": "macrophage",
+   "p99": 0.5136,
+   "pct_detected": 47.0,
+   "mean_lognorm": 0.338
+  },
+  {
+   "name": "MKI67",
+   "file": "layers/MKI67.png",
+   "color": "#ff5fa2",
+   "role": "proliferation",
+   "p99": 0.2065,
+   "pct_detected": 22.3,
+   "mean_lognorm": 0.081
+  },
+  {
+   "name": "OLIG2",
+   "file": "layers/OLIG2.png",
+   "color": "#b388ff",
+   "role": "oligo lineage",
+   "p99": 0.2185,
+   "pct_detected": 41.9,
+   "mean_lognorm": 0.196
+  },
+  {
+   "name": "VWF",
+   "file": "layers/VWF.png",
+   "color": "#ff4d4d",
+   "role": "endothelium",
+   "p99": 0.4651,
+   "pct_detected": 40.6,
+   "mean_lognorm": 0.251
+  },
+  {
+   "name": "VEGFA",
+   "file": "layers/VEGFA.png",
+   "color": "#00e5ff",
+   "role": "hypoxia/angio",
+   "p99": 0.7761,
+   "pct_detected": 62.1,
+   "mean_lognorm": 1.207
+  }
+ ],
+ "states": {
+  "file": "states.png",
+  "method": "cell2location (donor-matched snRNA-seq reference), dominant state per spot",
+  "n_dominant_states": 66,
+  "legend": [
+   {
+    "label": "Gliosis-like",
+    "color": "#56b4e9",
+    "n": 1862,
+    "frac": 0.1798
+   },
+   {
+    "label": "CD8+ T cells",
+    "color": "#e69f00",
+    "n": 1436,
+    "frac": 0.1387
+   },
+   {
+    "label": "NPC-neuronal-like 1",
+    "color": "#009e73",
+    "n": 729,
+    "frac": 0.0704
+   },
+   {
+    "label": "Exc L4-5 IT",
+    "color": "#f0e442",
+    "n": 648,
+    "frac": 0.0626
+   },
+   {
+    "label": "Oligodendrocytes 2",
+    "color": "#cc79a7",
+    "n": 645,
+    "frac": 0.0623
+   },
+   {
+    "label": "Neural-support astrocytes",
+    "color": "#d55e00",
+    "n": 637,
+    "frac": 0.0615
+   },
+   {
+    "label": "AC progenitor-like 1",
+    "color": "#0072b2",
+    "n": 557,
+    "frac": 0.0538
+   },
+   {
+    "label": "Exc L2-3 IT",
+    "color": "#9e5cf7",
+    "n": 555,
+    "frac": 0.0536
+   },
+   {
+    "label": "B cells",
+    "color": "#6fdfdf",
+    "n": 460,
+    "frac": 0.0444
+   },
+   {
+    "label": "Undefined 6",
+    "color": "#b8e23d",
+    "n": 370,
+    "frac": 0.0357
+   },
+   {
+    "label": "NPC-neuronal-like 2",
+    "color": "#ff8fa3",
+    "n": 340,
+    "frac": 0.0328
+   },
+   {
+    "label": "Na\u00efve T cells",
+    "color": "#b07aa1",
+    "n": 203,
+    "frac": 0.0196
+   }
+  ],
+  "other": {
+   "label": "Other states",
+   "color": "#9a9a9a",
+   "n": 1914,
+   "frac": 0.1848
+  }
+ },
+ "agent_script": [
+  "$ artemis annotate --section AT15-BRA-4-FO-B2-S25",
+  "> loading run export ... ok",
+  "> section: AT15-BRA-4-FO-B2-S25 \u00b7 human glioblastoma \u00b7 Visium",
+  "> 10,356 tissue spots \u00b7 66 dominant cell2location states",
+  "> top cell states (dominant per spot):",
+  "    1. Gliosis-like               1,862 spots \u00b7 18.0%",
+  "    2. CD8+ T cells               1,436 spots \u00b7 13.9%",
+  "    3. NPC-neuronal-like 1          729 spots \u00b7  7.0%",
+  "    4. Exc L4-5 IT                  648 spots \u00b7  6.3%",
+  "    5. Oligodendrocytes 2           645 spots \u00b7  6.2%",
+  "    6. Neural-support astrocytes    637 spots \u00b7  6.2%",
+  "> marker panel, fraction of spots detected:",
+  "    GFAP 78% \u00b7 VEGFA 62% \u00b7 SOX2 56% \u00b7 CD68 47% \u00b7 EGFR 46% \u00b7 OLIG2 42% \u00b7 VWF 41% \u00b7 MKI67 22%",
+  "> read: Gliosis-like is the top dominant state (1,862 spots, 18.0%); immune states (CD8+ T cells) dominate another 13.9% of spots; VEGFA detected in 62% and VWF in 41% of spots \u2014 consistent with the vascular-rich lower region of the H&E",
+  "> source: de Jong et al., Nature 2026 \u00b7 gbmspace.org",
+  "> note: precomputed from the run \u2014 local model annotations,",
+  ">       not independently validated"
+ ]
+}

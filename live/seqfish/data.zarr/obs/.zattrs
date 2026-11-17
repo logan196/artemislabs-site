@@ -1,0 +1,11 @@
+{
+    "_index": "ID",
+    "column-order": [
+        "cell_type",
+        "leiden",
+        "louvain_eng2019",
+        "region"
+    ],
+    "encoding-type": "dataframe",
+    "encoding-version": "0.2.0"
+}

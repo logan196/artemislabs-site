@@ -1,0 +1,10 @@
+{
+    "_index": "_index",
+    "column-order": [
+        "cell_state",
+        "spatial_niche",
+        "histopathology"
+    ],
+    "encoding-type": "dataframe",
+    "encoding-version": "0.2.0"
+}

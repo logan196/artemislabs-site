@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.78 -1.78 3.56 3.56" width="200" height="200" role="img" aria-label="Artemis BioLabs">
+  <path d="M -0.438,1.634 L 0.671,1.358 L -0.391,1.457 L -1.183,0.553 L -1.261,0.839 Z" fill="#c6d3cc" stroke="#55808a" stroke-width="0.05" stroke-linejoin="round"/>
+  <path d="M 0.438,-1.634 L -0.671,-1.358 L 1.261,-0.839 L 1.721,-0.171 L 0.391,-1.457 Z" fill="#f2f4f0" stroke="#55808a" stroke-width="0.05" stroke-linejoin="round"/>
+  <path d="M 0.748,1.071 L 0.659,-0.072 L -0.391,1.457 L -0.438,1.634 L 1.404,1.009 Z" fill="#e4e9e4" stroke="#55808a" stroke-width="0.05" stroke-linejoin="round"/>
+  <path d="M -1.404,-1.009 L -1.183,0.553 L -0.535,-0.392 L 0.438,-1.634 L -0.671,-1.358 Z" fill="#e4e9e4" stroke="#55808a" stroke-width="0.05" stroke-linejoin="round"/>
+  <path d="M -0.391,1.457 L 0.659,-0.072 L -0.535,-0.392 L -1.721,0.171 L -1.183,0.553 Z" fill="#e4e9e4" stroke="#55808a" stroke-width="0.05" stroke-linejoin="round"/>
+  <path d="M 1.261,-0.839 L -0.671,-1.358 L -0.535,-0.392 L 0.748,1.071 L 0.659,-0.072 Z" fill="#f2f4f0" stroke="#55808a" stroke-width="0.05" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,42 @@
+# BANKSY Marker Report — GBM3, 10x Visium (NOT Xenium; the pipeline template's title is generic)
+
+- **Input:** `output/GBM3/preprocessed.h5ad`
+- **Cells:** 1,775
+- **Clusters:** 15 (`banksy_cluster`)
+- **DE method:** Wilcoxon rank-sum (`scanpy.tl.rank_genes_groups`, use_raw)
+- **Cell-type assignment:** LLM (qwen3:8b · local Ollama, tissue: glioblastoma (human, Visium))
+
+## Putative cell-type breakdown
+
+| putative cell type | clusters |
+|:---|---:|
+| NPC-like tumor cells | 4 |
+| oligodendrocytes | 3 |
+| endothelial cells | 2 |
+| astrocytes | 2 |
+| proliferating tumor cells | 2 |
+| microglia/TAMs | 1 |
+| pericytes/smooth muscle | 1 |
+
+## Cluster summary
+
+| cluster | n_cells | % of total | putative cell type | top markers |
+|---:|---:|---:|:---|:---|
+| 0 | 165 | 9.30% | NPC-like tumor cells | NPB, DIRAS3, OCIAD2, DKK1, GPX3 |
+| 1 | 131 | 7.38% | endothelial cells | VEGFA, GAPDH, LDHA, NDRG1, OLFM1 |
+| 2 | 196 | 11.04% | oligodendrocytes | DBI, RPLP0, RPSA, H19, STMN1 |
+| 3 | 117 | 6.59% | NPC-like tumor cells | DIRAS3, CAV1, S100A6, MDK, CLU |
+| 4 | 213 | 12.00% | oligodendrocytes | ACSF2, H19, C1QL1, CHAD, OLIG1 |
+| 5 | 123 | 6.93% | astrocytes | NNAT, STMN2, GFAP, AQP4, SERPINA3 |
+| 6 | 115 | 6.48% | NPC-like tumor cells | TUBB2B, SOX4, NNAT, STMN2, RGS16 |
+| 7 | 97 | 5.46% | microglia/TAMs | C3, IGFBP7, FN1, HLA-DRB1, MMP9 |
+| 8 | 44 | 2.48% | oligodendrocytes | SOX10, PGRMC1, GAL3ST1, SCRG1, C1QL1 |
+| 9 | 90 | 5.07% | proliferating tumor cells | DDIT3, PTTG1, SPP1, S100A10, LGALS1 |
+| 10 | 69 | 3.89% | pericytes/smooth muscle | PMP2, RPL5, MT-ATP8, RPL26, MT-ND4L |
+| 11 | 121 | 6.82% | astrocytes | C1orf194, CFAP126, CAPS, GFAP, FABP7 |
+| 12 | 136 | 7.66% | proliferating tumor cells | MIF, TPI1, GAPDH, SNHG29, RPSA |
+| 13 | 116 | 6.54% | endothelial cells | COL4A1, COL4A2, FN1, COL3A1, IGFBP7 |
+| 14 | 42 | 2.37% | NPC-like tumor cells | TSC22D4, HLA-A, TSC22D1, C1QL1, DBI |
+
+Portal facts: {"id": "GBM3", "spots": 1775, "genes": 1969, "domains": 15, "cell_states": 7}
+Source: Ren et al. 2023, GSE194329 (GBM3, IDH-wildtype primary glioblastoma, 10x Visium). Domains from BANKSY (lambda=0.2, 50 PCs, Leiden); cell-type labels are model-annotated from top markers, not independently validated.
