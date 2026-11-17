@@ -34,7 +34,7 @@ export default function Hero() {
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={ref} className="relative min-h-[100svh] flex flex-col overflow-hidden bg-ink">
+    <section ref={ref} className="relative flex-1 min-h-0 flex flex-col overflow-hidden bg-ink">
       <a
         href="#banksy"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"

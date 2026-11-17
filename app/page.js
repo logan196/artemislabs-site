@@ -26,9 +26,11 @@ export default function Home() {
   return (
     <main className="grain">
       <div className="bg-sea" aria-hidden />
-      <Hero />
-      <CredStrip />
-      <ClientMarquee />
+      <div className="min-h-[100svh] flex flex-col bg-ink">
+        <Hero />
+        <CredStrip />
+        <ClientMarquee />
+      </div>
       <BanksySection />
       <PrismaStory />
       <SpatialPrograms />
