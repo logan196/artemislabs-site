@@ -1,7 +1,10 @@
 "use client";
 
-// Closing section: one headline, one line of value, three equal options.
+// Close of the page: a sample run (terminal + living cells), the Nov 13
+// dodecahedron with "Your data has a story.", then the three booking options.
 import Reveal from "./Reveal";
+import BioDodecahedron from "./BioDodecahedron";
+import CloseRun from "./CloseRun";
 import { BOOKING, CONTACT } from "./AccessForms";
 
 const OPTIONS = [
@@ -35,12 +38,31 @@ export default function Cta() {
     <section id="contact" className="relative bg-black border-t border-white/[0.06] px-6 md:px-14 pt-20 md:pt-28 pb-10 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <Reveal>
-          <img src="artemis_mark.svg" alt="" className="h-12 w-12 mb-8" />
-          <h2 className="text-4xl md:text-5xl max-w-3xl">Your data has a story.</h2>
-          <p className="mt-4 max-w-xl text-lg text-dim leading-relaxed">
-            Tell us the assay and the question. We scope the analysis and show you the result in a live portal.
+          <h2 className="text-3xl md:text-4xl max-w-3xl">Watch a sample run.</h2>
+          <p className="mt-4 max-w-2xl text-lg text-dim leading-relaxed">
+            A staged replay of an analysis we ran on a public Xenium section. The cells
+            on the right move with each step — scatter, QC, BANKSY, then a portal.
           </p>
         </Reveal>
+        <Reveal delay={0.06} className="mt-10">
+          <CloseRun />
+        </Reveal>
+
+        <div id="story" className="mt-24 md:mt-32 text-center">
+          <Reveal>
+            <div className="relative mx-auto w-full max-w-[520px] mb-2" aria-hidden>
+              <BioDodecahedron size={400} labels={false} helix />
+            </div>
+            <img src="artemis_mark.svg" alt="" className="relative h-14 w-14 mx-auto mb-8" />
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
+              Your data has a story.
+            </h2>
+            <p className="mt-6 max-w-xl mx-auto text-lg text-dim leading-relaxed">
+              If your lab is sitting on spatial data and short on computational hands,
+              send us a public or in-house dataset and we&apos;ll turn it around as a live portal.
+            </p>
+          </Reveal>
+        </div>
 
         <Reveal delay={0.08}>
           <div id="book" className="mt-14 grid md:grid-cols-3 border border-white/10 rounded-[4px] overflow-hidden">

@@ -42,11 +42,11 @@ export default function Hero() {
         Skip to content
       </a>
 
-      {/* dimmed 3D UMAP — kept from the redesign, behind the Nov 13 typographic open */}
+      {/* Living 3D UMAP — full brightness at the edges, a soft well only behind the type */}
       <div className="absolute inset-0 -z-0">
-        <div className="absolute inset-0 opacity-70"><HeroCloud onState={onState} /></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,rgba(0,0,0,0.82)_0%,rgba(0,0,0,0.42)_48%,transparent_78%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink" />
+        <div className="absolute inset-0"><HeroCloud onState={onState} /></div>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_48%,rgba(0,0,0,0.70)_0%,rgba(0,0,0,0.28)_32%,transparent_62%)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-ink" />
       </div>
 
       <nav className="relative z-20 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
