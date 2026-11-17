@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import Reveal from "./Reveal";
 import TissueViewer from "./TissueViewer";
+import FigureLightbox from "./FigureLightbox";
 
-// Public multiplexed-tissue imagery, BioImage Archive. Licenses verified on
-// each study's BioStudies record (License attribute): S-BIAD605 = CC0,
+// Licenses verified on each BioStudies record: S-BIAD605 = CC0,
 // S-BIAD1237 = CC BY 4.0, S-BIAD1641 = CC BY 4.0.
 const VIEWER_STATS = [
   { value: "8", label: "marker channels, composited" },
@@ -200,19 +200,30 @@ export default function TissueBand() {
         </div>
       </Reveal>
 
-      {/* 2 · Public multiplexed-tissue imagery — live deep zoom */}
-      <Reveal delay={0.08} className="mt-16">
-        <TissueViewer />
-      </Reveal>
+      <TissueViewer />
 
-      {/* Featured figure from the most recent image-book Fig. 1 */}
       <Reveal delay={0.08}>
         <figure id="figure-book" className="mt-16 rounded-[4px] border border-line bg-panel p-3 md:p-5">
-          <img
+          <FigureLightbox
             src="figbook/fig1_at4_methods.jpg"
             alt="Figure 1 of the AT4 methods image book: authors’ Tangram types, BANKSY domains, position-only k-means, distance to hypoxic, held-out classifier, and domain composition on Xenium section AT4-FO-2"
-            className="w-full h-auto rounded-[2px] bg-black"
-          />
+            caption={
+              <span>
+                <span className="font-semibold text-snow">Fig. 1 |</span> Methods
+                figure for public Xenium section AT4-FO-2 (de Jong et al., Nature 2026).
+                Panels: (a) authors’ Tangram cell types, (b) BANKSY domains, (c)
+                position-only k-means (k=8), (d) distance to hypoxic, (e) held-out
+                classifier, (f) domain composition. Source file:
+                <span className="font-mono text-[12px]"> young-deck/deploy/fig/fig1_at4_methods.png</span>.
+              </span>
+            }
+          >
+            <img
+              src="figbook/fig1_at4_methods.jpg"
+              alt=""
+              className="w-full h-auto rounded-[2px] bg-black"
+            />
+          </FigureLightbox>
           <figcaption className="mt-3 text-[13.5px] text-dim leading-relaxed max-w-4xl">
             <span className="font-semibold text-snow">Fig. 1&nbsp;|</span> Methods
             figure for public Xenium section AT4-FO-2 (de Jong et al., Nature 2026).

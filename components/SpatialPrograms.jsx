@@ -3,6 +3,7 @@
 // Spatial programs — real Xenium sections (de Jong et al., Nature 2026,
 // gbmspace.org) rendered on pure black: BANKSY domains plus gene-program maps.
 import Reveal from "./Reveal";
+import FigureLightbox from "./FigureLightbox";
 
 const DOM = [
   ["Cellular tumour", "#56B4E9"],
@@ -45,19 +46,37 @@ export default function SpatialPrograms() {
         <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
           {PANELS.map((p) => (
             <Reveal key={p.f}>
-              <figure>
-                <div className="relative bg-black">
-                  <img src={`programs/${p.f}`} alt={`${p.t} — ${p.s}`} loading="lazy" className="w-full h-auto" />
-                  <span className="absolute top-1 left-1 text-[15px] font-semibold text-white" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{p.l}</span>
-                </div>
-                <figcaption className="mt-3 border-t border-white/10 pt-3">
+              <figure className="spatial-card">
+                <FigureLightbox
+                  src={`programs/${p.f}`}
+                  alt={`${p.t} — ${p.s}`}
+                  caption={
+                    <span>
+                      <span className="font-semibold text-white">{p.l}.</span> {p.t} — {p.s}.{" "}
+                      <span className="text-snow">Fig. 2 |</span> Xenium sections AT4-FO-2 and AT10-FO-1 from de Jong et al.,{" "}
+                      <i>Nature</i> 2026 (gbmspace.org); 50,000-cell subsample of each section shown. BANKSY domains were
+                      computed by Artemis and named by their malignant-cell fraction under the authors&apos; cell-type
+                      labels. Program score = mean scaled expression of the listed genes, averaged over each cell&apos;s 15
+                      nearest neighbours. Colours follow the Okabe–Ito colour-blind-safe palette. Scale bars, 1 mm. No
+                      DNA-level ground truth: domain names describe agreement with the authors&apos; annotations, not
+                      independent validation.
+                    </span>
+                  }
+                >
+                  <div className="relative bg-black overflow-hidden">
+                    <img src={`programs/${p.f}`} alt="" loading="lazy" className="spatial-shot w-full h-auto" />
+                    <span className="spatial-letter absolute top-1 left-1 text-[15px] font-semibold text-white" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{p.l}</span>
+                    {p.c ? <span className="spatial-wash" style={{ background: `radial-gradient(ellipse at 50% 58%, ${p.c}66, transparent 68%)` }} /> : null}
+                  </div>
+                </FigureLightbox>
+                <figcaption className="spatial-cap mt-3 border-t border-white/10 pt-3">
                   <p className="text-[14.5px] text-snow">{p.t}</p>
                   <p className="mt-1 font-mono text-[11px] text-dim">{p.s}</p>
                   {p.legend ? (
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                       {DOM.map(([n, c]) => (
-                        <span key={n} className="flex items-center gap-1.5 font-mono text-[10.5px] text-dim">
-                          <span className="h-2 w-2 rounded-full" style={{ background: c }} />
+                        <span key={n} className="spatial-legend flex items-center gap-1.5 font-mono text-[10.5px] text-dim">
+                          <span className="spatial-swatch h-2 w-2 rounded-full" style={{ background: c }} />
                           {n}
                         </span>
                       ))}
@@ -65,7 +84,7 @@ export default function SpatialPrograms() {
                   ) : (
                     <div className="mt-2 flex items-center gap-2 font-mono text-[10.5px] text-dim">
                       low
-                      <span className="h-1.5 w-24 rounded-full" style={{ background: `linear-gradient(90deg,#141414,${p.c},#fff8e6)` }} />
+                      <span className="spatial-ramp h-1.5 w-24 rounded-full" style={{ background: `linear-gradient(90deg,#141414,${p.c},#fff8e6)` }} />
                       high
                     </div>
                   )}

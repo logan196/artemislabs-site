@@ -8,6 +8,7 @@ import FigureBooklet from "@/components/FigureBooklet";
 import WhatWeDo from "@/components/WhatWeDo";
 import LoopSection from "@/components/LoopSection";
 import AgentTeam from "@/components/AgentTeam";
+import LivePortal from "@/components/LivePortal";
 import GenomeSection from "@/components/GenomeSection";
 import UmapExplorer from "@/components/UmapExplorer";
 import FoundationSection from "@/components/FoundationSection";
@@ -18,9 +19,9 @@ import Cta from "@/components/Cta";
 import CredStrip from "@/components/CredStrip";
 import AccessForms from "@/components/AccessForms";
 
-// Section order: hero, logos, BANKSY, tissue↔UMAP, pipeline, GBM/tissue,
-// cores, PhD-led team, genomics, foundation, copilot, tools, close.
-// No DTI section, one booking close.
+// Opening: living UMAP hero, credibility strip, logos, then BANKSY and the
+// tissue↔UMAP explorer plus the PRISMA story. Live portal stays after the
+// agent team. The nav does not link a separate Pipeline item.
 export default function Home() {
   return (
     <main className="grain">
@@ -39,6 +40,7 @@ export default function Home() {
       <WhatWeDo />
       <LoopSection />
       <AgentTeam />
+      <LivePortal />
       <GenomeSection />
       <FoundationSection />
       <CopilotSection />
