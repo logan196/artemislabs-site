@@ -1,5 +1,0 @@
-/* Styling repair overrides (additive). Fixes:
-   1. BANKSY pinned canvas painting over text cards -> raise card layer, opaque bg
-   2. Hero: canvas column pulled over wordmark/hint -> remove negative margins */
-#banksy > div:last-child { position: relative; z-index: 20; background: #f2f0ea; }
-.max-w-\[560px\].-mb-10.md\:-mb-14 { margin-bottom: 0 !important; }
