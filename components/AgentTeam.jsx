@@ -1,13 +1,13 @@
 "use client";
 
-// 06 · Spatial bioinformatics — the agent team (copy adapted from the Nov 16
-// draft), with the human review loop made explicit.
+// PhD-led agent team. Numbers on the role cards were dropped so the
+// section doesn't read as a numbered slide.
 import Reveal from "./Reveal";
 
 const ROLES = [
-  ["01", "Study architect", "Frames the biological question, cohorts, controls and analysis plan before any compute begins."],
-  ["02", "Spatial analyst", "Checks tissue, coordinates and quality signals, then works through domains and cell-state evidence across the assay."],
-  ["03", "Methods reviewer", "Challenges assumptions, tracks provenance, and turns the analysis into figures and a decision-ready report."],
+  ["Study architect", "Frames the biological question, cohorts, controls and analysis plan before any compute begins."],
+  ["Spatial analyst", "Checks tissue, coordinates and quality signals, then works through domains and cell-state evidence across the assay."],
+  ["Methods reviewer", "Challenges assumptions, tracks provenance, and turns the analysis into figures and a decision-ready report."],
 ];
 
 export default function AgentTeam() {
@@ -31,10 +31,9 @@ export default function AgentTeam() {
             <span>question, evidence plan, analysis, review</span>
           </div>
           <div className="grid md:grid-cols-3">
-            {ROLES.map(([n, t, b], i) => (
-              <div key={n} className={`relative p-6 md:p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-line" : ""}`}>
-                <p className="font-mono text-[12px] text-violet">{n}</p>
-                <h3 className="mt-3 text-2xl text-snow" style={{ fontFamily: "var(--font-serif), serif" }}>{t}</h3>
+            {ROLES.map(([t, b], i) => (
+              <div key={t} className={`relative p-6 md:p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-line" : ""}`}>
+                <h3 className="text-2xl text-snow" style={{ fontFamily: "var(--font-serif), serif" }}>{t}</h3>
                 <p className="mt-3 text-[15px] text-dim leading-relaxed">{b}</p>
               </div>
             ))}

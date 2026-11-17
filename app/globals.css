@@ -14,7 +14,7 @@
   --color-magma: #d9a45b;        /* rare secondary — amber */
   --color-mint: #5ee0b0;
   --color-amber: #e0a24a;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-serif), "Source Serif 4", Georgia, serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 

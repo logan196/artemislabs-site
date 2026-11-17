@@ -1,25 +1,27 @@
 import Hero from "@/components/Hero";
 import ClientMarquee from "@/components/ClientMarquee";
-import LoopSection from "@/components/LoopSection";
 import BanksySection from "@/components/BanksySection";
 import PrismaStory from "@/components/PrismaStory";
 import SpatialPrograms from "@/components/SpatialPrograms";
 import TissueBand from "@/components/TissueBand";
+import WhatWeDo from "@/components/WhatWeDo";
+import LoopSection from "@/components/LoopSection";
+import AgentTeam from "@/components/AgentTeam";
+import GenomeSection from "@/components/GenomeSection";
 import UmapExplorer from "@/components/UmapExplorer";
 import FoundationSection from "@/components/FoundationSection";
-import WhatWeDo from "@/components/WhatWeDo";
-import AgentTeam from "@/components/AgentTeam";
 import CopilotSection from "@/components/CopilotSection";
-import GenomeSection from "@/components/GenomeSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import ToolGraph from "@/components/ToolGraph";
 import Cta from "@/components/Cta";
 import CredStrip from "@/components/CredStrip";
 import AccessForms from "@/components/AccessForms";
 
-// GbmGallery (embedded Explore viewer) and PortalFeature (portal screenshot)
-// were retired from the landing page on 2026-11-17; the /live/ portals they
-// linked to are still deployed and linked from the Spatial programs section.
+// Section order follows the Nov 13 site (hero, logos, BANKSY, pipeline, GBM,
+// tissue, cores, genomics, UMAP, foundation, copilot, tools, close).
+// Kept from the redesign: credibility strip, compact process row (after the
+// cores, not in front of the work), PhD-led team, spatial programs in place
+// of the purple portal screenshots, no DTI section, one booking close.
 export default function Home() {
   return (
     <main className="grain">
@@ -27,12 +29,12 @@ export default function Home() {
       <Hero />
       <CredStrip />
       <ClientMarquee />
-      <LoopSection />
       <BanksySection />
       <PrismaStory />
       <SpatialPrograms />
       <TissueBand />
       <WhatWeDo />
+      <LoopSection />
       <AgentTeam />
       <GenomeSection />
       <UmapExplorer />

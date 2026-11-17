@@ -16,15 +16,15 @@ const CORES = [
 
 export default function WhatWeDo() {
   return (
-    <section id="whatwedo" className="relative px-6 md:px-14 py-16 md:py-24 max-w-7xl mx-auto">
+    <section id="whatwedo" className="relative px-6 md:px-14 py-20 md:py-28 max-w-7xl mx-auto">
       <Reveal>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Eight cores. <span className="text-violet">One embedded team.</span>
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          The services a well-funded institute core provides, available to any lab
-          that has the data. Each one works the way you have just seen: real pipeline,
-          live portal, a report you can hand a reviewer.
+          That was the promise at the top of the page — and you have now watched one
+          core run end-to-end. The rest work the same way: real pipeline, live portal,
+          a report you can hand a reviewer.
         </p>
       </Reveal>
 
