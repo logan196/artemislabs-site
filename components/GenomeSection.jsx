@@ -254,7 +254,7 @@ export default function GenomeSection() {
         </div>
 
         <p className="mt-2.5 text-[13.5px] text-dim leading-relaxed max-w-4xl">
-          <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> Live genome
+          <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> Live genome
           browser (igv.js, hg38) at the SOX2 locus, chr3:181,695,000–181,730,000. Top
           track: SOX2 CUT&amp;RUN coverage in NCI-H520 lung squamous carcinoma cells —
           GEO accession GSM8782600 (series GSE289046), RPKM-normalized; the ~800-RPKM

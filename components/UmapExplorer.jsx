@@ -553,7 +553,7 @@ export default function UmapExplorer() {
           )}
         </div>
         <p className="mt-2.5 text-[13.5px] text-dim leading-relaxed max-w-3xl">
-          <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> A living figure:
+          <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> A living figure:
           the same 1,775 spots glide between tissue coordinates and four UMAP
           parameterizations computed offline from one shared neighbors graph (fixed
           seed) — cell-type labels ride their clusters through the fold. One UMAP is a

@@ -578,7 +578,7 @@ export default function RunBoard() {
       </div>
 
       <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-        <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> The pipeline as a live board — five public glioma
+        <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> The pipeline as a live board — five public glioma
         datasets replayed through the real five-stage run (stage names from run_pipeline.py; counts from the shipped
         runs). Condensed replay, not a live cluster.
       </p>

@@ -334,7 +334,7 @@ export default function FoundationSection() {
         <figure className="mt-12 rounded-[4px] overflow-hidden border border-snow/60 shadow-[0_18px_50px_-22px_rgba(0,0,0,0.6)] bg-panel">
           <CompareSlider />
           <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 7&nbsp;|</span> AT14 section,
+            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> AT14 section,
             de Jong et al., Nature 2026 (gbmspace.org). Left: H&E. Right: cell2location-estimated
             cell-state abundances (deconvolved from measured Visium) — the supervision pairs for H&E→molecular
             prediction; no H&E-derived predictions shown. Drag the handle (or use
