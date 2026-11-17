@@ -42,14 +42,15 @@ export default function Hero() {
         Skip to content
       </a>
 
-      {/* Living 3D UMAP — full brightness at the edges, a soft well only behind the type */}
+      {/* Living 3D UMAP — bright at the edges, a deep well behind the type */}
       <div className="absolute inset-0 -z-0">
-        <div className="absolute inset-0"><HeroCloud onState={onState} /></div>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_48%,rgba(0,0,0,0.70)_0%,rgba(0,0,0,0.28)_32%,transparent_62%)]" />
+        <div className="absolute inset-0 translate-y-[7%] scale-[1.06] origin-center"><HeroCloud onState={onState} /></div>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.72)_26%,rgba(0,0,0,0.40)_48%,rgba(0,0,0,0.12)_68%,transparent_82%)]" />
+        <div className="pointer-events-none absolute left-1/2 top-[18%] -translate-x-1/2 w-[min(56rem,94vw)] h-[64%] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.82)_0%,rgba(0,0,0,0.50)_42%,transparent_74%)]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-ink" />
       </div>
 
-      <nav className="relative z-20 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
+      <nav className="relative z-20 flex items-center justify-between px-5 md:px-14 py-4 md:py-5 bg-gradient-to-b from-black/85 via-black/60 to-transparent">
         <a href="#" aria-label="Artemis BioLabs — top of page" onClick={salute} className="flex items-center gap-3">
           <img
             src="artemis_mark.svg"
@@ -63,7 +64,7 @@ export default function Hero() {
         <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
           <div className="hidden lg:flex items-center gap-8 font-medium">
             {NAV.map(([href, label]) => (
-              <a key={href} href={href} className="whitespace-nowrap text-snow/80 hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
+              <a key={href} href={href} className="whitespace-nowrap text-snow hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors [text-shadow:0_1px_8px_rgba(0,0,0,0.85)]">
                 {label}
               </a>
             ))}
@@ -72,7 +73,7 @@ export default function Hero() {
             href={BOOKING}
             target="_blank"
             rel="noreferrer"
-            className="hidden sm:inline text-snow/80 hover:text-snow whitespace-nowrap"
+            className="hidden sm:inline text-snow hover:text-white whitespace-nowrap [text-shadow:0_1px_8px_rgba(0,0,0,0.85)]"
           >
             Book a call
           </a>
@@ -98,7 +99,7 @@ export default function Hero() {
         </div>
       </nav>
 
-      <motion.div style={{ opacity: fade }} className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
+      <motion.div style={{ opacity: fade }} className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pt-10 md:pt-14 text-center">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -106,21 +107,21 @@ export default function Hero() {
           className="relative"
         >
           <h1
-            className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5rem] tracking-[0.015em]"
+            className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5rem] tracking-[0.015em] [text-shadow:0_2px_24px_rgba(0,0,0,0.75)]"
             style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif", fontWeight: 600 }}
           >
             <Decode text="ARTEMIS" delay={500} />{" "}
             <Decode text="BIOLABS" delay={1200} className="text-violet" />
           </h1>
-          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
+          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-snow/90 uppercase [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.75)]">
             computational biology, accelerated.
           </p>
-          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
+          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.7)]">
             Every core service your lab needs.
             <br className="hidden sm:block" />
-            <span className="text-dim"> One AI-powered team.</span>
+            <span className="text-snow/90"> One AI-powered team.</span>
           </p>
-          <p className="mt-4 max-w-lg mx-auto text-[15.5px] text-snow/70 leading-relaxed">
+          <p className="mt-4 max-w-lg mx-auto text-[15.5px] text-snow/90 leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.7)]">
             Spatial, single-cell and genomics analysis for labs without a bioinformatics core.
           </p>
           <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -134,7 +135,7 @@ export default function Hero() {
               href={BOOKING}
               target="_blank"
               rel="noreferrer"
-              className="rounded-[3px] border border-white/40 px-7 py-3 text-snow/90 hover:border-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
+              className="rounded-[3px] border border-snow text-snow bg-black/45 px-7 py-3 font-medium hover:bg-white/10 hover:border-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
             >
               Book a 30-min call
             </a>
@@ -144,7 +145,7 @@ export default function Hero() {
               href="live/brain/index.html"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-[14.5px] text-snow/80 hover:text-snow transition-colors"
+              className="inline-flex items-center gap-2 text-[14.5px] text-snow hover:text-white transition-colors [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.7)]"
             >
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden />
               3.9M cells, one mouse brain — explore it live →
@@ -154,7 +155,7 @@ export default function Hero() {
       </motion.div>
 
       <div className="relative z-10 px-6 md:px-14 pb-5 flex flex-col items-center gap-3">
-        <p className="max-w-2xl text-center text-[11.5px] leading-relaxed text-dim/80">
+        <p className="max-w-2xl text-center text-[11.5px] leading-relaxed text-snow/80 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_14px_rgba(0,0,0,0.75)]">
           Background: 3D UMAP of 120,000 cells from the Allen Brain Cell Atlas MERFISH mouse brain
           (Yao et al., <i>Nature</i> 2023), computed by Artemis; cells drift to their positions in the brain and back.
         </p>
