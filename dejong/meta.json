@@ -1,0 +1,68 @@
+{
+ "AT10-BRA-5-FO-3_1": {
+  "n_spots": 3272,
+  "n_states": 13,
+  "top_states": [
+   {
+    "label": "AC progenitor-like 2",
+    "n": 1386
+   },
+   {
+    "label": "AC-gliosis-like 1",
+    "n": 766
+   },
+   {
+    "label": "Gliosis-like",
+    "n": 593
+   },
+   {
+    "label": "Resident-TAMs",
+    "n": 359
+   }
+  ]
+ },
+ "AT14-BRA-4-FO-2_1": {
+  "n_spots": 3534,
+  "n_states": 32,
+  "top_states": [
+   {
+    "label": "AC-gliosis-like 4",
+    "n": 2359
+   },
+   {
+    "label": "Hypoxic 1 (cell state)",
+    "n": 781
+   },
+   {
+    "label": "Proliferative AC-OPC-like",
+    "n": 60
+   },
+   {
+    "label": "AC progenitor-like 1",
+    "n": 50
+   }
+  ]
+ },
+ "AT15-BRA-4-FO-B2-S25": {
+  "n_spots": 10356,
+  "n_states": 67,
+  "top_states": [
+   {
+    "label": "Gliosis-like",
+    "n": 1862
+   },
+   {
+    "label": "CD8+ T cells",
+    "n": 1436
+   },
+   {
+    "label": "NPC-neuronal-like 1",
+    "n": 729
+   },
+   {
+    "label": "Exc L4-5 IT",
+    "n": 648
+   }
+  ]
+ }
+}
