@@ -45,19 +45,20 @@ export default function SpatialPrograms() {
         <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
           {PANELS.map((p) => (
             <Reveal key={p.f}>
-              <figure>
-                <div className="relative bg-black">
-                  <img src={`programs/${p.f}`} alt={`${p.t} — ${p.s}`} loading="lazy" className="w-full h-auto" />
-                  <span className="absolute top-1 left-1 text-[15px] font-semibold text-white" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{p.l}</span>
+              <figure className="spatial-card">
+                <div className="relative bg-black overflow-hidden">
+                  <img src={`programs/${p.f}`} alt={`${p.t} — ${p.s}`} loading="lazy" className="spatial-shot w-full h-auto" />
+                  <span className="spatial-letter absolute top-1 left-1 text-[15px] font-semibold text-white" style={{ fontFamily: "var(--font-inter), sans-serif" }}>{p.l}</span>
+                  {p.c ? <span className="spatial-wash" style={{ background: `radial-gradient(ellipse at 50% 58%, ${p.c}66, transparent 68%)` }} /> : null}
                 </div>
-                <figcaption className="mt-3 border-t border-white/10 pt-3">
+                <figcaption className="spatial-cap mt-3 border-t border-white/10 pt-3">
                   <p className="text-[14.5px] text-snow">{p.t}</p>
                   <p className="mt-1 font-mono text-[11px] text-dim">{p.s}</p>
                   {p.legend ? (
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                       {DOM.map(([n, c]) => (
-                        <span key={n} className="flex items-center gap-1.5 font-mono text-[10.5px] text-dim">
-                          <span className="h-2 w-2 rounded-full" style={{ background: c }} />
+                        <span key={n} className="spatial-legend flex items-center gap-1.5 font-mono text-[10.5px] text-dim">
+                          <span className="spatial-swatch h-2 w-2 rounded-full" style={{ background: c }} />
                           {n}
                         </span>
                       ))}
@@ -65,7 +66,7 @@ export default function SpatialPrograms() {
                   ) : (
                     <div className="mt-2 flex items-center gap-2 font-mono text-[10.5px] text-dim">
                       low
-                      <span className="h-1.5 w-24 rounded-full" style={{ background: `linear-gradient(90deg,#141414,${p.c},#fff8e6)` }} />
+                      <span className="spatial-ramp h-1.5 w-24 rounded-full" style={{ background: `linear-gradient(90deg,#141414,${p.c},#fff8e6)` }} />
                       high
                     </div>
                   )}

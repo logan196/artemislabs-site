@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export const CONTACT = "lbeharry@alumni.caltech.edu";
-export const BOOKING = "https://calendar.app.google/B8F2J5LoB1bMohZg7";
+export const BOOKING = "https://calendar.app.google/Gcn7m6neU3P3ktQA8";
 
 const DATA_TYPES = ["Spatial", "Single-cell", "Long-read", "Genomics", "Imaging", "Other"];
 

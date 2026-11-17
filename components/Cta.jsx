@@ -88,14 +88,30 @@ export default function Cta() {
           </p>
         </Reveal>
 
-        <footer className="mt-20 border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[12.5px] text-dim">
-          <span className="flex items-center gap-3">
-            <img src="artemis_mark.svg" alt="" className="h-8 w-8" />
-            <span className="font-semibold tracking-[0.18em] text-[14px] text-snow">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
-          </span>
-          <p className="font-mono text-[13px] text-dim">
-            © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
-          </p>
+        <footer className="mt-20 border-t border-white/10 pt-8 flex flex-col gap-5 text-[12.5px] text-dim">
+          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2" aria-label="Footer">
+            {[
+              ["#banksy", "BANKSY"],
+              ["#gallery", "Glioblastoma"],
+              ["#whatwedo", "What we do"],
+              ["#portal", "Portal"],
+              ["#team", "Team"],
+              ["/figures/", "Figures"],
+              ["#book", "Book"],
+              ["#contact", "Contact"],
+            ].map(([href, label]) => (
+              <a key={href} href={href} className="text-snow/80 hover:text-violet transition-colors">{label}</a>
+            ))}
+          </nav>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <span className="flex items-center gap-3">
+              <img src="artemis_mark.svg" alt="" className="h-8 w-8" />
+              <span className="font-semibold tracking-[0.18em] text-[14px] text-snow">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
+            </span>
+            <p className="font-mono text-[13px] text-dim">
+              © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
+            </p>
+          </div>
         </footer>
       </div>
     </section>

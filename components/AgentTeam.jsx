@@ -32,7 +32,7 @@ export default function AgentTeam() {
           </div>
           <div className="grid md:grid-cols-3">
             {ROLES.map(([t, b], i) => (
-              <div key={t} className={`relative p-6 md:p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-line" : ""}`}>
+              <div key={t} className={`lift-card relative p-6 md:p-8 ${i < 2 ? "md:border-r border-b md:border-b-0 border-line" : ""}`}>
                 <h3 className="text-2xl text-snow" style={{ fontFamily: "var(--font-serif), serif" }}>{t}</h3>
                 <p className="mt-3 text-[15px] text-dim leading-relaxed">{b}</p>
               </div>

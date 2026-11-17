@@ -9,10 +9,11 @@ import { BOOKING } from "./AccessForms";
 
 export const NAV = [
   ["#banksy", "BANKSY"],
-  ["#pipeline", "Pipeline"],
   ["#gallery", "Glioblastoma"],
   ["#whatwedo", "What we do"],
+  ["#portal", "Portal"],
   ["#team", "Team"],
+  ["/figures/", "Figures"],
 ];
 
 export default function Hero() {
@@ -45,8 +46,8 @@ export default function Hero() {
       {/* Living 3D UMAP — bright at the edges, a deep well behind the type */}
       <div className="absolute inset-0 -z-0">
         <div className="absolute inset-0 translate-y-[7%] scale-[1.06] origin-center"><HeroCloud onState={onState} /></div>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.72)_26%,rgba(0,0,0,0.40)_48%,rgba(0,0,0,0.12)_68%,transparent_82%)]" />
-        <div className="pointer-events-none absolute left-1/2 top-[18%] -translate-x-1/2 w-[min(56rem,94vw)] h-[64%] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.82)_0%,rgba(0,0,0,0.50)_42%,transparent_74%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,rgba(0,0,0,0.94)_0%,rgba(0,0,0,0.86)_28%,rgba(0,0,0,0.62)_50%,rgba(0,0,0,0.28)_70%,transparent_84%)]" />
+        <div className="pointer-events-none absolute left-1/2 top-[12%] -translate-x-1/2 w-[min(62rem,96vw)] h-[78%] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.72)_46%,transparent_76%)]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-ink" />
       </div>
 
@@ -113,15 +114,15 @@ export default function Hero() {
             <Decode text="ARTEMIS" delay={500} />{" "}
             <Decode text="BIOLABS" delay={1200} className="text-violet" />
           </h1>
-          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-snow/90 uppercase [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.75)]">
+          <p className="hero-copy mt-4 font-mono text-[15px] md:text-base font-semibold tracking-[0.22em] uppercase">
             computational biology, accelerated.
           </p>
-          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.7)]">
+          <p className="hero-copy mt-6 max-w-xl mx-auto text-lg md:text-[1.45rem] font-semibold leading-snug">
             Every core service your lab needs.
             <br className="hidden sm:block" />
-            <span className="text-snow/90"> One AI-powered team.</span>
+            {" "}One AI-powered team.
           </p>
-          <p className="mt-4 max-w-lg mx-auto text-[15.5px] text-snow/90 leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.7)]">
+          <p className="hero-copy mt-4 max-w-lg mx-auto text-[17.5px] md:text-[19px] font-semibold leading-relaxed">
             Spatial, single-cell and genomics analysis for labs without a bioinformatics core.
           </p>
           <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
