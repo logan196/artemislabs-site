@@ -1,0 +1,110 @@
+[
+  {
+    "sample": "WT_1_VEH",
+    "group": "WT_Veh",
+    "Gipr": 118.6,
+    "Ucp1": 16.77,
+    "Lep": 179000,
+    "Gdf15": 21.56,
+    "Gipr_ratio_to_WT_mean_same_treatment": 0.5629
+  },
+  {
+    "sample": "WT_2_VEH",
+    "group": "WT_Veh",
+    "Gipr": 253.1,
+    "Ucp1": 35.66,
+    "Lep": 135800,
+    "Gdf15": 18.41,
+    "Gipr_ratio_to_WT_mean_same_treatment": 1.201
+  },
+  {
+    "sample": "WT_3_VEH",
+    "group": "WT_Veh",
+    "Gipr": 260.3,
+    "Ucp1": 67.9,
+    "Lep": 137200,
+    "Gdf15": 18.28,
+    "Gipr_ratio_to_WT_mean_same_treatment": 1.236
+  },
+  {
+    "sample": "GA_1_VEH",
+    "group": "GIPR_Veh",
+    "Gipr": 9052.0,
+    "Ucp1": 9995.0,
+    "Lep": 5771,
+    "Gdf15": 545.2,
+    "Gipr_ratio_to_WT_mean_same_treatment": 42.98
+  },
+  {
+    "sample": "GA_2_VEH",
+    "group": "GIPR_Veh",
+    "Gipr": 5198.0,
+    "Ucp1": 666.2,
+    "Lep": 8560,
+    "Gdf15": 439.1,
+    "Gipr_ratio_to_WT_mean_same_treatment": 24.68
+  },
+  {
+    "sample": "GA_3_VEH",
+    "group": "GIPR_Veh",
+    "Gipr": 7286.0,
+    "Ucp1": 868.4,
+    "Lep": 2055,
+    "Gdf15": 527.5,
+    "Gipr_ratio_to_WT_mean_same_treatment": 34.59
+  },
+  {
+    "sample": "WT_1_ROSI",
+    "group": "WT_Rosi",
+    "Gipr": 378.1,
+    "Ucp1": 390.1,
+    "Lep": 69190,
+    "Gdf15": 31.69,
+    "Gipr_ratio_to_WT_mean_same_treatment": 1.099
+  },
+  {
+    "sample": "WT_2_ROSI",
+    "group": "WT_Rosi",
+    "Gipr": 301.4,
+    "Ucp1": 319.8,
+    "Lep": 100300,
+    "Gdf15": 22.74,
+    "Gipr_ratio_to_WT_mean_same_treatment": 0.8759
+  },
+  {
+    "sample": "WT_3_ROSI",
+    "group": "WT_Rosi",
+    "Gipr": 352.7,
+    "Ucp1": 162.3,
+    "Lep": 86060,
+    "Gdf15": 37.37,
+    "Gipr_ratio_to_WT_mean_same_treatment": 1.025
+  },
+  {
+    "sample": "GA_1_ROSI",
+    "group": "GIPR_Rosi",
+    "Gipr": 11860.0,
+    "Ucp1": 4040.0,
+    "Lep": 10600,
+    "Gdf15": 1029.0,
+    "Gipr_ratio_to_WT_mean_same_treatment": 34.47
+  },
+  {
+    "sample": "GA_2_ROSI",
+    "group": "GIPR_Rosi",
+    "Gipr": 6996.0,
+    "Ucp1": 2037.0,
+    "Lep": 2511,
+    "Gdf15": 849.9,
+    "Gipr_ratio_to_WT_mean_same_treatment": 20.34
+  },
+  {
+    "sample": "GA_3_ROSI",
+    "group": "GIPR_Rosi",
+    "Gipr": 7809.0,
+    "Ucp1": 627.1,
+    "Lep": 1004,
+    "Gdf15": 1307.0,
+    "Gipr_ratio_to_WT_mean_same_treatment": 22.7
+  }
+]

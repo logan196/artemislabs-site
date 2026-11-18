@@ -1,0 +1,38 @@
+[
+  {
+    "metric": "genes in both tables",
+    "value": 13910.0
+  },
+  {
+    "metric": "Pearson r, all shared genes",
+    "value": 0.539
+  },
+  {
+    "metric": "Spearman rho, all shared genes",
+    "value": 0.562
+  },
+  {
+    "metric": "significant in ours (padj<0.05)",
+    "value": 8682.0
+  },
+  {
+    "metric": "significant in published (FDR<0.05)",
+    "value": 4478.0
+  },
+  {
+    "metric": "significant in both",
+    "value": 3268.0
+  },
+  {
+    "metric": "same direction among significant in both (%)",
+    "value": 92.6
+  },
+  {
+    "metric": "Pearson r among significant in both",
+    "value": 0.805
+  },
+  {
+    "metric": "published-significant genes also significant in ours (%)",
+    "value": 73.0
+  }
+]
