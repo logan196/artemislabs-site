@@ -1,10 +1,10 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import BioDodecahedron from "./BioDodecahedron";
 import FounderLock from "./FounderLock";
-import Decode from "./Decode";
+import TickField from "./TickField";
+import SplitText from "./SplitText";
 
 const BOOKING =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
@@ -16,11 +16,36 @@ const NAV = [
   ["#whatwedo", "What we do"],
 ];
 
+/**
+ * Callouts pinned into the tissue scene, each anchored near a niche centre in
+ * TickField. They name what actually happens to the sample, in pipeline order,
+ * so the hero reads as an annotated figure rather than decoration.
+ */
+const CALLOUTS = [
+  { x: 0.185, y: 0.235, label: "Segment cells", at: 1.45 },
+  { x: 0.625, y: 0.175, label: "Call spatial niches", at: 1.62 },
+  { x: 0.135, y: 0.66, label: "Annotate cell states", at: 1.79 },
+  { x: 0.70, y: 0.70, label: "Map expression gradients", at: 1.96 },
+];
+
 export default function Hero() {
   const ref = useRef(null);
   const [saluting, setSaluting] = useState(false);
+  const [lit, setLit] = useState(false);
+  // initial={false} tells framer-motion to mount at the animate values, so a
+  // reduced-motion visitor gets the finished hero instead of a moving one.
+  const shouldReduce = useReducedMotion();
   const saluteTimer = useRef(null);
+
   useEffect(() => () => clearTimeout(saluteTimer.current), []);
+
+  // the field sweeps in first; type and callouts follow it
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const t = setTimeout(() => setLit(true), reduced ? 0 : 900);
+    return () => clearTimeout(t);
+  }, []);
+
   const salute = (e) => {
     e.preventDefault();
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -30,9 +55,11 @@ export default function Hero() {
     clearTimeout(saluteTimer.current);
     saluteTimer.current = setTimeout(() => setSaluting(false), 1200);
   };
+
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const fieldFade = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const fieldLift = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
@@ -42,12 +69,38 @@ export default function Hero() {
       >
         Skip to content
       </a>
+
+      {/* THE OPENING: a tissue section resolves out of a field of line glyphs */}
       <div className="absolute inset-0 -z-10">
         <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#f7f4ec_78%)]" />
+        <motion.div style={{ opacity: fieldFade, y: fieldLift }} className="absolute inset-0">
+          <TickField className="absolute inset-0 h-full w-full" />
+          {CALLOUTS.map((c) => (
+            <motion.div
+              key={c.label}
+              initial={shouldReduce ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={shouldReduce ? { duration: 0 } : { duration: 0.5, delay: c.at, ease: [0.21, 0.6, 0.27, 1] }}
+              className="absolute hidden md:flex items-center gap-2 font-mono text-[10.5px] tracking-[0.18em] uppercase text-dim"
+              style={{ left: `${c.x * 100}%`, top: `${c.y * 100}%` }}
+              aria-hidden
+            >
+              <span className="h-[5px] w-[5px] rounded-full bg-violet shadow-[0_0_8px_rgba(20,184,166,0.9)]" />
+              {c.label}
+            </motion.div>
+          ))}
+        </motion.div>
+        {/* Scrim, not a blackout: dark enough behind the headline to keep it
+            legible over the densest part of the core, but transparent through
+            the mid-field so the scene actually reads, with a soft rim falloff. */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(7,6,11,0.72)_0%,rgba(7,6,11,0.34)_36%,rgba(7,6,11,0.08)_62%,rgba(7,6,11,0.58)_100%)]" />
+        {/* The densest part of the scene sits directly under the headline and
+            tagline. A band confined to the text column protects that copy
+            without flattening the rest of the field. */}
+        <div className="absolute inset-x-0 top-[20%] h-[46%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(7,6,11,0.58)_34%,rgba(7,6,11,0.58)_66%,transparent_100%)]" />
       </div>
 
-      <nav className="flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
+      <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
         <a href="#" aria-label="Artemis BioLabs — top of page" onClick={salute}>
           <img
             src="artemis_lockup.svg"
@@ -88,28 +141,35 @@ export default function Hero() {
         </div>
       </nav>
 
-      {/* THE OPENING: the moving dodecahedron introduces the company */}
-      <motion.div style={{ opacity: fade }} className="flex-1 flex flex-col items-center justify-center px-6 text-center relative">
-        <motion.div style={{ scale }} className="relative w-full max-w-[560px] -mb-10 md:-mb-14" aria-hidden>
-          <BioDodecahedron size={400} labels={false} helix />
-        </motion.div>
+      <motion.div style={{ opacity: fade }} className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
+        <h1
+          className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5.25rem] font-semibold tracking-[-0.018em]"
+          style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
+        >
+          <SplitText text="ARTEMIS" as="span" className="inline-block" start={lit} delay={0} />{" "}
+          <SplitText
+            text="BIOLABS"
+            as="span"
+            className="inline-block text-violet"
+            start={lit}
+            delay={0.22}
+          />
+        </h1>
+
+        <motion.p
+          initial={shouldReduce ? false : { opacity: 0 }}
+          animate={{ opacity: lit ? 1 : 0 }}
+          transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: 0.72 }}
+          className="mt-5 font-mono text-[13px] tracking-[0.35em] text-dim uppercase"
+        >
+          computational biology, accelerated.
+        </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: [0.21, 0.6, 0.27, 1] }}
-          className="relative"
+          initial={shouldReduce ? false : { opacity: 0, y: 14 }}
+          animate={lit ? { opacity: 1, y: 0 } : {}}
+          transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: 0.92, ease: [0.21, 0.6, 0.27, 1] }}
         >
-          <h1
-            className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5rem] font-semibold tracking-[0.015em]"
-            style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
-          >
-            <Decode text="ARTEMIS" delay={500} />{" "}
-            <Decode text="BIOLABS" delay={1200} className="text-violet" />
-          </h1>
-          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
-            computational biology, accelerated.
-          </p>
           <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
             Every core service your lab needs.
             <br className="hidden sm:block" />
@@ -124,14 +184,6 @@ export default function Hero() {
             >
               Book a demo
             </a>
-            <a
-              href="live/brain/index.html"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
-            >
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-600 animate-pulse mr-2 align-middle" aria-hidden />3.9M cells, one mouse brain — explore it live →
-            </a>
           </div>
           <p className="mt-4 font-mono text-[12.5px] text-dim">
             The first analysis is on us.
@@ -139,15 +191,15 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      <div className="md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
+      <div className="relative z-10 md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
         <a href="#pipeline" className="hover:text-snow">Pipeline</a>
         <a href="#gallery" className="hover:text-snow">Demo</a>
       </div>
 
       <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 2.2 }}
-        className="pb-5 text-center text-dim text-xl"
+        animate={shouldReduce ? { y: 0 } : { y: [0, 8, 0] }}
+        transition={shouldReduce ? { duration: 0 } : { repeat: Infinity, duration: 2.2 }}
+        className="relative z-10 pb-5 text-center text-dim text-xl"
         aria-hidden
       >
         ↓
