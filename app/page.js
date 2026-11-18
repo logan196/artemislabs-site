@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import ClientMarquee from "@/components/ClientMarquee";
+import CredStrip from "@/components/CredStrip";
 import GbmUseCase from "@/components/GbmUseCase";
 import UmapExplorer from "@/components/UmapExplorer";
 import GenomeSection from "@/components/GenomeSection";
@@ -17,6 +18,7 @@ export default function Home() {
       <div className="bg-sea" aria-hidden />
       <div className="min-h-[100svh] flex flex-col bg-ink">
         <Hero />
+        <CredStrip />
         <ClientMarquee />
       </div>
       <GbmUseCase />
