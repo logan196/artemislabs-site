@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PROXIMA · Artemis BioLabs</title>
+<style>
+  :root{
+    --ink:#07060b;--ink2:#0e0d16;--panel:#141322;--line:rgba(255,255,255,.1);
+    --snow:#f8fafc;--dim:#94a3b8;--teal:#14b8a6;--deep:#0d9488;
+    --amber:#f59e0b;--red:#f0756b;--mint:#10b981;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;min-height:100vh;background:var(--ink);color:var(--snow);
+    font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .aurora{position:fixed;inset:-30% -10% auto -10%;height:60vh;pointer-events:none;z-index:0;
+    background:radial-gradient(45% 55% at 25% 40%,rgba(20,184,166,.16),transparent 70%),
+               radial-gradient(40% 50% at 75% 30%,rgba(13,148,136,.12),transparent 70%);
+    filter:blur(50px);animation:drift 22s ease-in-out infinite}
+  @keyframes drift{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(3%,-4%,0)}}
+  main{position:relative;z-index:1;max-width:58rem;margin:0 auto;padding:3rem 1.25rem 6rem}
+  .brand{display:flex;align-items:center;gap:.6rem;font-size:.75rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:1.4rem}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);
+    box-shadow:0 0 0 0 rgba(20,184,166,.6);animation:pulse 2.6s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(20,184,166,0)}100%{box-shadow:0 0 0 0 rgba(20,184,166,0)}}
+  h1{font-size:3rem;line-height:1;margin:0 0 .5rem;letter-spacing:-.03em}
+  .grad{background:linear-gradient(100deg,#f8fafc 5%,#14b8a6 55%,#0d9488 95%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .expand{font-size:.8rem;color:var(--dim);letter-spacing:.02em;margin:0 0 1.2rem}
+  .lede{color:var(--dim);font-size:1.05rem;max-width:36rem;margin:0 0 2.5rem}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:1.5rem;margin-bottom:1rem}
+  label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--dim);font-weight:700;margin-bottom:.6rem}
+  .seg{display:flex;gap:.5rem;flex-wrap:wrap}
+  .seg button{flex:1;min-width:8.5rem;background:var(--ink2);color:var(--snow);
+    border:1px solid var(--line);border-radius:10px;padding:.75rem;cursor:pointer;font:inherit;
+    font-size:.93rem;transition:.15s}
+  .seg button:hover{border-color:var(--deep)}
+  .seg button[aria-pressed=true]{background:rgba(20,184,166,.14);border-color:var(--teal)}
+  .seg small{display:block;color:var(--dim);font-size:.7rem;margin-top:.25rem}
+  input[type=text]{width:100%;background:var(--ink2);color:var(--snow);border:1px solid var(--line);
+    border-radius:10px;padding:.75rem .9rem;font:inherit;font-size:.94rem}
+  input[type=text]:focus{outline:none;border-color:var(--teal)}
+  .drop{border:1.5px dashed var(--line);border-radius:12px;padding:1.5rem;text-align:center;
+    cursor:pointer;background:var(--ink2);transition:.15s}
+  .drop:hover,.drop.over{border-color:var(--teal);background:rgba(20,184,166,.07)}
+  .drop .hint{color:var(--dim);font-size:.8rem;margin:.45rem 0 0}
+  .files{list-style:none;margin:.8rem 0 0;padding:0;font-size:.85rem}
+  .files li{display:flex;justify-content:space-between;padding:.45rem .7rem;background:var(--ink2);
+    border:1px solid var(--line);border-radius:8px;margin-bottom:.35rem}
+  .files span{color:var(--dim)}
+  .go{width:100%;background:var(--deep);color:#fff;border:0;border-radius:11px;padding:1rem;
+    font:inherit;font-weight:700;font-size:1.02rem;cursor:pointer;transition:.15s;letter-spacing:.01em}
+  .go:hover:not(:disabled){background:var(--teal);transform:translateY(-1px)}
+  .go:disabled{opacity:.4;cursor:not-allowed}
+  .note{color:var(--dim);font-size:.82rem;margin:.9rem 0 0}
+
+  /* ---- run canvas ---- */
+  #run{display:none}
+  #run.on{display:block;animation:rise .45s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .stage{border-left:2px solid var(--line);padding:0 0 1.4rem 1.4rem;margin-left:.5rem;position:relative}
+  .stage:last-child{padding-bottom:.4rem}
+  .stage::before{content:"";position:absolute;left:-7px;top:.42rem;width:12px;height:12px;
+    border-radius:50%;background:var(--ink);border:2px solid var(--line);transition:.3s}
+  .stage.active{border-left-color:var(--deep)}
+  .stage.active::before{border-color:var(--teal);background:var(--teal);
+    box-shadow:0 0 0 0 rgba(20,184,166,.55);animation:pulse 1.6s infinite}
+  .stage.done{border-left-color:rgba(16,185,129,.35)}
+  .stage.done::before{border-color:var(--mint);background:var(--mint)}
+  /* A stage that ran but could not answer is NOT success. Grey, hollow,
+     labelled — otherwise a glance reads 8/8 green on a run that answered
+     none of the four questions. */
+  .stage.skipped{border-left-color:var(--line)}
+  .stage.skipped::before{border-color:var(--dim);background:var(--ink)}
+  .stage.failed{border-left-color:rgba(240,117,107,.45)}
+  .stage.failed::before{border-color:var(--red);background:var(--red)}
+  .outcome{font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;
+    font-weight:700;padding:.08rem .4rem;border-radius:4px;margin-left:auto}
+  .stage.skipped .outcome{color:var(--dim);border:1px solid var(--line)}
+  .stage.failed .outcome{color:var(--red);border:1px solid rgba(240,117,107,.4)}
+  .banner{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);
+    border-radius:9px;padding:.7rem .95rem;margin:.6rem 0;font-size:.88rem;color:var(--amber)}
+  .stage h3{margin:0 0 .5rem;font-size:1.02rem;font-weight:650;letter-spacing:-.01em;
+    display:flex;align-items:center;gap:.6rem}
+  .stage.idle h3{color:var(--dim);opacity:.45}
+  .num{font-size:.68rem;color:var(--dim);border:1px solid var(--line);border-radius:4px;
+    padding:.05rem .32rem;font-variant-numeric:tabular-nums}
+  .line{font-size:.9rem;color:var(--dim);margin:.3rem 0;animation:fade .4s ease both;
+    display:flex;gap:.55rem;align-items:flex-start}
+  @keyframes fade{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:none}}
+  .line b{color:var(--snow);font-weight:600}
+  .tick{color:var(--mint);flex:none}
+  .warn{color:var(--amber);flex:none}
+  .metrics{display:flex;gap:1.6rem;flex-wrap:wrap;margin:.7rem 0 .2rem}
+  .metric{animation:fade .4s ease both}
+  .metric .v{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;color:var(--teal)}
+  .metric .k{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:var(--dim)}
+  .finding{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.25);
+    border-radius:10px;padding:.8rem 1rem;margin:.55rem 0;font-size:.92rem;animation:fade .45s ease both}
+  .finding .k{font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);
+    font-weight:700;margin-bottom:.25rem}
+  .finding.claim{background:rgba(20,184,166,.13);border-color:var(--teal)}
+  .paper{display:block;text-decoration:none;color:inherit;background:var(--ink2);
+    border:1px solid var(--line);border-radius:9px;padding:.6rem .85rem;margin:.4rem 0;
+    font-size:.86rem;animation:fade .4s ease both;transition:.15s}
+  .paper:hover{border-color:var(--teal);transform:translateX(2px)}
+  .paper .m{color:var(--dim);font-size:.74rem;margin-top:.18rem}
+  .err{background:rgba(240,117,107,.08);border:1px solid rgba(240,117,107,.35);
+    border-radius:10px;padding:1rem;margin:.6rem 0}
+  .err .t{color:var(--red);font-weight:650;margin-bottom:.35rem}
+  .open{display:inline-block;margin-top:1.1rem;background:var(--deep);color:#fff;
+    text-decoration:none;padding:.85rem 1.5rem;border-radius:10px;font-weight:650}
+  .open:hover{background:var(--teal)}
+  code{font:.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--ink2);
+    padding:.1em .38em;border-radius:4px;color:var(--teal)}
+  footer{color:var(--dim);font-size:.78rem;margin-top:3rem;border-top:1px solid var(--line);
+    padding-top:1rem;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+  footer input{flex:1;min-width:12rem;font-size:.78rem;padding:.35rem .6rem}
+  .hidden{display:none}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<main>
+  <div class="brand"><span class="dot"></span> Artemis BioLabs</div>
+  <h1 class="grad">PROXIMA</h1>
+  <p class="expand"><strong>PRO</strong>tocol e<strong>X</strong>amination of <strong>i</strong>PSC <strong>M</strong>aturity <strong>A</strong>gainst the brain</p>
+  <p class="lede">
+    Upload bulk RNA-seq from an iPSC differentiation. PROXIMA compares it against
+    curated public reference data and reports cell identity, developmental
+    maturity, and where the protocol could improve — and watch it work.
+  </p>
+
+  <form id="form">
+    <div class="card">
+      <label>Cell type</label>
+      <div class="seg">
+        <button type="button" data-lin="neuron" aria-pressed="true">Neurons<small>reference panel ready</small></button>
+        <button type="button" data-lin="microglia" aria-pressed="false">Microglia<small>identity gap stated</small></button>
+        <button type="button" data-lin="astrocyte" aria-pressed="false">Astrocytes<small>identity gap stated</small></button>
+      </div>
+    </div>
+    <div class="card">
+      <label>Study name</label>
+      <input type="text" id="name" placeholder="NGN2 timecourse, Nov 2026" autocomplete="off">
+    </div>
+    <div class="card">
+      <label>Data</label>
+      <div class="drop" id="drop" tabindex="0" role="button">
+        <strong>Drop files</strong> or click to choose
+        <p class="hint"><code>counts.csv</code> · gene_id + one column per sample &nbsp;·&nbsp;
+          <code>samples.csv</code> · sample_id, group &nbsp;·&nbsp; or one <code>.zip</code></p>
+      </div>
+      <input type="file" id="files" multiple class="hidden" accept=".csv,.tsv,.txt,.zip,.h5ad">
+      <ul class="files" id="list"></ul>
+    </div>
+    <button type="submit" class="go" id="go" disabled>Run PROXIMA</button>
+    <p class="note">Neurons run a real classifier and take about two minutes. You'll see every step.</p>
+  </form>
+
+  <section id="run"><div class="card" id="rail"></div><div id="tail"></div></section>
+
+  <footer>
+    <span>runner</span>
+    <input type="text" id="runner" placeholder="https://runner.example.com">
+    <span id="health">checking…</span>
+  </footer>
+</main>
+
+<script>
+(() => {
+"use strict";
+const $ = i => document.getElementById(i);
+const STORE = "proxima.runner";
+let runner = window.PROXIMA_RUNNER || localStorage.getItem(STORE) || "";
+$("runner").value = runner;
+
+// Served from artemislabs.bio, the page has no engine of its own. runner.json
+// sits next to it and carries whichever address the engine is currently
+// reachable at — a free Cloudflare quick tunnel hands out a new hostname on
+// every restart, so the address is data, not a constant. An explicit choice
+// already typed into the field always wins over it.
+async function discover() {
+  if (runner) return;
+  try {
+    const r = await fetch("./runner.json", {cache: "no-store"});
+    if (!r.ok) return;
+    const j = await r.json();
+    if (j && typeof j.runner === "string" && /^https?:\/\//.test(j.runner)) {
+      runner = j.runner.replace(/\/$/, "");
+      $("runner").value = runner;
+    }
+  } catch { /* same-origin engine, or no runner.json published */ }
+}
+const api = p => (runner ? runner.replace(/\/$/, "") : "") + p;
+const esc = s => String(s).replace(/[&<>"']/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let lineage = "neuron", chosen = [], stages = [];
+// Worst status observed per stage, so a stage is coloured by what it produced
+// rather than by the fact that it ran.
+const outcome = {};
+
+$("runner").addEventListener("change", e => {
+  runner = e.target.value.trim(); localStorage.setItem(STORE, runner); boot();
+});
+
+async function boot() {
+  await discover();
+  try {
+    const h = await (await fetch(api("/api/health"))).json();
+    $("health").textContent = h.r_available ? "ready" : "ready · no R";
+    $("health").style.color = h.r_available ? "#10b981" : "#f59e0b";
+    stages = await (await fetch(api("/api/stages"))).json();
+  } catch {
+    $("health").textContent = "unreachable"; $("health").style.color = "#f0756b";
+  }
+}
+boot();
+
+document.querySelectorAll("[data-lin]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-lin]").forEach(o => o.setAttribute("aria-pressed", String(o === b)));
+  lineage = b.dataset.lin;
+}));
+
+const drop = $("drop"), input = $("files");
+drop.addEventListener("click", () => input.click());
+drop.addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); }
+});
+["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => take([...e.dataTransfer.files]));
+input.addEventListener("change", () => take([...input.files]));
+
+const kb = n => n < 1048576 ? (n/1024).toFixed(0)+" KB" : (n/1048576).toFixed(1)+" MB";
+function take(f) {
+  chosen = f.slice(0, 4);
+  $("list").innerHTML = chosen.map(x =>
+    `<li><span style="color:#f8fafc">${esc(x.name)}</span><span>${kb(x.size)}</span></li>`).join("");
+  $("go").disabled = !chosen.length;
+}
+
+// Build the stage rail once, all idle; events light it up as they arrive.
+function rail() {
+  $("rail").innerHTML = stages.map((s, i) =>
+    `<div class="stage idle" id="st-${s.key}">
+       <h3><span class="num">${i+1}</span>${esc(s.title)}</h3>
+       <div class="body" id="bd-${s.key}"></div>
+     </div>`).join("");
+}
+
+const bodyOf = k => $("bd-" + k) || $("tail");
+function add(key, html) {
+  const el = document.createElement("div");
+  el.innerHTML = html;
+  bodyOf(key).appendChild(el.firstElementChild);
+}
+
+const isManifest = f => /sample|manifest|meta|pheno|coldata|design/i.test(f.name);
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  $("go").disabled = true; $("go").textContent = "Running…";
+  $("run").classList.add("on"); $("tail").innerHTML = ""; rail();
+  $("run").scrollIntoView({behavior:"smooth", block:"start"});
+
+  const fd = new FormData();
+  fd.append("lineage", lineage);
+  fd.append("name", $("name").value || "");
+  const man = chosen.find(isManifest);
+  const cnt = chosen.find(f => f !== man) || chosen[0];
+  fd.append("counts", cnt);
+  if (man && man !== cnt) fd.append("samples", man);
+
+  try {
+    const res = await fetch(api("/api/live"), {method:"POST", body:fd});
+    const body = await res.text();
+    let j = null;
+    try { j = JSON.parse(body); } catch { /* a proxy error page, not JSON */ }
+    if (!res.ok) {
+      return fail((j && j.detail) ||
+        `The runner rejected the upload (HTTP ${res.status}).`);
+    }
+    if (!j || !j.id) return fail("The runner replied without a run id.");
+    listen(j.id);
+  } catch (err) { fail("Could not reach the runner. " + err); }
+});
+
+function listen(id) {
+  const es = new EventSource(api(`/api/live/${id}/stream`));
+  let current = null;
+  const settle = key => {
+    const el = $("st-" + key);
+    if (!el) return;
+    el.classList.remove("active");
+    const worst = outcome[key] || "PASS";
+    const cls = worst === "FAIL" ? "failed" : worst === "MARGINAL" ? "skipped" : "done";
+    el.classList.add(cls);
+    if (cls !== "done") {
+      const tag = document.createElement("span");
+      tag.className = "outcome";
+      tag.textContent = cls === "failed" ? "failed" : "no result";
+      el.querySelector("h3").appendChild(tag);
+    }
+  };
+
+  es.onmessage = m => {
+    const e = JSON.parse(m.data);
+    if (e.data && (e.data.status === "FAIL" || e.data.status === "MARGINAL")) {
+      const prev = outcome[e.stage];
+      if (e.data.status === "FAIL" || prev !== "FAIL") outcome[e.stage] = e.data.status;
+    }
+    if (e.kind === "error" && e.stage) outcome[e.stage] = "FAIL";
+    if (e.kind === "stage") {
+      if (current) settle(current);
+      current = e.stage;
+      const el = $("st-"+e.stage);
+      if (el) { el.classList.remove("idle"); el.classList.add("active"); }
+    }
+    else if (e.kind === "detail") {
+      const warn = e.data.status === "MARGINAL" || e.data.status === "FAIL";
+      add(e.stage, `<p class="line"><span class="${warn?"warn":"tick"}">${warn?"!":"✓"}</span><span>${esc(e.text)}</span></p>`);
+    }
+    else if (e.kind === "metric") {
+      let row = bodyOf(e.stage).querySelector(".metrics");
+      if (!row) { add(e.stage, `<div class="metrics"></div>`); row = bodyOf(e.stage).querySelector(".metrics"); }
+      const d = document.createElement("div");
+      d.className = "metric";
+      d.innerHTML = `<div class="v">${esc(e.data.value)}</div><div class="k">${esc(e.text)}</div>`;
+      row.appendChild(d);
+    }
+    else if (e.kind === "finding") {
+      add(e.stage, `<div class="finding${e.data.claim?" claim":""}">
+        <div class="k">${esc(e.data.label||"Finding")}</div>${esc(e.text)}</div>`);
+    }
+    else if (e.kind === "literature") {
+      add(e.stage, `<a class="paper" href="${esc(e.data.url)}" target="_blank" rel="noopener">
+        ${esc(e.text)}<div class="m">${esc(e.data.source)} ${esc(e.data.year)}</div></a>`);
+    }
+    else if (e.kind === "error") {
+      add(e.stage || "", `<div class="err"><div class="t">${esc(e.text)}</div>
+        <div style="color:#94a3b8;font-size:.88rem">${esc(e.data.remedy||"")}</div></div>`);
+    }
+    else if (e.kind === "done") {
+      if (current) settle(current);
+      es.close();
+      $("go").disabled = false; $("go").textContent = "Run PROXIMA";
+      const b = $("reconnect"); if (b) b.remove();
+      if (!e.data.failed) {
+        $("tail").innerHTML =
+          `<a class="open" href="${api(`/api/live/${id}/report`)}" target="_blank" rel="noopener">Open the full report</a>`;
+        $("tail").scrollIntoView({behavior:"smooth", block:"center"});
+      }
+    }
+  };
+  // EventSource reconnects on its own while CONNECTING. Closing there threw
+  // away the server's replay and left the last stage pulsing forever, with
+  // nothing on screen admitting anything had gone wrong.
+  es.onerror = () => {
+    if (es.readyState === EventSource.CONNECTING) {
+      if (!$("reconnect")) {
+        const b = document.createElement("div");
+        b.className = "banner"; b.id = "reconnect";
+        b.textContent = "Connection lost — reconnecting. The run is still going on the server.";
+        $("tail").appendChild(b);
+      }
+      return;
+    }
+    es.close();
+    const b = $("reconnect"); if (b) b.remove();
+    $("tail").insertAdjacentHTML("beforeend",
+      `<div class="err"><div class="t">Lost contact with the run</div>
+       <div style="color:#94a3b8;font-size:.88rem">The run may still have finished on the
+       server. Reload this page and it will replay from the start.</div></div>`);
+    if (current) settle(current);
+    $("go").disabled = false; $("go").textContent = "Run PROXIMA";
+  };
+}
+
+function fail(msg) {
+  $("tail").innerHTML = `<div class="err"><div class="t">Rejected</div>
+    <div style="color:#94a3b8;font-size:.88rem">${esc(msg)}</div></div>`;
+  $("go").disabled = false; $("go").textContent = "Run PROXIMA";
+}
+})();
+</script>
+</body>
+</html>
