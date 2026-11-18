@@ -4,6 +4,7 @@
 // gbmspace.org) rendered on pure black: BANKSY domains plus gene-program maps.
 import Reveal from "./Reveal";
 import FigureLightbox from "./FigureLightbox";
+import ArrowUpRight from "./ArrowUpRight";
 
 const DOM = [
   ["Cellular tumour", "#56B4E9"],
@@ -109,7 +110,7 @@ export default function SpatialPrograms() {
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             {LIVE.map(([h, l]) => (
               <a key={h} href={h} target="_blank" rel="noreferrer" className="font-mono text-[13px] text-snow/80 hover:text-violet transition-colors">
-                {l} <span className="text-dim">↗</span>
+                {l} <span className="text-dim"><ArrowUpRight /></span>
               </a>
             ))}
           </div>

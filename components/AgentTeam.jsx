@@ -193,7 +193,7 @@ function ReviewPulse({ active, reduced }) {
         )}
         <span className={`relative h-2.5 w-2.5 rounded-full ${active ? "bg-[#7eefe0]" : "bg-white/25"}`} />
       </span>
-      human review ✓
+      human review ✓︎
     </span>
   );
 }

@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { ArrowRight } from "./ArrowUpRight";
 
 /* ------------------------------------------------------------------ */
 /* Real numbers. Source: NCBI GEO DataSets (eutils esearch, db=gds),   */
@@ -99,7 +100,7 @@ function PortalChrome({ interactive = true }) {
           tabIndex={interactive ? 0 : -1}
           className="rounded-[3px] bg-violet-deep text-ink px-5 py-2 text-sm md:text-[15px] font-medium hover:bg-violet transition-colors"
         >
-          Open the live portal →
+          Open the live portal <ArrowRight />
         </a>
       </div>
     </div>
@@ -327,9 +328,9 @@ function WfRow({ progress, range, name, right, tone = "main", children }) {
     <motion.div style={{ opacity }} className="pointer-events-none">
       <div className="flex items-baseline gap-3">
         <span className="relative w-[14px] shrink-0 font-mono text-[12px] leading-none">
-          <motion.span style={{ opacity: runOp }} className="absolute inset-0 text-[#d9a45b]">●</motion.span>
+          <motion.span style={{ opacity: runOp }} className="absolute inset-0 flex items-center justify-center"><span className="block h-2 w-2 rounded-full bg-[#d9a45b]" /></motion.span>
           <motion.span style={{ opacity: doneOp }} className={excl ? "text-magma" : "text-violet"}>
-            {excl ? "⊘" : "✓"}
+            {excl ? "⊘" : "✓︎"}
           </motion.span>
         </span>
         <span className="font-mono text-[11px] md:text-[11.5px] tracking-wide text-snow shrink-0">{name}</span>
@@ -354,7 +355,7 @@ function WfTask({ progress, at, label }) {
       style={{ opacity: op }}
       className="flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 rounded-[3px] border border-line bg-ground/50 text-dim"
     >
-      <span className="text-violet">✓</span>
+      <span className="text-violet">✓︎</span>
       {label}
     </motion.span>
   );
@@ -530,7 +531,7 @@ export default function PrismaStory() {
 
         {/* progress rail */}
         <div
-          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-5"
+          className="hidden lg:flex absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-10 flex-col gap-5"
           aria-hidden
         >
           {ACTS.map((name, i) => (

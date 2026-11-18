@@ -71,7 +71,7 @@ function Bar({ label, dur, onDone, active }) {
   const filled = Math.max(0, Math.min(n, Math.round((Number.isFinite(p) ? p : 1) * n)));
   return (
     <div>
-      <span style={{ color: p >= 1 ? MINT : DIM }}>{p >= 1 ? "✓ " : "  "}</span>
+      <span style={{ color: p >= 1 ? MINT : DIM }}>{p >= 1 ? "✓︎ " : "  "}</span>
       <span style={{ color: DIM }}>{label.padEnd(26, " ")}</span>
       <span style={{ color: TEAL }}>{"━".repeat(filled)}</span>
       <span style={{ color: "#3a3650" }}>{"─".repeat(n - filled)}</span>
@@ -181,7 +181,7 @@ export default function TerminalLive() {
             <span style={{ color: TEAL }}>NPC-like tumor</span><span style={{ color: DIM }}>       439</span>
             {"\n"}<span style={{ color: TEAL }}>  endothelial</span><span style={{ color: DIM }}>           247   </span>
             <span style={{ color: TEAL }}>astrocytes</span><span style={{ color: DIM }}>           244</span>
-            {"\n"}<span style={{ color: MINT }}>  ✓</span><span style={{ color: DIM }}> portal   output/GBM3/portal.html · provenance: qwen3:8b, local</span>
+            {"\n"}<span style={{ color: MINT }}>  ✓︎</span><span style={{ color: DIM }}> portal   output/GBM3/portal.html · provenance: qwen3:8b, local</span>
           </div>
         )}
         {phase >= 101 && (

@@ -3,18 +3,31 @@
 import Reveal from "./Reveal";
 import AssayMini from "./AssayMini";
 import { CONTACT } from "./AccessForms";
+import { ArrowRight } from "./ArrowUpRight";
 
-// Restored from the "Eight cores" grid (WhatWeDo.jsx, 4534ff0 / cc87d05).
-// Same eight cores and descriptions; each card keeps its AssayMini animation.
+// Restored from the "Eight cores" grid (WhatWeDo.jsx, 4534ff0 / cc87d05), each
+// card with its AssayMini animation. In/out lines restate the original one-liners;
+// tools are named only where this page shows them in use.
 const CORES = [
-  { name: "Single-cell", desc: "Raw reads to annotated atlases · iPSC benchmarking", kind: "singlecell" },
-  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", live: true, kind: "spatial" },
-  { name: "CUT&Tag and chromatin", desc: "Peaks, tracks, differential binding", kind: "chromatin" },
-  { name: "Long-read sequencing", desc: "Isoforms, SVs and methylation", kind: "longread" },
-  { name: "Radiomics and imaging", desc: "Segmentation to outcome models", kind: "radiomics" },
-  { name: "Calcium imaging", desc: "Wave detection without hand scoring", kind: "calcium" },
-  { name: "Clinical data and biostatistics", desc: "Cohorts, trials, survival models", kind: "clinical" },
-  { name: "Custom apps: DNA Studio", desc: "Plasmid maps from SnapGene files", kind: "dna" },
+  { name: "Single-cell", kind: "singlecell", desc: "Raw reads to annotated atlases, including iPSC benchmarking.",
+    io: ["Reads or count matrices", "QC'd, clustered, annotated atlas"], tools: "Scanpy, Leiden" },
+  { name: "Spatial transcriptomics", kind: "spatial", desc: "Every cell or spot mapped back onto the tissue.",
+    io: ["Visium, Xenium, MERFISH or seqFISH sections", "Domains, cell-state maps, a live portal"], tools: "BANKSY, cell2location, Vitessce",
+    link: ["#viewer", "Open the live viewer"] },
+  { name: "CUT&Tag and chromatin", kind: "chromatin", desc: "Peaks, tracks and differential binding.",
+    io: ["CUT&Tag or CUT&RUN reads", "Peak calls, bigWig tracks, differential binding"], tools: "igv.js for review",
+    link: ["#genomics", "See the SOX2 browser"] },
+  { name: "Long-read sequencing", kind: "longread", desc: "Isoforms, structural variants and methylation.",
+    io: ["PacBio HiFi or nanopore reads", "Isoforms, SVs, methylation calls"],
+    link: ["#genomics", "See HiFi reads at SOX2"] },
+  { name: "Radiomics and imaging", kind: "radiomics", desc: "From segmentation to outcome models.",
+    io: ["Scans and annotations", "Segmentations, image features, outcome models"] },
+  { name: "Calcium imaging", kind: "calcium", desc: "Wave detection without hand scoring.",
+    io: ["Calcium imaging recordings", "Detected waves and events, per cell"] },
+  { name: "Clinical data and biostatistics", kind: "clinical", desc: "Cohorts, trials and survival models.",
+    io: ["Cohort or trial tables", "Cohort summaries, survival models"] },
+  { name: "Custom apps: DNA Studio", kind: "dna", desc: "Plasmid maps from SnapGene files.",
+    io: ["SnapGene .dna files", "Annotated plasmid maps"] },
 ];
 
 export default function CoreCapabilities() {
@@ -34,29 +47,44 @@ export default function CoreCapabilities() {
       <Reveal delay={0.1}>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
           {CORES.map((c) => (
-            <div key={c.name} className="rounded-[4px] border border-line bg-panel/70 p-5">
-              <div className="rounded-[3px] bg-white/[0.03] mb-3 overflow-hidden">
-                <AssayMini kind={c.kind} height={110} />
+            <div key={c.name} className="flex flex-col rounded-[4px] border border-line bg-panel/70 p-5">
+              <div className="rounded-[3px] bg-white/[0.03] mb-4 overflow-hidden">
+                <AssayMini kind={c.kind} height={120} />
               </div>
-              <p className="font-medium text-[17px]">{c.name}</p>
-              <p className="text-dim text-[14.5px] mt-1.5">{c.desc}</p>
-              {c.live ? (
-                <a href="#viewer" className="mt-3 inline-block text-violet font-medium hover:underline text-[14px]">
-                  Live demo ↑
+              <p className="font-medium text-[17px] leading-snug">{c.name}</p>
+              <p className="text-dim text-[14px] mt-1.5 leading-relaxed">{c.desc}</p>
+              <dl className="mt-4 space-y-1.5 text-[13px] leading-snug">
+                <div className="grid grid-cols-[2.6rem_1fr] gap-2">
+                  <dt className="text-dim">In</dt>
+                  <dd className="text-snow/85">{c.io[0]}</dd>
+                </div>
+                <div className="grid grid-cols-[2.6rem_1fr] gap-2">
+                  <dt className="text-dim">Out</dt>
+                  <dd className="text-snow/85">{c.io[1]}</dd>
+                </div>
+                {c.tools && (
+                  <div className="grid grid-cols-[2.6rem_1fr] gap-2">
+                    <dt className="text-dim">Tools</dt>
+                    <dd className="text-snow/85">{c.tools}</dd>
+                  </div>
+                )}
+              </dl>
+              {c.link && (
+                <a href={c.link[0]} className="mt-auto pt-4 inline-flex items-center gap-1.5 text-[13.5px] text-violet hover:text-snow transition-colors">
+                  {c.link[1]} <ArrowRight />
                 </a>
-              ) : (
-                <p className="mt-3 font-mono text-[11.5px] text-dim">demo on request</p>
               )}
             </div>
           ))}
         </div>
         <p className="mt-6 text-[15px] text-dim">
-          Also bulk RNA-seq, variants, proteomics, metabolomics, cytometry and microbiome.{" "}
+          Demos for the other cores are available on request. We also handle bulk RNA-seq,
+          variants, proteomics, metabolomics, cytometry and microbiome.{" "}
           <a
             href={`mailto:${CONTACT}?subject=Artemis%20BioLabs%20%C2%B7%20sample%20report`}
             className="text-violet hover:text-snow underline underline-offset-4 transition-colors"
           >
-            Request a sample report →
+            Request a sample report
           </a>
         </p>
       </Reveal>

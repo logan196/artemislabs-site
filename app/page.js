@@ -7,6 +7,10 @@ import GenomeSection from "@/components/GenomeSection";
 import TissueBand from "@/components/TissueBand";
 import LiveHeViewer from "@/components/LiveHeViewer";
 import CoreCapabilities from "@/components/CoreCapabilities";
+import PrismaStory from "@/components/PrismaStory";
+import BanksySection from "@/components/BanksySection";
+import SpatialPrograms from "@/components/SpatialPrograms";
+import GbmSections from "@/components/GbmSections";
 import Cta from "@/components/Cta";
 import AccessForms from "@/components/AccessForms";
 
@@ -22,7 +26,11 @@ export default function Home() {
         <ClientMarquee />
       </div>
       <GbmUseCase />
+      <PrismaStory />
+      <BanksySection />
       <UmapExplorer />
+      <SpatialPrograms />
+      <GbmSections />
       <LiveHeViewer />
       <GenomeSection />
       <TissueBand />

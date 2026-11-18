@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
+import ArrowUpRight from "./ArrowUpRight";
+import { ArrowRight } from "./ArrowUpRight";
 
 // Phones get the same section as a still that fades between the H&E and the
 // cell-state overlay; the full viewer needs a wider screen than 390px.
@@ -39,7 +41,7 @@ function PhonePoster() {
         </span>
       </span>
       <span className="block bg-ink border-t border-line px-4 py-3 text-[14px] text-violet font-medium">
-        Open the live viewer ↗
+        Open the live viewer <ArrowUpRight className="ml-1" />
         <span className="block font-mono text-[11px] text-dim font-normal mt-0.5">works best on a laptop or tablet</span>
       </span>
     </a>
@@ -72,7 +74,7 @@ export default function LiveHeViewer() {
             rel="noreferrer"
             className="rounded-[3px] bg-violet-deep text-ink px-5 py-2 text-[15px] font-medium hover:bg-violet transition-colors"
           >
-            Open full screen ↗
+            Open full screen <ArrowUpRight className="ml-1" />
           </a>
           <a
             href="live/GBM3/portal.html"
@@ -80,7 +82,7 @@ export default function LiveHeViewer() {
             rel="noreferrer"
             className="rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all"
           >
-            GBM3 portal →
+            GBM3 portal <ArrowRight className="ml-1" />
           </a>
         </div>
         <PhonePoster />
@@ -92,7 +94,7 @@ export default function LiveHeViewer() {
             loading="lazy"
           />
           <span className="absolute top-3 right-3 font-mono text-[11px] text-ink bg-violet-deep/95 rounded-[3px] px-2.5 py-1 pointer-events-none">
-            ● live · the viewer, not a screenshot
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-ink mr-1.5 align-middle" />live · the viewer, not a screenshot
           </span>
         </div>
         <p className="mt-4 text-[13.5px] text-dim leading-relaxed max-w-4xl">

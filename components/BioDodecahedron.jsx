@@ -90,9 +90,11 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
     let interacted = false;
     let saluteT0 = -1e9; // logo-click "salute": orbit comet + ring flash
     const SALUTE_MS = 1400;
+    const touchOnly = window.matchMedia("(hover: none)").matches;
     let hintA = reduced ? 0 : 1; // "drag to spin" cue, fades after first touch
     let lastNow = 0;
     let pts = [];
+    const bg = helix ? 0.45 : 1; // polyhedron recedes behind the helix
 
     const draw = (now) => {
       const w = canvas.clientWidth || size;
@@ -138,7 +140,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         ctx.beginPath();
         f.forEach((i, k) => (k ? ctx.lineTo(pts[i][0], pts[i][1]) : ctx.moveTo(pts[i][0], pts[i][1])));
         ctx.closePath();
-        ctx.fillStyle = `rgba(95, 212, 196, ${0.018 + 0.05 * facing})`;
+        ctx.fillStyle = `rgba(95, 212, 196, ${(0.018 + 0.05 * facing) * bg})`;
         ctx.fill();
       }
 
@@ -148,8 +150,8 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         const near = 1 - ((pts[i][2] + pts[j][2]) / 2 + 1.7) / 3.4;
         const hot = hover.i >= 0 && (i === hover.i || j === hover.i);
         ctx.strokeStyle = hot
-          ? "rgba(43, 179, 163, 0.9)"
-          : `rgba(43, 179, 163, ${0.14 + 0.45 * near})`;
+          ? `rgba(43, 179, 163, ${helix ? 0.7 : 0.9})`
+          : `rgba(43, 179, 163, ${(0.14 + 0.45 * near) * bg})`;
         ctx.lineWidth = hot ? 1.8 : 1.1;
         ctx.beginPath();
         ctx.moveTo(pts[i][0], pts[i][1]);
@@ -174,77 +176,15 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
             ctx.beginPath();
             ctx.arc(tx, ty, (c === 0 ? 3.4 : 2.4) * (1 - tr * 0.24), 0, Math.PI * 2);
             ctx.fillStyle = col;
-            ctx.globalAlpha = 0.85 * (1 - tr * 0.28);
+            ctx.globalAlpha = 0.85 * (1 - tr * 0.28) * bg;
             ctx.fill();
           }
           ctx.beginPath();
           ctx.arc(px, py, c === 0 ? 3.4 : 2.4, 0, Math.PI * 2);
           ctx.fillStyle = col;
-          ctx.globalAlpha = 0.85;
+          ctx.globalAlpha = 0.85 * bg;
           ctx.fill();
           ctx.globalAlpha = 1;
-        }
-      }
-
-      // DNA double helix threaded through the core
-      if (helix) {
-        const H = Math.min(w, h) * 0.62;
-        const cx = w / 2, cy = h / 2;
-        const turns = 2.2, amp = Math.min(w, h) * 0.075;
-        const N = 46;
-        const strand = (ph) => {
-          const ptsS = [];
-          for (let k = 0; k <= N; k++) {
-            const u = k / N;
-            const ang = u * turns * Math.PI * 2 + (reduced ? 0 : t * 1.1) + ph;
-            const x = cx + Math.sin(ang) * amp;
-            const y = cy - H / 2 + u * H;
-            const depth = Math.cos(ang); // -1 back, 1 front
-            ptsS.push([x, y, depth]);
-          }
-          return ptsS;
-        };
-        const s1 = strand(0), s2 = strand(Math.PI);
-        // rungs (base pairs)
-        for (let k = 2; k < N; k += 4) {
-          const a = s1[k], b = s2[k];
-          const front = (a[2] + b[2]) / 2 > 0;
-          ctx.strokeStyle = front ? "rgba(217,164,91,0.65)" : "rgba(217,164,91,0.22)";
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.moveTo(a[0], a[1]);
-          ctx.lineTo(b[0], b[1]);
-          ctx.stroke();
-        }
-        for (const s of [s1, s2]) {
-          ctx.beginPath();
-          s.forEach(([x, y], k) => (k ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-          ctx.strokeStyle = "rgba(95,212,196,0.7)";
-          ctx.lineWidth = 1.8;
-          ctx.stroke();
-          // depth highlights
-          for (const [x, y, d] of s) {
-            if (d > 0.6) {
-              ctx.beginPath();
-              ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-              ctx.fillStyle = "rgba(43,179,163,0.85)";
-              ctx.fill();
-            }
-          }
-        }
-        // bases drifting off the helix
-        if (!reduced) {
-          ctx.font = "600 11px 'JetBrains Mono', ui-monospace, monospace";
-          for (let g = 0; g < 4; g++) {
-            const u = ((t * 0.13 + g * 0.27) % 1);
-            const src = s1[Math.floor(((g * 11) % N))];
-            const dx = (g % 2 ? 1 : -1) * u * Math.min(w, h) * 0.3;
-            const dy = -u * Math.min(w, h) * 0.18;
-            ctx.globalAlpha = Math.pow(1 - u, 0.7) * 0.85;
-            ctx.fillStyle = "#2bb3a3";
-            ctx.fillText("ACGT"[g], src[0] + dx, src[1] + dy);
-            ctx.globalAlpha = 1;
-          }
         }
       }
 
@@ -278,7 +218,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         const hot = i === hover.i;
         ctx.beginPath();
         ctx.arc(x, y, (hot ? 4.2 : 2.6) + 1.6 * near, 0, Math.PI * 2);
-        ctx.fillStyle = hot ? "#2bb3a3" : `rgba(95, 212, 196, ${0.35 + 0.6 * near})`;
+        ctx.fillStyle = hot ? "#2bb3a3" : `rgba(95, 212, 196, ${(0.35 + 0.6 * near) * bg})`;
         ctx.fill();
         if (hot) {
           ctx.beginPath();
@@ -293,6 +233,74 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         }
       }
       if (hover.i >= 0) chip(hover.i, 1); // hovered label always on top, full alpha
+
+      // DNA double helix: the focal point, drawn over the receding solid
+      if (helix) {
+        const m = Math.min(w, h);
+        const H = m * 0.88;
+        const cx = w / 2, cy = h / 2;
+        const turns = 2.4, amp = m * 0.14;
+        const N = 72;
+        const spin = reduced ? 0 : t * 1.1;
+        const strand = (ph) => {
+          const ptsS = [];
+          for (let k = 0; k <= N; k++) {
+            const u = k / N;
+            const ang = u * turns * Math.PI * 2 + spin + ph;
+            ptsS.push([cx + Math.sin(ang) * amp, cy - H / 2 + u * H, Math.cos(ang)]);
+          }
+          return ptsS;
+        };
+        const s1 = strand(0), s2 = strand(Math.PI);
+        // base pairs: two-tone rungs, brighter when they face the viewer
+        ctx.lineCap = "round";
+        for (let k = 2; k < N; k += 3) {
+          const a = s1[k], b = s2[k];
+          const facing = Math.abs(Math.sin((k / N) * turns * Math.PI * 2 + spin)); // rung length
+          const al = 0.35 + 0.6 * facing;
+          const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+          ctx.lineWidth = 2.4;
+          ctx.strokeStyle = `rgba(232,182,104,${al.toFixed(3)})`;
+          ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(mx, my); ctx.stroke();
+          ctx.strokeStyle = `rgba(240,236,224,${(al * 0.85).toFixed(3)})`;
+          ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        }
+        // backbones: back half dim, front half bright, so the twist reads in depth
+        for (const s of [s1, s2]) {
+          for (let k = 1; k <= N; k++) {
+            const p0 = s[k - 1], p1 = s[k];
+            const z = (p0[2] + p1[2]) / 2; // -1 back, 1 front
+            const f = (z + 1) / 2;
+            ctx.strokeStyle = `rgba(120,230,214,${(0.3 + 0.7 * f).toFixed(3)})`;
+            ctx.lineWidth = 2 + 2.2 * f;
+            ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.stroke();
+          }
+          for (let k = 0; k <= N; k += 3) {
+            const [x, y, z] = s[k];
+            if (z > 0.35) {
+              ctx.beginPath();
+              ctx.arc(x, y, 2.2 + 1.6 * z, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(190,248,238,${(0.55 + 0.4 * z).toFixed(3)})`;
+              ctx.fill();
+            }
+          }
+        }
+        ctx.lineCap = "butt";
+        // bases drifting off the helix
+        if (!reduced) {
+          ctx.font = "600 12px 'JetBrains Mono', ui-monospace, monospace";
+          for (let g = 0; g < 4; g++) {
+            const u = ((t * 0.13 + g * 0.27) % 1);
+            const src = s1[Math.floor(((g * 17) % N))];
+            const dx = (g % 2 ? 1 : -1) * u * m * 0.3;
+            const dy = -u * m * 0.18;
+            ctx.globalAlpha = Math.pow(1 - u, 0.7) * 0.9;
+            ctx.fillStyle = "#7fe3d4";
+            ctx.fillText("ACGT"[g], src[0] + dx, src[1] + dy);
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
 
       // logo-click salute: a comet orbits the solid once, over a fading ring
       {
@@ -331,7 +339,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         ctx.font = "500 11px 'JetBrains Mono', ui-monospace, monospace";
         ctx.fillStyle = `rgba(154,151,141,${0.75 * hintA})`;
         ctx.textAlign = "center";
-        ctx.fillText("⟲ drag to spin · hover a vertex", w / 2, h - 6);
+        ctx.fillText(touchOnly ? "drag to spin" : "drag to spin · hover a vertex", w / 2, h - 6);
         ctx.textAlign = "left";
       }
 

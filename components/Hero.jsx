@@ -6,6 +6,7 @@ import FounderLock from "./FounderLock";
 import HeroCloud from "./HeroCloud";
 import Decode from "./Decode";
 import { BOOKING } from "./AccessForms";
+import ArrowUpRight, { ArrowRight } from "./ArrowUpRight";
 
 export const NAV = [
   ["#use-case", "Use case"],
@@ -79,12 +80,6 @@ export default function Hero() {
           >
             Book a call
           </a>
-          <a
-            href="#early-access"
-            className="rounded-[3px] bg-snow text-ink px-4 py-1.5 font-medium hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors whitespace-nowrap"
-          >
-            Request early access
-          </a>
           <FounderLock />
           <details className="relative lg:hidden">
             <summary className="list-none cursor-pointer rounded-[3px] border border-white/20 px-3 py-1.5 text-snow select-none" aria-label="Open navigation menu">
@@ -95,7 +90,7 @@ export default function Hero() {
                 <a key={href} href={href} className="px-3 py-2 rounded-sm hover:bg-white/5 text-snow">{label}</a>
               ))}
               <a href="#collaborate" className="px-3 py-2 rounded-sm hover:bg-white/5 text-snow">Suggest a collaboration</a>
-              <a href={BOOKING} target="_blank" rel="noreferrer" className="px-3 py-2 rounded-sm hover:bg-white/5 text-violet font-medium">Book a call ↗</a>
+              <a href={BOOKING} target="_blank" rel="noreferrer" className="px-3 py-2 rounded-sm hover:bg-white/5 text-violet font-medium">Book a call <ArrowUpRight className="ml-1" /></a>
             </div>
           </details>
         </div>
@@ -115,21 +110,21 @@ export default function Hero() {
             <Decode text="ARTEMIS" delay={500} />{" "}
             <Decode text="BIOLABS" delay={1200} className="text-violet" />
           </h1>
-          <p className="hero-copy mt-4 font-mono text-[15px] md:text-base font-semibold tracking-[0.22em] uppercase">
+          <p className="hero-copy mt-4 font-mono text-[12px] md:text-[14px] font-medium tracking-[0.24em] uppercase text-snow/80">
             computational biology, accelerated.
           </p>
-          <p className="hero-copy mt-6 max-w-xl mx-auto text-lg md:text-[1.45rem] font-semibold leading-snug">
+          <p className="hero-copy mt-7 max-w-xl mx-auto text-[1.3rem] md:text-[1.6rem] font-medium leading-[1.3] text-balance">
             Every core service your lab needs.
-            <br className="hidden sm:block" />
-            {" "}One AI-powered team.
+            <br />
+            <span className="whitespace-nowrap">One AI-powered team.</span>
           </p>
-          <p className="hero-copy mt-4 max-w-lg mx-auto text-[17.5px] md:text-[19px] font-semibold leading-relaxed">
+          <p className="hero-copy mt-4 max-w-[26rem] md:max-w-lg mx-auto text-[16px] md:text-[18px] font-normal leading-relaxed text-snow/80 text-balance">
             Spatial, single-cell and genomics analysis for labs without a bioinformatics core.
           </p>
-          <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <a
               href="#early-access"
-              className="rounded-[3px] bg-snow text-ink px-7 py-3 font-medium hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors"
+              className="w-full max-w-[17rem] sm:w-auto rounded-[3px] bg-snow text-ink px-7 py-3 text-[15px] font-medium hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors"
             >
               Request early access
             </a>
@@ -137,20 +132,20 @@ export default function Hero() {
               href={BOOKING}
               target="_blank"
               rel="noreferrer"
-              className="rounded-[3px] border border-snow text-snow bg-black/45 px-7 py-3 font-medium hover:bg-white/10 hover:border-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
+              className="w-full max-w-[17rem] sm:w-auto rounded-[3px] border border-snow/60 text-snow bg-black/45 px-7 py-3 text-[15px] font-medium hover:bg-white/10 hover:border-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
             >
               Book a 30-min call
             </a>
           </div>
-          <p className="mt-6">
+          <p className="mt-7">
             <a
               href="live/brain/index.html"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-[14.5px] text-snow hover:text-white transition-colors [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.7)]"
+              className="inline-flex items-center gap-2 text-[13.5px] md:text-[14px] text-snow/90 hover:text-white transition-colors [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_18px_rgba(0,0,0,0.7)]"
             >
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden />
-              3.9M cells, one mouse brain — explore it live →
+              3.9M cells, one mouse brain. Explore it live <ArrowRight />
             </a>
           </p>
         </motion.div>
@@ -164,10 +159,10 @@ export default function Hero() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2.2 }}
-          className="text-dim text-xl"
+          className="text-dim"
           aria-hidden
         >
-          ↓
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3v10M4 9l4 4 4-4" /></svg>
         </motion.div>
       </div>
     </section>

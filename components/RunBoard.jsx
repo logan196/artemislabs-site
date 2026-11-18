@@ -98,7 +98,7 @@ for (let i = 0; i < VERBS.length; i++) {
   EVENTS.push({ at: 2600 + i * 3400, text: VERBS[i] });
 }
 EVENTS.sort((x, y) => x.at - y.at);
-const COMPLETE_LINE = `✓ 5 datasets · ${TOTAL_SPOTS.toLocaleString("en-US")} spots · ${TOTAL_DOMAINS} spatial domains · 5 portals shipped`;
+const COMPLETE_LINE = `✓︎ 5 datasets · ${TOTAL_SPOTS.toLocaleString("en-US")} spots · ${TOTAL_DOMAINS} spatial domains · 5 portals shipped`;
 
 // ---------------------------------------------------------------- palette
 // Mermaid-on-VS-Code-dark status hues.
@@ -165,17 +165,17 @@ const CHIP_BASE =
 const CHIP = {
   pending: { text: "pending", cls: CHIP_BASE, style: { color: `${DIM}99`, borderColor: "#2e2c3a", background: "transparent" } },
   running: { text: "● running", cls: `${CHIP_BASE} rb-pulse`, style: { color: RUN, borderColor: "#78350f", background: "rgba(251,191,36,0.08)" } },
-  done: { text: "✓ done", cls: CHIP_BASE, style: { color: DONE, borderColor: "#134e4a", background: "rgba(45,212,191,0.08)" } },
+  done: { text: "✓︎ done", cls: CHIP_BASE, style: { color: DONE, borderColor: "#134e4a", background: "rgba(45,212,191,0.08)" } },
   skipped: { text: "– skipped", cls: CHIP_BASE, style: { color: "#9ca3af", borderColor: SKIP, background: "rgba(107,114,128,0.08)", borderStyle: "dashed" } },
-  failed: { text: "✗ failed", cls: CHIP_BASE, style: { color: FAIL, borderColor: "#7f1d1d", background: "rgba(248,113,113,0.08)" } },
+  failed: { text: "✗︎ failed", cls: CHIP_BASE, style: { color: FAIL, borderColor: "#7f1d1d", background: "rgba(248,113,113,0.08)" } },
 };
 
 const DOT = {
   pending: { ch: "○", color: `${DIM}66`, cls: "" },
   running: { ch: "●", color: RUN, cls: "rb-pulse" },
-  done: { ch: "✓", color: DONE, cls: "" },
+  done: { ch: "✓︎", color: DONE, cls: "" },
   skipped: { ch: "–", color: "#9ca3af", cls: "" },
-  failed: { ch: "✗", color: FAIL, cls: "" },
+  failed: { ch: "✗︎", color: FAIL, cls: "" },
 };
 
 export default function RunBoard() {
@@ -208,7 +208,7 @@ export default function RunBoard() {
       const complete = t >= COMPLETE_AT;
 
       // --- header strip
-      put("hdr-status", "text", complete ? "✓ COMPLETE" : "● RUNNING");
+      put("hdr-status", "text", complete ? "✓︎ COMPLETE" : "● RUNNING");
       put("hdr-status", "color", complete ? DONE : RUN);
       put("hdr-status", "class", complete ? "font-mono text-[12px] font-bold tracking-[0.12em]" : "font-mono text-[12px] font-bold tracking-[0.12em] rb-pulse");
       let nDone = 0;

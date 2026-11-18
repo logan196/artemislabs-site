@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
+import CellTypingSteps from "./CellTypingSteps";
 
 // Sequential teal ramp for marker expression — one hue, light→dark, on cream.
 const RAMP_LO = [217, 232, 228]; // barely-teal paper
@@ -274,10 +275,15 @@ export default function UmapExplorer() {
         a.running = false;
         return;
       }
-      a.morph = view.current.auto ? cycleMorph(now) : a.manualMorph;
-      if (sliderRef.current && view.current.auto) {
-        sliderRef.current.value = String(Math.round(a.morph * 100));
+      if (view.current.auto) {
+        a.morph = cycleMorph(now);
+        a.manualMorph = a.morph;
+        a.manualTarget = a.morph > 0.5 ? 1 : 0;
+      } else {
+        a.manualMorph += ((a.manualTarget ?? a.manualMorph) - a.manualMorph) * 0.08;
+        a.morph = a.manualMorph;
       }
+      if (sliderRef.current) sliderRef.current.style.transform = `translateX(${(a.morph * 100).toFixed(1)}%)`;
       draw(now);
       a.raf = requestAnimationFrame(loop);
     },
@@ -291,7 +297,7 @@ export default function UmapExplorer() {
     if (!el) return;
     if (reduced) {
       anim.current.morph = 1;
-      if (sliderRef.current) sliderRef.current.value = "100";
+      if (sliderRef.current) sliderRef.current.style.transform = "translateX(100%)";
       draw(0);
       return;
     }
@@ -342,13 +348,15 @@ export default function UmapExplorer() {
     [data, draw, reduced]
   );
 
-  const onSlider = useCallback(
-    (ev) => {
-      const v = Number(ev.target.value) / 100;
-      anim.current.manualMorph = v;
+  // Segmented control: glide to tissue (0) or embedding (1) and hold there.
+  const setMorph = useCallback(
+    (v) => {
+      anim.current.manualTarget = v;
       setAuto(false);
       if (reduced) {
         anim.current.morph = v;
+        anim.current.manualMorph = v;
+        if (sliderRef.current) sliderRef.current.style.transform = `translateX(${v * 100}%)`;
         draw(0);
       }
     },
@@ -411,77 +419,78 @@ export default function UmapExplorer() {
 
       <Reveal className="mt-10">
         <div className="rounded-[4px] border border-line bg-panel p-4 md:p-6">
-          {/* the one control that matters: where between tissue and embedding */}
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-            <div className="flex items-center gap-3 flex-1 min-w-[260px]">
-              <span className="font-mono text-[11px] tracking-[0.15em] text-dim uppercase shrink-0">
-                tissue
+          {/* controls: one quiet row. Segmented Tissue / Embedding (the pill
+              tracks the live morph), play/pause, then embedding and color picks. */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <div className="flex items-center gap-2">
+              <div
+                role="group"
+                aria-label="Show tissue or embedding"
+                className="relative grid grid-cols-2 rounded-full border border-line p-0.5 text-[12.5px]"
+              >
+                <span
+                  ref={sliderRef}
+                  aria-hidden
+                  className="absolute top-0.5 bottom-0.5 left-0.5 w-[calc(50%-2px)] rounded-full bg-white/[0.08] border border-white/15"
+                  style={{ transform: "translateX(0%)" }}
+                />
+                {[["Tissue", 0], ["Embedding", 1]].map(([lbl, v]) => (
+                  <button
+                    key={lbl}
+                    onClick={() => setMorph(v)}
+                    className="relative z-10 px-4 py-1.5 text-snow/85 hover:text-snow cursor-pointer transition-colors"
+                  >
+                    {lbl}
+                  </button>
+                ))}
+              </div>
+              {!reduced && (
+                <button
+                  onClick={auto ? () => setAuto(false) : resumeAuto}
+                  aria-label={auto ? "Pause the animation" : "Play the animation"}
+                  className="h-8 w-8 inline-flex items-center justify-center rounded-full border border-line text-dim hover:text-snow hover:border-snow/40 transition-colors cursor-pointer"
+                >
+                  {auto ? (
+                    <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden fill="currentColor"><rect x="2.5" y="2" width="2.2" height="8" rx="0.6" /><rect x="7.3" y="2" width="2.2" height="8" rx="0.6" /></svg>
+                  ) : (
+                    <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden fill="currentColor"><path d="M3.5 2.2v7.6a.5.5 0 0 0 .76.43l6-3.8a.5.5 0 0 0 0-.86l-6-3.8a.5.5 0 0 0-.76.43z" /></svg>
+                  )}
+                </button>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 text-[12.5px]">
+              <span className="flex items-baseline gap-3">
+                <span className="text-dim">UMAP</span>
+                {data &&
+                  data.settings.slice(1).map((s, i) => (
+                    <button
+                      key={s.id}
+                      onClick={() => goTo(i + 1)}
+                      title={`min_dist ${s.min_dist}, spread ${s.spread}`}
+                      className={`font-mono tabular-nums cursor-pointer transition-colors ${
+                        i + 1 === active ? "text-snow underline underline-offset-[5px] decoration-violet" : "text-dim hover:text-snow"
+                      }`}
+                    >
+                      {s.min_dist}/{s.spread}
+                    </button>
+                  ))}
               </span>
-              <input
-                ref={sliderRef}
-                type="range"
-                min="0"
-                max="100"
-                defaultValue="0"
-                onInput={onSlider}
-                onPointerDown={() => setAuto(false)}
-                aria-label="Morph between tissue coordinates and UMAP embedding"
-                className="flex-1 accent-[#2bb3a3] cursor-pointer"
-              />
-              <span className="font-mono text-[11px] tracking-[0.15em] text-dim uppercase shrink-0">
-                embedding
+              <span className="flex items-baseline gap-3">
+                <span className="text-dim">Color</span>
+                {["domain", ...markers].map((mk) => (
+                  <button
+                    key={mk}
+                    onClick={() => setColorBy(mk)}
+                    className={`cursor-pointer transition-colors ${
+                      mk === colorBy ? "text-snow underline underline-offset-[5px] decoration-violet" : "text-dim hover:text-snow"
+                    }`}
+                  >
+                    {mk === "domain" ? "cell type" : mk}
+                  </button>
+                ))}
               </span>
             </div>
-            {!reduced && (
-              <button
-                onClick={auto ? () => setAuto(false) : resumeAuto}
-                className={`font-mono text-[12px] px-3 py-1.5 rounded-[3px] border cursor-pointer transition-colors ${
-                  auto
-                    ? "border-violet-deep bg-violet-deep text-ink"
-                    : "border-line text-dim hover:text-snow hover:border-snow/50"
-                }`}
-              >
-                {auto ? "⏸ breathing" : "▶ auto"}
-              </button>
-            )}
-          </div>
-
-          {/* secondary dials */}
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[11px] tracking-[0.2em] text-dim uppercase mr-1">
-              umap dials
-            </span>
-            {data &&
-              data.settings.slice(1).map((s, i) => (
-                <button
-                  key={s.id}
-                  onClick={() => goTo(i + 1)}
-                  className={`font-mono text-[12px] px-3 py-1.5 rounded-[3px] border transition-colors cursor-pointer ${
-                    i + 1 === active
-                      ? "bg-violet-deep text-ink border-violet-deep"
-                      : "border-line text-dim hover:text-snow hover:border-snow/50"
-                  }`}
-                >
-                  {s.min_dist} · {s.spread}
-                </button>
-              ))}
-            <span className="flex-1" />
-            <span className="font-mono text-[11px] tracking-[0.2em] text-dim uppercase mr-1">
-              color
-            </span>
-            {["domain", ...markers].map((mk) => (
-              <button
-                key={mk}
-                onClick={() => setColorBy(mk)}
-                className={`font-mono text-[12px] px-3 py-1.5 rounded-[3px] border transition-colors cursor-pointer ${
-                  mk === colorBy
-                    ? "bg-violet-deep text-ink border-violet-deep"
-                    : "border-line text-dim hover:text-snow hover:border-snow/50"
-                }`}
-              >
-                {mk === "domain" ? "cell type" : mk}
-              </button>
-            ))}
           </div>
 
           {/* canvas */}
@@ -519,22 +528,20 @@ export default function UmapExplorer() {
 
           {/* cell types — click to isolate one through the whole morph */}
           {data && (
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
               {data.domains.map((d, i) => (
                 <button
                   key={d}
                   onClick={() => setFocus(focus === i ? null : i)}
-                  className={`flex items-center gap-2 font-mono text-[11.5px] px-2.5 py-1 rounded-[3px] border transition-opacity cursor-pointer ${
-                    focus === null || focus === i
-                      ? "border-line text-snow opacity-100"
-                      : "border-line text-dim opacity-40"
+                  className={`flex items-center gap-2 text-[12.5px] transition-opacity cursor-pointer ${
+                    focus === null || focus === i ? "text-snow/90 opacity-100" : "text-dim opacity-40"
                   }`}
                 >
                   <span
-                    className="inline-block w-2.5 h-2.5 rounded-full"
+                    className="inline-block w-2 h-2 rounded-full"
                     style={{ background: data.palette[i] }}
                   />
-                  {shortName(d)} · {data.domain_counts[i]}
+                  {shortName(d)} <span className="text-dim tabular-nums">{data.domain_counts[i]}</span>
                 </button>
               ))}
             </div>
@@ -562,6 +569,7 @@ export default function UmapExplorer() {
           choice, not a fact; here you hold the dials. GBM3, Ren et al. 2023 (GSE194329);
           every view computed, none curated.
         </p>
+        <CellTypingSteps />
       </Reveal>
     </section>
   );

@@ -256,3 +256,16 @@ html {
   .portal-slide, .ingest-ring { animation: none; }
   .lift-card { transition: none; }
 }
+
+/* Light band (Nov 13 paper palette) for sections that read better on white. */
+.paper {
+  --color-ink: #f7f4ec;
+  --color-ink-2: #efeadd;
+  --color-panel: #fffdf7;
+  --color-line: #d8d2c2;
+  --color-snow: #1c1a15;
+  --color-dim: #5f5b50;
+  --color-violet: #0f766e;
+  --color-violet-deep: #115e59;
+}
+.paper .igv-container, .paper .igv-root-div { background: #fff; }

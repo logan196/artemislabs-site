@@ -5,6 +5,7 @@
 // the visitor's own mail app. Nothing is sent from the page itself, and the UI
 // says so — no simulated "received" state.
 import { useEffect, useRef, useState } from "react";
+import ArrowUpRight from "./ArrowUpRight";
 
 export const CONTACT = "lbeharry@alumni.caltech.edu";
 export const BOOKING = "https://calendar.app.google/Gcn7m6neU3P3ktQA8";
@@ -173,7 +174,7 @@ export default function AccessForms() {
                   {copied ? "Copied" : "Copy text"}
                 </button>
                 <a href={opened.href} className="rounded-full border border-white/15 px-4 py-2 text-[13px] hover:border-violet transition-colors">Open mail app again</a>
-                <a href={BOOKING} target="_blank" rel="noreferrer" className="rounded-full border border-white/15 px-4 py-2 text-[13px] hover:border-violet transition-colors">Or book a call ↗</a>
+                <a href={BOOKING} target="_blank" rel="noreferrer" className="rounded-full border border-white/15 px-4 py-2 text-[13px] hover:border-violet transition-colors">Or book a call <ArrowUpRight className="ml-1" /></a>
               </div>
             </div>
           )}

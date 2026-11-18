@@ -173,18 +173,35 @@ export default function GenomeSection() {
   };
 
   return (
-    <section id="genomics" className="relative px-6 md:px-14 py-28 max-w-7xl mx-auto">
+    // Light "paper" band (the Nov 13 palette) so igv.js sits on white, not in a
+    // dark frame. .paper re-points the theme colors inside this section only.
+    <div className="paper bg-ink text-snow">
+    <section id="genomics" className="relative px-6 md:px-14 py-24 md:py-28 max-w-7xl mx-auto">
       <Reveal>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Not just spatial.
         </h2>
         <p className="mt-6 text-lg text-dim leading-relaxed max-w-2xl">
-          CUT&amp;RUN, long reads, bulk — the same embedded team takes your assay from
-          fastq to a browser you can hand a collaborator. The panel below is not a
-          screenshot: it is a live igv.js genome browser streaming two public datasets
-          into this page, opened on SOX2 — the stemness factor this site keeps meeting
-          in tumor tissue — caught sitting on its own gene.
+          CUT&amp;RUN, long reads, bulk: the same team takes your assay from fastq to a
+          browser you can hand a collaborator. The panel below is a live igv.js genome
+          browser streaming two public datasets into this page.
         </p>
+        <div className="mt-8 max-w-2xl rounded-[4px] border border-line bg-panel px-5 py-4">
+          <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-violet">Why SOX2</p>
+          <p className="mt-2 text-[15.5px] leading-relaxed text-snow">
+            SOX2 is a transcription factor whose gene sits in a stretch of chromosome 3
+            (3q26.33) that is often amplified in lung squamous cell carcinoma. NCI-H520 is
+            a lung squamous line with that amplification, and knocking SOX2 down slows its growth{" "}
+            (<a href="https://doi.org/10.1038/ng.465" target="_blank" rel="noreferrer" className="underline underline-offset-2 decoration-line hover:text-violet">Bass et al., <i>Nat Genet</i> 2009</a>).
+          </p>
+          <p className="mt-2 text-[15.5px] leading-relaxed text-dim">
+            The top track is SOX2 CUT&amp;RUN in NCI-H520 cells{" "}
+            (<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8782600" target="_blank" rel="noreferrer" className="underline underline-offset-2 decoration-line hover:text-violet">GEO GSM8782600</a>).
+            Its strongest signal in this window, about 820 RPKM, lies on the SOX2 gene
+            itself, so the protein is bound to its own gene. The long-read track below
+            shows the same locus read by read, from a separate reference genome (GIAB HG002).
+          </p>
+        </div>
         <div className="mt-6 flex gap-3 flex-wrap font-mono text-[13px] text-dim">
           <span>CUT&amp;RUN</span>
           <span aria-hidden>·</span>
@@ -240,7 +257,7 @@ export default function GenomeSection() {
               </div>
             </div>
           ) : (
-            <div className="relative min-h-[420px] bg-white/[0.03]">
+            <div className="relative min-h-[420px] bg-white">
               {status !== "ready" && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <p className="font-mono text-[13px] text-dim">
@@ -257,8 +274,8 @@ export default function GenomeSection() {
           <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> Live genome
           browser (igv.js, hg38) at the SOX2 locus, chr3:181,695,000–181,730,000. Top
           track: SOX2 CUT&amp;RUN coverage in NCI-H520 lung squamous carcinoma cells —
-          GEO accession GSM8782600 (series GSE289046), RPKM-normalized; the ~800-RPKM
-          peak over the gene body is the factor binding its own locus. Bottom track:
+          GEO accession GSM8782600 (series GSE289046), RPKM-normalized; the ~820-RPKM
+          peak over the gene body is SOX2 bound to its own gene. Bottom track:
           PacBio HiFi Revio long-read alignments at 48× from the GIAB HG002 reference
           sample (NIST ftp-trace mirror, GRCh38) — single reads span tens of kilobases.
           Both are public datasets streamed live into the browser by HTTP range
@@ -266,5 +283,6 @@ export default function GenomeSection() {
         </p>
       </Reveal>
     </section>
+    </div>
   );
 }

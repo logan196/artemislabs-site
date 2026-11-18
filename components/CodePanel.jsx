@@ -311,8 +311,8 @@ export default function CodePanel() {
               <div className="font-mono text-[10.5px] mt-2 leading-[1.6]">
                 <div style={{ color: "#e8e6df" }}>publication-ready: Fig. GBM3 overlay</div>
                 <div style={{ color: DIM }}>
-                  report.md <span style={{ color: MINT }}>✓</span>&nbsp;&nbsp;insights{" "}
-                  <span style={{ color: MINT }}>✓</span>
+                  report.md <span style={{ color: MINT }}>✓︎</span>&nbsp;&nbsp;insights{" "}
+                  <span style={{ color: MINT }}>✓︎</span>
                 </div>
               </div>
             </div>
@@ -335,14 +335,14 @@ export default function CodePanel() {
           {show(13300) && (
             <div className="codepanel-rise">
               <span style={{ color: TEAL }}>  [2/5] marker report     </span>
-              <span style={{ color: MINT }}>✓</span>
+              <span style={{ color: MINT }}>✓︎</span>
               <span style={{ color: DIM }}>  report.md · clusters.csv</span>
             </div>
           )}
           {show(13950) && (
             <div className="codepanel-rise">
               <span style={{ color: TEAL }}>  [3/5] Vitessce portal   </span>
-              <span style={{ color: MINT }}>✓</span>
+              <span style={{ color: MINT }}>✓︎</span>
               <span style={{ color: DIM }}>  output/GBM3/portal.html</span>
             </div>
           )}
@@ -365,13 +365,13 @@ export default function CodePanel() {
           )}
           {show(16700) && (
             <div className="codepanel-rise">
-              <span style={{ color: MINT }}>  ✓</span>
+              <span style={{ color: MINT }}>  ✓︎</span>
               <span style={{ color: DIM }}> provenance: qwen3:8b, local</span>
             </div>
           )}
           {show(FIG_START + 250) && (
             <div className="codepanel-rise">
-              <span style={{ color: MINT }}>  ✓</span>
+              <span style={{ color: MINT }}>  ✓︎</span>
               <span style={{ color: DIM }}> figure  GBM3_overlay.jpg → publication-ready</span>
             </div>
           )}
@@ -400,7 +400,7 @@ export default function CodePanel() {
               }
               style={{ transition: "color .3s" }}
             >
-              {i < act ? "✓ " : i === act ? "● " : ""}
+              {i < act ? "✓︎ " : i === act ? "● " : ""}
               {s}
             </span>
           </span>

@@ -7,6 +7,7 @@
 // Only the visible plates are in the DOM; neighbours are preloaded.
 import { useCallback, useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
+import ArrowUpRight from "./ArrowUpRight";
 
 export const BOOKLET_URL = "https://logan196.github.io/novaflow-figure-booklet/";
 const DWELL = 5200; // ms per plate on auto-advance
@@ -351,7 +352,7 @@ export default function FigureBooklet() {
             rel="noreferrer"
             className="inline-flex items-center justify-center rounded-[3px] bg-snow text-ink px-7 py-3 font-medium hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors"
           >
-            Open the full Figure Booklet <span aria-hidden className="ml-2">↗</span>
+            Open the full Figure Booklet <ArrowUpRight className="ml-2" />
           </a>
           <p className="text-[13px] text-dim leading-relaxed max-w-xl">
             All plates are recreations by Artemis Biolabs on public

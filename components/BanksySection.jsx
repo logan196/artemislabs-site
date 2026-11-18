@@ -320,6 +320,7 @@ export default function BanksySection() {
   const cap3 = useTransform(scrollYProgress, [0.58, 0.66, 1], [0, 1, 1]);
 
   return (
+    <>
     <section id="banksy" ref={wrapRef} className="relative h-[180vh] md:h-[240vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         <div className="px-6 md:px-14 pt-16 md:pt-20 max-w-7xl mx-auto w-full">
@@ -354,9 +355,11 @@ export default function BanksySection() {
           </div>
         </div>
       </div>
+    </section>
 
-      {/* after the show: why this disease, and who wrote the labels */}
-      <div className="px-6 md:px-14 pb-20 md:pb-24 max-w-7xl mx-auto grid md:grid-cols-2 gap-4 md:gap-5">
+    {/* after the show: why this disease, and who wrote the labels. Outside the
+        fixed-height scroller so it can never overflow under the next section. */}
+    <div className="relative px-6 md:px-14 pt-6 pb-20 md:pb-24 max-w-7xl mx-auto grid md:grid-cols-2 gap-4 md:gap-5">
         <div className="rounded-[4px] border border-line bg-panel/80 p-6">
           <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">
             why glioblastoma
@@ -385,7 +388,7 @@ export default function BanksySection() {
             as ground truth.
           </p>
         </div>
-      </div>
-    </section>
+    </div>
+    </>
   );
 }

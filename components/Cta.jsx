@@ -3,6 +3,7 @@
 // Close of the page: the Nov 13 dodecahedron with "Your data has a story.",
 // then the three booking options.
 import Reveal from "./Reveal";
+import ArrowUpRight from "./ArrowUpRight";
 import BioDodecahedron from "./BioDodecahedron";
 import { BOOKING, CONTACT } from "./AccessForms";
 
@@ -27,7 +28,7 @@ const OPTIONS = [
     t: "Book a 30-minute call",
     b: "Walk us through the project and the data; leave with a concrete next step.",
     href: BOOKING,
-    cta: "Book a call ↗",
+    cta: "Book a call",
     external: true,
   },
 ];
@@ -38,10 +39,9 @@ export default function Cta() {
       <div className="max-w-6xl mx-auto">
         <div id="story" className="text-center">
           <Reveal>
-            <div className="relative mx-auto w-full max-w-[520px] mb-2" aria-hidden>
+            <div className="relative mx-auto w-full max-w-[520px] mb-8" aria-hidden>
               <BioDodecahedron size={400} labels={false} helix />
             </div>
-            <img src="artemis_mark.svg" alt="" className="relative h-14 w-14 mx-auto mb-8" />
             <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
               Your data has a story.
             </h2>
@@ -67,6 +67,7 @@ export default function Cta() {
                   }`}
                 >
                   {o.cta}
+                  {o.external && <ArrowUpRight className="ml-1.5" />}
                 </a>
               </div>
             ))}
@@ -96,7 +97,7 @@ export default function Cta() {
               <span className="font-semibold tracking-[0.18em] text-[14px] text-snow">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
             </span>
             <p className="font-mono text-[13px] text-dim">
-              © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
+              ©︎ 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
             </p>
           </div>
         </footer>
