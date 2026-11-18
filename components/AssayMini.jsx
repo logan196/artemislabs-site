@@ -20,6 +20,7 @@ const HUE = {
   singlecell: "#56B4E9",
   spatial: "#009E73",
   chromatin: "#E69F00",
+  methylation: "#F0E442",
   longread: "#0072B2",
   radiomics: "#D55E00",
   calcium: "#CC79A7",
@@ -116,6 +117,30 @@ const DRAW = {
       ctx.fillStyle = cols[l]; ctx.globalAlpha = 0.14; ctx.fill();
       ctx.globalAlpha = 0.25; ctx.strokeStyle = INK(0.3); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(PAD, base); ctx.lineTo(W - PAD, base); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  },
+
+  methylation(ctx, W, H, t, R) {
+    // CpG lollipops on two strands: filled = methylated, hollow = unmethylated.
+    const laneH = (H - PAD * 2) / 2, xMax = PAD + (W - PAD * 2) * ease(t);
+    const cols = [HUE.methylation, shade(HUE.methylation, 0.78)];
+    for (let l = 0; l < 2; l++) {
+      const base = PAD + laneH * (l + 0.78), col = cols[l];
+      ctx.globalAlpha = 0.3; ctx.strokeStyle = INK(0.35); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(PAD, base); ctx.lineTo(W - PAD, base); ctx.stroke();
+      const n = 9 + Math.floor(R() * 4);
+      for (let i = 0; i < n; i++) {
+        const x = PAD + 6 + R() * (W - PAD * 2 - 12);
+        const h = laneH * (0.26 + R() * 0.46), filled = R() > 0.42;
+        if (x > xMax) continue;
+        ctx.globalAlpha = 0.8; ctx.strokeStyle = col; ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(x, base); ctx.lineTo(x, base - h); ctx.stroke();
+        ctx.beginPath(); ctx.arc(x, base - h, 2.7, 0, 6.283);
+        ctx.globalAlpha = 0.95;
+        if (filled) { ctx.fillStyle = col; ctx.fill(); }
+        else { ctx.fillStyle = "#0c0e11"; ctx.fill(); ctx.stroke(); }
+      }
     }
     ctx.globalAlpha = 1;
   },

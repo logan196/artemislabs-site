@@ -14,11 +14,14 @@ const CORES = [
   { name: "Spatial transcriptomics", kind: "spatial", desc: "Every cell or spot mapped back onto the tissue.",
     io: ["Visium, Xenium, MERFISH or seqFISH sections", "Domains, cell-state maps, a live portal"], tools: "BANKSY, cell2location, Vitessce",
     link: ["#viewer", "Open the live viewer"] },
-  { name: "CUT&Tag and chromatin", kind: "chromatin", desc: "Peaks, tracks and differential binding.",
-    io: ["CUT&Tag or CUT&RUN reads", "Peak calls, bigWig tracks, differential binding"], tools: "igv.js for review",
+  { name: "Chromatin accessibility and binding", kind: "chromatin", desc: "Open chromatin and protein–DNA contacts, bulk or single-cell.",
+    io: ["ATAC-Seq, scATAC-Seq, ChIP-Seq, CUT&Tag or CUT&RUN reads", "Peak calls, bigWig tracks, differential binding, per-cell accessibility"], tools: "igv.js for review",
     link: ["#genomics", "See the SOX2 browser"] },
-  { name: "Long-read sequencing", kind: "longread", desc: "Isoforms, structural variants and methylation.",
-    io: ["PacBio HiFi or nanopore reads", "Isoforms, SVs, methylation calls"],
+  { name: "DNA methylation", kind: "methylation", desc: "Global 5mC, plus the modifications short reads cannot see.",
+    io: ["WGBS, EM-seq or PacBio HiFi reads", "5mC calls; 6mA and 4mC with haplotype-phased marks"],
+    link: ["#genomics", "See HiFi reads at SOX2"] },
+  { name: "Long-read sequencing", kind: "longread", desc: "Isoforms, structural variants and phased assemblies.",
+    io: ["PacBio HiFi or nanopore reads", "Isoforms, SVs, phased assemblies"],
     link: ["#genomics", "See HiFi reads at SOX2"] },
   { name: "Radiomics and imaging", kind: "radiomics", desc: "From segmentation to outcome models.",
     io: ["Scans and annotations", "Segmentations, image features, outcome models"] },
@@ -36,7 +39,7 @@ export default function CoreCapabilities() {
       <Reveal>
         <p className="font-mono text-xs text-violet tracking-wide mb-4">CORE CAPABILITIES</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
-          Eight cores. <span className="text-violet">One embedded team.</span>
+          Nine cores. <span className="text-violet">One embedded team.</span>
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
           The glioblastoma run above is one of them. The others work the same way:
@@ -45,7 +48,7 @@ export default function CoreCapabilities() {
       </Reveal>
 
       <Reveal delay={0.1}>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
           {CORES.map((c) => (
             <div key={c.name} className="flex flex-col rounded-[4px] border border-line bg-panel/70 p-5">
               <div className="rounded-[3px] bg-white/[0.03] mb-4 overflow-hidden">
