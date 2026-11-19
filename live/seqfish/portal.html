@@ -1,134 +1,13 @@
-<!DOCTYPE html>
-<!-- HAND-EDITED beyond the generated template: fluorescence dataset B (meta-coordination)
-     and the Artemis co-scientist rail. If regenerating this portal, re-apply both. -->
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>seqFISH+ mouse cortex &amp; SVZ · Artemis BioLabs live demo</title>
-  <style>
-    /* Napari-grade dark console — same tokens as the GBM atlas shell. */
-    :root {
-      --bg: #0a0c0e; --panel: #0f1316; --panel-2: #141a1e;
-      --line: #1f272d; --line-soft: #182025;
-      --text: #e6edf0; --muted: #8b98a0; --faint: #556069;
-      --accent: #2dd4bf; --accent-hi: #5eead4; --cyan: #22d3ee; --accent-dim: #156e66;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Explore published Cai Lab seqFISH+ mouse brain data in Vitessce."><title>seqFISH+ · Artemis BioLabs</title><style>
+:root{color-scheme:dark;--ink:#0a0d12;--soft:#b9c3cf;--line:#8299ba26}*{box-sizing:border-box}html{background:var(--ink);color:#f2f4f8}body{margin:0;font:14px/1.5 Inter,system-ui,sans-serif;background:radial-gradient(ellipse min(70vw,850px) 680px at 95% 1%,#192234 0,transparent 79%),var(--ink);min-width:0}a{color:#d0e0fa;text-underline-offset:3px}a:focus-visible,select:focus-visible{outline:2px solid #cadedf;outline-offset:4px}.rail{max-width:1440px;margin:auto;padding-inline:clamp(12px,3vw,42px)}nav{display:flex;flex-wrap:wrap;gap:.4rem 1.3rem;justify-content:space-between;align-items:center;padding-block:17px}nav a{text-decoration:none}.intro{display:flex;align-items:end;justify-content:space-between;gap:16px;padding-block:16px 18px}h1{font-size:clamp(36px,5.1vw,62px);line-height:1;letter-spacing:-.05em;font-weight:580;margin:0 0 10px}.intro p{margin:0;max-width:66ch;color:var(--soft)}.intro small{display:block;color:var(--soft);margin-top:5px}label{display:block;color:var(--soft);font-size:12px}select{background:#151c28;color:#eaf0fa;border:1px solid #7a8ca861;border-radius:5px;font:inherit;min-height:36px;min-width:112px;margin-top:3px;padding-inline:8px}#root{height:clamp(830px,102vh,1090px);min-width:0;width:100%;position:relative}#viewer-status{padding:22px 0;color:var(--soft)}#viewer-status p{margin:0}footer{border-top:1px solid var(--line);margin-top:18px;padding:12px 0 24px;color:var(--soft);font-size:12px}footer p{margin:4px 0}#root [role=button]:focus-visible{outline:1px solid #d0e0fa} @media(max-width:720px){.intro{align-items:start;flex-direction:column;gap:10px;padding-block:10px 15px}#root{height:1740px}nav{font-size:12px;padding-block:13px}}
+</style><script type="importmap">{"imports":{"react":"https://esm.sh/react@18.2.0","react/jsx-runtime":"https://esm.sh/react@18.2.0/jsx-runtime","react/jsx-dev-runtime":"https://esm.sh/react@18.2.0/jsx-dev-runtime","react-dom":"https://esm.sh/react-dom@18.2.0?external=react","react-dom/client":"https://esm.sh/react-dom@18.2.0/client?external=react","vitessce":"https://cdn.vitessce.io/vitessce@3.9.11/dist/index.min.js"}}</script></head><body><div class="rail"><nav aria-label="Viewer navigation"><a href="/#spatial">Artemis BioLabs</a><a href="https://doi.org/10.1038/s41586-019-1049-y">Eng et al. · Nature, 2019</a></nav><main><header class="intro"><div><h1>seqFISH+</h1><p>Mouse brain data from Long Cai’s lab at Caltech. Explore the same measured cells in tissue coordinates and in UMAP.</p><small>913 cells · 2,000 genes in this dataset · Vitessce</small></div><div><label for="fov-select">Fluorescence field</label><select id="fov-select" aria-describedby="image-note"><option value="0" selected>Pos 0</option><option value="1">Pos 1</option><option value="2">Pos 2</option><option value="3">Pos 3</option><option value="4">Pos 4</option></select></div></header><p id="viewer-status" role="status">Loading the Vitessce viewer…</p><noscript><p>JavaScript is required for the interactive plots. <a href="https://doi.org/10.1038/s41586-019-1049-y">View the source paper</a>.</p></noscript><div id="root" aria-label="Interactive seqFISH+ data"></div></main><footer><p>Expression: <a href="https://doi.org/10.1038/s41586-019-1049-y">Eng et al., Nature (2019)</a>. Cell annotations and field stitching: <a href="https://doi.org/10.1186/s13059-021-02286-2">Dries et al., Genome Biology (2021)</a>.</p><p id="image-note">The DAPI/Nissl fluorescence panel is a separate image, not registered to the cell map. <a href="https://doi.org/10.5281/zenodo.4540850">Qian Zhu, Zenodo</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p></footer></div><script type="module">
+    const shared = {dataset:"A",obsSetSelection:"A",obsSetExpansion:"A",obsColorEncoding:"A",featureSelection:"A"};
+    function makeLayout(mobile, imageScopes) {
+      function view(component,scopes,x,y,w,h){return {component,coordinationScopes:scopes,x,y,w,h};}
+      const spatial={...shared,embeddingType:"A",embeddingObsRadiusMode:"S",embeddingObsRadius:"S"};
+      const umap={...shared,embeddingType:"B",embeddingObsRadiusMode:"U",embeddingObsRadius:"U"};
+      return mobile ? [view("scatterplot",spatial,0,0,12,3),view("scatterplot",umap,0,3,12,3),view("featureList",shared,0,6,12,2),view("spatialBeta",imageScopes,0,8,12,3),view("layerControllerBeta",imageScopes,0,11,12,2)] : [view("scatterplot",spatial,0,0,5,6),view("scatterplot",umap,5,0,5,6),view("featureList",shared,10,0,2,6),view("spatialBeta",imageScopes,0,6,8,6),view("layerControllerBeta",imageScopes,8,6,4,6)];
     }
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); }
-    body { display: flex; flex-direction: column; color: var(--text); }
-    #root { flex: 1 1 auto; min-height: 0; }
-    #loading { font-family: var(--sans); padding: 24px; color: var(--muted); }
-    #main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: row; }
-    #root { flex: 1 1 auto; min-width: 0; }
-    /* ——— Artemis co-scientist rail ——— */
-    #agent-rail {
-      flex: 0 0 320px; display: flex; flex-direction: column; min-height: 0;
-      border-left: 1px solid var(--line); background: var(--panel);
-      font-family: var(--sans);
-    }
-    .rail-head {
-      display: flex; align-items: center; gap: 8px; padding: 10px 14px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, var(--panel-2), var(--panel));
-    }
-    .rail-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan);
-      box-shadow: 0 0 8px var(--cyan); animation: railpulse 2.4s ease-in-out infinite; }
-    .rail-title { font: 600 10px var(--mono); letter-spacing: 0.18em; color: var(--accent-hi); }
-    .rail-replay { margin-left: auto; font: 600 10px var(--mono); color: var(--muted);
-      background: none; border: 1px solid var(--line); border-radius: 3px; padding: 3px 8px; cursor: pointer; }
-    .rail-replay:hover { color: var(--accent-hi); border-color: var(--accent-dim); }
-    #rail-chat { flex: 1 1 auto; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px;
-      scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
-    .msg { max-width: 92%; border-radius: 4px; padding: 8px 11px; font-size: 12.5px; line-height: 1.5; }
-    .msg.user { align-self: flex-end; background: rgba(34,211,238,.1); color: var(--accent-hi);
-      border: 1px solid rgba(34,211,238,.25); border-bottom-right-radius: 2px; }
-    .msg.ai { align-self: flex-start; background: var(--panel-2); color: var(--text);
-      border: 1px solid var(--line); border-left: 2px solid var(--accent-dim); border-bottom-left-radius: 2px; }
-    .figcard { align-self: flex-start; width: 100%; border: 1px solid var(--line); border-radius: 4px;
-      background: var(--panel-2); overflow: hidden; }
-    .figcard img { display: block; width: 100%; height: auto; }
-    .figcard .cap { padding: 7px 10px; font-size: 10.5px; color: var(--muted); line-height: 1.45;
-      border-top: 1px solid var(--line-soft); }
-    .figcard a { color: inherit; text-decoration: none; }
-    .typing { align-self: flex-start; display: flex; gap: 4px; padding: 9px 12px;
-      background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; border-bottom-left-radius: 2px; }
-    .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); animation: tybob 0.9s ease-in-out infinite; }
-    .typing i:nth-child(2) { animation-delay: 0.15s; } .typing i:nth-child(3) { animation-delay: 0.3s; }
-    .rail-foot { flex: 0 0 auto; padding: 8px 14px; border-top: 1px solid var(--line);
-      font-size: 9.5px; color: var(--faint); line-height: 1.45; }
-    @keyframes railpulse { 50% { opacity: 0.35; } }
-    @keyframes tybob { 50% { transform: translateY(-3px); opacity: 1; } 0%,100% { opacity: 0.5; } }
-    @media (max-width: 880px) { #agent-rail { display: none; } }
-    @media (prefers-reduced-motion: reduce) {
-      .rail-dot, .typing i { animation: none; }
-    }
-    #citebar {
-      flex: 0 0 auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      padding: 7px 14px; border-top: 1px solid var(--line); background: var(--panel);
-      font-family: var(--sans); font-size: 12px; color: var(--muted);
-      line-height: 1.45;
-    }
-    #citebar label { font-weight: 600; color: var(--text); white-space: nowrap; }
-    #citebar select { font-size: 12px; padding: 2px 4px; background: var(--panel-2);
-      color: var(--text); border: 1px solid var(--line); border-radius: 3px; }
-    #citebar a { color: var(--accent); }
-    #citebar .credit { flex: 1 1 320px; min-width: 240px; }
-  </style>
-</head>
-<body>
-  <div id="main">
-    <div id="root"><div id="loading">Loading spatial portal&hellip; (serve this folder over HTTP)</div></div>
-    <aside id="agent-rail" aria-label="Artemis co-scientist — precomputed analysis of this dataset">
-      <div class="rail-head">
-        <span class="rail-dot" aria-hidden="true"></span>
-        <span class="rail-title">ARTEMIS CO-SCIENTIST</span>
-        <button class="rail-replay" id="rail-replay" hidden>&#8635; replay</button>
-      </div>
-      <div id="rail-chat"></div>
-      <div class="rail-foot">
-        Scripted exchange &mdash; every figure precomputed from this dataset (scanpy + kNN spatial
-        statistics, fixed seeds); methods in each caption. Live analysis ships with the product.
-      </div>
-    </aside>
-  </div>
-  <div id="citebar">
-    <label for="fov-select">Fluorescence FOV:</label>
-    <select id="fov-select">
-      <option value="0">FOV Pos0</option>
-      <option value="1">FOV Pos1</option>
-      <option value="2" selected>FOV Pos2</option>
-      <option value="3">FOV Pos3</option>
-      <option value="4">FOV Pos4</option>
-    </select>
-    <span class="credit">
-      Fluorescence panel: segmentation staining (DAPI blue / Nissl green) &mdash; per-FOV frame, not registered to the
-      stitched cell map (Zhu et al., Zenodo <a href="https://doi.org/10.5281/zenodo.4540850" target="_blank" rel="noreferrer">10.5281/zenodo.4540850</a>, CC-BY 4.0).
-      Expression data: Eng et al. 2019, <i>Nature</i> 568:235&ndash;239. Annotations &amp; FOV stitching: Dries et al. 2021, <i>Genome Biology</i> 22:78 (Giotto).
-    </span>
-  </div>
-  <script type="module">
-    let importWithMap;
-    try {
-      importWithMap = (await import('https://unpkg.com/dynamic-importmap@0.1.0')).importWithMap;
-    } catch (e) {
-      importWithMap = (await import('https://cdn.vitessce.io/dynamic-importmap@0.1.0/dist/index.js')).importWithMap;
-    }
-
-    const importMap = {
-      imports: {
-        "react": "https://esm.sh/react@18.2.0",
-        "react-dom": "https://esm.sh/react-dom@18.2.0",
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-        "vitessce": "https://cdn.vitessce.io/vitessce@3.9.11/dist/index.min.js"
-      }
-    };
-
-    const React = await importWithMap("react", importMap);
-    const { createRoot } = await importWithMap("react-dom/client", importMap);
-    const { Vitessce } = await importWithMap("vitessce", importMap);
-
     const CREDIT = "Segmentation staining images (DAPI/Nissl, per-FOV frame): Zhu et al., Zenodo 10.5281/zenodo.4540850 (CC-BY 4.0), companion to Dries et al. 2021.";
 
     // Per-FOV 99.5th-percentile contrast windows computed during OME-zarr conversion.
@@ -140,7 +19,7 @@
       4: { dapi: 12140, nissl: 30997 }
     };
 
-    function makeConfig(fov) {
+    function makeConfig(fov, mobile) {
       const win = FOV_WINDOWS[fov];
       // Explicit image-layer meta-coordination for the fluorescence panel:
       // vitessce 3.9.11's initStrategy "auto" does not auto-create imageLayer
@@ -182,7 +61,7 @@
         }
       };
       const imageScopes = {"dataset": "B", "metaCoordinationScopes": ["metaB"], "metaCoordinationScopesBy": ["metaB"]};
-      const config = {"version": "1.0.16", "uid": "seqfish-fov" + fov, "name": "seqFISH+ mouse cortex & SVZ · Artemis BioLabs live demo", "description": "913 cells x 10,000 genes, seqFISH+ mouse brain (cortex, SVZ, choroid plexus). Data: Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "datasets": [{"uid": "A", "name": "seqFISH+ cortex/SVZ", "files": [{"fileType": "anndata.zarr", "url": "./data.zarr", "options": {"obsLocations": {"path": "obsm/spatial"}, "obsEmbedding": [{"path": "obsm/spatial", "dims": [0, 1], "embeddingType": "Spatial"}, {"path": "obsm/X_umap", "dims": [0, 1], "embeddingType": "UMAP"}], "obsSets": [{"name": "Cell type (Dries et al. 2021)", "path": "obs/cell_type"}, {"name": "Leiden cluster", "path": "obs/leiden"}, {"name": "Louvain (Eng et al. 2019)", "path": "obs/louvain_eng2019"}, {"name": "Region", "path": "obs/region"}], "obsFeatureMatrix": {"path": "X", "initialFeatureFilterPath": "var/top_marker"}}, "coordinationValues": {"obsType": "cell"}}]}, {"uid": "B", "name": "Segmentation staining — per-FOV frame (Zhu et al., Zenodo 10.5281/zenodo.4540850, CC-BY 4.0)", "files": [{"fileType": "image.ome-zarr", "url": "./fov" + fov + ".ome.zarr", "coordinationValues": {"fileUid": "segmentation-staining"}}]}], "coordinationSpace": Object.assign({"dataset": {"A": "A", "B": "B"}, "embeddingType": {"A": "Spatial", "B": "UMAP"}, "obsSetSelection": {"A": [["Cell type (Dries et al. 2021)", "Astrocyte"], ["Cell type (Dries et al. 2021)", "Choroid Plexus"], ["Cell type (Dries et al. 2021)", "Endothelial"], ["Cell type (Dries et al. 2021)", "Ependymal"], ["Cell type (Dries et al. 2021)", "Excitatory neuron"], ["Cell type (Dries et al. 2021)", "Interneuron"], ["Cell type (Dries et al. 2021)", "Microglia"], ["Cell type (Dries et al. 2021)", "Neural Stem"], ["Cell type (Dries et al. 2021)", "Neuroblast"], ["Cell type (Dries et al. 2021)", "Oligodendrocyte"]]}, "obsSetExpansion": {"A": [["Cell type (Dries et al. 2021)"]]}, "obsColorEncoding": {"A": "cellSetSelection"}, "embeddingObsRadiusMode": {"S": "manual", "U": "manual"}, "embeddingObsRadius": {"S": 3.2, "U": 2.4}}, imageCoordination), "layout": [{"component": "scatterplot", "coordinationScopes": {"dataset": "A", "embeddingType": "A", "obsSetSelection": "A", "obsSetExpansion": "A", "obsColorEncoding": "A", "embeddingObsRadiusMode": "S", "embeddingObsRadius": "S"}, "x": 0, "y": 0, "w": 8, "h": 6}, {"component": "spatialBeta", "coordinationScopes": imageScopes, "x": 8, "y": 0, "w": 4, "h": 4}, {"component": "layerControllerBeta", "coordinationScopes": imageScopes, "x": 8, "y": 4, "w": 4, "h": 2}, {"component": "scatterplot", "coordinationScopes": {"dataset": "A", "embeddingType": "B", "obsSetSelection": "A", "obsSetExpansion": "A", "obsColorEncoding": "A", "embeddingObsRadiusMode": "U", "embeddingObsRadius": "U"}, "x": 0, "y": 6, "w": 3, "h": 6}, {"component": "obsSets", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsSetExpansion": "A", "obsColorEncoding": "A"}, "x": 3, "y": 6, "w": 2, "h": 6}, {"component": "featureList", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 5, "y": 6, "w": 2, "h": 6}, {"component": "heatmap", "coordinationScopes": {"dataset": "A", "obsSetSelection": "A", "obsColorEncoding": "A"}, "x": 7, "y": 6, "w": 5, "h": 6}], "initStrategy": "auto", "vitessceMetadata": {"lab_name": "Artemis BioLabs", "portal_title": "seqFISH+ mouse cortex & SVZ live demo", "data_source": "Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "has_spatial_coordinates": true, "spatial_coordinate_origin": "measured", "has_measured_spatial_coordinates": true}};
+      const config = {"version": "1.0.16", "uid": "seqfish-fov" + fov, "name": "seqFISH+ mouse cortex & SVZ · Artemis BioLabs live demo", "description": "913 cells × 2,000 genes in this viewer, seqFISH+ mouse brain (cortex, SVZ, choroid plexus). Data: Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "datasets": [{"uid": "A", "name": "seqFISH+ cortex/SVZ", "files": [{"fileType": "anndata.zarr", "url": "./data.zarr", "options": {"obsLocations": {"path": "obsm/spatial"}, "obsEmbedding": [{"path": "obsm/spatial", "dims": [0, 1], "embeddingType": "Spatial"}, {"path": "obsm/X_umap", "dims": [0, 1], "embeddingType": "UMAP"}], "obsSets": [{"name": "Cell type (Dries et al. 2021)", "path": "obs/cell_type"}, {"name": "Leiden cluster", "path": "obs/leiden"}, {"name": "Louvain (Eng et al. 2019)", "path": "obs/louvain_eng2019"}, {"name": "Region", "path": "obs/region"}], "obsFeatureMatrix": {"path": "X", "initialFeatureFilterPath": "var/top_marker"}}, "coordinationValues": {"obsType": "cell"}}]}, {"uid": "B", "name": "Segmentation staining — per-FOV frame (Zhu et al., Zenodo 10.5281/zenodo.4540850, CC-BY 4.0)", "files": [{"fileType": "image.ome-zarr", "url": "./fov" + fov + ".ome.zarr", "coordinationValues": {"fileUid": "segmentation-staining"}}]}], "coordinationSpace": Object.assign({"dataset": {"A": "A", "B": "B"}, "embeddingType": {"A": "Spatial", "B": "UMAP"}, "obsSetSelection": {"A": [["Cell type (Dries et al. 2021)", "Astrocyte"], ["Cell type (Dries et al. 2021)", "Choroid Plexus"], ["Cell type (Dries et al. 2021)", "Endothelial"], ["Cell type (Dries et al. 2021)", "Ependymal"], ["Cell type (Dries et al. 2021)", "Excitatory neuron"], ["Cell type (Dries et al. 2021)", "Interneuron"], ["Cell type (Dries et al. 2021)", "Microglia"], ["Cell type (Dries et al. 2021)", "Neural Stem"], ["Cell type (Dries et al. 2021)", "Neuroblast"], ["Cell type (Dries et al. 2021)", "Oligodendrocyte"]]}, "obsSetExpansion": {"A": [["Cell type (Dries et al. 2021)"]]}, "obsColorEncoding": {"A": "cellSetSelection"}, "embeddingObsRadiusMode": {"S": "manual", "U": "manual"}, "embeddingObsRadius": {"S": 3.2, "U": 2.4}}, imageCoordination), "layout": makeLayout(mobile,imageScopes), "initStrategy": "auto", "vitessceMetadata": {"lab_name": "Artemis BioLabs", "portal_title": "seqFISH+ mouse cortex & SVZ live demo", "data_source": "Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "has_spatial_coordinates": true, "spatial_coordinate_origin": "measured", "has_measured_spatial_coordinates": true}};
 
       // Vitessce's zarr loader calls `new URL(url)`, which rejects relative
       // strings. Resolve each data file URL against this page's location so the
@@ -190,90 +69,38 @@
       for (const ds of (config.datasets || [])) {
         for (const f of (ds.files || [])) {
           if (f.url && !/^https?:\/\//.test(f.url)) {
-            f.url = new URL(f.url, window.location.href).href;
+            f.url = new URL(f.url, new URL("/live/seqfish/", window.location.origin)).href;
           }
         }
       }
+      config.coordinationSpace.featureSelection = {A: null};
       return config;
     }
 
-    const e = React.createElement;
-    const rootEl = document.getElementById('root');
-    const root = createRoot(rootEl);
-    function renderPortal(fov) {
-      root.render(
-        e(Vitessce, { config: makeConfig(fov), theme: 'dark', height: rootEl.clientHeight })
-      );
-    }
-    renderPortal(2);
-    document.getElementById('fov-select').addEventListener('change', (ev) => {
-      renderPortal(parseInt(ev.target.value, 10));
-    });
-  </script>
-  <script>
-  (function () {
-    "use strict";
-    var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var chat = document.getElementById("rail-chat");
-    var replayBtn = document.getElementById("rail-replay");
-    if (!chat) return;
-    var FIGS = null;
-    var timers = [];
-    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
-    function el(tag, cls, html) {
-      var n = document.createElement(tag);
-      if (cls) n.className = cls;
-      if (html !== undefined) n.innerHTML = html;
-      return n;
-    }
-    function esc(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
-    function pin() { chat.scrollTop = chat.scrollHeight; }
-    function addUser(q) { chat.appendChild(el("div", "msg user", esc(q))); pin(); }
-    function addFig(f) {
-      var card = el("div", "figcard");
-      card.innerHTML =
-        '<a href="figs/' + f.file + '" target="_blank" rel="noreferrer">' +
-        '<img src="figs/' + f.file + '" alt="' + esc(f.title) + '" loading="lazy" />' +
-        '<div class="cap">' + esc(f.caption) + "</div></a>";
-      chat.appendChild(card);
-      pin();
-    }
-    function play() {
-      clearTimers();
-      chat.innerHTML = "";
-      replayBtn.hidden = true;
-      if (REDUCED) {
-        FIGS.forEach(function (f) { addUser(f.question); addFig(f); });
-        replayBtn.hidden = false;
-        return;
+
+  async function boot() {
+    const status = document.getElementById("viewer-status");
+    const rootEl = document.getElementById("root");
+    try {
+      const deps = Promise.all([import("react"), import("react-dom/client"), import("vitessce")]);
+      let timer;
+      let [React,{createRoot},{Vitessce}] = await Promise.race([deps, new Promise((_, reject)=>{timer=setTimeout(()=>reject(new Error("Load deadline")),24000);})]).finally(()=>clearTimeout(timer));
+      document.documentElement.dataset.vitessceImports = "ready";
+      const root = createRoot(rootEl);
+      const fov = document.getElementById("fov-select");
+      const small = matchMedia("(max-width: 720px)");
+      function show() {
+        const mobile = small.matches;
+        root.render(React.createElement(Vitessce, {config: makeConfig(Number(fov.value),mobile), theme: "dark", rowHeight: null, height:rootEl.clientHeight}));
       }
-      var t = 600;
-      FIGS.forEach(function (f, i) {
-        timers.push(setTimeout(function () { addUser(f.question); }, t));
-        t += 700;
-        timers.push(setTimeout(function () {
-          var ty = el("div", "typing", "<i></i><i></i><i></i>");
-          ty.id = "ty" + i;
-          chat.appendChild(ty); pin();
-        }, t));
-        t += 1500;
-        timers.push(setTimeout(function () {
-          var ty = document.getElementById("ty" + i);
-          if (ty) ty.remove();
-          addFig(f);
-          if (i === FIGS.length - 1) replayBtn.hidden = false;
-        }, t));
-        t += 900;
-      });
+      show();
+      fov.addEventListener("change",show);
+      small.addEventListener("change",show);
+      status.remove();
+    } catch(e) {
+      console.error("Vitessce could not start", e);
+      status.innerHTML='<p>The interactive viewer didn’t load. <a href="">Try again</a> or <a href="https://doi.org/10.1038/s41586-019-1049-y">open the study</a>.</p>';
     }
-    replayBtn.addEventListener("click", play);
-    fetch("figs/figures.json")
-      .then(function (r) { return r.json(); })
-      .then(function (d) { FIGS = d; play(); })
-      .catch(function () {
-        chat.appendChild(el("div", "msg ai", "analysis figures failed to load."));
-      });
-  })();
-  </script>
-</body>
-</html>
+  }
+  boot();
+</script></body></html>
