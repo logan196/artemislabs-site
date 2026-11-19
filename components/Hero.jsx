@@ -2,9 +2,10 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import BioDodecahedron from "./BioDodecahedron";
+import HeroGenesis from "./HeroGenesis";
+import ArrowIntro from "./ArrowIntro";
+import SpellOut from "./SpellOut";
 import FounderLock from "./FounderLock";
-import Decode from "./Decode";
 
 const BOOKING =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
@@ -44,7 +45,7 @@ export default function Hero() {
       </a>
       <div className="absolute inset-0 -z-10">
         <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#f7f4ec_78%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#07060b_80%)]" />
       </div>
 
       <nav className="flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
@@ -88,10 +89,12 @@ export default function Hero() {
         </div>
       </nav>
 
-      {/* THE OPENING: the moving dodecahedron introduces the company */}
+      {/* THE OPENING: the arrow spells the name, strikes the dodecahedron,
+          and the solid shatters into 1,775 living cells */}
+      <ArrowIntro />
       <motion.div style={{ opacity: fade }} className="flex-1 flex flex-col items-center justify-center px-6 text-center relative">
-        <motion.div style={{ scale }} className="relative w-full max-w-[560px] -mb-10 md:-mb-14" aria-hidden>
-          <BioDodecahedron size={400} labels={false} helix />
+        <motion.div style={{ scale }} className="relative w-full max-w-[560px] -mb-10 md:-mb-14">
+          <HeroGenesis size={400} />
         </motion.div>
 
         <motion.div
@@ -101,41 +104,40 @@ export default function Hero() {
           className="relative"
         >
           <h1
+            id="hero-title"
             className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5rem] font-semibold tracking-[0.015em]"
             style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
           >
-            <Decode text="ARTEMIS" delay={500} />{" "}
-            <Decode text="BIOLABS" delay={1200} className="text-violet" />
+            <SpellOut text="ARTEMIS" offset={0} total={15} />{" "}
+            <SpellOut text="BIOLABS" offset={8} total={15} className="text-violet" />
           </h1>
-          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
-            computational biology, accelerated.
-          </p>
-          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
-            Every core service your lab needs.
-            <br className="hidden sm:block" />
-            <span className="text-dim"> One AI-powered team.</span>
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={BOOKING}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[3px] bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-snow transition-colors"
-            >
-              Book a demo
-            </a>
-            <a
-              href="live/brain/index.html"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
-            >
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-600 animate-pulse mr-2 align-middle" aria-hidden />3.9M cells, one mouse brain — explore it live →
-            </a>
-          </div>
-          <p className="mt-4 font-mono text-[12.5px] text-dim">
-            The first analysis is on us.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 2.5, ease: [0.21, 0.6, 0.27, 1] }}
+          >
+            <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
+              computational biology, accelerated.
+            </p>
+            <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
+              Every core service your lab needs.
+              <br className="hidden sm:block" />
+              <span className="text-dim"> One AI-powered team.</span>
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href={BOOKING}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-[3px] bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-snow transition-colors"
+              >
+                Book a demo
+              </a>
+            </div>
+            <p className="mt-4 font-mono text-[12.5px] text-dim">
+              The first analysis is on us.
+            </p>
+          </motion.div>
         </motion.div>
       </motion.div>
 
