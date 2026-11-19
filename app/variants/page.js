@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import HeroEditorial from "@/components/HeroEditorial";
+import HeroLive from "@/components/HeroLive";
 
 export const metadata = {
   title: "Hero options · Artemis BioLabs",
@@ -49,9 +50,17 @@ export default function Variants() {
       />
       <HeroEditorial />
 
+      <Label
+        tag="C"
+        name="Live analysis"
+        blurb="the hero is the work, not the specimen"
+        notes="A and B were the same thing underneath — a picture of tissue with type on top. This runs the pipeline instead: 4,764 real spots from GBM1 land undifferentiated, the way a client's data arrives, then resolve into their BANKSY-called cell states. Every count in the legend is tallied from the payload at render time, so the numbers are the data's, not ours. The headline is the lab's own hard case rather than the company name. Strength: nobody else can show this, and it demonstrates the product instead of decorating it. Risk: it has to be legible in two seconds or it is just dots."
+      />
+      <HeroLive />
+
       <div className="px-6 py-16 text-center md:px-14">
         <p className="font-mono text-[12px] text-dim">
-          Tell me A or B — or which half of each — and I&rsquo;ll make it the homepage.
+          Tell me A, B or C — or which half of each — and I&rsquo;ll make it the homepage.
         </p>
       </div>
     </main>
