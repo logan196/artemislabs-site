@@ -289,13 +289,39 @@ const TOUR_TL = [
      setCaption('The most numerous neurons.', '208,692 cerebellar granule cells - in a single subclass'); }},
   {t0:33.0, t1:40.5, enter(){ clearHl(); setMode(2); setHl(2, 144, 99); diveTo(2, 144, 217125);
      setCaption('Movement\'s accelerator and brake.', '111,539 D1 + 105,586 D2 striatal neurons'); }},
-  {t0:40.5, t1:48.0, enter(){ clearHl(); setMode(2); setHl(2, 186, 20); diveTo(2, 186, 10796);
+  {t0:40.5, t1:48.0, enter(m){ clearHl(); setMode(2); const hy = hypoIds(m); if (!hy) return;
+     setHl(2, hy.a, hy.b); diveTo(2, hy.a, hy.total);
+     setCaption('The hypothalamus - hunger and hormones.',
+       `${fmt(hy.countA)} + ${fmt(hy.countB)} cells in the two arcuate (ARH) subclasses - the hub that houses the AgRP / POMC feeding circuit`); }},
+  {t0:48.0, t1:55.5, enter(){ clearHl(); setMode(2); setHl(2, 186, 20); diveTo(2, 186, 10796);
      setCaption('Dopamine neurons.', '4,075 midbrain (SNc/VTA) + 6,721 olfactory bulb - 10,796 taxonomy-defined'); }},
-  {t0:48.0, t1:55.5, enter(){ clearHl(); setMode(2); setHl(2, 238); diveTo(2, 238, 3057);
+  {t0:55.5, t1:63.0, enter(){ clearHl(); setMode(2); setHl(2, 238); diveTo(2, 238, 3057);
      setCaption('Serotonin neurons of the raphe.', '3,057 cells - a tiny population with brain-wide reach'); }},
-  {t0:55.5, t1:60.0, enter(){ clearHl(); setMode(0);
+  {t0:63.0, t1:67.5, enter(){ clearHl(); setMode(0);
      setCaption('Now explore it yourself.', 'search 5,320 clusters · slice · orbit · light up a gene'); }, back:true},
 ];
+/* Arcuate (ARH) populations, resolved from the manifest by name at runtime —
+   never by hardcoded index. These are the WMB subclasses that contain the
+   AgRP and POMC feeding-circuit neurons; we label them by their real
+   taxonomy names and measured counts. */
+function hypoIds(m){
+  const L = m.levels.subclass;
+  const a = L.findIndex(x=>x.name.includes('TU-ARH Otp Six6 Gaba'));
+  const b = L.findIndex(x=>x.name.includes('ARH-PVp Tbx3 Glut'));
+  if (a < 0 || b < 0) return null;
+  return {a, b, countA:L[a].count, countB:L[b].count, total:L[a].count+L[b].count,
+          nameA:L[a].name, nameB:L[b].name};
+}
+function showHypothalamus(){
+  if (!manifest) return;
+  const hy = hypoIds(manifest); if (!hy) return;
+  clearHl(); setMode(2); setHl(2, hy.a, hy.b);
+  diveTo(2, hy.a, hy.total);
+  setCaption('Hypothalamus - the arcuate feeding circuit.',
+    `${hy.nameA} (${fmt(hy.countA)}) + ${hy.nameB} (${fmt(hy.countB)}) - the ARH subclasses housing AgRP / POMC neurons - highlighted gold for 12s`);
+  clearTimeout(showHypothalamus._t);
+  showHypothalamus._t = setTimeout(()=>{ clearHl(); hideCaption(); }, 12000);
+}
 let tl = FILM_V === 'merfish' ? MERFISH_TL : (FILM ? FILM_TL : INTRO), tlStart = 0, playing = true, curScene = -1;
 
 /* The storyboard clock is wall-time; without this, hiding the tab lets the
@@ -415,6 +441,10 @@ function buildRail(m){
     {h:'LARGEST SUBCLASS', big:fmt(topSub.count), p:`<b>${topSub.name}</b> — the most populated of ${L.subclass.length} subclasses.`,
      show:()=>{ setMode(2); const id = L.subclass.findIndex(x=>x.name===topSub.name); setHl(2, id); setTimeout(clearHl, 6000); }},
   ];
+  const hy = hypoIds(m);
+  if (hy) cards.push({h:'ARCUATE · FEEDING CIRCUIT', big:fmt(hy.total),
+    p:`cells in the two arcuate (ARH) subclasses — <b>${hy.nameA}</b> + <b>${hy.nameB}</b> — the hypothalamic hub that houses the AgRP / POMC appetite neurons.`,
+    show:showHypothalamus});
   $('rail').innerHTML = cards.map((c,i)=>`<div class="card"><h4>${c.h}</h4><div class="big">${c.big}</div><p>${c.p}</p>${c.show?`<button class="showme" data-i="${i}">show me</button>`:''}</div>`).join('');
   $('rail').querySelectorAll('.showme').forEach(b=>b.onclick=()=>cards[+b.dataset.i].show());
   $('srctext').textContent = `${fmt(m.cells)} cells · ${fmt(L.class.length)} classes · ${fmt(L.subclass.length)} subclasses · ${fmt(L.supertype.length)} supertypes · ${fmt(L.cluster.length)} clusters. Source: Allen Brain Cell Atlas dataset ${m.dataset}, streamed as packed binary and decoded on your GPU.`;
@@ -448,6 +478,7 @@ document.querySelectorAll('.chip[data-mode]').forEach(c=>c.onclick=()=>{
   else { clearHl(); setMode(+c.dataset.mode); }
 });
 $('wmchip').onclick = ()=>{ showWhiteMatter(); };
+{ const hc = $('hypochip'); if (hc) hc.onclick = ()=>{ if (!window.__INTRO_DONE) endIntro(); showHypothalamus(); }; }
 $('tourchip').onclick = ()=>{
   if (!window.__INTRO_DONE) endIntro();
   tl = TOUR_TL; startTimeline();
