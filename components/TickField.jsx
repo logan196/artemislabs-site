@@ -33,8 +33,8 @@ const TICK_W = 1.6;
 const SNOW = "#e8edf5";
 const TEAL = "#14b8a6";
 
-const SWEEP = 0.62; // seconds for the left-to-right pass
-const GROW = 0.55; // seconds for one tick to reach full height
+const SWEEP = 0.40; // seconds for the left-to-right pass
+const GROW = 0.34; // seconds for one tick to reach full height
 
 function smoothstep(e0, e1, x) {
   const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
@@ -59,6 +59,7 @@ export default function TickField({ className = "", onReady }) {
     let start = 0;
     let visible = true;
     let played = false; // has the reveal sweep finished at least once?
+    let lastPaint = 0;
 
     // Density at a pixel, in 0..1.
     const densityAt = (px, py) => {
@@ -106,7 +107,7 @@ export default function TickField({ className = "", onReady }) {
             h: inside ? 4 + s * 19 : 7 + Math.random() * 7,
             a: inside ? 0.16 + s * 0.74 : 0.1 + Math.random() * 0.14,
             hot: d > 0.72,
-            delay: (jx / w) * SWEEP + Math.random() * 0.26,
+            delay: (jx / w) * SWEEP + Math.random() * 0.16,
             phase: Math.random() * Math.PI * 2,
           });
         }
@@ -142,7 +143,13 @@ export default function TickField({ className = "", onReady }) {
       if (!start) start = now;
       const t = (now - start) / 1000;
       if (t > SWEEP + GROW + 0.4) played = true;
-      paint(t);
+      // The sweep needs every frame. Once it has landed, the only motion left
+      // is a 7% breathe, which reads identically at ~25fps and costs the rest
+      // of the page far less main thread.
+      if (!played || now - lastPaint >= 38) {
+        lastPaint = now;
+        paint(t);
+      }
       if (reduced) return; // one static pass is enough
       if (visible) raf = requestAnimationFrame(frame);
     };

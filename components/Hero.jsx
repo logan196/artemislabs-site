@@ -22,10 +22,10 @@ const NAV = [
  * so the hero reads as an annotated figure rather than decoration.
  */
 const CALLOUTS = [
-  { x: 0.185, y: 0.235, label: "Segment cells", at: 1.45 },
-  { x: 0.625, y: 0.175, label: "Call spatial niches", at: 1.62 },
-  { x: 0.135, y: 0.66, label: "Annotate cell states", at: 1.79 },
-  { x: 0.70, y: 0.70, label: "Map expression gradients", at: 1.96 },
+  { x: 0.185, y: 0.235, label: "Segment cells", at: 0.80 },
+  { x: 0.625, y: 0.175, label: "Call spatial niches", at: 0.95 },
+  { x: 0.135, y: 0.66, label: "Annotate cell states", at: 1.10 },
+  { x: 0.70, y: 0.70, label: "Map expression gradients", at: 1.25 },
 ];
 
 export default function Hero() {
@@ -42,7 +42,7 @@ export default function Hero() {
   // the field sweeps in first; type and callouts follow it
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const t = setTimeout(() => setLit(true), reduced ? 0 : 900);
+    const t = setTimeout(() => setLit(true), reduced ? 0 : 300);
     return () => clearTimeout(t);
   }, []);
 
@@ -152,14 +152,14 @@ export default function Hero() {
             as="span"
             className="inline-block text-violet"
             start={lit}
-            delay={0.22}
+            delay={0.12}
           />
         </h1>
 
         <motion.p
           initial={shouldReduce ? false : { opacity: 0 }}
           animate={{ opacity: lit ? 1 : 0 }}
-          transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: 0.72 }}
+          transition={shouldReduce ? { duration: 0 } : { duration: 0.7, delay: 0.42 }}
           className="mt-5 font-mono text-[13px] tracking-[0.35em] text-dim uppercase"
         >
           computational biology, accelerated.
@@ -168,7 +168,7 @@ export default function Hero() {
         <motion.div
           initial={shouldReduce ? false : { opacity: 0, y: 14 }}
           animate={lit ? { opacity: 1, y: 0 } : {}}
-          transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: 0.92, ease: [0.21, 0.6, 0.27, 1] }}
+          transition={shouldReduce ? { duration: 0 } : { duration: 0.7, delay: 0.58, ease: [0.21, 0.6, 0.27, 1] }}
         >
           <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
             Every core service your lab needs.

@@ -20,8 +20,8 @@ export default function SplitText({
   className = "",
   charClassName = "",
   delay = 0,
-  stagger = 0.028,
-  duration = 0.62,
+  stagger = 0.022,
+  duration = 0.5,
   start = true,
 }) {
   const [on, setOn] = useState(false);
@@ -31,7 +31,7 @@ export default function SplitText({
   // makes the headline dependent on this effect firing, so a failsafe reveals
   // it unconditionally — a missed cue must never leave the hero permanently blank.
   useEffect(() => {
-    const failsafe = setTimeout(() => setOn(true), 2600);
+    const failsafe = setTimeout(() => setOn(true), 1800);
     return () => clearTimeout(failsafe);
   }, []);
 

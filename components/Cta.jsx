@@ -1,6 +1,7 @@
 "use client";
 
 import Reveal from "./Reveal";
+import BioDodecahedron from "./BioDodecahedron";
 
 export default function Cta() {
   return (
@@ -32,7 +33,12 @@ export default function Cta() {
 
       <div className="max-w-3xl mx-auto text-center mt-24">
         <Reveal>
-          <img src="artemis_mark.svg" alt="" className="h-16 w-16 mx-auto mb-8" />
+          {/* The closing figure, bookending the hero: the page opens on a field
+              of marks resolving into tissue and closes on the solid you can
+              take hold of. Interactive — drag it. */}
+          <div className="relative w-full max-w-[460px] mx-auto mb-10" aria-hidden>
+            <BioDodecahedron size={360} labels={false} helix />
+          </div>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Your data has a story.
           </h2>
