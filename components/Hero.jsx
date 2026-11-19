@@ -9,11 +9,14 @@ import SplitText from "./SplitText";
 const BOOKING =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
 
+// Every target must exist in the rendered page. #pipeline and #gallery were
+// left pointing at components that app/page.js no longer renders, so four
+// controls — including the skip link — were silent no-ops.
 const NAV = [
   ["#banksy", "BANKSY"],
-  ["#pipeline", "Pipeline"],
-  ["#gallery", "Glioblastoma"],
   ["#whatwedo", "What we do"],
+  ["#copilot", "Co-scientist"],
+  ["#stack", "The stack"],
 ];
 
 /**
@@ -66,7 +69,7 @@ export default function Hero() {
   return (
     <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
       <a
-        href="#pipeline"
+        href="#banksy"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"
       >
         Skip to content
@@ -195,8 +198,8 @@ export default function Hero() {
       </motion.div>
 
       <div className="relative z-10 md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
-        <a href="#pipeline" className="hover:text-snow">Pipeline</a>
-        <a href="#gallery" className="hover:text-snow">Demo</a>
+        <a href="#banksy" className="hover:text-snow">BANKSY</a>
+        <a href="#whatwedo" className="hover:text-snow">What we do</a>
       </div>
 
       <motion.div

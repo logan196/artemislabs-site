@@ -156,7 +156,7 @@ export default function CopilotSection() {
                       className={`max-w-[85%] px-4 py-2.5 text-[14.5px] leading-relaxed ${
                         m.role === "user"
                           ? "ml-auto rounded-2xl rounded-br-md bg-violet-deep text-ink"
-                          : "mr-auto rounded-2xl rounded-bl-md bg-[#e9e4d6] border border-line text-snow"
+                          : "mr-auto rounded-2xl rounded-bl-md bg-[#e9e4d6] border border-line text-ink"
                       }`}
                     >
                       {m.text}
