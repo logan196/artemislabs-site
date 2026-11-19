@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Artemis Brain · Whole-Brain MERFISH Atlas - 3,938,808 real cells, one real brain</title>
 <meta name="description" content="An interactive whole-mouse-brain single-cell atlas: all 3,938,808 MERFISH-measured cells rendered live in 3D. Real data, not generated.">
-<link rel="icon" href="artemis_mark.svg">
+
 <style>
   :root{
     --bg:#04060c; --panel:#0a0e18; --line:rgba(120,160,255,.14);
@@ -126,13 +126,13 @@
     .frail{right:12px;top:70px;font-size:10px}
   }
 </style>
-</head>
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/artemis-icon-16.v1.png"><link rel="icon" type="image/png" sizes="32x32" href="/brand/artemis-icon-32.v1.png"><link rel="icon" type="image/png" sizes="48x48" href="/brand/artemis-icon-48.v1.png"><link rel="apple-touch-icon" href="/brand/artemis-icon-180.v1.png"><link rel="stylesheet" href="/brand/brand.v1.css"><meta property="og:image" content="https://artemislabs.bio/brand/artemis-social.v1.png"><meta name="twitter:image" content="https://artemislabs.bio/brand/artemis-social.v1.png"></head>
 <body>
 <canvas id="gl"></canvas>
 
 <div class="topbar">
-  <img src="artemis_mark.svg" alt="Artemis BioLabs">
-  <div class="brand" style="text-transform:lowercase;letter-spacing:.06em">artemis<small>Whole-Brain Atlas</small></div>
+  <img class="a-lock a-lock-atlas" src="/brand/artemis-lockup.v1.png" width="514" height="191" alt="Artemis BioLabs">
+  <div class="brand a-brain-sub"><small>Whole-Brain Atlas</small></div>
   <div class="spacer"></div>
   <div class="pill"><b id="cellcount">…</b> cells</div>
   <div class="pill optional" id="fpspill">… fps</div>
