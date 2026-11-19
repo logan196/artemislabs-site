@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import FounderLock from "./FounderLock";
-import CellField from "./CellField";
+import TissueDither from "./TissueDither";
 import SplitText from "./SplitText";
 
 const BOOKING =
@@ -79,14 +79,14 @@ export default function Hero() {
       <div className="absolute inset-0 -z-10">
         <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
         <motion.div style={{ opacity: fieldFade, y: fieldLift }} className="absolute inset-0">
-          <CellField className="absolute inset-0 h-full w-full" />
+          <TissueDither className="absolute inset-0 h-full w-full" />
           {CALLOUTS.map((c) => (
             <motion.div
               key={c.label}
               initial={shouldReduce ? false : { opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={shouldReduce ? { duration: 0 } : { duration: 0.5, delay: c.at, ease: [0.21, 0.6, 0.27, 1] }}
-              className="absolute hidden md:flex items-center gap-2 font-mono text-[10.5px] tracking-[0.18em] uppercase text-dim"
+              className="absolute hidden md:flex items-center gap-2 font-mono text-[10.5px] tracking-[0.18em] uppercase text-[#93a7ad]"
               style={{ left: `${c.x * 100}%`, top: `${c.y * 100}%` }}
               aria-hidden
             >
@@ -166,7 +166,7 @@ export default function Hero() {
           initial={shouldReduce ? false : { opacity: 0 }}
           animate={{ opacity: lit ? 1 : 0 }}
           transition={shouldReduce ? { duration: 0 } : { duration: 0.7, delay: 0.42 }}
-          className="mt-5 font-mono text-[13px] tracking-[0.35em] text-dim uppercase"
+          className="mt-5 font-mono text-[12px] sm:text-[13px] tracking-[0.3em] sm:tracking-[0.35em] text-snow/75 uppercase [text-shadow:0_1px_12px_rgba(7,6,11,0.95)]"
         >
           computational biology, accelerated.
         </motion.p>
@@ -176,10 +176,10 @@ export default function Hero() {
           animate={lit ? { opacity: 1, y: 0 } : {}}
           transition={shouldReduce ? { duration: 0 } : { duration: 0.7, delay: 0.58, ease: [0.21, 0.6, 0.27, 1] }}
         >
-          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
+          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed [text-shadow:0_1px_14px_rgba(7,6,11,0.9)]">
             Every core service your lab needs.
             <br className="hidden sm:block" />
-            <span className="text-dim"> One AI-powered team.</span>
+            <span className="text-dim whitespace-nowrap"> One AI-powered team.</span>
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -191,11 +191,20 @@ export default function Hero() {
               Book a demo
             </a>
           </div>
-          <p className="mt-4 font-mono text-[12.5px] text-dim">
+          <p className="mt-4 font-mono text-[12.5px] text-dim [text-shadow:0_1px_10px_rgba(7,6,11,0.95)]">
             The first analysis is on us.
           </p>
         </motion.div>
       </motion.div>
+
+      {/* Provenance, the way a figure carries it. Every value here is true of
+          the image actually being rendered — no invented n, no invented scale
+          bar. The point of the line is that the hero is the specimen. */}
+      <div className="pointer-events-none absolute bottom-5 left-5 md:left-14 z-10 hidden sm:block font-mono text-[10.5px] leading-relaxed tracking-[0.1em] text-[#93a7ad] [text-shadow:0_1px_10px_rgba(7,6,11,0.95)]">
+        <span className="text-violet">■</span> field rendered from the section&rsquo;s own luminance
+        <br />
+        AT14-BRA-4-FO-2_1 &middot; glioblastoma &middot; H&amp;E &middot; de Jong et al. 2026
+      </div>
 
       <div className="relative z-10 md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
         <a href="#banksy" className="hover:text-snow">BANKSY</a>
