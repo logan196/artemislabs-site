@@ -1,0 +1,1553 @@
+{
+ "generated": "2026-11-19",
+ "booking": "https://calendar.app.google/Gcn7m6neU3P3ktQA8",
+ "site": "https://artemislabs.bio/",
+ "labs": [
+  {
+   "id": "kusminski",
+   "name": "Kusminski / Scherer Lab",
+   "inst": "utsw",
+   "focus": "Adipose biology",
+   "client": true,
+   "note": "Client workspace. Confidential link: please don't forward outside the lab.",
+   "reports": [
+    {
+     "status": "live",
+     "space": null,
+     "accession": null,
+     "citation": "Project 1 of 3",
+     "stats": [],
+     "subject": "Rosiglitazone × GIPR-Adip adipose RNA-seq, delivered November 2026",
+     "id": "rosi-gipr",
+     "title": "Rosi-GIPR results portal",
+     "kind": "Results portal",
+     "icon": "report",
+     "overline": "Adipose RNA-seq",
+     "desc": "Project 1: Rosiglitazone × GIPR-Adip adipose RNA-seq, with methods, findings, caveats and gene tables.",
+     "url": "https://logan196.github.io/kusminski-rosigipr-portal/",
+     "pills": [
+      {
+       "label": "Bulk RNA-seq",
+       "on": true
+      },
+      {
+       "label": "DESeq2",
+       "on": true
+      },
+      {
+       "label": "Gene tables",
+       "on": true
+      }
+     ],
+     "note": "The live workspace for Project 1.",
+     "pi": "Christine Kusminski, PhD and Philipp Scherer, PhD"
+    },
+    {
+     "status": "live",
+     "space": null,
+     "accession": null,
+     "citation": "Project 1 of 3",
+     "stats": [],
+     "subject": "Rosiglitazone × GIPR-Adip adipose RNA-seq, delivered November 2026",
+     "id": "figure-tour",
+     "title": "Figure tour",
+     "kind": "Walkthrough",
+     "icon": "slides",
+     "overline": "Adipose RNA-seq",
+     "desc": "A figure-by-figure walkthrough of the Rosi-GIPR analysis.",
+     "url": "https://logan196.github.io/kusminski-rosigipr-portal/figure-tour.html",
+     "pills": [
+      {
+       "label": "Bulk RNA-seq",
+       "on": true
+      },
+      {
+       "label": "Figure walkthrough",
+       "on": true
+      }
+     ],
+     "note": "A guided read of the Project 1 figures.",
+     "pi": "Christine Kusminski, PhD and Philipp Scherer, PhD"
+    }
+   ],
+   "institution": {
+    "name": "UT Southwestern Medical Center",
+    "short": "UT Southwestern",
+    "mark": "UT",
+    "color": "#3D1F5C",
+    "logo": "assets/logos/utsw.webp",
+    "logoMark": "assets/logos/utsw-mark.webp",
+    "logoSource": "https://github.com/logan196/kusminski-rosigipr-portal/blob/main/assets/utsw_logo.svg (UT Southwestern wordmark)",
+    "wide": true
+   },
+   "pi": "Christine Kusminski, PhD and Philipp Scherer, PhD",
+   "dept": "Touchstone Diabetes Center, Internal Medicine",
+   "photo": "assets/pi/kusminski.webp",
+   "photoSource": "https://profiles.utsouthwestern.edu/profile/99704/christine-kusminski.html"
+  },
+  {
+   "id": "walsh",
+   "name": "Walsh Lab",
+   "pi": "Christopher A. Walsh, MD, PhD",
+   "dept": "Division of Genetics and Genomics",
+   "inst": "bch",
+   "focus": "Human cortex development",
+   "reports": [
+    {
+     "id": "volume",
+     "title": "Fetal cortex volume viewer",
+     "kind": "Volume viewer",
+     "icon": "volume",
+     "overline": "Human cortex development",
+     "desc": "Public MERFISH section UMB5900 BA17 in a WebGL volume viewer.",
+     "url": null,
+     "space": null,
+     "status": "coming-soon",
+     "accession": "Zenodo 10.5281/zenodo.14422018",
+     "citation": "Qian et al., Nature 2025",
+     "subject": "Human fetal visual cortex, gestational week 34",
+     "stats": [
+      {
+       "value": "240,659",
+       "label": "cells in the section"
+      },
+      {
+       "value": "GW34",
+       "label": "gestational week"
+      }
+     ],
+     "pills": [
+      {
+       "label": "MERFISH",
+       "on": true
+      },
+      {
+       "label": "Authors' cell types",
+       "on": true
+      },
+      {
+       "label": "3D volume view",
+       "on": true
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "Coming soon.",
+     "pi": "Christopher A. Walsh, MD, PhD"
+    }
+   ],
+   "institution": {
+    "name": "Boston Children's Hospital",
+    "short": "Boston Children's",
+    "mark": "BCH",
+    "color": "#0A5BA8",
+    "logo": "assets/logos/bch.webp",
+    "logoMark": "assets/logos/bch-mark.webp",
+    "logoSource": "https://en.wikipedia.org/wiki/File:Boston_Children%27s_Hospital_logo.svg",
+    "wide": true
+   },
+   "photo": "assets/pi/walsh.webp",
+   "photoSource": "https://bchgenetics.org/people/christopher-walsh/",
+   "hero": "assets/hero/walsh.webp"
+  },
+  {
+   "id": "thakor",
+   "name": "Thakor Lab",
+   "pi": "Avnesh S. Thakor, MD, PhD",
+   "dept": "Radiology (Pediatric Radiology)",
+   "inst": "stanford",
+   "focus": "Mesenchymal stromal cells",
+   "reports": [
+    {
+     "id": "msc-atlas",
+     "title": "MSC source atlas",
+     "kind": "Portal",
+     "icon": "atlas",
+     "overline": "Mesenchymal stromal cells",
+     "desc": "Cx43 (GJA1) across human MSC tissue sources, a public-data meta-analysis.",
+     "url": "https://logan-9726-artemis-thakor-msc-portal.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-thakor-msc-portal",
+     "status": "live",
+     "accession": "Public data",
+     "citation": "Meta-analysis",
+     "subject": "Human MSCs from several tissue sources",
+     "stats": [],
+     "pills": [
+      {
+       "label": "Public expression data",
+       "on": true
+      },
+      {
+       "label": "Meta-analysis",
+       "on": true
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "Built from public data only.",
+     "pi": "Avnesh S. Thakor, MD, PhD"
+    },
+    {
+     "id": "msc-review",
+     "title": "MSC research review",
+     "kind": "Literature review",
+     "icon": "review",
+     "overline": "Mesenchymal stromal cells",
+     "desc": "A scientific literature review of Dr. Abantika Ganguly's MSC research.",
+     "url": "https://logan-9726-ganguly-msc-review.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/ganguly-msc-review",
+     "status": "live",
+     "accession": "Published literature",
+     "citation": "Literature review",
+     "subject": "MSC research from the lab",
+     "stats": [],
+     "pills": [
+      {
+       "label": "Literature",
+       "on": true
+      },
+      {
+       "label": "Your unpublished data",
+       "on": false
+      }
+     ],
+     "note": "A reading companion to the lab's published MSC work.",
+     "pi": "Avnesh S. Thakor, MD, PhD"
+    }
+   ],
+   "institution": {
+    "name": "Stanford University",
+    "short": "Stanford",
+    "mark": "S",
+    "color": "#8C1515",
+    "logo": "assets/logos/stanford.webp",
+    "logoMark": "assets/logos/stanford-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:Seal_of_Leland_Stanford_Junior_University.svg",
+    "wide": false
+   },
+   "photo": "assets/pi/thakor.webp",
+   "photoSource": "https://med.stanford.edu/profiles/avnesh-thakor",
+   "hero": "assets/hero/thakor.webp"
+  },
+  {
+   "id": "young",
+   "name": "Young Lab",
+   "pi": "Jacob Young, MD",
+   "dept": "Neurological Surgery",
+   "inst": "ucsf",
+   "focus": "Glioblastoma",
+   "note": "Built on the public de Jong et al., Nature 2026 Xenium tables (S-BIAD2898). Not Young Lab data.",
+   "reports": [
+    {
+     "accession": "BioImage Archive S-BIAD2898",
+     "citation": "de Jong et al., Nature 2026",
+     "subject": "Public 315-plex GBM Xenium tables (not Young Lab data)",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-young-gbm-viewer",
+     "status": "live",
+     "id": "methods",
+     "title": "GBM Xenium methods comparison",
+     "kind": "Report",
+     "icon": "report",
+     "overline": "Glioblastoma",
+     "desc": "BANKSY vs a position-only baseline on 17 public GBM Xenium sections.",
+     "url": "https://logan-9726-artemis-young-gbm-viewer.static.hf.space/",
+     "stats": [
+      {
+       "value": "17",
+       "label": "sections"
+      },
+      {
+       "value": "315",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "126,738",
+       "label": "cells in the AT4 workspace"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "315-gene panel",
+       "on": true
+      },
+      {
+       "label": "BANKSY domains",
+       "on": true
+      },
+      {
+       "label": "17 sections",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "Public de Jong et al. data is explored today. The rest are ready to add when your lab shares them.",
+     "pi": "Jacob Young, MD"
+    },
+    {
+     "accession": "BioImage Archive S-BIAD2898",
+     "citation": "de Jong et al., Nature 2026",
+     "subject": "Public 315-plex GBM Xenium tables (not Young Lab data)",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-young-gbm-viewer",
+     "status": "live",
+     "id": "compare",
+     "title": "Method comparison workspace",
+     "kind": "Workspace",
+     "icon": "spatial",
+     "overline": "Glioblastoma",
+     "desc": "Three linked Vitessce panels, any of the 17 sections.",
+     "url": "https://logan-9726-artemis-young-gbm-viewer.static.hf.space/compare/index.html",
+     "stats": [
+      {
+       "value": "3",
+       "label": "linked panels"
+      },
+      {
+       "value": "17",
+       "label": "sections"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "315-gene panel",
+       "on": true
+      },
+      {
+       "label": "BANKSY domains",
+       "on": true
+      },
+      {
+       "label": "17 sections",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "Pick a section and compare methods side by side.",
+     "pi": "Jacob Young, MD"
+    },
+    {
+     "accession": "BioImage Archive S-BIAD2898",
+     "citation": "de Jong et al., Nature 2026",
+     "subject": "Public 315-plex GBM Xenium tables (not Young Lab data)",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-young-gbm-viewer",
+     "status": "live",
+     "id": "banksy",
+     "title": "17-section BANKSY explorer",
+     "kind": "Workspace",
+     "icon": "spatial",
+     "overline": "Glioblastoma",
+     "desc": "BANKSY domains across all 17 sections, up to 50,000 cells each.",
+     "url": "https://logan-9726-artemis-young-gbm-viewer.static.hf.space/banksy/workspace/index.html",
+     "stats": [
+      {
+       "value": "17",
+       "label": "sections"
+      },
+      {
+       "value": "50,000",
+       "label": "cells per section, max"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "315-gene panel",
+       "on": true
+      },
+      {
+       "label": "BANKSY domains",
+       "on": true
+      },
+      {
+       "label": "17 sections",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "BANKSY domains are a pilot analysis by Artemis Biolabs.",
+     "pi": "Jacob Young, MD"
+    },
+    {
+     "accession": "BioImage Archive S-BIAD2898",
+     "citation": "de Jong et al., Nature 2026",
+     "subject": "Public 315-plex GBM Xenium tables (not Young Lab data)",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-young-gbm-viewer",
+     "status": "live",
+     "id": "briefing",
+     "title": "12-slide briefing",
+     "kind": "Briefing",
+     "icon": "slides",
+     "overline": "Glioblastoma",
+     "desc": "The pilot in twelve slides, ready to present.",
+     "url": "https://logan-9726-artemis-young-gbm-viewer.static.hf.space/briefing/index.html",
+     "stats": [
+      {
+       "value": "12",
+       "label": "slides"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "315-gene panel",
+       "on": true
+      },
+      {
+       "label": "BANKSY domains",
+       "on": true
+      },
+      {
+       "label": "17 sections",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "A short deck version of the report.",
+     "pi": "Jacob Young, MD"
+    },
+    {
+     "accession": "BioImage Archive S-BIAD2898",
+     "citation": "de Jong et al., Nature 2026",
+     "subject": "Public 315-plex GBM Xenium tables (not Young Lab data)",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-young-gbm-foundation",
+     "status": "live",
+     "id": "foundation",
+     "title": "Pretrained model test",
+     "kind": "Report",
+     "icon": "model",
+     "overline": "Glioblastoma",
+     "desc": "Does a frozen Geneformer embedding help tell GBM tumour cells from astrocytes?",
+     "url": "https://logan-9726-artemis-young-gbm-foundation.static.hf.space/",
+     "stats": [
+      {
+       "value": "170,000",
+       "label": "cells"
+      },
+      {
+       "value": "17",
+       "label": "held-out sections"
+      },
+      {
+       "value": "169",
+       "label": "genes shared with Prime 5K"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "Geneformer",
+       "on": true
+      },
+      {
+       "label": "Held-out tumours",
+       "on": true
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "Held-out-tumour classification on public data.",
+     "pi": "Jacob Young, MD"
+    }
+   ],
+   "institution": {
+    "name": "University of California, San Francisco",
+    "short": "UCSF",
+    "mark": "UCSF",
+    "color": "#052049",
+    "logo": "assets/logos/ucsf.webp",
+    "logoMark": "assets/logos/ucsf-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:University_of_California,_San_Francisco_logo.svg",
+    "wide": true
+   },
+   "photo": "assets/pi/young.webp",
+   "photoSource": "https://profiles.ucsf.edu/jacob.young",
+   "hero": "assets/hero/young.webp"
+  },
+  {
+   "id": "gudjonsson",
+   "name": "Gudjonsson Lab",
+   "pi": "Johann E. Gudjonsson, MD, PhD",
+   "dept": "Dermatology",
+   "inst": "umich",
+   "focus": "Inflammatory skin disease",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Drug-eruption explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Morbilliform drug eruption vs SDRIFE, with cell outlines and lasso.",
+     "overline": "Inflammatory skin disease",
+     "accession": "GEO GSE308697",
+     "citation": "Chopp et al., 2026",
+     "subject": "Human skin, morbilliform drug eruption vs SDRIFE",
+     "stats": [
+      {
+       "value": "48,534",
+       "label": "cells after QC"
+      },
+      {
+       "value": "4",
+       "label": "sections, 2 vs 2 rashes"
+      },
+      {
+       "value": "5,101",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "n = 2 vs 2",
+       "label": "exploratory spatial set"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "5,101-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell segmentation",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-gudjonsson-skin-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-gudjonsson-skin-xenium",
+     "status": "live",
+     "pi": "Johann E. Gudjonsson, MD, PhD"
+    }
+   ],
+   "institution": {
+    "name": "University of Michigan",
+    "short": "Michigan",
+    "mark": "M",
+    "color": "#00274C",
+    "logo": "assets/logos/umich.webp",
+    "logoMark": "assets/logos/umich-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:Seal_of_the_University_of_Michigan.svg",
+    "wide": false
+   },
+   "photo": "assets/pi/gudjonsson.webp",
+   "photoSource": "https://data.the-asci.org/controllers/asci/DirectoryController.php?action=profile&entryId=501714",
+   "hero": "assets/hero/gudjonsson.webp"
+  },
+  {
+   "id": "cantley",
+   "name": "Cantley Lab",
+   "pi": "Lloyd G. Cantley, MD",
+   "dept": "Internal Medicine (Nephrology)",
+   "inst": "yale",
+   "focus": "Kidney injury",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "AIN kidney explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Acute interstitial nephritis vs acute tubular injury in human biopsies.",
+     "overline": "Kidney injury",
+     "accession": "GEO GSE336890",
+     "citation": "Baker, Cantley et al., Nature Communications 2026",
+     "subject": "Human kidney biopsies, AIN vs ATI vs reference",
+     "stats": [
+      {
+       "value": "321,515",
+       "label": "cells after QC"
+      },
+      {
+       "value": "22",
+       "label": "sections, 20 patients"
+      },
+      {
+       "value": "9,644",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "8 / 7 / 5",
+       "label": "AIN, ATI, and reference patients"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium Prime",
+       "on": true
+      },
+      {
+       "label": "9,644-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "Neighbourhoods",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium Prime is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-cantley-kidney-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-cantley-kidney-xenium",
+     "status": "live",
+     "pi": "Lloyd G. Cantley, MD"
+    }
+   ],
+   "institution": {
+    "name": "Yale School of Medicine",
+    "short": "Yale",
+    "mark": "Y",
+    "color": "#00356B",
+    "logo": "assets/logos/yale.webp",
+    "logoMark": "assets/logos/yale-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:Yale_University_Shield_1.svg",
+    "wide": false
+   },
+   "photo": "assets/pi/cantley.webp",
+   "photoSource": "https://medicine.yale.edu/profile/lloyd-cantley/",
+   "hero": "assets/hero/cantley.webp"
+  },
+  {
+   "id": "kaech",
+   "name": "Kaech Lab",
+   "pi": "Susan Kaech, PhD",
+   "dept": "NOMIS Center for Immunobiology and Microbial Pathogenesis",
+   "inst": "salk",
+   "focus": "Pancreatic cancer",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Omega-3 PDAC explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Omega-3 diets in orthotopic pancreatic tumours, one section per diet.",
+     "overline": "Pancreatic cancer",
+     "accession": "GEO GSE334315",
+     "citation": "Sakuma et al., 2026",
+     "subject": "Mouse orthotopic pancreatic tumours, fish-oil vs soy vs myeloid fat-1",
+     "stats": [
+      {
+       "value": "871,777",
+       "label": "cells after QC"
+      },
+      {
+       "value": "3",
+       "label": "sections, one per diet"
+      },
+      {
+       "value": "480",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "n = 1",
+       "label": "section per condition"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "480-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "Neighbourhoods",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-kaech-pdac-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-kaech-pdac-xenium",
+     "status": "live",
+     "pi": "Susan Kaech, PhD"
+    }
+   ],
+   "institution": {
+    "name": "Salk Institute",
+    "short": "Salk",
+    "mark": "Salk",
+    "color": "#1B5E8C",
+    "logo": "assets/logos/salk.webp",
+    "logoMark": "assets/logos/salk-mark.webp",
+    "logoSource": "https://www.salk.edu/ (site header logo)",
+    "wide": true
+   },
+   "photo": "assets/pi/kaech.webp",
+   "photoSource": "https://www.salk.edu/scientist/susan-kaech/",
+   "hero": "assets/hero/kaech.webp"
+  },
+  {
+   "id": "fueyo",
+   "name": "Fueyo Lab",
+   "pi": "Juan Fueyo, MD",
+   "dept": "Neuro-Oncology",
+   "inst": "mda",
+   "focus": "Glioma virotherapy",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Oncolytic virotherapy glioma explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "TLS-like neighbourhoods after Delta-24-RGD in a window-of-opportunity trial.",
+     "overline": "Glioma virotherapy",
+     "accession": "GEO GSE330731",
+     "citation": "GSE330731",
+     "subject": "Human malignant glioma, Delta-24-RGD window-of-opportunity trial",
+     "stats": [
+      {
+       "value": "646,693",
+       "label": "cells after QC"
+      },
+      {
+       "value": "6",
+       "label": "sections, 3 patients"
+      },
+      {
+       "value": "480",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "0.14% to 8.4%",
+       "label": "TLS-like cells, patient P20"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "480-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "TLS-like cells",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-fueyo-glioma-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-fueyo-glioma-xenium",
+     "status": "live",
+     "pi": "Juan Fueyo, MD"
+    }
+   ],
+   "institution": {
+    "name": "MD Anderson Cancer Center",
+    "short": "MD Anderson",
+    "mark": "MD",
+    "color": "#C8102E",
+    "logo": "assets/logos/mda.webp",
+    "logoMark": "assets/logos/mda-mark.webp",
+    "logoSource": "https://en.wikipedia.org/wiki/File:MD_Anderson_Cancer_Center_logo.svg",
+    "wide": true
+   },
+   "photo": "assets/pi/fueyo.webp",
+   "photoSource": "https://faculty.mdanderson.org/profiles/juan_fueyo.html",
+   "hero": "assets/hero/fueyo.webp"
+  },
+  {
+   "id": "park",
+   "name": "Park Lab",
+   "pi": "Jae-Il Park, PhD",
+   "dept": "Experimental Radiation Oncology",
+   "inst": "mda",
+   "focus": "Diffuse gastric cancer",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Tumour neighbourhood explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "RhoA Y42C vs EKP gastric tumour neighbourhoods in Xenium.",
+     "overline": "Diffuse gastric cancer",
+     "accession": "GEO GSE304811",
+     "citation": "Ko et al., Nature Communications 2026",
+     "subject": "Mouse diffuse gastric cancer allografts, EKP vs RhoA Y42C (RKP)",
+     "stats": [
+      {
+       "value": "479,064",
+       "label": "cells after QC"
+      },
+      {
+       "value": "2",
+       "label": "tumours, 1 per genotype"
+      },
+      {
+       "value": "479",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "17",
+       "label": "cell states typed"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "479-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "Neighbourhoods",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-park-gastric-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-park-gastric-xenium",
+     "status": "live",
+     "pi": "Jae-Il Park, PhD"
+    }
+   ],
+   "institution": {
+    "name": "MD Anderson Cancer Center",
+    "short": "MD Anderson",
+    "mark": "MD",
+    "color": "#C8102E",
+    "logo": "assets/logos/mda.webp",
+    "logoMark": "assets/logos/mda-mark.webp",
+    "logoSource": "https://en.wikipedia.org/wiki/File:MD_Anderson_Cancer_Center_logo.svg",
+    "wide": true
+   },
+   "photo": "assets/pi/park.webp",
+   "photoSource": "https://faculty.mdanderson.org/profiles/jae-il_park.html",
+   "hero": "assets/hero/park.webp"
+  },
+  {
+   "id": "yang",
+   "name": "Yang Lab",
+   "pi": "Liuqing Yang, PhD",
+   "dept": "Molecular Oncology",
+   "inst": "mda",
+   "focus": "MASH-HCC liver",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Liver TLS neighbourhood explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "TLS-high spots around tumour in mouse MASH-HCC, with or without anti-PD-1.",
+     "overline": "MASH-HCC liver",
+     "accession": "GEO GSE318726",
+     "citation": "GSE318726",
+     "subject": "Mouse liver, chow or MASH diet, IgG or anti-PD-1",
+     "stats": [
+      {
+       "value": "8",
+       "label": "Visium sections"
+      },
+      {
+       "value": "19,284",
+       "label": "spots after QC"
+      },
+      {
+       "value": "4",
+       "label": "diet and treatment arms"
+      },
+      {
+       "value": "87 / 147 um",
+       "label": "TLS-high to tumour, chow IgG vs anti-PD-1"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Visium",
+       "on": true
+      },
+      {
+       "label": "H&E images",
+       "on": true
+      },
+      {
+       "label": "TLS scoring",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Visium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-yang-liver-visium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-yang-liver-visium",
+     "status": "live",
+     "pi": "Liuqing Yang, PhD"
+    }
+   ],
+   "institution": {
+    "name": "MD Anderson Cancer Center",
+    "short": "MD Anderson",
+    "mark": "MD",
+    "color": "#C8102E",
+    "logo": "assets/logos/mda.webp",
+    "logoMark": "assets/logos/mda-mark.webp",
+    "logoSource": "https://en.wikipedia.org/wiki/File:MD_Anderson_Cancer_Center_logo.svg",
+    "wide": true
+   },
+   "photo": "assets/pi/yang.webp",
+   "photoSource": "https://faculty.mdanderson.org/profiles/liuqing_yang.html",
+   "hero": "assets/hero/yang.webp"
+  },
+  {
+   "id": "garza",
+   "name": "Garza Lab",
+   "pi": "Luis A. Garza, MD, PhD",
+   "dept": "Dermatology",
+   "inst": "jhu",
+   "focus": "Skin wound regeneration",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Regeneration niche explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Xenium reanalysis of mouse skin wounds, wild type vs Rnasel knockout.",
+     "overline": "Skin wound regeneration",
+     "accession": "GEO GSE278431",
+     "citation": "Kirby et al., JCI 2025",
+     "subject": "Mouse skin wounds at scab detachment, wild type vs Rnasel knockout",
+     "stats": [
+      {
+       "value": "140,761",
+       "label": "cells after QC"
+      },
+      {
+       "value": "6",
+       "label": "wounds, 3 vs 3 mice"
+      },
+      {
+       "value": "479",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "19",
+       "label": "cell states typed"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "479-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "Niche analysis",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-garza-skin-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-garza-skin-xenium",
+     "status": "live",
+     "pi": "Luis A. Garza, MD, PhD"
+    }
+   ],
+   "institution": {
+    "name": "Johns Hopkins University",
+    "short": "Johns Hopkins",
+    "mark": "JH",
+    "color": "#002D72",
+    "logo": "assets/logos/jhu.webp",
+    "logoMark": "assets/logos/jhu-mark.webp",
+    "logoSource": "https://en.wikipedia.org/wiki/File:Johns_Hopkins_University%27s_Academic_Seal.svg",
+    "wide": false
+   },
+   "photo": "assets/pi/garza.webp",
+   "photoSource": "https://profiles.hopkinsmedicine.org/provider/luis-garza/2705589",
+   "hero": "assets/hero/garza.webp"
+  },
+  {
+   "id": "gate",
+   "name": "Gate Lab",
+   "pi": "David M. Gate, PhD",
+   "dept": "Neurology",
+   "inst": "nu",
+   "focus": "ALS spinal cord",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "ALS spinal cord explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Glial and immune niches in control, sporadic and C9orf72 ALS spinal cord.",
+     "overline": "ALS spinal cord",
+     "accession": "GEO GSE288365",
+     "citation": "Zhang, van Olst et al., Nature Neuroscience 2026",
+     "subject": "Human cervical spinal cord, control, sporadic and C9orf72 ALS",
+     "stats": [
+      {
+       "value": "18",
+       "label": "donors"
+      },
+      {
+       "value": "20",
+       "label": "capture areas"
+      },
+      {
+       "value": "122,361",
+       "label": "spots after QC"
+      },
+      {
+       "value": "35",
+       "label": "antibody features"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Visium CytAssist + antibody capture",
+       "on": true
+      },
+      {
+       "label": "RNA + protein spots",
+       "on": true
+      },
+      {
+       "label": "Spatial domains",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Visium CytAssist + antibody capture is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-gate-als-visium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-gate-als-visium",
+     "status": "live",
+     "pi": "David M. Gate, PhD"
+    }
+   ],
+   "institution": {
+    "name": "Northwestern University",
+    "short": "Northwestern",
+    "mark": "N",
+    "color": "#4E2A84",
+    "logo": "assets/logos/nu.webp",
+    "logoMark": "assets/logos/nu-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:Northwestern_University_seal.svg",
+    "wide": false
+   },
+   "photo": "assets/pi/gate.webp",
+   "photoSource": "https://www.feinberg.northwestern.edu/faculty-profiles/az/profile.html?xid=52152",
+   "hero": "assets/hero/gate.webp"
+  },
+  {
+   "id": "sonabend",
+   "name": "Sonabend Lab",
+   "pi": "Adam M. Sonabend, MD",
+   "dept": "Neurological Surgery",
+   "inst": "nu",
+   "focus": "Glioblastoma",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "GBM ultrasound neighbourhood explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "T cell, myeloid and tumour-like neighbourhoods after ultrasound opening.",
+     "overline": "Glioblastoma",
+     "accession": "GEO GSE339006",
+     "citation": "GSE339006",
+     "subject": "Human peritumoral glioblastoma, sonicated vs intact",
+     "stats": [
+      {
+       "value": "82,730",
+       "label": "cells after QC"
+      },
+      {
+       "value": "6",
+       "label": "sections, 3 patient pairs"
+      },
+      {
+       "value": "5,101",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "1.6% to 5.1%",
+       "label": "T-cell share, patient 01-01-124"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "5,101-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "Neighbourhoods",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-sonabend-gbm-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-sonabend-gbm-xenium",
+     "status": "live",
+     "pi": "Adam M. Sonabend, MD"
+    }
+   ],
+   "institution": {
+    "name": "Northwestern University",
+    "short": "Northwestern",
+    "mark": "N",
+    "color": "#4E2A84",
+    "logo": "assets/logos/nu.webp",
+    "logoMark": "assets/logos/nu-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:Northwestern_University_seal.svg",
+    "wide": false
+   },
+   "photo": "assets/pi/sonabend.webp",
+   "photoSource": "https://www.feinberg.northwestern.edu/faculty-profiles/az/profile.html?xid=38758",
+   "hero": "assets/hero/sonabend.webp"
+  },
+  {
+   "id": "dai",
+   "name": "Dai Lab",
+   "pi": "Zhiyu Dai, PhD",
+   "dept": "Medicine (Pulmonary and Critical Care)",
+   "inst": "wustl",
+   "focus": "Pulmonary hypertension",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Pulmonary hypertension lung explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Where endothelium sits relative to mural cells in Egln1-Tie2Cre lungs.",
+     "overline": "Pulmonary hypertension",
+     "accession": "GEO GSE277936",
+     "citation": "Zhao, Dai et al., 2025",
+     "subject": "Mouse lung, wild type vs Egln1-Tie2Cre",
+     "stats": [
+      {
+       "value": "293,415",
+       "label": "cells after QC"
+      },
+      {
+       "value": "4",
+       "label": "lungs, 2 vs 2 mice"
+      },
+      {
+       "value": "379",
+       "label": "genes on the panel"
+      },
+      {
+       "value": "93% vs 28%",
+       "label": "endo near mural, knockout vs wild type (section 1)"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Xenium",
+       "on": true
+      },
+      {
+       "label": "379-gene panel",
+       "on": true
+      },
+      {
+       "label": "Cell typing",
+       "on": true
+      },
+      {
+       "label": "Neighbourhoods",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Xenium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-dai-lung-xenium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-dai-lung-xenium",
+     "status": "live",
+     "pi": "Zhiyu Dai, PhD"
+    }
+   ],
+   "institution": {
+    "name": "Washington University School of Medicine",
+    "short": "WashU Medicine",
+    "mark": "W",
+    "color": "#A51417",
+    "logo": "assets/logos/wustl.webp",
+    "logoMark": "assets/logos/wustl-mark.webp",
+    "logoSource": "https://en.wikipedia.org/wiki/File:Washington_University_in_St._Louis_seal.jpg",
+    "wide": false
+   },
+   "photo": "assets/pi/dai.webp",
+   "photoSource": "https://pulmonary.wustl.edu/people/zhiyu-dai-phd/",
+   "hero": "assets/hero/dai.webp"
+  },
+  {
+   "id": "li",
+   "name": "Li Lab",
+   "pi": "Guang Li, PhD",
+   "dept": "Cell Biology",
+   "inst": "pitt",
+   "focus": "Heart development",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "Heart maturation explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Chamber-resolved maturation across 15 developing mouse heart sections.",
+     "overline": "Heart development",
+     "accession": "GEO GSE282547",
+     "citation": "Hu, He, Xu et al., Communications Biology 2026",
+     "subject": "Developing mouse heart, E11.5 to postnatal day 2",
+     "stats": [
+      {
+       "value": "8",
+       "label": "capture areas"
+      },
+      {
+       "value": "15",
+       "label": "heart sections"
+      },
+      {
+       "value": "5,538",
+       "label": "spots after QC"
+      },
+      {
+       "value": "6",
+       "label": "stages"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Visium",
+       "on": true
+      },
+      {
+       "label": "H&E images",
+       "on": true
+      },
+      {
+       "label": "Chamber mapping",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Visium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-li-heart-visium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-li-heart-visium",
+     "status": "live",
+     "pi": "Guang Li, PhD"
+    }
+   ],
+   "institution": {
+    "name": "University of Pittsburgh",
+    "short": "Pitt",
+    "mark": "Pitt",
+    "color": "#003594",
+    "logo": "assets/logos/pitt.webp",
+    "logoMark": "assets/logos/pitt-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:University_of_Pittsburgh_shield_mark.svg",
+    "wide": true
+   },
+   "photo": "assets/pi/li.webp",
+   "photoSource": "https://www.cellbiology.pitt.edu/people/guang-li-phd",
+   "hero": "assets/hero/li.webp"
+  },
+  {
+   "id": "bottini",
+   "name": "Bottini Lab",
+   "pi": "Nunzio Bottini, MD, PhD",
+   "dept": "Medicine (Kao Autoimmunity Institute)",
+   "inst": "cedars",
+   "focus": "Rheumatoid arthritis",
+   "reports": [
+    {
+     "id": "portal",
+     "title": "RA synovium explorer",
+     "kind": "Spatial portal",
+     "icon": "spatial",
+     "desc": "Two public RA synovium sections as a companion to the exTH17 story.",
+     "overline": "Rheumatoid arthritis",
+     "accession": "GEO GSE232734",
+     "citation": "Zoccheddu, Bottini et al.",
+     "subject": "Two ACPA-positive, RF-positive female synovia with active RA",
+     "stats": [
+      {
+       "value": "2,711",
+       "label": "spots after QC"
+      },
+      {
+       "value": "2",
+       "label": "sections, no control"
+      },
+      {
+       "value": "n = 2",
+       "label": "active RA only"
+      },
+      {
+       "value": "Visium",
+       "label": "with tissue images"
+      }
+     ],
+     "pills": [
+      {
+       "label": "10x Visium",
+       "on": true
+      },
+      {
+       "label": "two RA synovia",
+       "on": true
+      },
+      {
+       "label": "H&E images",
+       "on": true
+      },
+      {
+       "label": "Gene layers",
+       "on": true
+      },
+      {
+       "label": "Single-cell RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Bulk RNA-seq",
+       "on": false
+      },
+      {
+       "label": "Your unpublished cohorts",
+       "on": false
+      }
+     ],
+     "note": "10x Visium is analyzed today. The rest are ready to add when your lab shares them.",
+     "url": "https://logan-9726-artemis-bottini-synovium-visium.static.hf.space/",
+     "space": "https://huggingface.co/spaces/logan-9726/artemis-bottini-synovium-visium",
+     "status": "live",
+     "pi": "Nunzio Bottini, MD, PhD"
+    }
+   ],
+   "institution": {
+    "name": "Cedars-Sinai",
+    "short": "Cedars-Sinai",
+    "mark": "CS",
+    "color": "#0B4F9C",
+    "logo": "assets/logos/cedars.webp",
+    "logoMark": "assets/logos/cedars-mark.webp",
+    "logoSource": "https://commons.wikimedia.org/wiki/File:Cedars_Sinai_Medical_Center_logo.svg",
+    "wide": true
+   },
+   "photo": "assets/pi/bottini.webp",
+   "photoSource": "https://www.cedars-sinai.edu/health-sciences-university/research/labs/bottini.html",
+   "hero": "assets/hero/bottini.webp"
+  }
+ ]
+}

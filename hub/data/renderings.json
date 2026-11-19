@@ -1,0 +1,5 @@
+{
+ "_how_to_add": "Drop image or video files in /renderings/ and add one entry per file below. 'lab' is a lab id from labs.json (for example 'gudjonsson') or 'artemis' for studio-wide pieces. 'kind' is 'image' or 'video'. Entries show on the hub under 'Renderings' and on the matching lab page. Keep files under 5 MB each (WebP or MP4).",
+ "_example": {"lab": "walsh", "title": "Cortex fly-through", "file": "renderings/walsh-cortex.webp", "kind": "image", "caption": "Rendered by Claude for Artemis Biolabs", "poster": null},
+ "items": []
+}
