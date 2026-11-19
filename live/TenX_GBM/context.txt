@@ -1,0 +1,51 @@
+# BANKSY Marker Report — TenX_GBM, 10x Visium (NOT Xenium; the pipeline template's title is generic)
+
+- **Input:** `output/TenX_GBM/preprocessed.h5ad`
+- **Cells:** 3,468
+- **Clusters:** 22 (`banksy_cluster`)
+- **DE method:** Wilcoxon rank-sum (`scanpy.tl.rank_genes_groups`, use_raw)
+- **Cell-type assignment:** LLM (qwen3:8b · local Ollama, tissue: glioblastoma (human, Visium))
+
+## Putative cell-type breakdown
+
+| putative cell type | clusters |
+|:---|---:|
+| NPC-like tumor cells | 4 |
+| microglia/TAMs | 4 |
+| MES-like tumor cells | 3 |
+| astrocytes | 3 |
+| pericytes/smooth muscle | 2 |
+| oligodendrocytes | 2 |
+| neurons | 1 |
+| endothelial cells | 1 |
+| proliferating tumor cells | 1 |
+| AC-like tumor cells | 1 |
+
+## Cluster summary
+
+| cluster | n_cells | % of total | putative cell type | top markers |
+|---:|---:|---:|:---|:---|
+| 0 | 282 | 8.13% | NPC-like tumor cells | GPR37L1, KCNJ16, SLC6A1, ALDOC, LGR6 |
+| 1 | 37 | 1.07% | MES-like tumor cells | SULF1, CP, SRPX, FABP7, TNC |
+| 2 | 16 | 0.46% | astrocytes | A2M, APOD, APOC1, DCN, CLU |
+| 3 | 131 | 3.78% | astrocytes | GFAP, SPARC, CLU, CST3, APOE |
+| 4 | 274 | 7.90% | pericytes/smooth muscle | MT3, PANTR1, SLN, SREBF1, FABP5 |
+| 5 | 117 | 3.37% | MES-like tumor cells | SULF1, DKK1, CCL2, CD99, SOD2 |
+| 6 | 286 | 8.25% | pericytes/smooth muscle | METTL7B, DBI, PTN, CALB1, FABP5 |
+| 7 | 221 | 6.37% | microglia/TAMs | CD74, SPARC, MGP, NES, CD63 |
+| 8 | 255 | 7.35% | neurons | ITM2C, VGF, STMN2, TAC1, CHI3L2 |
+| 9 | 71 | 2.05% | microglia/TAMs | SPP1, ITM2C, FTL, MT-ND2, SERPINA3 |
+| 10 | 251 | 7.24% | NPC-like tumor cells | NNMT, ALDH1A1, ADAMTS14, LUM, PODNL1 |
+| 11 | 145 | 4.18% | NPC-like tumor cells | ADGRB1, PRELP, APOD, ANK2, MMP2 |
+| 12 | 246 | 7.09% | microglia/TAMs | LGALS3, CRYAB, GLUL, PLIN2, EIF1 |
+| 13 | 99 | 2.85% | MES-like tumor cells | FABP7, SULF1, ITGAV, COL8A1, TMOD1 |
+| 14 | 180 | 5.19% | endothelial cells | HBA2, HBB, MT1M, VEGFA, HBA1 |
+| 15 | 215 | 6.20% | NPC-like tumor cells | SLN, NNMT, HAP1, LPL, EPHA3 |
+| 16 | 83 | 2.39% | microglia/TAMs | RPS6, SPP1, GAP43, RPL17, RPS29 |
+| 17 | 179 | 5.16% | proliferating tumor cells | CEBPD, FOS, HILPDA, ADM, UBC |
+| 18 | 161 | 4.64% | oligodendrocytes | DCN, PRELP, APOD, ISLR, MGP |
+| 19 | 22 | 0.63% | astrocytes | HLA-A, APOD, GFAP, CTSB, CD81 |
+| 20 | 135 | 3.89% | AC-like tumor cells | TM4SF1, ALDH1A3, SDC1, TFRC, SOX4 |
+| 21 | 62 | 1.79% | oligodendrocytes | COL4A1, COL4A2, PLVAP, NDUFA4L2, HIGD1B |
+
+Source: 10x Genomics Parent Visium Human Glioblastoma demonstration dataset (10x Visium).

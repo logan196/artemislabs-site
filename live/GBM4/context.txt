@@ -1,0 +1,45 @@
+# BANKSY Marker Report — GBM4, 10x Visium (NOT Xenium; the pipeline template's title is generic)
+
+- **Input:** `output/GBM4/preprocessed.h5ad`
+- **Cells:** 2,540
+- **Clusters:** 19 (`banksy_cluster`)
+- **DE method:** Wilcoxon rank-sum (`scanpy.tl.rank_genes_groups`, use_raw)
+- **Cell-type assignment:** LLM (qwen3:8b · local Ollama, tissue: glioblastoma (human, Visium))
+
+## Putative cell-type breakdown
+
+| putative cell type | clusters |
+|:---|---:|
+| proliferating tumor cells | 7 |
+| astrocytes | 3 |
+| pericytes/smooth muscle | 3 |
+| MES-like tumor cells | 2 |
+| OPC-like tumor cells | 2 |
+| endothelial cells | 1 |
+| microglia/TAMs | 1 |
+
+## Cluster summary
+
+| cluster | n_cells | % of total | putative cell type | top markers |
+|---:|---:|---:|:---|:---|
+| 0 | 120 | 4.72% | proliferating tumor cells | MT-CO1, MT3, C1orf61, MT-ND1, MT-CO3 |
+| 1 | 162 | 6.38% | MES-like tumor cells | FOS, SLN, CCL4, SOCS2, TCIM |
+| 2 | 187 | 7.36% | astrocytes | CRYAB, NMB, ID3, TIMP3, ID4 |
+| 3 | 88 | 3.46% | pericytes/smooth muscle | MGP, TIMP1, CITED1, CLU, CD44 |
+| 4 | 96 | 3.78% | endothelial cells | COL4A1, HSPG2, FN1, COL4A2, ESAM |
+| 5 | 97 | 3.82% | MES-like tumor cells | RDH10, NAMPT, JUNB, CITED1, JUN |
+| 6 | 78 | 3.07% | pericytes/smooth muscle | CHI3L1, S100A10, LGALS3, MIF, PKM |
+| 7 | 220 | 8.66% | proliferating tumor cells | HMGN2, CCNB2, TYMS, HSPA1A, UBE2T |
+| 8 | 124 | 4.88% | proliferating tumor cells | VEGFA, CHPF, FAM162A, LDHA, PGK1 |
+| 9 | 108 | 4.25% | proliferating tumor cells | MT-CO1, MT-ND1, APOC1, MT-CYB, NRGN |
+| 10 | 165 | 6.50% | proliferating tumor cells | SLC1A2, APOC1, MT3, MT-ND2, MT-ND5 |
+| 11 | 108 | 4.25% | pericytes/smooth muscle | S100A10, S100A6, GSN, CRYAB, MIF |
+| 12 | 119 | 4.69% | astrocytes | CRYAB, PMP2, IGLC2, S100A6, ID3 |
+| 13 | 120 | 4.72% | microglia/TAMs | NNMT, H19, CITED1, TMEM158, CCL2 |
+| 14 | 246 | 9.69% | proliferating tumor cells | MFAP4, IGFBPL1, HMGN2, INSM1, ZFPM2 |
+| 15 | 91 | 3.58% | proliferating tumor cells | TUBA1B, MT-ATP6, TMSB4X, RPLP1, MT-ND3 |
+| 16 | 146 | 5.75% | OPC-like tumor cells | NDRG2, SLC1A2, MT1E, RGCC, SLC1A3 |
+| 17 | 200 | 7.87% | OPC-like tumor cells | RPL36A, C1orf61, OLIG1, RPL17, DBI |
+| 18 | 65 | 2.56% | astrocytes | CRYAB, HBB, HBA1, MALAT1, HBA2 |
+
+Source: Ren et al. 2023, GSE194329 (GBM4, IDH-mutant astrocytoma, 10x Visium).
