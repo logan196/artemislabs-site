@@ -31,12 +31,18 @@ const LABELS = [
 ];
 
 const AGENT_STEPS = ["INGEST · FASTQ/H5AD", "BANKSY · λ=0.2", "SUBAGENTS · 15 DOMAINS"];
-const THREAD_CALLS = ["BANKSY", "Leiden", "Wilcoxon", "Qwen3"];
+// what the arrow carries — revealed along the arc as the head passes
+const ARROW_MEANS = [
+  { w: "LLM", x: 23.6, y: 16.2, d: 0.3 },
+  { w: "DISCOVERY", x: 30.7, y: 14.1, d: 0.56 },
+  { w: "ANALYSIS", x: 37.8, y: 16.4, d: 0.82 },
+  { w: "HPC", x: 44.8, y: 22.8, d: 1.05 },
+];
 
-// beat timing (ms): construction 0→1.9s, held full draw (aim tremor) 1.9→2.75s,
-// release 2750, ballistic flight 450ms, impact 3200, assembly 3.2→4.3s, copy 4.5s
-const T_RELEASE = 2750;
-const T_IMPACT = 3200;
+// beat timing (ms): construction 0→2.1s, held draw 2.1→2.3s, release 2300,
+// a long 1.2s parabola, impact 3500, assembly 3.5→4.6s, copy reveals 5.0s+
+const T_RELEASE = 2300;
+const T_IMPACT = 3500;
 
 // ——— the engraving, authored as data ———
 // A full Attic-profile huntress: crown, Greek nose, chignon, peplos with
@@ -99,22 +105,23 @@ const NODES = [
   { x: 160, y: 472, t: 0.74 },
 ];
 
-// the real pipeline — the code that actually runs, typed as she is drawn
+// the crystal's blueprint — typed like a mermaid definition, then it
+// compiles: on impact the whole block flies into the forming dodecahedron
 const CODE_LINES = [
-  { s: 'adata = sc.read_h5ad("AT14-BRA-4.h5ad")', t: 400 },
-  { s: "artemis.banksy(adata, lambda_=0.2, k_geom=15)", t: 850 },
-  { s: "sc.tl.leiden(adata, resolution=0.8)", t: 1300 },
-  { s: 'sc.tl.rank_genes_groups(adata, "leiden", method="wilcoxon")', t: 1750 },
-  { s: 'artemis.annotate(adata, subagents=15, llm="qwen3:8b")', t: 2200 },
-  { s: "portal.write(adata, live=True)", t: 2650 },
+  { s: "const \u03c6 = (1 + Math.sqrt(5)) / 2;", t: 350 },
+  { s: "verts = cube(\u00b11) \u222a rect(0, \u00b11/\u03c6, \u00b1\u03c6);  // 20", t: 800 },
+  { s: "edges = pairs(dist == 2/\u03c6);           // 30", t: 1250 },
+  { s: "faces = pentagons(verts);             // 12", t: 1700 },
+  { s: "artemis.banksy(adata, lambda_=0.2)", t: 2150 },
+  { s: "portal.write(adata, live=True)", t: 2600 },
 ];
 
 // museum-placard intertitles — the story, told while the arrow flies
 const CAPTIONS = [
-  { text: "Raw data is a wilderness.", at: 0.3, hold: 1.2 },
-  { text: "She strings the bow with living code.", at: 2.0, hold: 0.55 },
-  { text: "One arrow. Fifteen parallel agents.", at: 3.15, hold: 0.85 },
-  { text: "Structure \u2014 alive.", at: 4.55, hold: 2.2 },
+  { text: "Raw data is a wilderness.", at: 0.3, hold: 1.1 },
+  { text: "She strings the bow with living code.", at: 1.75, hold: 0.4 },
+  { text: "One arrow — LLMs, analysis, HPC. Galvanizing discovery.", at: 2.75, hold: 1.15 },
+  { text: "Structure \u2014 alive.", at: 4.9, hold: 2.3 },
 ];
 
 const easeSnap = [0.16, 1, 0.3, 1];
@@ -764,78 +771,90 @@ export default function FableStage() {
           </g>
           </g>
 
-          {/* the release — a fading ballistic streak under a real projectile */}
+          {/* the release — one long dramatic parabola, left as a faint trace */}
           <motion.path
-            d="M 212 246 Q 470 228 720 297"
+            d="M 212 246 Q 470 40 720 297"
             stroke={`rgb(${TEAL})`}
             strokeWidth="1.2"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
-            animate={drawn ? { pathLength: 1, opacity: [0, 0.85, 0.12] } : { pathLength: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.3, 0, 0.7, 1] }}
+            animate={drawn ? { pathLength: 1, opacity: [0, 0.9, 0.16] } : { pathLength: 0, opacity: 0 }}
+            transition={{
+              pathLength: { duration: 1.2, ease: [0.4, 0, 0.55, 1] },
+              opacity: { duration: 2.2, times: [0, 0.45, 1] },
+            }}
           />
           {drawn && (
             <motion.g
               initial={{ offsetDistance: "0%", opacity: 0 }}
               animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
               transition={{
-                offsetDistance: { duration: 0.45, ease: [0.3, 0, 0.7, 1] },
-                opacity: { duration: 0.5, times: [0, 0.08, 0.85, 1] },
+                offsetDistance: { duration: 1.2, ease: [0.4, 0, 0.55, 1] },
+                opacity: { duration: 1.25, times: [0, 0.06, 0.88, 1] },
               }}
-              style={{ offsetPath: 'path("M 212 246 Q 470 228 720 297")', offsetRotate: "auto" }}
+              style={{ offsetPath: 'path("M 212 246 Q 470 40 720 297")', offsetRotate: "auto" }}
             >
               <path
                 d="M -17 0 L 0 0 M 0 0 L -6.5 -3.2 M 0 0 L -6.5 3.2"
                 stroke={`rgb(${TEAL})`}
-                strokeWidth="1.9"
+                strokeWidth="2.3"
                 strokeLinecap="round"
                 vectorEffect="non-scaling-stroke"
               />
             </motion.g>
           )}
           <motion.path
-            d="M 238 248 Q 475 205 716 293"
+            d="M 238 248 Q 475 20 716 293"
             stroke={`rgba(${BONE}, 0.3)`}
             strokeWidth="0.8"
             strokeDasharray="3 5"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={drawn ? { pathLength: 1, opacity: [0, 0.7, 0] } : {}}
-            transition={{ duration: 0.8, delay: 0.05 }}
+            transition={{ duration: 1.25, delay: 0.06 }}
           />
           <motion.path
-            d="M 238 252 Q 475 298 716 301"
+            d="M 238 252 Q 475 95 716 301"
             stroke={`rgba(${TEAL}, 0.38)`}
             strokeWidth="0.8"
             strokeDasharray="3 5"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={drawn ? { pathLength: 1, opacity: [0, 0.7, 0] } : {}}
-            transition={{ duration: 0.8, delay: 0.09 }}
+            transition={{ duration: 1.25, delay: 0.12 }}
           />
           <motion.path
-            d="M 238 250 Q 475 250 716 297"
+            d="M 238 250 Q 475 58 716 297"
             stroke={`rgba(${TEAL}, 0.25)`}
             strokeWidth="0.7"
             strokeDasharray="2 7"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={drawn ? { pathLength: 1, opacity: [0, 0.6, 0] } : {}}
-            transition={{ duration: 0.8, delay: 0.13 }}
+            transition={{ duration: 1.25, delay: 0.18 }}
           />
         </g>
       </svg>
 
-      {/* the real pipeline, typing itself as she is drawn */}
-      <div className="hidden lg:block absolute right-[5%] top-[24%] w-[320px] pointer-events-none text-left">
+      {/* the crystal's blueprint, typed beside it — then it compiles:
+          on impact the whole block flies into the forming dodecahedron */}
+      <div className="hidden lg:block absolute right-[7%] top-[20%] w-[330px] pointer-events-none text-left">
         <motion.div
           key={`code-${run}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.6, 0.6, 0.3] }}
-          transition={{ duration: 6, times: [0, 0.12, 0.72, 1] }}
+          initial={{ opacity: 0, x: 0, y: 0, scale: 1 }}
+          animate={
+            stage === "impacted"
+              ? { opacity: 0, x: -370, y: 70, scale: 0.45 }
+              : { opacity: [0, 0.62, 0.62], x: 0, y: 0, scale: 1 }
+          }
+          transition={
+            stage === "impacted"
+              ? { duration: 0.9, delay: 0.1, ease: easeSnap }
+              : { duration: 2.5, times: [0, 0.3, 1] }
+          }
           className="font-mono text-[10.5px] leading-[1.9] text-[#F3EFE6]/60"
         >
-          <p className="text-[#F3EFE6]/30 mb-1">{"// artemis · run 01"}</p>
+          <p className="text-[#F3EFE6]/30 mb-1">{"// the crystal of twelve"}</p>
           {CODE_LINES.map((l) => (
             <p key={l.s} className="whitespace-nowrap">
               <span className="text-[#2DD4BF]/70">▸ </span>
@@ -843,6 +862,20 @@ export default function FableStage() {
             </p>
           ))}
         </motion.div>
+      </div>
+
+      {/* the name at the heart of the crystal */}
+      <div className="hidden md:block absolute left-1/2 top-[33%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <motion.p
+          key={`core-${run}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.1, delay: 4.9 }}
+          className="font-mono text-[11.5px] tracking-[0.34em] uppercase text-[#2DD4BF] whitespace-nowrap"
+          style={{ textShadow: "0 0 18px rgba(45,212,191,0.45)" }}
+        >
+          <Decode text="BIOINFORMATICS, REIMAGINED" delay={5000} />
+        </motion.p>
       </div>
 
       {/* micro-terminal tags at the nock (beat 02 · the draw) */}
@@ -864,24 +897,23 @@ export default function FableStage() {
         </AnimatePresence>
       </div>
 
-      {/* sub-thread pipeline calls, flashing once mid-flight */}
-      <div className="hidden lg:flex gap-8 absolute top-[24%] left-[28%] pointer-events-none">
-        <AnimatePresence>
-          {stage === "flight" &&
-            THREAD_CALLS.map((call, i) => (
-              <motion.span
-                key={`${run}-${call}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 0.6, 0] }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.7, delay: i * 0.08 }}
-                className="font-mono text-[10px] tracking-widest text-[#F3EFE6]/70"
-              >
-                {call}
-              </motion.span>
-            ))}
-        </AnimatePresence>
-      </div>
+      {/* what the arrow IS — each word ignites as the arrowhead passes it */}
+      <AnimatePresence>
+        {drawn &&
+          ARROW_MEANS.map((m) => (
+            <motion.span
+              key={`${run}-${m.w}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: [0, 1, 0.85, 0], y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 2.6, delay: m.d, times: [0, 0.12, 0.6, 1] }}
+              className="hidden lg:block absolute font-mono text-[12px] tracking-[0.3em] text-[#2DD4BF] pointer-events-none"
+              style={{ left: `${m.x}%`, top: `${m.y}%`, textShadow: "0 0 14px rgba(45,212,191,0.6)" }}
+            >
+              {m.w}
+            </motion.span>
+          ))}
+      </AnimatePresence>
 
       {/* museum placard — the story, told while the arrow flies */}
       <div className="hidden lg:block absolute left-[6.5%] top-[64%] w-[280px] h-16 pointer-events-none text-left">

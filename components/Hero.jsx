@@ -4,7 +4,6 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useEffect, useRef, useState } from "react";
 import FableStage from "./FableStage";
 import FounderLock from "./FounderLock";
-import Decode from "./Decode";
 
 const BOOKING =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
@@ -16,8 +15,8 @@ const NAV = [
   ["#whatwedo", "What we do"],
 ];
 
-// copy settles only after the crystal has assembled (one focal event at a time)
-const SETTLE = 4.5;
+// copy reveals only after the crystal has assembled — arda-style, line by line
+const SETTLE = 5.0;
 
 export default function Hero() {
   const ref = useRef(null);
@@ -39,13 +38,14 @@ export default function Hero() {
 
   // initial must not branch on `reduced` — the server can't know it, and a
   // mismatch breaks hydration. Reduced motion zeroes the transition instead.
-  const settle = {
+  // Each line of copy takes the stage 180ms after the last.
+  const settle = (i) => ({
     initial: { opacity: 0, y: 14 },
     animate: { opacity: 1, y: 0 },
     transition: reduced
       ? { duration: 0 }
-      : { duration: 0.9, delay: SETTLE, ease: [0.21, 0.6, 0.27, 1] },
-  };
+      : { duration: 0.7, delay: SETTLE + i * 0.18, ease: [0.21, 0.6, 0.27, 1] },
+  });
 
   return (
     <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
@@ -117,23 +117,21 @@ export default function Hero() {
             style={{ background: "radial-gradient(ellipse at center, rgba(9,10,11,0.82) 30%, transparent 72%)" }}
             aria-hidden
           />
-          <motion.p {...settle} className="font-mono text-[11.5px] tracking-[0.32em] uppercase text-[#2DD4BF] mb-5">
-            <Decode text="BIOINFORMATICS, REIMAGINED" delay={reduced ? 0 : SETTLE * 1000 + 100} />
-          </motion.p>
+          {/* the eyebrow now lives at the heart of the crystal (FableStage) */}
           <motion.h1
-            {...settle}
+            {...settle(0)}
             className="text-[2.4rem] leading-[1.08] sm:text-5xl xl:text-[4.2rem] font-normal tracking-tight text-[#F3EFE6]"
             style={{ fontFamily: "'New York', ui-serif, Georgia, 'Times New Roman', serif" }}
           >
             What if your data were delivered alive?
           </motion.h1>
-          <motion.p {...settle} className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-[#F3EFE6]/75 leading-relaxed font-light">
+          <motion.p {...settle(1)} className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-[#F3EFE6]/75 leading-relaxed font-light">
             A living, breathing portal built for inquiry across your entire team. Spatial,
             single-cell, and multi-omic analysis — delivered as an interactive scientific
             instrument, not a static PDF.
           </motion.p>
 
-          <motion.div {...settle} className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
+          <motion.div {...settle(2)} className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
             <a
               href="#contact"
               className="w-full sm:w-auto rounded-[3px] bg-[#F3EFE6] text-[#090A0B] px-7 py-3.5 text-sm font-medium hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors"
@@ -150,11 +148,11 @@ export default function Hero() {
             </a>
           </motion.div>
 
-          <motion.p {...settle} className="mt-4 font-mono text-[12px] text-dim">
+          <motion.p {...settle(3)} className="mt-4 font-mono text-[12px] text-dim">
             Send a raw dataset or an unsolved question — we reply with a scoped pipeline and an interactive prototype.
           </motion.p>
 
-          <motion.p {...settle} className="mt-5 text-[13px] text-[#F3EFE6]/60 pointer-events-auto">
+          <motion.p {...settle(4)} className="mt-5 text-[13px] text-[#F3EFE6]/60 pointer-events-auto">
             <span className="text-[#2DD4BF]">●</span> 3.9M cells, one mouse brain (Allen Brain Cell Atlas, reprocessed).{" "}
             <a href="live/brain/index.html" className="text-snow underline decoration-[#2DD4BF]/50 underline-offset-4 hover:decoration-[#2DD4BF] transition-colors">
               Explore it live →
