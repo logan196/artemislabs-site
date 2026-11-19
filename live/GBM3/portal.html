@@ -468,7 +468,7 @@
   function ensureFrame(d) {
     if (frames[d.id]) return frames[d.id];
     var f = document.createElement("iframe");
-    f.src = d.src + "index.html";
+    f.src = d.src + (d.id === "GBM3" ? "histology/index.html" : "index.html");
     f.title = d.name + " Vitessce viewer";
     f.setAttribute("loading", "eager");
     var rec = { iframe: f, loaded: false };
