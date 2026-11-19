@@ -30,7 +30,7 @@ const PAL = { NT:0, CLASS:16, SUB:64, CL:512 };
 
 const canvas = document.getElementById('gl');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:false, powerPreference:'high-performance'});
-renderer.setClearColor(0x04060c, 1);
+renderer.setClearColor(0x000000, 1);
 let pixelRatio = Math.min(devicePixelRatio || 1, 2);
 renderer.setPixelRatio(pixelRatio);
 renderer.setSize(innerWidth, innerHeight);
@@ -52,7 +52,7 @@ const uniforms = {
   u_geneColors:{value: null},
   u_hlLevel:{value:-1}, u_hlId:{value:-1}, u_hlId2:{value:-1}, u_hlColor:{value:new THREE.Color(1.0,0.79,0.30)},
   u_progress:{value:0}, u_alpha:{value:1}, u_size:{value:2.0}, u_px:{value:pixelRatio},
-  u_clipZ:{value:1.0}, u_dim:{value:0}, u_exposure:{value:1.0}, u_maxdot:{value: parseFloat(Q.get('maxdot')|| String(Math.min(42, Math.max(16, innerWidth/30))))},
+  u_clipZ:{value:1.0}, u_clipAxis:{value:2}, u_dim:{value:0}, u_exposure:{value:1.0}, u_maxdot:{value: parseFloat(Q.get('maxdot')|| String(Math.min(42, Math.max(16, innerWidth/30))))},
 };
 
 const VERT = `
@@ -66,7 +66,7 @@ attribute vec4 a_geneB;
 uniform sampler2D u_palette;
 uniform vec3 u_boundsMin, u_boundsRange, u_center;
 uniform float u_fit, u_size, u_px, u_progress, u_alpha, u_clipZ, u_dim, u_exposure, u_maxdot;
-uniform int u_mode, u_gene, u_hlLevel, u_hlId, u_hlId2;
+uniform int u_mode, u_gene, u_hlLevel, u_hlId, u_hlId2, u_clipAxis;
 uniform vec3 u_geneColor;
 uniform vec3 u_geneColors[8];
 uniform vec3 u_hlColor;
@@ -83,9 +83,10 @@ void main(){
   float t = clamp((u_progress - h3 * 0.55) / 0.45, 0.0, 1.0);
   t = t*t*(3.0 - 2.0*t);
   vec3 pos = mix(dir * (1.7 + h2 * 1.6), target, t);
-  // slice clip on normalized z
+  // slice clip on the selected normalized axis (0=x A-P, 1=y D-V, 2=z M-L)
   float edge = u_clipZ;
-  float sliceA = 1.0 - smoothstep(edge - 0.015, edge, pn.z);
+  float axv = u_clipAxis == 0 ? pn.x : (u_clipAxis == 1 ? pn.y : pn.z);
+  float sliceA = 1.0 - smoothstep(edge - 0.015, edge, axv);
   // color resolve
   int id = 0;
   if (u_mode == 0) id = ${PAL.NT} + int(a_nt + 0.5);
@@ -297,6 +298,16 @@ const TOUR_TL = [
 ];
 let tl = FILM_V === 'merfish' ? MERFISH_TL : (FILM ? FILM_TL : INTRO), tlStart = 0, playing = true, curScene = -1;
 
+/* The storyboard clock is wall-time; without this, hiding the tab lets the
+   timeline run to the end unseen and the viewer comes back to a frozen,
+   half-applied scene. Pause the clock while hidden. */
+let hiddenAt = null;
+document.addEventListener('visibilitychange', ()=>{
+  const now = performance.now()/1000;
+  if (document.hidden) hiddenAt = now;
+  else if (hiddenAt != null){ tlStart += now - hiddenAt; hiddenAt = null; }
+});
+
 // ---- instrument grammar (film mode) ----
 const annoEl=$('anno'), railEl=$('frail'), stepEl=$('stepper'), frameEl=$('frame'), leaderEl=$('leader');
 if (FILM){ bloom.strength=0.18; document.body.style.background='#07090f';
@@ -323,9 +334,7 @@ function leaderTick(){
   _lDot.setAttribute('cx',ax); _lDot.setAttribute('cy',ay);
   _lLine.style.display='block'; _lDot.style.display='block';
 }
-function stepTick(i){ return; 
-  if (!stepEl.childElementCount) stepEl.innerHTML=tl.map((s,j)=>`<i data-i="${j}">${String(j+1).padStart(2,'0')}</i>`).join('');
-  stepEl.querySelectorAll('i').forEach((el,j)=>el.classList.toggle('on', j===i)); }
+function stepTick(){ /* stepper intentionally disabled in film grammar */ }
 
 function applyScene(i, m){
   const s = tl[i]; if (!s) return;
@@ -445,6 +454,10 @@ $('tourchip').onclick = ()=>{
 };
 $('replay').onclick = ()=>{ tl = FILM ? FILM_TL : INTRO; startTimeline(); };
 $('slice').oninput = e=>{ uniforms.u_clipZ.value = +e.target.value/100; };
+document.querySelectorAll('.axbtn').forEach(b=>b.onclick=()=>{
+  uniforms.u_clipAxis.value = +b.dataset.ax;
+  document.querySelectorAll('.axbtn').forEach(x=>x.classList.toggle('on', x===b));
+});
 $('bloom').checked = useBloom;
 $('bloom').onchange = e=>{ useBloom = e.target.checked; };
 $('spin').onchange = e=>{ controls.autoRotate = e.target.checked; };
@@ -461,11 +474,15 @@ function startTimeline(){
   uniAnim.length = 0;
 }
 function endIntro(){
-  playing = false; document.body.classList.remove('playing'); hideCaption(); $('skip').style.display = 'none';
+  playing = false; document.body.classList.remove('playing'); $('skip').style.display = 'none';
   uniforms.u_progress.value = 1; uniforms.u_dim.value = 0;
   controls.enabled = true; controls.autoRotate = $('spin').checked;
   ['chips','rail','ctl','searchbox'].forEach(id=>$(id).style.display='flex');
   camera.position.set(1.55,0.85,2.65); controls.target.set(0,0,0);
+  // hand off, don't hard-cut: leave an explore hint up briefly
+  setCaption('Yours to explore.', 'drag to orbit · slice on any axis · search a cell type · or take the guided tour');
+  clearTimeout(endIntro._hintT);
+  endIntro._hintT = setTimeout(hideCaption, 6500);
   window.__INTRO_DONE = true;
 }
 
@@ -535,8 +552,9 @@ const __filmTick = () => {
     controls.target.lerpVectors(camPath.lookFrom, camPath.lookTo, e);
     camera.lookAt(controls.target);
     if (curScene >= 0 && tl[curScene] && tl[curScene].orbit){
-      const ang = (tFilm - camPath.t0) * 0.35;
-      camera.position.applyAxisAngle(new THREE.Vector3(0,1,0), 0.004);
+      // dt-based so the drift speed is framerate-independent
+      const dt = Math.min(0.1, now - (window.__prevNow || now));
+      camera.position.applyAxisAngle(new THREE.Vector3(0,1,0), dt * 0.24);
     }
   }
   if (diveAnim){

@@ -8,7 +8,7 @@
 <link rel="icon" href="artemis_mark.svg">
 <style>
   :root{
-    --bg:#04060c; --panel:#0a0e18; --line:rgba(120,160,255,.14);
+    --bg:#000; --panel:#0a0e18; --line:rgba(120,160,255,.14);
     --txt:#e8ecf6; --dim:#8b94ad; --accent:#5ac8ff; --gold:#ffc94d;
     --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   }
@@ -47,6 +47,9 @@
   .ctl{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
   .ctl .card{padding:10px 12px;font-size:11px;color:var(--dim)}
   .ctl label{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+  .axrow{display:flex;gap:4px;margin-top:7px}
+  .axbtn{flex:1;background:none;border:1px solid var(--line);border-radius:7px;color:var(--dim);font-size:10px;padding:3px 6px;cursor:pointer}
+  .axbtn.on{color:#04121f;background:var(--accent);border-color:var(--accent);font-weight:600}
   input[type=range]{width:110px;accent-color:var(--accent)}
   .search{position:fixed;top:104px;left:16px;z-index:20;pointer-events:auto}
   .search input{width:230px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--txt);
@@ -160,7 +163,7 @@
 <div class="rail" id="rail" style="display:none"></div>
 
 <div class="ctl" id="ctl" style="display:none">
-  <div class="card"><label>slice <input type="range" id="slice" min="5" max="100" value="100"></label></div>
+  <div class="card"><label>slice <input type="range" id="slice" min="5" max="100" value="100"></label><div class="axrow"><button class="axbtn" data-ax="0">coronal</button><button class="axbtn" data-ax="1">horizontal</button><button class="axbtn on" data-ax="2">sagittal</button></div></div>
   <div class="card"><label><input type="checkbox" id="bloom" checked> glow</label></div>
   <div class="card"><label><input type="checkbox" id="spin" checked> auto-rotate</label></div>
 </div>
