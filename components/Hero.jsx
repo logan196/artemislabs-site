@@ -16,7 +16,7 @@ const NAV = [
 ];
 
 // copy reveals only after the crystal has assembled — arda-style, line by line
-const SETTLE = 5.0;
+const SETTLE = 5.4;
 
 export default function Hero() {
   const ref = useRef(null);
@@ -70,8 +70,10 @@ export default function Hero() {
           <img
             src="artemis_lockup.svg"
             alt="Artemis BioLabs"
-            className={`h-8 md:h-11 w-auto transition-all duration-300 ${
-              saluting ? "scale-105 [filter:drop-shadow(0_0_9px_rgba(45,212,191,0.75))]" : ""
+            className={`h-9 md:h-12 w-auto transition-all duration-300 ${
+              saluting
+                ? "scale-105 [filter:brightness(1.5)_drop-shadow(0_0_10px_rgba(45,212,191,0.8))]"
+                : "[filter:brightness(1.4)_drop-shadow(0_0_7px_rgba(45,212,191,0.3))]"
             }`}
           />
         </a>

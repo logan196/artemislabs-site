@@ -31,18 +31,19 @@ const LABELS = [
 ];
 
 const AGENT_STEPS = ["INGEST · FASTQ/H5AD", "BANKSY · λ=0.2", "SUBAGENTS · 15 DOMAINS"];
-// what the arrow carries — revealed along the arc as the head passes
+// what the arrow IS — each word is dropped by the arrowhead as it passes,
+// delays matched to the flight's hang-at-apex profile
 const ARROW_MEANS = [
-  { w: "LLM", x: 23.6, y: 16.2, d: 0.3 },
-  { w: "DISCOVERY", x: 30.7, y: 14.1, d: 0.56 },
-  { w: "ANALYSIS", x: 37.8, y: 16.4, d: 0.82 },
-  { w: "HPC", x: 44.8, y: 22.8, d: 1.05 },
+  { w: "LLM", x: 23.6, y: 16.2, d: 0.4 },
+  { w: "DISCOVERY", x: 30.7, y: 14.1, d: 0.74 },
+  { w: "ANALYSIS", x: 37.8, y: 16.4, d: 1.2 },
+  { w: "HPC", x: 44.8, y: 22.8, d: 1.5 },
 ];
 
-// beat timing (ms): construction 0→2.1s, held draw 2.1→2.3s, release 2300,
-// a long 1.2s parabola, impact 3500, assembly 3.5→4.6s, copy reveals 5.0s+
+// beat timing (ms): construction 0→2.1s, release 2300, a 1.7s parabola that
+// hangs at its apex, impact 4000, assembly 4.0→5.1s, copy reveals 5.4s+
 const T_RELEASE = 2300;
-const T_IMPACT = 3500;
+const T_IMPACT = 4000;
 
 // ——— the engraving, authored as data ———
 // A full Attic-profile huntress: crown, Greek nose, chignon, peplos with
@@ -120,8 +121,8 @@ const CODE_LINES = [
 const CAPTIONS = [
   { text: "Raw data is a wilderness.", at: 0.3, hold: 1.1 },
   { text: "She strings the bow with living code.", at: 1.75, hold: 0.4 },
-  { text: "One arrow — LLMs, analysis, HPC. Galvanizing discovery.", at: 2.75, hold: 1.15 },
-  { text: "Structure \u2014 alive.", at: 4.9, hold: 2.3 },
+  { text: "One arrow — LLMs, analysis, HPC. Galvanizing discovery.", at: 2.8, hold: 1.55 },
+  { text: "Structure \u2014 alive.", at: 5.35, hold: 2.3 },
 ];
 
 const easeSnap = [0.16, 1, 0.3, 1];
@@ -632,10 +633,19 @@ export default function FableStage() {
         className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
         fill="none"
       >
+        <defs>
+          <filter id="fable-headglow" x="-250%" y="-250%" width="600%" height="600%">
+            <feGaussianBlur stdDeviation="2.6" />
+          </filter>
+        </defs>
         <g strokeLinecap="round" strokeLinejoin="round">
           {/* line of action: the whole tableau leans 6° into the shot and
               stands 1.15× — pose first, ornament second */}
-          <g transform="translate(-34.5 -57) scale(1.15)">
+          <motion.g
+            transform="translate(-34.5 -57) scale(1.15)"
+            animate={{ opacity: stage === "flight" ? 0.3 : 1 }}
+            transition={{ duration: 0.45 }}
+          >
           <g transform="rotate(6 196 345)">
           {/* blueprint scaffolding — flashes during construction, gone by release */}
           {GUIDES.map((g, i) => (
@@ -769,38 +779,47 @@ export default function FableStage() {
 
           {/* close the pose group — the shot itself flies in stage space */}
           </g>
-          </g>
+          </motion.g>
 
           {/* the release — one long dramatic parabola, left as a faint trace */}
           <motion.path
             d="M 212 246 Q 470 40 720 297"
             stroke={`rgb(${TEAL})`}
-            strokeWidth="1.2"
+            strokeWidth="1.5"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
-            animate={drawn ? { pathLength: 1, opacity: [0, 0.9, 0.16] } : { pathLength: 0, opacity: 0 }}
+            animate={drawn ? { pathLength: [0, 0.48, 0.58, 1], opacity: [0, 0.9, 0.2] } : { pathLength: 0, opacity: 0 }}
             transition={{
-              pathLength: { duration: 1.2, ease: [0.4, 0, 0.55, 1] },
-              opacity: { duration: 2.2, times: [0, 0.45, 1] },
+              pathLength: { duration: 1.7, times: [0, 0.42, 0.62, 1], ease: "linear" },
+              opacity: { duration: 3, times: [0, 0.4, 1] },
             }}
           />
           {drawn && (
             <motion.g
               initial={{ offsetDistance: "0%", opacity: 0 }}
-              animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
+              animate={{ offsetDistance: ["0%", "48%", "58%", "100%"], opacity: [0, 1, 1, 0] }}
               transition={{
-                offsetDistance: { duration: 1.2, ease: [0.4, 0, 0.55, 1] },
-                opacity: { duration: 1.25, times: [0, 0.06, 0.88, 1] },
+                offsetDistance: { duration: 1.7, times: [0, 0.42, 0.62, 1], ease: "linear" },
+                opacity: { duration: 1.75, times: [0, 0.04, 0.92, 1] },
               }}
               style={{ offsetPath: 'path("M 212 246 Q 470 40 720 297")', offsetRotate: "auto" }}
             >
               <path
-                d="M -17 0 L 0 0 M 0 0 L -6.5 -3.2 M 0 0 L -6.5 3.2"
+                d="M -22 0 L 0 0 M 0 0 L -7 -3.6 M 0 0 L -7 3.6"
                 stroke={`rgb(${TEAL})`}
-                strokeWidth="2.3"
+                strokeWidth="5"
+                strokeLinecap="round"
+                filter="url(#fable-headglow)"
+                opacity="0.55"
+              />
+              <path
+                d="M -22 0 L 0 0 M 0 0 L -7 -3.6 M 0 0 L -7 3.6"
+                stroke={`rgb(${TEAL})`}
+                strokeWidth="2.4"
                 strokeLinecap="round"
                 vectorEffect="non-scaling-stroke"
               />
+              <circle cx="1.5" cy="0" r="2.4" fill="#F3EFE6" opacity="0.9" />
             </motion.g>
           )}
           <motion.path
@@ -811,7 +830,7 @@ export default function FableStage() {
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={drawn ? { pathLength: 1, opacity: [0, 0.7, 0] } : {}}
-            transition={{ duration: 1.25, delay: 0.06 }}
+            transition={{ duration: 1.7, delay: 0.06 }}
           />
           <motion.path
             d="M 238 252 Q 475 95 716 301"
@@ -821,7 +840,7 @@ export default function FableStage() {
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={drawn ? { pathLength: 1, opacity: [0, 0.7, 0] } : {}}
-            transition={{ duration: 1.25, delay: 0.12 }}
+            transition={{ duration: 1.7, delay: 0.12 }}
           />
           <motion.path
             d="M 238 250 Q 475 58 716 297"
@@ -831,7 +850,7 @@ export default function FableStage() {
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={drawn ? { pathLength: 1, opacity: [0, 0.6, 0] } : {}}
-            transition={{ duration: 1.25, delay: 0.18 }}
+            transition={{ duration: 1.7, delay: 0.18 }}
           />
         </g>
       </svg>
@@ -845,12 +864,16 @@ export default function FableStage() {
           animate={
             stage === "impacted"
               ? { opacity: 0, x: -370, y: 70, scale: 0.45 }
-              : { opacity: [0, 0.62, 0.62], x: 0, y: 0, scale: 1 }
+              : stage === "flight"
+                ? { opacity: 0.28, x: 0, y: 0, scale: 1 }
+                : { opacity: [0, 0.62, 0.62], x: 0, y: 0, scale: 1 }
           }
           transition={
             stage === "impacted"
               ? { duration: 0.9, delay: 0.1, ease: easeSnap }
-              : { duration: 2.5, times: [0, 0.3, 1] }
+              : stage === "flight"
+                ? { duration: 0.45 }
+                : { duration: 2.5, times: [0, 0.3, 1] }
           }
           className="font-mono text-[10.5px] leading-[1.9] text-[#F3EFE6]/60"
         >
@@ -870,11 +893,11 @@ export default function FableStage() {
           key={`core-${run}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.1, delay: 4.9 }}
+          transition={{ duration: 1.1, delay: 5.4 }}
           className="font-mono text-[11.5px] tracking-[0.34em] uppercase text-[#2DD4BF] whitespace-nowrap"
           style={{ textShadow: "0 0 18px rgba(45,212,191,0.45)" }}
         >
-          <Decode text="BIOINFORMATICS, REIMAGINED" delay={5000} />
+          <Decode text="BIOINFORMATICS, REIMAGINED" delay={5500} />
         </motion.p>
       </div>
 
@@ -903,12 +926,12 @@ export default function FableStage() {
           ARROW_MEANS.map((m) => (
             <motion.span
               key={`${run}-${m.w}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: [0, 1, 0.85, 0], y: 0 }}
+              initial={{ opacity: 0, y: 7, scale: 0.7 }}
+              animate={{ opacity: [0, 1, 1, 0], y: 0, scale: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 2.6, delay: m.d, times: [0, 0.12, 0.6, 1] }}
-              className="hidden lg:block absolute font-mono text-[12px] tracking-[0.3em] text-[#2DD4BF] pointer-events-none"
-              style={{ left: `${m.x}%`, top: `${m.y}%`, textShadow: "0 0 14px rgba(45,212,191,0.6)" }}
+              transition={{ duration: 3.4, delay: m.d, times: [0, 0.06, 0.72, 1], scale: { duration: 0.3, delay: m.d } }}
+              className="hidden lg:block absolute font-mono text-[13px] tracking-[0.3em] text-[#2DD4BF] pointer-events-none"
+              style={{ left: `${m.x}%`, top: `${m.y}%`, textShadow: "0 0 16px rgba(45,212,191,0.7)" }}
             >
               {m.w}
             </motion.span>
