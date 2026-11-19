@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 // The hero centerpiece: the dodecahedron spins until Artemis' arrow strikes it
-// ("artemis-impact"), then it shatters into 1,775 real GBM3 cells (Ren et al.
-// 2023, GSE194329) that live on as a breathing point cloud, morphing between
+// ("artemis-impact"), then it shatters into the real GBM3 Visium spots (Ren et
+// al. 2023, GSE194329) living on as a breathing point cloud, morphing between
 // the tissue coordinates and four UMAP embeddings. A floating HUD exposes the
 // data like a portal: domain channel-pills, color-by-gene, embedding advance.
 
@@ -103,20 +103,23 @@ export default function HeroGenesis({ size = 400 }) {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
     fetch(DATA_URL)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (!d) return;
+        if (!d || cancelled) return;
         d.palette = d.palette.map((c) => DARK_SAFE[c] ?? c);
+        // keep source log-norm values; precompute per-gene max for relative display
+        d.markerMax = {};
         for (const g of Object.keys(d.markers)) {
-          const m = d.markers[g];
-          const max = Math.max(...m) || 1;
-          d.markers[g] = m.map((v) => v / max);
+          d.markerMax[g] = Math.max(...d.markers[g]) || 1;
         }
         S.data = d;
         setData(d);
+        S.tryShatter?.(); // impact may have landed before the data did
       })
       .catch(() => {});
+    return () => { cancelled = true; };
   }, [S]);
 
   useEffect(() => {
@@ -128,6 +131,7 @@ export default function HeroGenesis({ size = 400 }) {
     let raf = 0;
     let running = false;
     let lastNow = 0;
+    const timers = [];
     const rot = { rx: 0.5, ry: 0.7 };
     let pts = [];
 
@@ -138,16 +142,16 @@ export default function HeroGenesis({ size = 400 }) {
       return { w, h, x0: (w - side) / 2, y0: (h - side) / 2 - 8, side };
     };
 
-    const settingPos = (si, i) => {
-      const { x0, y0, side } = box();
+    // b = box() computed once per frame — per-point layout reads are too slow
+    const settingPos = (b, si, i) => {
       const s = S.data.settings[si];
-      return [x0 + s.x[i] * side, y0 + (1 - s.y[i]) * side];
+      return [b.x0 + s.x[i] * b.side, b.y0 + (1 - s.y[i]) * b.side];
     };
 
     const pointColor = (i) => {
       const d = S.data;
       if (S.colorBy === "domain") return d.palette[d.labels[i]];
-      return expressionColor(d.markers[S.colorBy][i]);
+      return expressionColor(d.markers[S.colorBy][i] / d.markerMax[S.colorBy]);
     };
 
     const beginShatter = () => {
@@ -180,18 +184,28 @@ export default function HeroGenesis({ size = 400 }) {
         });
         S.setting = 1;
         S.morph = null;
+        S.pendingImpact = false;
         S.holdUntil = now + SETTLE_MS + 900 + HOLD_MS;
         setHud((p) => ({ ...p, setting: 1 }));
-        setTimeout(() => setPhase("cloud"), S.reduced ? 0 : SETTLE_MS + 700);
+        timers.push(setTimeout(() => setPhase("cloud"), S.reduced ? 0 : SETTLE_MS + 700));
         if (S.reduced) {
           S.mode = "cloud";
           S.shards = [];
         }
       } else {
-        // data unavailable: let the shards fly, then the solid re-forms
-        setTimeout(() => { S.mode = "solid"; start(); }, 1200);
+        // data not here yet: shards fly, the solid re-forms, and the shatter
+        // replays once the fetch resolves (S.tryShatter from the data effect)
+        S.pendingImpact = true;
+        timers.push(setTimeout(() => {
+          S.mode = "solid";
+          if (S.pendingImpact && S.data) beginShatter();
+          else start();
+        }, 1200));
       }
       start();
+    };
+    S.tryShatter = () => {
+      if (S.pendingImpact && S.mode === "solid") beginShatter();
     };
 
     const onImpact = (e) => {
@@ -209,7 +223,8 @@ export default function HeroGenesis({ size = 400 }) {
     };
 
     const draw = (now) => {
-      const { w, h } = box();
+      const b = box();
+      const { w, h } = b;
       if (canvas.width !== Math.round(w * dpr)) { canvas.width = w * dpr; canvas.height = h * dpr; }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
@@ -315,22 +330,22 @@ export default function HeroGenesis({ size = 400 }) {
           const p = S.points[i];
           let x, y;
           if (S.reduced) {
-            [x, y] = settingPos(S.setting, i);
+            [x, y] = settingPos(b, S.setting, i);
           } else if (now < p.t0) {
             x = p.sx; y = p.sy;
           } else if (now < p.t0 + SETTLE_MS) {
             const u = easeOutCubic((now - p.t0) / SETTLE_MS);
-            const [tx, ty] = settingPos(S.setting, i);
+            const [tx, ty] = settingPos(b, S.setting, i);
             x = p.sx + (tx - p.sx) * u;
             y = p.sy + (ty - p.sy) * u;
           } else if (S.morph) {
             const u = easeInOut(Math.min(1, (now - S.morph.t0) / MORPH_MS));
-            const [ax, ay] = settingPos(S.morph.from, i);
-            const [bx, by] = settingPos(S.morph.to, i);
+            const [ax, ay] = settingPos(b, S.morph.from, i);
+            const [bx, by] = settingPos(b, S.morph.to, i);
             x = ax + (bx - ax) * u;
             y = ay + (by - ay) * u;
           } else {
-            [x, y] = settingPos(S.setting, i);
+            [x, y] = settingPos(b, S.setting, i);
           }
           if (!S.reduced && S.mode === "cloud" && !S.morph) {
             x += Math.sin(t * 0.6 + i * 1.7) * 1.3;
@@ -364,7 +379,7 @@ export default function HeroGenesis({ size = 400 }) {
           ctx.lineWidth = 1.3;
           ctx.stroke();
           const dom = d.domains[d.labels[nearest]];
-          const extra = S.colorBy !== "domain" ? ` · ${S.colorBy} ${(d.markers[S.colorBy][nearest]).toFixed(2)}` : "";
+          const extra = S.colorBy !== "domain" ? ` · ${S.colorBy} ${(d.markers[S.colorBy][nearest]).toFixed(2)} log-norm` : "";
           const label = `${dom}${extra}`;
           ctx.font = "600 11px 'JetBrains Mono', ui-monospace, monospace";
           const tw = ctx.measureText(label).width;
@@ -383,7 +398,7 @@ export default function HeroGenesis({ size = 400 }) {
         ctx.font = "500 10.5px 'JetBrains Mono', ui-monospace, monospace";
         ctx.fillStyle = "rgba(148,163,184,0.75)";
         ctx.textAlign = "center";
-        ctx.fillText("GBM3 · 1,775 cells · BANKSY domains · Ren et al. 2023", w / 2, h - 6);
+        ctx.fillText(`GBM3 · ${d.labels.length.toLocaleString()} Visium spots · model-annotated states · Ren et al. 2023`, w / 2, h - 6);
         ctx.textAlign = "left";
       }
 
@@ -422,6 +437,8 @@ export default function HeroGenesis({ size = 400 }) {
     return () => {
       running = false;
       cancelAnimationFrame(raf);
+      timers.forEach(clearTimeout);
+      S.tryShatter = null;
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("artemis-impact", onImpact);
@@ -465,7 +482,7 @@ export default function HeroGenesis({ size = 400 }) {
         style={{ width: "100%", height: size, touchAction: "pan-y" }}
         className="select-none"
         role="img"
-        aria-label="Living point cloud of 1,775 glioblastoma cells from Ren et al. 2023, morphing between tissue coordinates and UMAP embeddings. Before the intro completes it is a wireframe dodecahedron struck by an arrow."
+        aria-label="Living point cloud of 1,775 Visium spots from a glioblastoma section (GBM3, Ren et al. 2023), morphing between tissue coordinates and UMAP embeddings. Before the intro completes it is a wireframe dodecahedron struck by an arrow."
       />
       {phase === "cloud" && data && (
         <>
@@ -488,7 +505,7 @@ export default function HeroGenesis({ size = 400 }) {
                     : "border-white/15 bg-white/[0.04] text-dim hover:text-snow"
                 }`}
               >
-                {k === "domain" ? "domains" : k}
+                {k === "domain" ? "states" : k}
               </button>
             ))}
           </div>
