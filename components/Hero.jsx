@@ -16,8 +16,8 @@ const NAV = [
   ["#whatwedo", "What we do"],
 ];
 
-// copy settles in after the arrow lands (beat 05 · living state)
-const SETTLE = 2.3;
+// copy settles only after the crystal has assembled (one focal event at a time)
+const SETTLE = 4.5;
 
 export default function Hero() {
   const ref = useRef(null);
@@ -155,11 +155,11 @@ export default function Hero() {
           </motion.p>
 
           <motion.p {...settle} className="mt-5 text-[13px] text-[#F3EFE6]/60 pointer-events-auto">
-            <span className="text-[#2DD4BF]">●</span> 3.9M cells, one mouse brain.{" "}
+            <span className="text-[#2DD4BF]">●</span> 3.9M cells, one mouse brain (Allen Brain Cell Atlas, reprocessed).{" "}
             <a href="live/brain/index.html" className="text-snow underline decoration-[#2DD4BF]/50 underline-offset-4 hover:decoration-[#2DD4BF] transition-colors">
               Explore it live →
             </a>
-            <span className="text-[#F3EFE6]/40"> · Built on peer-reviewed methods.</span>
+            <span className="text-[#F3EFE6]/40"> · Peer-reviewed methods: BANKSY, Leiden, Wilcoxon.</span>
           </motion.p>
         </div>
       </motion.div>
