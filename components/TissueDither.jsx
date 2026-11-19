@@ -20,7 +20,7 @@ import { useEffect, useRef } from "react";
  * vertical grain — the characteristic look, and worth preserving exactly.
  */
 
-const SRC = "dejong/AT14-BRA-4-FO-2_1_he.jpg";
+const SRC = "/dejong/AT14-BRA-4-FO-2_1_he.jpg";
 
 const LUMA_W = 170; // luminance grid resolution — finer than arda's 16x12
 const LUMA_H = 182; // because real tissue has structure worth resolving

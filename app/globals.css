@@ -1,21 +1,20 @@
 @import "tailwindcss";
 
-/* Academic-manuscript theme: LaTeX paper ground, serif voice, teal accent.
-   Token NAMES are unchanged so every component restyles automatically. */
+/* Ultra-sleek, premium dark mode: deep obsidian ground, crisp white typography, teal accents. */
 @theme {
-  --color-ink: #f7f4ec;          /* paper ground */
-  --color-ink-2: #efeadd;        /* deeper paper band */
-  --color-panel: #fffdf7;        /* card / figure panel */
-  --color-line: #d8d2c2;         /* hairline rules */
-  --color-snow: #1c1a15;         /* body ink */
-  --color-dim: #5f5b50;          /* secondary ink */
-  --color-violet: #0f766e;       /* accent — deep teal */
-  --color-violet-deep: #115e59;  /* buttons */
-  --color-magma: #9a5b13;        /* secondary accent — sepia amber */
-  --color-mint: #047857;
-  --color-amber: #b45309;
-  --font-sans: var(--font-serif), "Source Serif 4", Georgia, serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --color-ink: #07060b;          /* deep space obsidian */
+  --color-ink-2: #0e0d16;        /* elevated background band */
+  --color-panel: #141322;        /* card / panel surface */
+  --color-line: rgba(255, 255, 255, 0.12); /* hairline border */
+  --color-snow: #f8fafc;         /* primary crisp white body text */
+  --color-dim: #94a3b8;          /* secondary slate text */
+  --color-violet: #14b8a6;       /* vibrant cyan/teal accent */
+  --color-violet-deep: #0d9488;  /* button fill */
+  --color-magma: #f59e0b;        /* secondary accent — amber */
+  --color-mint: #10b981;
+  --color-amber: #f59e0b;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 html {
@@ -23,8 +22,8 @@ html {
 }
 
 ::selection {
-  background: #0f766e;
-  color: #f7f4ec;
+  background: #0d9488;
+  color: #ffffff;
 }
 
 /* paper grain */
@@ -39,7 +38,7 @@ html {
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, #1c1a15 10%, #0f766e 60%, #115e59 95%);
+  background: linear-gradient(100deg, #f8fafc 10%, #14b8a6 60%, #0d9488 95%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -74,7 +73,7 @@ html {
   inset: 0;
   z-index: -20;
   overflow: hidden;
-  background: #f7f4ec;
+  background: #07060b;
 }
 .bg-sea::before,
 .bg-sea::after {
