@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import BioDodecahedron from "./BioDodecahedron";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import FableStage from "./FableStage";
 import FounderLock from "./FounderLock";
 import Decode from "./Decode";
 
@@ -16,11 +16,36 @@ const NAV = [
   ["#whatwedo", "What we do"],
 ];
 
+// copy settles in after the arrow lands (beat 05 · living state)
+const SETTLE = 2.3;
+
 export default function Hero() {
   const ref = useRef(null);
+  const reduced = useReducedMotion();
+  const [saluting, setSaluting] = useState(false);
+  const saluteTimer = useRef(null);
+  useEffect(() => () => clearTimeout(saluteTimer.current), []);
+  const salute = (e) => {
+    e.preventDefault();
+    const reducedNow = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reducedNow ? "auto" : "smooth" });
+    window.dispatchEvent(new CustomEvent("artemis-salute")); // replays the fable
+    setSaluting(true);
+    clearTimeout(saluteTimer.current);
+    saluteTimer.current = setTimeout(() => setSaluting(false), 1200);
+  };
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+
+  // initial must not branch on `reduced` — the server can't know it, and a
+  // mismatch breaks hydration. Reduced motion zeroes the transition instead.
+  const settle = {
+    initial: { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    transition: reduced
+      ? { duration: 0 }
+      : { duration: 0.9, delay: SETTLE, ease: [0.21, 0.6, 0.27, 1] },
+  };
 
   return (
     <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
@@ -32,12 +57,23 @@ export default function Hero() {
       </a>
       <div className="absolute inset-0 -z-10">
         <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#f7f4ec_78%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#07060b_80%)]" />
       </div>
 
-      <nav className="flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
-        <a href="#" aria-label="Artemis BioLabs — top of page">
-          <img src="artemis_lockup.svg" alt="Artemis BioLabs" className="h-8 md:h-11 w-auto" />
+      {/* the fable — wilderness, the draw, the shot, the crystal of twelve */}
+      <motion.div style={{ opacity: fade }} className="absolute inset-0">
+        <FableStage />
+      </motion.div>
+
+      <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
+        <a href="#" aria-label="Artemis BioLabs — top of page (replays the opening)" onClick={salute}>
+          <img
+            src="artemis_lockup.svg"
+            alt="Artemis BioLabs"
+            className={`h-8 md:h-11 w-auto transition-all duration-300 ${
+              saluting ? "scale-105 [filter:drop-shadow(0_0_9px_rgba(45,212,191,0.75))]" : ""
+            }`}
+          />
         </a>
         <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
           <div className="hidden md:flex items-center gap-8 font-medium">
@@ -53,7 +89,7 @@ export default function Hero() {
             rel="noreferrer"
             className="rounded-[3px] border border-snow/50 px-4 py-1.5 text-snow hover:border-violet hover:bg-violet/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all whitespace-nowrap"
           >
-            Book a demo
+            Book a call
           </a>
           <FounderLock />
           <details className="relative md:hidden">
@@ -70,66 +106,74 @@ export default function Hero() {
         </div>
       </nav>
 
-      {/* THE OPENING: the moving dodecahedron introduces the company */}
-      <motion.div style={{ opacity: fade }} className="flex-1 flex flex-col items-center justify-center px-6 text-center relative">
-        <motion.div style={{ scale }} className="relative w-full max-w-[560px] -mb-10 md:-mb-14" aria-hidden>
-          <BioDodecahedron size={400} labels={false} helix />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: [0.21, 0.6, 0.27, 1] }}
-          className="relative"
-        >
-          <h1
-            className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5rem] font-semibold tracking-[0.015em]"
-            style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
+      {/* typography settles into focus once the shot lands */}
+      <motion.div
+        style={{ opacity: fade }}
+        className="relative z-10 flex-1 flex flex-col items-center justify-end px-6 pb-[7vh] text-center pointer-events-none"
+      >
+        <div className="relative max-w-3xl mx-auto">
+          <div
+            className="absolute -inset-x-24 -inset-y-10 -z-10"
+            style={{ background: "radial-gradient(ellipse at center, rgba(9,10,11,0.82) 30%, transparent 72%)" }}
+            aria-hidden
+          />
+          <motion.p {...settle} className="font-mono text-[11.5px] tracking-[0.32em] uppercase text-[#2DD4BF] mb-5">
+            <Decode text="BIOINFORMATICS, REIMAGINED" delay={reduced ? 0 : SETTLE * 1000 + 100} />
+          </motion.p>
+          <motion.h1
+            {...settle}
+            className="text-[2.4rem] leading-[1.08] sm:text-5xl xl:text-[4.2rem] font-normal tracking-tight text-[#F3EFE6]"
+            style={{ fontFamily: "'New York', ui-serif, Georgia, 'Times New Roman', serif" }}
           >
-            <Decode text="ARTEMIS" delay={500} />{" "}
-            <Decode text="BIOLABS" delay={1200} className="text-violet" />
-          </h1>
-          <p className="mt-4 font-mono text-[13px] tracking-[0.35em] text-dim uppercase">
-            computational biology, accelerated.
-          </p>
-          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed">
-            Every core service your lab needs.
-            <br className="hidden sm:block" />
-            <span className="text-dim"> One AI-powered team.</span>
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            What if your data were delivered alive?
+          </motion.h1>
+          <motion.p {...settle} className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-[#F3EFE6]/75 leading-relaxed font-light">
+            A living, breathing portal built for inquiry across your entire team. Spatial,
+            single-cell, and multi-omic analysis — delivered as an interactive scientific
+            instrument, not a static PDF.
+          </motion.p>
+
+          <motion.div {...settle} className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
+            <a
+              href="#contact"
+              className="w-full sm:w-auto rounded-[3px] bg-[#F3EFE6] text-[#090A0B] px-7 py-3.5 text-sm font-medium hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors"
+            >
+              Submit a biological challenge →
+            </a>
             <a
               href={BOOKING}
               target="_blank"
               rel="noreferrer"
-              className="rounded-[3px] bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-snow transition-colors"
+              className="w-full sm:w-auto rounded-[3px] border border-snow/25 bg-[#090A0B]/70 backdrop-blur-sm px-7 py-3.5 text-sm text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
             >
-              Book a demo
+              Book a 30-min call
             </a>
-            <a
-              href="live/brain/index.html"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[3px] border border-snow/50 px-7 py-3 text-dim hover:text-snow hover:border-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all"
-            >
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-600 animate-pulse mr-2 align-middle" aria-hidden />3.9M cells, one mouse brain — explore it live →
+          </motion.div>
+
+          <motion.p {...settle} className="mt-4 font-mono text-[12px] text-dim">
+            Send a raw dataset or an unsolved question — we reply with a scoped pipeline and an interactive prototype.
+          </motion.p>
+
+          <motion.p {...settle} className="mt-5 text-[13px] text-[#F3EFE6]/60 pointer-events-auto">
+            <span className="text-[#2DD4BF]">●</span> 3.9M cells, one mouse brain.{" "}
+            <a href="live/brain/index.html" className="text-snow underline decoration-[#2DD4BF]/50 underline-offset-4 hover:decoration-[#2DD4BF] transition-colors">
+              Explore it live →
             </a>
-          </div>
-          <p className="mt-4 font-mono text-[12.5px] text-dim">
-            The first analysis is on us.
-          </p>
-        </motion.div>
+            <span className="text-[#F3EFE6]/40"> · Built on peer-reviewed methods.</span>
+          </motion.p>
+        </div>
       </motion.div>
 
-      <div className="md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
+      <div className="relative z-10 md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
         <a href="#pipeline" className="hover:text-snow">Pipeline</a>
         <a href="#gallery" className="hover:text-snow">Demo</a>
       </div>
 
       <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 2.2 }}
-        className="pb-5 text-center text-dim text-xl"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, y: reduced ? 0 : [0, 8, 0] }}
+        transition={reduced ? { duration: 0 } : { opacity: { delay: SETTLE + 0.6 }, y: { repeat: Infinity, duration: 2.2 } }}
+        className="relative z-10 pb-5 text-center text-dim text-xl"
         aria-hidden
       >
         ↓

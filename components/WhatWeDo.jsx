@@ -5,7 +5,7 @@ import AssayMini from "./AssayMini";
 
 const CORES = [
   { name: "Single-cell", desc: "Raw reads to annotated atlases · iPSC benchmarking", kind: "singlecell" },
-  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", live: true, kind: "spatial" },
+  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", kind: "spatial" },
   { name: "CUT&Tag and chromatin", desc: "Peaks, tracks, differential binding", kind: "chromatin" },
   { name: "Long-read sequencing", desc: "Isoforms, SVs and methylation", kind: "longread" },
   { name: "Radiomics and imaging", desc: "Segmentation to outcome models", kind: "radiomics" },
@@ -23,9 +23,8 @@ export default function WhatWeDo() {
           Eight cores. <span className="text-violet">One embedded team.</span>
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          That was the promise at the top of the page — and you have now watched one
-          core run end-to-end. The rest work the same way: real pipeline, live portal,
-          a report you can hand a reviewer.
+          From study design through analysis and reporting, each core is scoped to the
+          question, the assay, and the people who need to use the result.
         </p>
       </Reveal>
 
@@ -38,18 +37,7 @@ export default function WhatWeDo() {
               </div>
               <p className="font-medium text-[17px]">{c.name}</p>
               <p className="text-dim text-[14.5px] mt-1.5">{c.desc}</p>
-              {c.live ? (
-                <a
-                  href="live/explore/index.html"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-3 inline-block text-violet font-medium hover:underline text-[14px]"
-                >
-                  Live demo →
-                </a>
-              ) : (
-                <p className="mt-3 font-mono text-[11.5px] text-dim">demo on request</p>
-              )}
+              <p className="mt-3 font-mono text-[11.5px] text-dim">demo on request</p>
             </div>
           ))}
         </div>

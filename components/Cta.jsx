@@ -2,10 +2,35 @@
 
 import Reveal from "./Reveal";
 
+const BOOKING =
+  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
+
+const INQUIRY = "mailto:lbeharry@alumni.caltech.edu";
+
+const PATHS = [
+  {
+    tag: "01 · FRONTIER CHALLENGE",
+    title: "Send us a challenge worth solving",
+    body: "Have a complex spatial, single-cell, or multi-omic question? Send us the problem; we return a scoped plan and a prototype view.",
+    cta: ["Submit a challenge →", `${INQUIRY}?subject=${encodeURIComponent("A biological challenge for Artemis")}`],
+  },
+  {
+    tag: "02 · JOINT RESEARCH",
+    title: "Propose a dataset or co-study",
+    body: "Partner on an in-house cohort, benchmark a new method, or turn a public atlas into a custom lab portal.",
+    cta: ["Suggest a collaboration →", `${INQUIRY}?subject=${encodeURIComponent("Artemis BioLabs · collaboration")}`],
+  },
+  {
+    tag: "03 · DIRECT BRIEFING",
+    title: "Book a 30-minute technical call",
+    body: "Walk through your assays, sample size, and timeline directly with our computational leads.",
+    cta: ["Book a call ↗", BOOKING, true],
+  },
+];
+
 export default function Cta() {
   return (
     <section id="contact" className="relative px-6 md:px-14 py-28 md:py-40 overflow-hidden">
-      
 
       <Reveal className="max-w-5xl mx-auto">
         <p className="font-mono text-sm text-violet mb-4 text-center">HOW AN ENGAGEMENT WORKS</p>
@@ -30,33 +55,42 @@ export default function Cta() {
         </p>
       </Reveal>
 
-      <div className="max-w-3xl mx-auto text-center mt-24">
+      {/* the closing — three ways in, none of them a waitlist */}
+      <div className="max-w-5xl mx-auto text-center mt-24">
         <Reveal>
           <img src="artemis_mark.svg" alt="" className="h-16 w-16 mx-auto mb-8" />
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            Your data has a story.
+            Galvanize your research today.
           </h2>
-          <p className="mt-6 text-lg text-dim leading-relaxed">
-            If your lab is sitting on spatial data and short on computational hands, the
-            first analysis is on us — pick a public or in-house dataset and we'll turn it
-            around as a live portal.
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-dim leading-relaxed">
+            Stop bottlenecking discovery behind static slide decks and overloaded cores.
+            Hand your team a living portal they can interrogate in real time.
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"
-            >
-              Book a demo
-            </a>
-            <a
-              href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20analysis"
-              className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:text-snow hover:border-violet transition-all"
-            >
-              Or start with an email
-            </a>
+        </Reveal>
+
+        <Reveal className="mt-12">
+          <div className="grid md:grid-cols-3 gap-4 text-left">
+            {PATHS.map(({ tag, title, body, cta: [label, href, external] }) => (
+              <div key={tag} className="rounded-[3px] border border-line bg-panel/80 p-6 flex flex-col">
+                <p className="font-mono text-[11px] tracking-[0.2em] text-violet uppercase mb-3">{tag}</p>
+                <p className="text-[17px] font-medium text-snow mb-2">{title}</p>
+                <p className="text-[14px] text-dim leading-relaxed flex-1">{body}</p>
+                <a
+                  href={href}
+                  {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                  className="mt-5 inline-block rounded-[3px] border border-snow/25 px-4 py-2.5 text-[14px] text-snow text-center hover:border-violet hover:bg-violet/10 transition-all"
+                >
+                  {label}
+                </a>
+              </div>
+            ))}
           </div>
+          <p className="mt-8 font-mono text-[13px] text-dim">
+            Direct inquiry ·{" "}
+            <a href={INQUIRY} className="text-snow hover:text-violet transition-colors">
+              lbeharry@alumni.caltech.edu
+            </a>
+          </p>
         </Reveal>
       </div>
 
@@ -66,7 +100,7 @@ export default function Cta() {
           <span className="font-semibold tracking-[0.18em] text-[14px]">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
         </span>
         <p className="font-mono text-[13px] text-dim">
-          © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
+          © 2026 Artemis BioLabs · bioinformatics, reimagined · artemislabs.bio
         </p>
       </footer>
     </section>
