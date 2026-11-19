@@ -93,7 +93,7 @@ export default function Hero() {
           and the solid shatters into 1,775 living cells */}
       <ArrowIntro />
       <motion.div style={{ opacity: fade }} className="flex-1 flex flex-col items-center justify-center px-6 text-center relative">
-        <motion.div style={{ scale }} className="relative w-full max-w-[560px] -mb-10 md:-mb-14">
+        <motion.div style={{ scale }} className="relative w-full max-w-[560px] mb-2">
           <HeroGenesis size={400} />
         </motion.div>
 
