@@ -26,9 +26,26 @@ const NICHES = [
   { x: 0.49, y: 0.65, r: 0.08, w: 0.44 },
 ];
 
-const COL_STEP = 9; // px between tick columns
-const ROW_STEP = 24; // px between tick rows
-const TICK_W = 1.6;
+// Calibrated against arda.ai's hero field, measured directly: ~8.4% of pixels
+// carry a mark, and ~13% of all pixels change every 250ms. The second number is
+// the one that matters — a field that only sweeps in and then holds still reads
+// as a backdrop; one that keeps re-forming reads as live instrumentation.
+const COL_STEP = 7; // px between tick columns
+const ROW_STEP = 17; // px between tick rows
+const TICK_W = 1.7;
+
+// Each tick cycles: fades up, holds, fades out, then respawns somewhere new.
+const LIFE_MIN = 0.65; // seconds
+const LIFE_VAR = 1.35;
+const DRIFT_X = 44; // px a tick may jump on respawn
+const DRIFT_Y = 24;
+
+// Cheap deterministic hash so a tick's respawn position is a pure function of
+// (seed, cycle) — no per-frame allocation, and identical across repaints.
+function hash(n) {
+  const s = Math.sin(n) * 43758.5453;
+  return s - Math.floor(s);
+}
 
 const SNOW = "#e8edf5";
 const TEAL = "#14b8a6";
@@ -59,6 +76,7 @@ export default function TickField({ className = "", onReady }) {
     let start = 0;
     let visible = true;
     let played = false; // has the reveal sweep finished at least once?
+    let everStarted = false; // has the sweep ever actually begun on screen?
     let lastPaint = 0;
 
     // Density at a pixel, in 0..1.
@@ -105,10 +123,14 @@ export default function TickField({ className = "", onReady }) {
             y: jy,
             // stray ticks stay short; tissue ticks grow with local density
             h: inside ? 4 + s * 19 : 7 + Math.random() * 7,
-            a: inside ? 0.16 + s * 0.74 : 0.1 + Math.random() * 0.14,
+            a: inside ? 0.18 + s * 0.78 : 0.12 + Math.random() * 0.16,
             hot: d > 0.72,
             delay: (jx / w) * SWEEP + Math.random() * 0.16,
-            phase: Math.random() * Math.PI * 2,
+            life: LIFE_MIN + Math.random() * LIFE_VAR,
+            // offset into the cycle, so the field is mid-churn rather than
+            // every tick pulsing in lockstep
+            born: Math.random(),
+            seed: Math.random() * 1000,
           });
         }
       }
@@ -122,31 +144,52 @@ export default function TickField({ className = "", onReady }) {
       let fill = "";
       for (let i = 0; i < ticks.length; i++) {
         const k = ticks[i];
+        // the one-time entrance sweep
         const p = reduced ? 1 : smoothstep(0, GROW, t - k.delay);
         if (p <= 0) continue;
+
+        let a = k.a * p;
+        let x = k.x;
+        let y = k.y;
+        let hh = k.h * p;
+
+        if (!reduced) {
+          // Lifecycle: u walks 0->1 each cycle. The mark fades up, holds, fades
+          // out, and respawns at a new offset on the next cycle, so the field
+          // keeps rewriting itself instead of settling into a static picture.
+          const raw = (t - k.delay) / k.life + k.born;
+          const cycle = Math.floor(raw);
+          const u = raw - cycle;
+          // trapezoid: quick rise, long hold, quick fall — more legible as
+          // "marks being written" than a sine, which never fully commits
+          const pulse = u < 0.18 ? u / 0.18 : u > 0.76 ? (1 - u) / 0.24 : 1;
+          a *= pulse;
+          if (a <= 0.004) continue;
+          x += (hash(k.seed + cycle) - 0.5) * DRIFT_X;
+          y += (hash(k.seed + cycle + 97.1) - 0.5) * DRIFT_Y;
+          hh *= 0.78 + hash(k.seed + cycle + 31.7) * 0.5;
+        }
 
         const color = k.hot ? TEAL : SNOW;
         if (color !== fill) {
           ctx.fillStyle = color;
           fill = color;
         }
-        // settled ticks breathe very slightly — enough to feel live, not busy
-        const breathe = reduced ? 1 : 1 + 0.07 * Math.sin(t * 1.25 + k.phase) * p;
-        const hh = k.h * p * breathe;
-        ctx.globalAlpha = k.a * p;
-        ctx.fillRect(k.x - TICK_W / 2, k.y - hh / 2, TICK_W, hh);
+        ctx.globalAlpha = a;
+        ctx.fillRect(x - TICK_W / 2, y - hh / 2, TICK_W, hh);
       }
       ctx.globalAlpha = 1;
     };
 
     const frame = (now) => {
       if (!start) start = now;
+      everStarted = true;
       const t = (now - start) / 1000;
       if (t > SWEEP + GROW + 0.4) played = true;
-      // The sweep needs every frame. Once it has landed, the only motion left
-      // is a 7% breathe, which reads identically at ~25fps and costs the rest
-      // of the page far less main thread.
-      if (!played || now - lastPaint >= 38) {
+      // The field now keeps rewriting itself, so it never stops needing frames.
+      // A light cap at ~50fps leaves headroom for the rest of the page without
+      // the churn reading as choppy.
+      if (now - lastPaint >= 19) {
         lastPaint = now;
         paint(t);
       }
@@ -158,14 +201,24 @@ export default function TickField({ className = "", onReady }) {
       cancelAnimationFrame(raf);
       build();
       start = 0;
-      raf = requestAnimationFrame(frame);
+      // the replayed sweep needs full frames again, and must not inherit the
+      // throttle clock from the settled field
+      played = false;
+      lastPaint = 0;
+      // scheduling while off-screen paints one blank frame at t=0 and then
+      // never reschedules, leaving the canvas empty and frozen
+      if (visible || reduced) raf = requestAnimationFrame(frame);
     };
 
     restart();
     onReady?.();
 
     let resizeTimer = 0;
+    let roPrimed = false;
     const ro = new ResizeObserver(() => {
+      // observe() always fires once immediately. Acting on that would rebuild
+      // every tick and restart the sweep mid-entrance on every page load.
+      if (!roPrimed) { roPrimed = true; return; }
       clearTimeout(resizeTimer);
       // rebuild is O(cells); debounce so a drag-resize doesn't thrash
       resizeTimer = setTimeout(restart, 160);
@@ -179,7 +232,8 @@ export default function TickField({ className = "", onReady }) {
         if (!visible || reduced) return;
         // mounting below the fold would otherwise freeze the field at t≈0 and
         // leave it blank; replay the sweep the first time it is actually seen
-        if (!played) start = 0;
+        if (!everStarted) start = 0;
+        everStarted = true;
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(frame);
       },

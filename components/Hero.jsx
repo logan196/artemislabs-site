@@ -59,7 +59,9 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
   const fieldFade = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const fieldLift = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  // Scroll-coupled translation is the classic vestibular trigger (WCAG 2.3.3);
+  // every other animation here honors the setting, so this must too.
+  const fieldLift = useTransform(scrollYProgress, [0, 1], [0, shouldReduce ? 0 : -60]);
 
   return (
     <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
@@ -143,6 +145,7 @@ export default function Hero() {
 
       <motion.div style={{ opacity: fade }} className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
         <h1
+          aria-label="Artemis BioLabs"
           className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5.25rem] font-semibold tracking-[-0.018em]"
           style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
         >

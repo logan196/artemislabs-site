@@ -50,10 +50,14 @@ export default function SplitText({
   const words = text.split(" ");
   let index = 0;
 
+  // The whole split subtree is decorative. ARIA prohibits aria-label on a
+  // generic element, so labelling the wrapper span here would be dropped by
+  // Chrome and Firefox and the text would have no accessible name at all —
+  // the CALLER must put the accessible name on the semantic element (the h1).
   return (
-    <Tag className={className} aria-label={text}>
+    <Tag className={className} aria-hidden="true">
       {words.map((word, wi) => (
-        <span key={`${word}-${wi}`} className="inline-block whitespace-nowrap" aria-hidden="true">
+        <span key={`${word}-${wi}`} className="inline-block whitespace-nowrap">
           {[...word].map((ch, ci) => {
             const i = index++;
             return (
