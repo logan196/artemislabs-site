@@ -1,0 +1,134 @@
+{
+  "default": "GBM3",
+  "datasets": [
+    {
+      "id": "GBM1",
+      "name": "GBM1",
+      "dx": "Astrocytoma \u00b7 IDH-mut",
+      "src": "../GBM1/",
+      "umap": true,
+      "context": true,
+      "stats": {
+        "id": "GBM1",
+        "spots": 4764,
+        "genes": 1049,
+        "domains": 14,
+        "cell_states": 6
+      },
+      "cell_states": [
+        "Astrocytes",
+        "Mes-Like Tumor Cells",
+        "Microglia/Tams",
+        "Npc-Like Tumor Cells",
+        "Oligodendrocytes",
+        "Pericytes/Smooth Muscle"
+      ],
+      "n_domains": 14
+    },
+    {
+      "id": "GBM2",
+      "name": "GBM2",
+      "dx": "GBM \u00b7 IDH-wt \u00b7 recurrent",
+      "src": "../GBM2/",
+      "umap": true,
+      "context": true,
+      "stats": {
+        "id": "GBM2",
+        "spots": 2891,
+        "genes": 1730,
+        "domains": 20,
+        "cell_states": 9
+      },
+      "cell_states": [
+        "Ac-Like Tumor Cells",
+        "Astrocytes",
+        "Endothelial Cells",
+        "Mes-Like Tumor Cells",
+        "Microglia/Tams",
+        "Npc-Like Tumor Cells",
+        "Oligodendrocytes",
+        "Opc-Like Tumor Cells",
+        "Proliferating Tumor Cells"
+      ],
+      "n_domains": 20
+    },
+    {
+      "id": "GBM3",
+      "name": "GBM3",
+      "dx": "GBM \u00b7 IDH-wt \u00b7 primary",
+      "src": "../GBM3/",
+      "umap": true,
+      "context": true,
+      "stats": {
+        "id": "GBM3",
+        "spots": 1775,
+        "genes": 1969,
+        "domains": 15,
+        "cell_states": 7
+      },
+      "cell_states": [
+        "Astrocytes",
+        "Endothelial Cells",
+        "Microglia/Tams",
+        "Npc-Like Tumor Cells",
+        "Oligodendrocytes",
+        "Pericytes/Smooth Muscle",
+        "Proliferating Tumor Cells"
+      ],
+      "n_domains": 15
+    },
+    {
+      "id": "GBM4",
+      "name": "GBM4",
+      "dx": "Astrocytoma \u00b7 IDH-mut",
+      "src": "../GBM4/",
+      "umap": true,
+      "context": true,
+      "stats": {
+        "id": "GBM4",
+        "spots": 2540,
+        "genes": 1968,
+        "domains": 19,
+        "cell_states": 7
+      },
+      "cell_states": [
+        "Astrocytes",
+        "Endothelial Cells",
+        "Mes-Like Tumor Cells",
+        "Microglia/Tams",
+        "Opc-Like Tumor Cells",
+        "Pericytes/Smooth Muscle",
+        "Proliferating Tumor Cells"
+      ],
+      "n_domains": 19
+    },
+    {
+      "id": "TenX_GBM",
+      "name": "10x Parent",
+      "dx": "GBM \u00b7 10x Genomics Visium",
+      "src": "../TenX_GBM/",
+      "umap": true,
+      "context": true,
+      "stats": {
+        "id": "TenX_GBM",
+        "spots": 3468,
+        "genes": 1441,
+        "domains": 22,
+        "cell_states": 10
+      },
+      "cell_states": [
+        "Ac-Like Tumor Cells",
+        "Astrocytes",
+        "Endothelial Cells",
+        "Mes-Like Tumor Cells",
+        "Microglia/Tams",
+        "Neurons",
+        "Npc-Like Tumor Cells",
+        "Oligodendrocytes",
+        "Pericytes/Smooth Muscle",
+        "Proliferating Tumor Cells"
+      ],
+      "n_domains": 22
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+# BANKSY Marker Report — GBM1, 10x Visium (NOT Xenium; the pipeline template's title is generic)
+
+- **Input:** `output/GBM1/preprocessed.h5ad`
+- **Cells:** 4,764
+- **Clusters:** 14 (`banksy_cluster`)
+- **DE method:** Wilcoxon rank-sum (`scanpy.tl.rank_genes_groups`, use_raw)
+- **Cell-type assignment:** LLM (qwen3:8b · local Ollama, tissue: glioblastoma (human, Visium))
+
+## Putative cell-type breakdown
+
+| putative cell type | clusters |
+|:---|---:|
+| oligodendrocytes | 5 |
+| astrocytes | 4 |
+| NPC-like tumor cells | 2 |
+| pericytes/smooth muscle | 1 |
+| MES-like tumor cells | 1 |
+| microglia/TAMs | 1 |
+
+## Cluster summary
+
+| cluster | n_cells | % of total | putative cell type | top markers |
+|---:|---:|---:|:---|:---|
+| 0 | 137 | 2.88% | pericytes/smooth muscle | COL4A2, COL4A1, FN1, COL3A1, CYTOR |
+| 1 | 523 | 10.98% | MES-like tumor cells | IGFBP2, HES5, LSM7, SALL3, SMARCA4 |
+| 2 | 776 | 16.29% | oligodendrocytes | MT-CO1, MT-CYB, MT-CO2, MT-CO3, MT-ND4 |
+| 3 | 269 | 5.65% | NPC-like tumor cells | SNHG19, LINC00645, GAS5, AL139246.5, MFAP4 |
+| 4 | 748 | 15.70% | NPC-like tumor cells | SNHG19, RPL18A, CLIP3, LINC00645, GAS5 |
+| 5 | 481 | 10.10% | astrocytes | MALAT1, CRYAB, WWTR1, SERPINA3, NMB |
+| 6 | 185 | 3.88% | oligodendrocytes | MALAT1, MBP, MT-ND1, CRYAB, HSP90AA1 |
+| 7 | 133 | 2.79% | oligodendrocytes | MT-CO1, MT-ND4, MT-CO2, MT-ATP6, MT-CO3 |
+| 8 | 369 | 7.75% | oligodendrocytes | MBP, PLP1, SPP1, TMSB4X, PTGDS |
+| 9 | 132 | 2.77% | astrocytes | GFAP, APOE, MT-ND4, RPLP1, MT-CO3 |
+| 10 | 19 | 0.40% | oligodendrocytes | MT-ND4, RPLP0, MT-ATP6, RPL4, MT-CO3 |
+| 11 | 317 | 6.65% | astrocytes | APOE, GFAP, CST3, APOC1, CLU |
+| 12 | 425 | 8.92% | astrocytes | FTL, APOC1, FTH1, APOE, CST3 |
+| 13 | 250 | 5.25% | microglia/TAMs | CHI3L1, SOD2, NAMPT, GAP43, CCL2 |
+
+Source: Ren et al. 2023, GSE194329 (GBM1, IDH-mutant astrocytoma, 10x Visium).
