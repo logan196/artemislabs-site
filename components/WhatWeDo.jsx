@@ -5,7 +5,7 @@ import AssayMini from "./AssayMini";
 
 const CORES = [
   { name: "Single-cell", desc: "Raw reads to annotated atlases · iPSC benchmarking", kind: "singlecell" },
-  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", kind: "spatial" },
+  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", kind: "spatial", demo: "#gallery", demoLabel: "glioblastoma portal →" },
   { name: "CUT&Tag and chromatin", desc: "Peaks, tracks, differential binding", kind: "chromatin" },
   { name: "Long-read sequencing", desc: "Isoforms, SVs and methylation", kind: "longread" },
   { name: "Radiomics and imaging", desc: "Segmentation to outcome models", kind: "radiomics" },
@@ -37,7 +37,13 @@ export default function WhatWeDo() {
               </div>
               <p className="font-medium text-[17px]">{c.name}</p>
               <p className="text-dim text-[14.5px] mt-1.5">{c.desc}</p>
-              <p className="mt-3 font-mono text-[11.5px] text-dim">demo on request</p>
+              {c.demo ? (
+                <a href={c.demo} className="mt-3 inline-block font-mono text-[11.5px] text-violet hover:text-snow transition-colors">
+                  {c.demoLabel}
+                </a>
+              ) : (
+                <p className="mt-3 font-mono text-[11.5px] text-dim">demo on request</p>
+              )}
             </div>
           ))}
         </div>
