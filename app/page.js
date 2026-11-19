@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import TelemetryStrip from "@/components/TelemetryStrip";
 import ClientMarquee from "@/components/ClientMarquee";
 import BanksySection from "@/components/BanksySection";
 import UmapExplorer from "@/components/UmapExplorer";
@@ -15,6 +16,7 @@ export default function Home() {
     <main className="grain">
       <div className="bg-sea" aria-hidden />
       <Hero />
+      <TelemetryStrip />
       <ClientMarquee />
       <BanksySection />
       <WhatWeDo />
