@@ -7,20 +7,19 @@ import { motion, AnimatePresence } from "framer-motion";
 // The Fable: "The Huntress & the Crystal of Twelve."
 // Biological noise in the wild → precision aim → structured, living insight.
 //
-// One canvas carries the living matter (spatial cell pool, dodecahedron,
-// DNA helix, drifting genomic coordinates); one SVG overlay carries the
-// classical monoline engraving (Artemis, bow, arrow, agentic sub-threads).
-// The two layers share a coordinate frame: SVG viewBox 1440×900 stretched
-// with preserveAspectRatio="none", so (720, 297) in the SVG is exactly
-// (0.5·w, 0.33·h) on the canvas — the crystal's core, where the arrow lands.
+// One canvas carries the crystal (dodecahedron + internal DNA helix); one
+// SVG overlay carries a faint classical monoline engraving (Artemis, bow,
+// arrow, agentic sub-threads). The two layers share a coordinate frame:
+// SVG viewBox 1440×900 stretched with preserveAspectRatio="none", so
+// (720, 297) in the SVG is exactly (0.5·w, 0.33·h) on the canvas — the
+// crystal's core, where the arrow lands.
 //
-// Animation layer palette is strictly three values (obsidian / bone / teal);
-// multicolor is reserved for the biological clusters, per Okabe–Ito.
+// Palette is strictly three values (obsidian / bone / teal), kept quiet —
+// the engraving is background texture, never louder than the product.
 // ——————————————————————————————————————————————————————————————————————
 
 const BONE = "243, 239, 230";
 const TEAL = "45, 212, 191";
-const OKABE_ITO = ["#56B4E9", "#E69F00", "#009E73", "#CC79A7", "#F0E442"];
 
 // the 20 vertices of the stack — carried over from the original dodecahedron
 const LABELS = [
@@ -28,12 +27,6 @@ const LABELS = [
   "snRNA-seq", "snATAC", "H&E", "BANKSY", "Leiden",
   "cell2location", "NMF niches", "IvyGAP", "Moran's I", "DE",
   "UMAP", "Vitessce", "zarr", "Qwen3", "GPU",
-];
-
-const COORD_TICKS = [
-  "chr3:181,695,000", "chr7:55,019,017 · EGFR", "chr17:7,668,402 · TP53",
-  "120,418 cells", "FASTQ · R2 151bp", "chr10:87,863,113 · PTEN",
-  "unmapped · 2.4%", "GFAP+ · ambiguous",
 ];
 
 const AGENT_STEPS = ["INGEST · FASTQ/H5AD", "BANKSY · λ=0.2", "SUBAGENTS · 15 DOMAINS"];
@@ -147,25 +140,6 @@ export default function FableStage() {
     let running = false;
     let lastNow = 0;
 
-    // spatial pool — a diffuse wild cloud that snaps into Okabe–Ito domains
-    // as the impact wave sweeps outward through it
-    const cells = Array.from({ length: 240 }, (_, i) => {
-      const cluster = i % 5;
-      const theta = Math.random() * Math.PI * 2;
-      const rad = Math.pow(Math.random(), 0.6);
-      return {
-        cluster,
-        theta,
-        rad,
-        wx: (Math.random() - 0.5) * 2, // wild position, fraction of half-width
-        wy: Math.random(), // wild position within the lower band
-        x: null,
-        y: null,
-        r: 1.1 + Math.random() * 1.4,
-        ph: Math.random() * Math.PI * 2,
-      };
-    });
-
     const rot = { rx: 0.5, ry: 0.7, vx: 0, vy: 0 };
     const par = { tx: 0, ty: 0, x: 0, y: 0 };
     const drag = { on: false, x: 0, y: 0 };
@@ -191,56 +165,13 @@ export default function FableStage() {
       const since = impactAt == null ? -1 : (now - impactAt) / 1000;
       const settled = since > 1.6 ? 1 : since < 0 ? 0 : since / 1.6;
 
-      // 01 · the wild — drifting genomic coordinates, fading out after impact
-      const wildAlpha = since < 0 ? 1 : Math.max(0, 1 - since * 1.2);
-      if (wildAlpha > 0.02) {
-        ctx.font = "500 10px 'JetBrains Mono', ui-monospace, monospace";
-        COORD_TICKS.forEach((tick, i) => {
-          const fx = (0.08 + ((i * 0.131 + 0.05 * Math.sin(t * 0.21 + i * 2.1)) % 0.86));
-          const fy = 0.1 + ((i * 0.37 + 0.02 * Math.cos(t * 0.17 + i)) % 0.78);
-          const blink = 0.5 + 0.5 * Math.sin(t * 0.7 + i * 1.9);
-          ctx.fillStyle = `rgba(${BONE}, ${0.16 * blink * wildAlpha})`;
-          ctx.fillText(tick, fx * w, fy * h);
-        });
-      }
-
-      // spatial pool — wild drift pre-impact; radial wave snaps cells to domains
-      const clusterOff = [
-        [-0.34, 0.425], [-0.17, 0.455], [0, 0.435], [0.17, 0.46], [0.34, 0.43],
-      ];
-      const waveR = since < 0 ? -1 : since * S * 1.1; // impact wave radius
-      for (const c of cells) {
-        const [ox, oy] = clusterOff[c.cluster];
-        const sx = cx + (ox + Math.cos(c.theta) * c.rad * 0.052) * S;
-        const sy = cy + (oy + Math.sin(c.theta) * c.rad * 0.024) * S;
-        const wxp = cx + c.wx * w * 0.46;
-        const wyp = cy + (0.14 + c.wy * 0.42) * h;
-        if (c.x == null) { c.x = wxp; c.y = wyp; }
-        const distFromCore = Math.hypot(c.x - cx, c.y - cy);
-        const snapped = waveR >= 0 && distFromCore < waveR;
-        const tx = snapped ? sx : wxp;
-        const ty = snapped ? sy : wyp;
-        const driftA = snapped ? 3 : 16;
-        const dX = Math.sin(t * 1.05 + c.ph) * driftA;
-        const dY = Math.cos(t * 0.85 + c.ph) * driftA * 0.8;
-        const spring = snapped ? 0.05 : 0.006;
-        c.x += (tx + dX - c.x) * spring * (reduced ? 10 : 1);
-        c.y += (ty + dY - c.y) * spring * (reduced ? 10 : 1);
+      // 04 · impact — a single crystalline ring, nothing else on the ground
+      if (since > 0 && since < 1.4) {
+        const k = since / 1.4;
         ctx.beginPath();
-        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-        ctx.fillStyle = OKABE_ITO[c.cluster];
-        ctx.globalAlpha = snapped ? 0.44 : 0.13;
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-
-      // 04 · impact wave — a single crystalline ring sweeping the pool
-      if (since > 0 && since < 1.6) {
-        const k = since / 1.6;
-        ctx.beginPath();
-        ctx.arc(cx, cy, waveR, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${TEAL}, ${0.4 * (1 - k)})`;
-        ctx.lineWidth = 1.2;
+        ctx.arc(cx, cy, since * S * 0.55, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${TEAL}, ${0.32 * (1 - k)})`;
+        ctx.lineWidth = 1.1;
         ctx.stroke();
       }
 
@@ -526,21 +457,11 @@ export default function FableStage() {
         fill="none"
       >
         <g strokeLinecap="round" strokeLinejoin="round">
-          {/* ground line — the plinth of the engraving */}
-          <motion.path
-            d="M 92 458 L 238 458"
-            stroke={`rgba(${BONE}, 0.12)`}
-            strokeWidth="1"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          />
           {/* head, profile facing the shot, chignon knotted behind */}
           <motion.path
             d="M 148 263 a 9 9 0 1 0 18 0 a 9 9 0 1 0 -18 0"
-            stroke={`rgba(${BONE}, 0.55)`}
-            strokeWidth="1.3"
+            stroke={`rgba(${BONE}, 0.3)`}
+            strokeWidth="1.2"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
@@ -548,7 +469,7 @@ export default function FableStage() {
           />
           <motion.circle
             cx="146" cy="257" r="3.4"
-            fill={`rgba(${BONE}, 0.4)`}
+            fill={`rgba(${BONE}, 0.22)`}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.35 }}
@@ -556,7 +477,7 @@ export default function FableStage() {
           {/* back contour — nape, spine, small of the back, hip */}
           <motion.path
             d="M 159 271 C 156 282, 152 294, 150 306 C 148 322, 148 338, 148 354"
-            stroke={`rgba(${BONE}, 0.55)`}
+            stroke={`rgba(${BONE}, 0.3)`}
             strokeWidth="1.3"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
@@ -566,7 +487,7 @@ export default function FableStage() {
           {/* chest contour with breast curve */}
           <motion.path
             d="M 156 274 C 155 283, 156 290, 160 295 C 163 299, 162 304, 158 308 C 155 322, 153 338, 152 352"
-            stroke={`rgba(${BONE}, 0.38)`}
+            stroke={`rgba(${BONE}, 0.2)`}
             strokeWidth="1.1"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
@@ -576,47 +497,27 @@ export default function FableStage() {
           {/* chiton skirt — a fuller bell from hip to hem */}
           <motion.path
             d="M 148 354 C 137 374, 131 392, 131 410 M 152 352 C 161 372, 166 390, 167 408 M 131 410 Q 149 419 167 408"
-            stroke={`rgba(${BONE}, 0.44)`}
+            stroke={`rgba(${BONE}, 0.24)`}
             strokeWidth="1.15"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 0.55, delay: 0.26, ease: easeSnap }}
           />
-          {/* drape folds falling through the skirt */}
-          <motion.path
-            d="M 145 362 C 141 378, 139 394, 139 408 M 152 360 C 152 376, 153 392, 154 407 M 158 364 C 160 378, 161 392, 161 405"
-            stroke={`rgba(${BONE}, 0.17)`}
-            strokeWidth="1"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.45, delay: 0.38 }}
-          />
           {/* legs — front knee driving into the lunge, back leg extended */}
           <motion.path
             d="M 155 409 C 162 420, 169 429, 173 440 L 176 456 M 141 410 C 133 424, 123 438, 112 450 L 104 457"
-            stroke={`rgba(${BONE}, 0.55)`}
+            stroke={`rgba(${BONE}, 0.3)`}
             strokeWidth="1.3"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3, ease: easeSnap }}
           />
-          {/* quiver at the back, fletching showing over the shoulder */}
-          <motion.path
-            d="M 140 284 L 132 318 M 137 286 L 132 278 M 142 288 L 139 279 M 146 289 L 144 281"
-            stroke={`rgba(${BONE}, 0.35)`}
-            strokeWidth="1"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.4, delay: 0.45 }}
-          />
           {/* bow arm, level and extended to the grip */}
           <motion.path
             d="M 155 294 C 177 300, 203 308, 227 317"
-            stroke={`rgba(${BONE}, 0.55)`}
+            stroke={`rgba(${BONE}, 0.3)`}
             strokeWidth="1.3"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
@@ -626,7 +527,7 @@ export default function FableStage() {
           {/* draw arm — elbow pulled high and back, hand anchored at the nock */}
           <motion.path
             d="M 157 293 C 170 296, 171 308, 161 316 L 156 319"
-            stroke={`rgba(${BONE}, 0.55)`}
+            stroke={`rgba(${BONE}, 0.3)`}
             strokeWidth="1.3"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0, opacity: 0 }}
@@ -636,7 +537,7 @@ export default function FableStage() {
           {/* the recurve bow */}
           <motion.path
             d="M 205 245 Q 253 318 205 391"
-            stroke={`rgba(${BONE}, 0.65)`}
+            stroke={`rgba(${BONE}, 0.38)`}
             strokeWidth="1.3"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0 }}
@@ -646,7 +547,7 @@ export default function FableStage() {
           {/* bowstring — taut strand of living code; snaps straight on release */}
           <motion.path
             d={stage === "drawing" ? "M 205 245 L 156 319 L 205 391" : "M 205 245 L 205 318 L 205 391"}
-            stroke={`rgba(${TEAL}, 0.5)`}
+            stroke={`rgba(${TEAL}, 0.35)`}
             strokeWidth="0.9"
             vectorEffect="non-scaling-stroke"
             initial={{ opacity: 0 }}
@@ -658,7 +559,7 @@ export default function FableStage() {
             {stage === "drawing" && (
               <motion.path
                 d="M 156 319 L 230 315"
-                stroke={`rgba(${TEAL}, 0.8)`}
+                stroke={`rgba(${TEAL}, 0.55)`}
                 strokeWidth="1.3"
                 vectorEffect="non-scaling-stroke"
                 initial={{ pathLength: 0, opacity: 0 }}
@@ -720,9 +621,9 @@ export default function FableStage() {
               <motion.span
                 key={`${run}-${label}`}
                 initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: [0, 0.75, 0.35], y: 0 }}
+                animate={{ opacity: [0, 0.7, 0], y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1, delay: 0.1 + i * 0.14 }}
+                transition={{ duration: 2.2, delay: 0.1 + i * 0.14, times: [0, 0.25, 1] }}
                 className="font-mono text-[10px] tracking-[0.18em] text-[#2DD4BF] border border-[#2DD4BF]/20 bg-[#090A0B]/80 px-2 py-0.5 rounded-[3px]"
               >
                 {label}
