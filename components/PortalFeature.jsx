@@ -21,12 +21,12 @@ export default function PortalFeature() {
         <div className="rounded-lg border border-snow/60 overflow-hidden shadow-[0_24px_60px_-28px_rgba(28,26,21,0.45)]">
           <img
             src="demo/still_GBM1_portal.png"
-            alt="Artemis BioLabs portal: GBM1 open with linked UMAP and spatial scatterplots, cell-set controls, gene list, Moran's heatmap and the copilot rail"
+            alt="Artemis BioLabs atlas console: GBM1 open with the section rail, linked spatial scatterplot, cell-set controls, gene list, expression heatmap and the co-scientist rail"
             className="w-full"
           />
         </div>
         <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-          The portal as captured during the demo recording — GBM1 (4,764 spots) with UMAP + spatial linked views, cell sets, markers and the copilot rail.
+          The live atlas console — GBM1 (4,764 spots) with the section rail, linked spatial view, cell sets, markers and the co-scientist rail.
         </p>
       </Reveal>
       <Reveal delay={0.12} className="mt-8 grid sm:grid-cols-3 gap-4">

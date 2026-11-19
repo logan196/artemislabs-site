@@ -70,7 +70,7 @@ function PortalChrome({ interactive = true }) {
       </div>
       <img
         src="demo/poster.png"
-        alt="The live Artemis portal — spatial view, UMAP and copilot rail on a real GBM section"
+        alt="The live Artemis atlas console — section rail, linked spatial view, expression heatmap and the co-scientist rail on a real GBM section"
         className="w-full block"
         loading="lazy"
       />
