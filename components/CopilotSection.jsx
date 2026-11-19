@@ -48,7 +48,7 @@ export default function CopilotSection() {
   const reduced = useReducedMotion();
   const ref = useRef(null);
   const timers = useRef([]);
-  const [shown, setShown] = useState(reduced ? CHAT.length : 0);
+  const [shown, setShown] = useState(0);
   const [typing, setTyping] = useState(false);
   const [started, setStarted] = useState(false);
 
