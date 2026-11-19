@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import FounderLock from "./FounderLock";
-import TickField from "./TickField";
+import CellField from "./CellField";
 import SplitText from "./SplitText";
 
 const BOOKING =
@@ -79,7 +79,7 @@ export default function Hero() {
       <div className="absolute inset-0 -z-10">
         <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
         <motion.div style={{ opacity: fieldFade, y: fieldLift }} className="absolute inset-0">
-          <TickField className="absolute inset-0 h-full w-full" />
+          <CellField className="absolute inset-0 h-full w-full" />
           {CALLOUTS.map((c) => (
             <motion.div
               key={c.label}
@@ -102,7 +102,7 @@ export default function Hero() {
         {/* The densest part of the scene sits directly under the headline and
             tagline. A band confined to the text column protects that copy
             without flattening the rest of the field. */}
-        <div className="absolute inset-x-0 top-[20%] h-[46%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(7,6,11,0.58)_34%,rgba(7,6,11,0.58)_66%,transparent_100%)]" />
+        <div className="absolute inset-x-0 top-[14%] h-[58%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(7,6,11,0.58)_34%,rgba(7,6,11,0.58)_66%,transparent_100%)]" />
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
@@ -149,7 +149,7 @@ export default function Hero() {
       <motion.div style={{ opacity: fade }} className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
         <h1
           aria-label="Artemis BioLabs"
-          className="text-[2.5rem] leading-[1.04] sm:text-6xl xl:text-[5.25rem] font-semibold tracking-[-0.018em]"
+          className="w-full max-w-[1500px] text-[clamp(2.6rem,10.4vw,9.5rem)] leading-[0.92] font-semibold tracking-[-0.035em]"
           style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
         >
           <SplitText text="ARTEMIS" as="span" className="inline-block" start={lit} delay={0} />{" "}
