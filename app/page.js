@@ -10,6 +10,7 @@ import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import ToolGraph from "@/components/ToolGraph";
 import FableSection from "@/components/FableSection";
+import SpecimenSection from "@/components/SpecimenSection";
 import Cta from "@/components/Cta";
 
 export default function Home() {
@@ -28,6 +29,7 @@ export default function Home() {
       <ToolsGrid />
       <ToolGraph />
       <FableSection />
+      <SpecimenSection />
       <Cta />
     </main>
   );
