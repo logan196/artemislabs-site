@@ -106,7 +106,7 @@ export default function Hero() {
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
-        <a href="#" aria-label="Artemis BioLabs — top of page" onClick={salute}>
+        <a href="/" aria-label="Artemis BioLabs — home" onClick={salute}>
           <img
             src="artemis_lockup.svg"
             alt="Artemis BioLabs"
