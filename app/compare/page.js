@@ -80,7 +80,15 @@ export default function Compare() {
           See <code className="font-mono text-snow">VARIANT_RANKING.md</code> in the repo root — three
           independent judges (design/brand, scientific credibility,
           engineering/accessibility) scored every variant, then a synthesis pass
-          ranked them and proposed what to graft between them.
+          ranked them and proposed what to graft between them. Screenshots live
+          in <code className="font-mono text-snow">review-shots/</code>.
+        </p>
+        <p className="mt-3 text-dim text-[14.5px] leading-relaxed">
+          Related prior art: the <code className="font-mono text-snow">fable-hero</code> branch
+          (huntress blueprint intro, undeployed) explores the same arrow-strike
+          idea with a narrative register — worth comparing before picking a
+          winner. Note the live artemislabs.bio currently runs the sage-green
+          redesign whose source is managed outside this repo.
         </p>
       </section>
     </main>
