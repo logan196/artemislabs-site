@@ -24,7 +24,8 @@ export default function WetLabSection() {
         <Reveal delay={0.08} className="mt-10">
           <div className="rounded-lg border border-snow/60 overflow-hidden bg-[#0d0d16]">
             <video
-              src="demo/proteomics_demo.mp4"
+              src="demo/artemis_gbm_demo.mp4"
+              poster="demo/still_GBM1_portal.png"
               autoPlay
               muted
               loop
