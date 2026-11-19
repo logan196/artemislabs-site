@@ -3,7 +3,11 @@ const nextConfig = {
   // Static export: same build serves Vercel and the self-contained preview
   // artifact. Relative assetPrefix keeps _next/* chunks path-independent.
   output: "export",
-  assetPrefix: "./",
+  // Production only. A relative assetPrefix makes the exported _next/* chunks
+  // path-independent, but in dev it also rewrites the dev-runtime and HMR
+  // endpoints, which leaves the page served but never hydrated — effects never
+  // run, so the canvas stays unsized and the hero renders black.
+  ...(process.env.NODE_ENV === "production" ? { assetPrefix: "./" } : {}),
   images: { unoptimized: true },
   turbopack: {
     rules: {
