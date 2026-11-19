@@ -13,15 +13,17 @@ export default function FableSection() {
     <section id="fable" aria-label="About Artemis — the fable" className="px-6 md:px-14 py-24 md:py-32">
       <div className="max-w-6xl mx-auto">
         <p className="font-mono text-[11px] tracking-[0.28em] uppercase text-violet mb-3">
-          About Artemis · the fable
+          About Artemis · why Artemis
         </p>
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-          Why we&apos;re named for the huntress.
+          One pass from raw counts to spatial structure.
         </h2>
         <p className="max-w-2xl text-[15.5px] text-dim leading-relaxed mb-8">
-          Raw data is a wilderness. Artemis takes one precise shot — LLMs, analysis,
-          and HPC on a single arrow — and noise crystallises into living, explorable
-          structure. That is the whole company, in four seconds.
+          A spatial transcriptomics run starts as millions of unmapped reads and a
+          noisy expression matrix. In four seconds, an autonomous agent loop ingests
+          the coordinates, runs neighborhood-aware clustering, and resolves distinct
+          tumor states — turning a raw <code className="font-mono text-[13.5px] text-snow/80">.h5ad</code> file
+          into a live, queryable tissue portal.
         </p>
 
         <div className="relative h-[520px] md:h-[600px] rounded-[6px] border border-line overflow-hidden bg-[#090A0B]">
