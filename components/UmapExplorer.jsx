@@ -409,7 +409,7 @@ export default function UmapExplorer() {
       </Reveal>
 
       <Reveal className="mt-10">
-        <div className="rounded-[4px] border border-line bg-panel p-4 md:p-6">
+        <div>
           {/* the one control that matters: where between tissue and embedding */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
             <div className="flex items-center gap-3 flex-1 min-w-[260px]">

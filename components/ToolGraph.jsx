@@ -326,7 +326,7 @@ export default function ToolGraph() {
 
       <Reveal className="mt-10">
         {/* ---- dark integrations panel ---- */}
-        <div className="relative overflow-hidden rounded-[8px] border border-snow/60 bg-[#12101d]">
+        <div className="relative overflow-hidden">
           {/* dot grid + teal vignette (static, cheap) */}
           <div
             aria-hidden
@@ -492,7 +492,7 @@ export default function ToolGraph() {
         {/* explanation card — pinned below the panel, never follows the cursor */}
         <div
           aria-live="polite"
-          className="mt-4 rounded-[4px] border border-line bg-panel px-5 py-4 min-h-[92px] md:min-h-[76px]"
+          className="mt-4 border-t border-line pt-4 min-h-[92px] md:min-h-[76px]"
         >
           <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-1.5">
             {card.title}

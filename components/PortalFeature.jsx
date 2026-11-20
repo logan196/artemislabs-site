@@ -18,7 +18,7 @@ export default function PortalFeature() {
         </p>
       </Reveal>
       <Reveal delay={0.08} className="mt-10">
-        <div className="rounded-lg border border-snow/60 overflow-hidden shadow-[0_24px_60px_-28px_rgba(28,26,21,0.45)]">
+        <div className="rounded-lg overflow-hidden shadow-[0_24px_60px_-28px_rgba(28,26,21,0.45)]">
           <img
             src="demo/still_GBM1_portal.png"
             alt="Artemis BioLabs portal: GBM1 open with linked UMAP and spatial scatterplots, cell-set controls, gene list, Moran's heatmap and the copilot rail"
@@ -35,7 +35,7 @@ export default function PortalFeature() {
           ["Linked exploration", "Spatial ⇄ UMAP ⇄ heatmap ⇄ gene list share one selection and one color encoding."],
           ["Ask the section", "The copilot rail answers grounded questions — and can run with a local model through Ollama."],
         ].map(([t, d]) => (
-          <div key={t} className="rounded-[4px] border border-line bg-panel/70 p-5">
+          <div key={t} className="border-t border-line pt-5">
             <p className="font-medium text-[16px]">{t}</p>
             <p className="text-dim text-[14.5px] mt-1.5 leading-relaxed">{d}</p>
           </div>

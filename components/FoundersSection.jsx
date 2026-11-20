@@ -64,7 +64,7 @@ export default function FoundersSection() {
       <Reveal delay={0.1}>
         <div className="grid sm:grid-cols-2 gap-4 mt-12 max-w-4xl">
           {FOUNDERS.map((f) => (
-            <div key={f.name} className="rounded-[4px] border border-line bg-panel/70 p-6">
+            <div key={f.name} className="border-t border-line pt-6">
               <img
                 src={f.img}
                 alt={f.name}
@@ -89,7 +89,7 @@ export default function FoundersSection() {
         </p>
         <div className="grid lg:grid-cols-2 gap-4 max-w-6xl">
           {PUBLICATIONS.map((p) => (
-            <div key={p.title} className="rounded-[4px] border border-line bg-panel/70 overflow-hidden">
+            <div key={p.title} className="border-t border-line pt-5">
               <a href={p.href} target="_blank" rel="noreferrer" aria-label={`Open publisher record: ${p.title}`}>
                 <img
                   src={p.img}
@@ -98,7 +98,7 @@ export default function FoundersSection() {
                   className="w-full border-b border-line bg-white object-cover hover:opacity-90 transition-opacity"
                 />
               </a>
-              <div className="p-5">
+              <div className="pt-4">
                 <p className="font-mono text-[11px] tracking-[0.18em] text-dim uppercase mb-2">{p.tag}</p>
                 <p className="text-[16px] font-medium leading-snug">{p.title}</p>
                 <p className="text-[13.5px] text-dim mt-1.5">{p.cite}</p>

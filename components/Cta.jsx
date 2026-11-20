@@ -17,7 +17,7 @@ export default function Cta() {
             ["3 · deliverables", "A live portal, the written report, the figures — and the code that made all three."],
             ["4 · your data stays yours", "Local-mode runs mean zero egress; cloud models are opt-in per project; deletion on request."],
           ].map(([t, b]) => (
-            <div key={t} className="rounded-[3px] border border-line bg-panel/80 p-5">
+            <div key={t} className="border-t border-line pt-5">
               <p className="font-mono text-[12px] tracking-[0.15em] text-violet uppercase mb-2">{t}</p>
               <p className="text-[14px] text-dim leading-relaxed">{b}</p>
             </div>

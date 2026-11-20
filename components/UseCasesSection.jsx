@@ -236,11 +236,10 @@ export default function UseCasesSection() {
                 ref={(el) => { cardRefs.current[i] = el; }}
                 data-case={i}
                 onMouseEnter={() => setActive(i)}
-                className="group grid gap-6 md:grid-cols-[200px_1fr] md:items-center rounded-[4px] border bg-panel/70 p-6 md:p-8 transition-[border-color,opacity,box-shadow] duration-500"
+                className="group grid gap-6 md:grid-cols-[200px_1fr] md:items-center border-t pt-6 md:pt-8 pb-2 transition-[border-color,opacity] duration-500"
                 style={{
-                  borderColor: isActive ? `rgba(${c.rgb}, 0.4)` : "rgba(255, 255, 255, 0.12)",
+                  borderColor: isActive ? `rgba(${c.rgb}, 0.55)` : "rgba(255, 255, 255, 0.12)",
                   opacity: isActive ? 1 : 0.6,
-                  boxShadow: isActive ? `0 0 48px -20px rgba(${c.rgb}, 0.45)` : "none",
                 }}
               >
                 <div className="flex items-center justify-center">

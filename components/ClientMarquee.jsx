@@ -18,7 +18,7 @@ const LOGOS = [
 export default function ClientMarquee() {
   const row = [...LOGOS, ...LOGOS];
   return (
-    <section aria-label="Institutions" className="border-y border-line bg-panel/70 py-6 overflow-hidden">
+    <section aria-label="Institutions" className="py-6 overflow-hidden">
       <p className="text-center font-mono text-[11px] tracking-[0.25em] text-dim uppercase mb-5">
         Where our team has trained and collaborated
       </p>

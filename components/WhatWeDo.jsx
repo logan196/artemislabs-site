@@ -31,7 +31,7 @@ export default function WhatWeDo() {
       <Reveal delay={0.1}>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
           {CORES.map((c) => (
-            <div key={c.name} className="rounded-[4px] border border-line bg-panel/70 p-5">
+            <div key={c.name} className="border-t border-line pt-5">
               <div className="rounded-[3px] bg-[#efeadd] mb-3 overflow-hidden">
                 <AssayMini kind={c.kind} height={110} />
               </div>

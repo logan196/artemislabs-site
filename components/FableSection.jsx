@@ -26,7 +26,7 @@ export default function FableSection() {
           into a live, queryable tissue portal.
         </p>
 
-        <div className="relative h-[520px] md:h-[600px] rounded-[6px] border border-line overflow-hidden bg-[#090A0B]">
+        <div className="relative h-[520px] md:h-[600px] overflow-hidden">
           <FableStage />
           <button
             type="button"
