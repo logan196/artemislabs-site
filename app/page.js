@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import ClientMarquee from "@/components/ClientMarquee";
 import CredStrip from "@/components/CredStrip";
 import GbmUseCase from "@/components/GbmUseCase";
+import AdAuditUseCase from "@/components/AdAuditUseCase";
 import UmapExplorer from "@/components/UmapExplorer";
 import GenomeSection from "@/components/GenomeSection";
 import TissueBand from "@/components/TissueBand";
@@ -26,6 +27,7 @@ export default function Home() {
         <ClientMarquee />
       </div>
       <GbmUseCase />
+      <AdAuditUseCase />
       <PrismaStory />
       <BanksySection />
       <UmapExplorer />
