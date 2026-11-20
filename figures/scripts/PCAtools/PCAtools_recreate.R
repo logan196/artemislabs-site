@@ -1,0 +1,13 @@
+# PCAtools on Zeisel 2015 pseudobulk (C1 chip x cell type, >=10 cells): scree + Horn/elbow, biplot, eigencor, pairs, loadings
+suppressPackageStartupMessages({library(PCAtools); library(Seurat); library(edgeR); library(ggplot2)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE)))); set.seed(1)
+so <- readRDS("../_data/zeisel_seurat.rds"); so$chip <- paste0("chip", sub("_.*", "", colnames(so))); so$pb <- paste(so$chip, so$celltype, sep = "|")
+keep <- names(which(table(so$pb) >= 10)); so <- subset(so, cells = colnames(so)[so$pb %in% keep])
+cnt <- GetAssayData(so, layer = "counts"); pb <- sapply(split(seq_len(ncol(so)), so$pb), function(i) Matrix::rowSums(cnt[, i, drop = FALSE]))
+md <- unique(so@meta.data[, c("pb","chip","celltype","tissue")]); rownames(md) <- md$pb; md <- md[colnames(pb), ]; md$n_cells <- as.numeric(table(so$pb)[rownames(md)]); md$log_lib <- log10(colSums(pb))
+lc <- cpm(pb[rowSums(pb >= 10) >= 5, ], log = TRUE, prior.count = 2); p <- pca(lc, metadata = md, removeVar = .9)
+horn <- parallelPCA(lc, removeVar = .9); elbow <- findElbowPoint(p$variance)
+ggsave("v1_screeplot.png", screeplot(p, components = getComponents(p, 1:15), vline = c(horn$n, elbow), title = "Scree (Horn + elbow)") + geom_label(aes(x = horn$n + 1, y = 50, label = "Horn", vjust = -1, size = 8)) + geom_label(aes(x = elbow + 1, y = 50, label = "Elbow", vjust = -1, size = 8)), width = 8, height = 5, dpi = 140, bg = "white")
+ggsave("v2_biplot.png", biplot(p, colby = "celltype", shape = "tissue", showLoadings = TRUE, lab = NULL, legendPosition = "right", ntopLoadings = 4, title = "PCAtools biplot: pseudobulk by cell type"), width = 9, height = 6.5, dpi = 140, bg = "white")
+png("v3_eigencorplot.png", 1500, 700, res = 140); print(eigencorplot(p, components = getComponents(p, 1:8), metavars = c("n_cells","log_lib","tissue","celltype"), col = c("darkblue","blue2","white","red2","darkred"), cexCorval = .7, main = "PC-metadata correlations")); dev.off()
+png("v4_pairsplot.png", 1400, 1400, res = 140); print(pairsplot(p, components = getComponents(p, 1:4), colby = "celltype", title = "PC pairs", pointSize = 1.2)); dev.off()

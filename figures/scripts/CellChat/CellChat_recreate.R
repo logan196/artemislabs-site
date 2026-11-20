@@ -1,0 +1,15 @@
+# CellChat on Zeisel mouse cortex/hippocampus cell types
+suppressPackageStartupMessages({library(CellChat); library(Seurat); library(patchwork)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+so <- readRDS("../_data/zeisel_seurat.rds")
+cc <- createCellChat(object = GetAssayData(so, layer = "data"), meta = data.frame(labels = droplevels(so$celltype), row.names = colnames(so)), group.by = "labels")
+cc@DB <- CellChatDB.mouse; cc <- subsetData(cc); future::plan("sequential")
+cc <- identifyOverExpressedGenes(cc); cc <- identifyOverExpressedInteractions(cc); cc <- computeCommunProb(cc, type = "triMean"); cc <- filterCommunication(cc, min.cells = 10)
+cc <- computeCommunProbPathway(cc); cc <- aggregateNet(cc); cc <- netAnalysis_computeCentrality(cc, slot.name = "netP")
+gs <- as.numeric(table(cc@idents))
+png("v1_circle_counts.png", 1200, 1200, res = 160); netVisual_circle(cc@net$count, vertex.weight = gs, weight.scale = TRUE, label.edge = FALSE, title.name = "Number of interactions"); dev.off()
+png("v2_heatmap.png", 1200, 1000, res = 160); print(netVisual_heatmap(cc, measure = "weight")); dev.off()
+ggplot2::ggsave("v3_bubble.png", netVisual_bubble(cc, sources.use = 1:3, targets.use = 4:7, remove.isolate = TRUE, angle.x = 45), width = 9, height = 10, dpi = 120, bg = "white")
+ggplot2::ggsave("v4_signalingRole_scatter.png", netAnalysis_signalingRole_scatter(cc), width = 6.5, height = 5, dpi = 150, bg = "white")
+pw <- cc@netP$pathways[1]
+png("v5_chord_pathway.png", 1200, 1200, res = 160); netVisual_aggregate(cc, signaling = pw, layout = "chord"); dev.off()

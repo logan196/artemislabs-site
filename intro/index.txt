@@ -1,0 +1,34 @@
+1:"$Sreact.fragment"
+2:"./_next/static/chunks/1ua2kfq9s-me6.js"
+3:I[39756,["$2"],"default"]
+4:I[37457,["$2"],"default"]
+6:"./_next/static/chunks/2ybref3tuytgj.js"
+7:"./_next/static/chunks/2kyjvmrei8qjn.js"
+8:I[78068,["$2","$6","$7"],"default"]
+9:I[86704,["$2","$6","$7"],"default"]
+a:I[25091,["$2","$6","$7"],"default"]
+b:I[18956,["$2","$6","$7"],"default"]
+c:I[69088,["$2","$6","$7"],"default"]
+d:I[56581,["$2","$6","$7"],"default"]
+e:I[94486,["$2","$6","$7"],"default"]
+f:I[33155,["$2","$6","$7"],"default"]
+10:I[88676,["$2","$6","$7"],"default"]
+11:I[35575,["$2","$6","$7"],"default"]
+12:I[38199,["$2","$6","$7"],"default"]
+13:I[97367,["$2"],"OutletBoundary"]
+14:"$Sreact.suspense"
+16:"ViewportBoundary"
+17:I[97367,["$2"],"$16"]
+19:"MetadataBoundary"
+1a:I[97367,["$2"],"$19"]
+1c:I[68027,["$2"],"default",1]
+:HL["./_next/static/chunks/2prvq90b23vsh.css","style"]
+:HL["./_next/static/media/9a321a2c78eff0b5-s.p.1bkzbscqrt8rl.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["./_next/static/media/d902bc2bfdd0a4cb-s.p.1g73gv09-xcb6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["./_next/static/media/e63b65bb308a9351-s.p.3j3877k49yy0l.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+5:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","main",null,{"className":"grain","children":[["$","div",null,{"className":"bg-sea","aria-hidden":true}],["$","$L8",null,{}],["$","$L9",null,{}],["$","$La",null,{}],["$","$Lb",null,{}],["$","$Lc",null,{}],["$","$Ld",null,{}],["$","$Le",null,{}],["$","$Lf",null,{}],["$","$L10",null,{}],["$","$L11",null,{}],["$","$L12",null,{}]]}],[["$","script","script-0",{"src":"./_next/static/chunks/2ybref3tuytgj.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"./_next/static/chunks/2kyjvmrei8qjn.js","async":true,"nonce":"$undefined"}]],["$","$L13",null,{"children":["$","$14",null,{"name":"Next.MetadataOutlet","children":"$@15"}]}]]}],"p":false,"v":null}}]]
+0:{"P":null,"c":["",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"./_next/static/chunks/2prvq90b23vsh.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"./_next/static/chunks/1ua2kfq9s-me6.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"antialiased _0N3KTW_variable LspCSG_variable","children":["$","body",null,{"className":"bg-ink text-snow font-sans overflow-x-hidden","children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],"p":false,"v":null},"c":"$Q5"},"h":{"r":["$","$1","h",{"children":[null,["$","$L17",null,{"children":"$L18"}],["$","$L1a",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$14",null,{"name":"Next.Metadata","children":"$L1b"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$1c",[["$","link","0",{"rel":"stylesheet","href":"./_next/static/chunks/2prvq90b23vsh.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"tXK2noU-2vJ_DCoj7F0qi"}
+18:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+1d:I[27201,["$2"],"IconMark"]
+15:null
+1b:[["$","title","0",{"children":"Artemis BioLabs · Computational Biology, Accelerated"}],["$","meta","1",{"name":"description","content":"Computational biology support for spatial, single-cell, sequencing, imaging, and clinical studies."}],["$","meta","2",{"property":"og:title","content":"Artemis BioLabs"}],["$","meta","3",{"property":"og:description","content":"Every core service your lab needs. One AI-powered team. Computational biology, accelerated."}],["$","meta","4",{"property":"og:url","content":"https://artemislabs.bio"}],["$","meta","5",{"property":"og:site_name","content":"Artemis BioLabs"}],["$","meta","6",{"property":"og:image","content":"https://artemislabs.bio/og.png"}],["$","meta","7",{"property":"og:image:width","content":"1200"}],["$","meta","8",{"property":"og:image:height","content":"630"}],["$","meta","9",{"property":"og:image:alt","content":"Artemis BioLabs lockup"}],["$","meta","10",{"property":"og:type","content":"website"}],["$","meta","11",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","12",{"name":"twitter:title","content":"Artemis BioLabs"}],["$","meta","13",{"name":"twitter:description","content":"Every core service your lab needs. One AI-powered team. Computational biology, accelerated."}],["$","meta","14",{"name":"twitter:image","content":"https://artemislabs.bio/og.png"}],["$","meta","15",{"name":"twitter:image:alt","content":"Artemis BioLabs lockup"}],["$","meta","16",{"name":"twitter:image:width","content":"1200"}],["$","meta","17",{"name":"twitter:image:height","content":"630"}],["$","link","18",{"rel":"icon","href":"/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","link","19",{"rel":"icon","href":"artemis_mark.svg"}],["$","$L1d","20",{}]]

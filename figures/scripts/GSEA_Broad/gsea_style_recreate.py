@@ -1,0 +1,10 @@
+# Broad GSEA "classic" enrichment figure, recreated with GSEApy prerank (same algorithm/plot layout as the Broad desktop app)
+import os; os.chdir(os.path.dirname(os.path.abspath(__file__)))
+import pandas as pd, gseapy as gp, matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+res=pd.read_csv("../_data/airway_deseq2_results.csv",index_col=0).dropna(subset=["stat","symbol"])
+rnk=res.groupby("symbol").stat.mean().sort_values(ascending=False)
+pre=gp.prerank(rnk=rnk,gene_sets="MSigDB_Hallmark_2020",permutation_num=1000,seed=1,outdir=None,min_size=15,max_size=500,threads=4)
+r=pre.res2d.sort_values("NOM p-val"); terms=r.Term.tolist()
+gp.gseaplot(rank_metric=pre.ranking,term=terms[0],**pre.results[terms[0]],ofname="v1_classic_enrichment.png")
+gp.gseaplot2(terms=terms[:4],RESs=[pre.results[t]["RES"] for t in terms[:4]],hits=[pre.results[t]["hits"] for t in terms[:4]],rank_metric=pre.ranking,ofname="v2_multi_term.png",figsize=(6,5))
+ax=gp.dotplot(pre.res2d,column="FDR q-val",title="Hallmark prerank",cmap=plt.cm.viridis,size=5,figsize=(5,7),cutoff=.25,ofname="v3_dotplot.png")

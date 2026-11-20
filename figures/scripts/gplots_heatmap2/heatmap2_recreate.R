@@ -1,0 +1,10 @@
+# gplots::heatmap.2 (classic: row z-score, dendrograms, colour key + histogram, side colours) on Zeisel 2015 markers
+suppressPackageStartupMessages({library(gplots); library(Seurat); library(dplyr); library(RColorBrewer)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE)))); set.seed(1); if (!file.exists("../_data/zeisel_markers.csv")) system("Rscript ../_data/zeisel_de.R")
+so <- readRDS("../_data/zeisel_seurat.rds"); m <- read.csv("../_data/zeisel_markers.csv") %>% filter(p_val_adj < .01) %>% group_by(cluster) %>% slice_max(avg_log2FC, n = 8) %>% ungroup() %>% distinct(gene, .keep_all = TRUE)
+so$chip <- sub("_.*", "", colnames(so)); so$pb <- paste(so$celltype, so$chip, sep = "|"); keep <- names(which(table(so$pb) >= 10))
+av <- AverageExpression(subset(so, cells = colnames(so)[so$pb %in% keep]), features = m$gene, group.by = "pb", assays = "RNA")$RNA; M <- log1p(as.matrix(av))
+ct <- sub("[|-].*", "", gsub("-mural", "", colnames(M))); ct <- sub("\\|.*", "", colnames(M)); pal <- setNames(brewer.pal(8, "Set2")[seq_along(unique(ct))], unique(ct))
+png("v1_heatmap2_rowz.png", 1500, 1500, res = 150); heatmap.2(M, scale = "row", trace = "none", col = colorRampPalette(rev(brewer.pal(11, "RdBu")))(100), ColSideColors = pal[ct], labCol = FALSE, density.info = "histogram", key.title = NA, margins = c(3, 8), cexRow = .6, main = "heatmap.2: markers x (cell type|chip) pseudobulk"); legend("topright", legend = names(pal), fill = pal, cex = .55, bty = "n"); dev.off()
+mc <- sapply(split(seq_len(ncol(M)), ct), function(i) rowMeans(M[, i, drop = FALSE]))
+png("v2_heatmap2_celltype_cellnote.png", 1200, 1500, res = 150); heatmap.2(mc, scale = "row", trace = "none", dendrogram = "row", Colv = FALSE, col = bluered(75), cellnote = round(mc, 1), notecol = "black", notecex = .45, density.info = "none", margins = c(10, 8), cexRow = .6, srtCol = 40, main = "per-cell-type means"); dev.off()

@@ -1,0 +1,10 @@
+# inferCNV on the package's downsampled oligodendroglioma scRNA-seq example (Tirosh et al. 2016, Nature) - a real brain-tumour dataset
+suppressPackageStartupMessages({library(infercnv)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE)))); ex <- function(f) system.file("extdata", f, package = "infercnv")
+mk <- function() CreateInfercnvObject(raw_counts_matrix = ex("oligodendroglioma_expression_downsampled.counts.matrix.gz"), annotations_file = ex("oligodendroglioma_annotations_downsampled.txt"), delim = "\t", gene_order_file = ex("gencode_downsampled.EXAMPLE_ONLY_DONT_REUSE.txt"), ref_group_names = c("Microglia/Macrophage","Oligodendrocytes (non-malignant)"))
+o <- infercnv::run(mk(), cutoff = 1, out_dir = "out_default", cluster_by_groups = TRUE, denoise = TRUE, HMM = FALSE, no_prelim_plot = TRUE, num_threads = 2, png_res = 150, write_expr_matrix = FALSE)
+file.copy("out_default/infercnv.png", "v1_cnv_heatmap_by_group.png", overwrite = TRUE)
+o2 <- infercnv::run(mk(), cutoff = 1, out_dir = "out_subclusters", cluster_by_groups = FALSE, analysis_mode = "subclusters", denoise = TRUE, HMM = FALSE, no_prelim_plot = TRUE, num_threads = 2, png_res = 150, write_expr_matrix = FALSE)
+file.copy("out_subclusters/infercnv.png", "v2_cnv_heatmap_subclusters.png", overwrite = TRUE)
+png("v3_cnv_per_group.png", 1600, 1000, res = 150); plot_per_group(o, on_references = FALSE, out_dir = "out_default", png_res = 150, save_objects = FALSE); dev.off()
+f <- list.files("out_default", pattern = "infercnv_per_group.*png", full.names = TRUE); if (length(f)) file.copy(f[1], "v3_cnv_per_group.png", overwrite = TRUE)

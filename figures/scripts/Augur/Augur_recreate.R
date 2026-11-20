@@ -1,0 +1,12 @@
+# Augur cell-type prioritisation: which Zeisel cell types best separate tissue of origin (S1 cortex vs CA1)?
+suppressPackageStartupMessages({library(Augur); library(Seurat); library(ggplot2); library(viridis)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+so <- readRDS("../_data/zeisel_seurat.rds"); so <- subset(so, subset = celltype %in% c("interneurons","astrocytes_ependymal","oligodendrocytes","microglia","endothelial-mural"))
+so$tissue <- factor(so$tissue); so$celltype <- droplevels(so$celltype)
+au <- calculate_auc(GetAssayData(so, layer = "data"), so@meta.data, cell_type_col = "celltype", label_col = "tissue", n_subsamples = 20, subsample_size = 20, n_threads = 2, classifier = "rf")
+saveRDS(au$AUC, "augur_auc.rds")
+ggsave("v1_lollipop.png", plot_lollipop(au) + ggtitle("Augur AUC: tissue (S1 vs CA1) separability"), width = 6, height = 4, dpi = 150, bg = "white")
+ggsave("v2_umap_auc.png", plot_umap(au, so, reduction = "umap", cell_type_col = "celltype") + ggtitle("Augur AUC painted on UMAP"), width = 6.5, height = 5.5, dpi = 140, bg = "white")
+imp <- au$feature_importance; top <- do.call(rbind, lapply(Filter(nrow, split(imp, as.character(imp$cell_type))), function(d) { a <- aggregate(importance ~ gene, d, mean); a$cell_type <- d$cell_type[1]; head(a[order(-a$importance),], 6) }))
+g <- ggplot(top, aes(reorder(gene, importance), importance, fill = cell_type)) + geom_col() + coord_flip() + facet_wrap(~ cell_type, scales = "free") + theme_bw() + theme(legend.position = "none") + labs(x = NULL, title = "Top RF feature importances per cell type")
+ggsave("v3_feature_importance.png", g, width = 10, height = 6, dpi = 130, bg = "white")

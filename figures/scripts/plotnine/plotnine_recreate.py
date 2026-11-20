@@ -1,0 +1,10 @@
+import os, sys; os.chdir(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0,"../_data")
+import pandas as pd; from plotnine import *; from load_zeisel import load
+ad=load(); g=["Gad1","Satb2","Mbp","Aqp4"]; df=pd.DataFrame(ad[:,g].X.toarray(),columns=g); df=pd.concat([df,ad.obs[["celltype","tissue","UMAP_1","UMAP_2","nFeature_RNA"]].reset_index(drop=True)],axis=1)
+p=(ggplot(df,aes("UMAP_1","UMAP_2",color="celltype"))+geom_point(size=.4)+theme_void()+coord_fixed()+ggtitle("plotnine UMAP")+guides(color=guide_legend(override_aes={"size":3})))
+p.save("v1_umap.png",dpi=150,width=7,height=5,verbose=False)
+long=df.melt(id_vars=["celltype","tissue"],value_vars=g)
+p=(ggplot(long,aes("celltype","value",fill="celltype"))+geom_violin(scale="width")+facet_wrap("~variable",ncol=2)+theme_bw()+theme(axis_text_x=element_text(rotation=45,ha="right"),legend_position="none")+labs(y="log-norm",x=""))
+p.save("v2_faceted_violins.png",dpi=130,width=8,height=6,verbose=False)
+p=(ggplot(df,aes("UMAP_1","UMAP_2"))+geom_bin2d(bins=60)+scale_fill_cmap("magma")+facet_wrap("~tissue")+theme_minimal()+coord_fixed()+ggtitle("Cell density by tissue (geom_bin2d)"))
+p.save("v3_bin2d_facets.png",dpi=130,width=8,height=4.5,verbose=False)

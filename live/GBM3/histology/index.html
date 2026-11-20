@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GBM3 · H&amp;E and Visium spots | Artemis BioLabs</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;min-width:0;background:#0b0b0d;color:#eee;font:14px/1.5 system-ui,sans-serif}#root{width:100%;min-width:0;position:relative}#loading{padding:18px;color:#b5bbc4}.source{padding:7px 14px 9px;border-top:1px solid #242429;color:#b5bbc4;font-size:11px;line-height:1.55}.source a{color:#aedfd7;text-underline-offset:3px}button[aria-label="Toggle spot layer visibility"],button[aria-label="Toggle layer visibility"]{position:relative;z-index:1}.source a:focus-visible{outline:2px solid #aedfd7;outline-offset:4px}
+</style><link rel="icon" type="image/png" sizes="16x16" href="/brand/artemis-icon-16.v1.png"><link rel="icon" type="image/png" sizes="32x32" href="/brand/artemis-icon-32.v1.png"><link rel="icon" type="image/png" sizes="48x48" href="/brand/artemis-icon-48.v1.png"><link rel="apple-touch-icon" href="/brand/artemis-icon-180.v1.png"></head><body><main><div id="root"><div id="loading" role="status">Loading GBM3 histology and Visium data…</div></div>
+<footer class="source">GBM3 · GSM5833535 · <a href="https://doi.org/10.1038/s41467-023-36707-6" target="_blank" rel="noopener noreferrer">Ren et al., 2023</a> · <a href="https://doi.org/10.6084/m9.figshare.20653908.v3" target="_blank" rel="noopener noreferrer">H&amp;E: Yuan Wang (CC BY 4.0)</a> · 3,368 × 3,315 image from the authors’ full scan · Alignment in image pixels; scale bar not calibrated · Spots are capture areas, not cells · Research use only.</footer></main>
+<script type="module">
+const mount = document.getElementById('root');
+try {
+  let importWithMap;
+  try { ({importWithMap} = await import('https://unpkg.com/dynamic-importmap@0.1.0')); }
+  catch { ({importWithMap} = await import('https://cdn.vitessce.io/dynamic-importmap@0.1.0/dist/index.js')); }
+  const importMap = { imports: {
+    'react':'https://esm.sh/react@18.2.0',
+    'react-dom':'https://esm.sh/react-dom@18.2.0',
+    'react-dom/client':'https://esm.sh/react-dom@18.2.0/client',
+    'vitessce':'https://cdn.vitessce.io/vitessce@3.9.11/dist/index.min.js'
+  }};
+  const React = await importWithMap('react', importMap);
+  const { createRoot } = await importWithMap('react-dom/client', importMap);
+  const { Vitessce, VitessceConfig, CoordinationLevel } = await importWithMap('vitessce', importMap);
+  const e = React.createElement, absolute = p => new URL(p, location.href).href;
+  const full = absolute('./gbm3-he.v1.ome.tif');
+  const source = async () => {
+    try {
+      if(!navigator.serviceWorker) throw Error('Service worker not available');
+      const script=absolute('./image-stream.v1.js');
+      const reg=await navigator.serviceWorker.register(script,{scope:'./'});
+      const own=()=>navigator.serviceWorker.controller?.scriptURL===script;
+      if(!own()) await new Promise((resolve,reject)=>{
+        const timer=setTimeout(()=>{navigator.serviceWorker.removeEventListener('controllerchange',changed);reject(Error('Image stream did not start'));},2700);
+        const changed=()=>{if(own()){clearTimeout(timer);navigator.serviceWorker.removeEventListener('controllerchange',changed);resolve()}};
+        navigator.serviceWorker.addEventListener('controllerchange',changed);changed();
+      });
+      return full;
+    } catch {
+      const parts=Array.from({length:10},(_,i)=>absolute(`./parts/he-v1-${String(i).padStart(2,'0')}.bin`));
+      const results=await Promise.all(parts.map(async p=>{const r=await fetch(p);if(!r.ok)throw Error('Slide is unavailable');return r.arrayBuffer();}));
+      if(results.reduce((sum,part)=>sum+part.byteLength,0)!==5974892)throw Error('Incomplete slide download');
+      const url=URL.createObjectURL(new Blob(results,{type:'image/tiff'}));
+      addEventListener('pagehide',()=>URL.revokeObjectURL(url),{once:true});return url;
+    }
+  };
+  const imageSource=await source();
+  const cfg = new VitessceConfig({schemaVersion:'1.0.16',name:'GBM3 · H&E and Visium spots',description:'Matched Space Ranger image and Visium spot coordinates; exploratory research only.'});
+  const ds = cfg.addDataset('GBM3', 'A')
+    .addFile({fileType:'image.ome-tiff', url:imageSource,
+      options:{offsetsUrl:absolute('./gbm3-he.offsets.json'),coordinateTransformations:[{type:'scale',scale:[2,2,1,1,1]}]}, coordinationValues:{fileUid:'histology'}})
+    .addFile({fileType:'anndata.zarr',url:absolute('../data.zarr'), coordinationValues:{obsType:'spot'}, options:{
+      obsSpots:{path:'obsm/spatial'},
+      obsSets:[{name:'BANKSY domain',path:'obs/banksy_cluster'},{name:'Putative cell state',path:'obs/putative_cell_type'}],
+      obsFeatureMatrix:{path:'X',initialFeatureFilterPath:'var/top_marker'}
+    }});
+  const spatial=cfg.addView(ds,'spatialBeta',{title:'GBM3 · H&E + Visium spots',observationsLabelOverride:'spot'});
+  const layers=cfg.addView(ds,'layerControllerBeta',{title:'Layers'});
+  const sets=cfg.addView(ds,'obsSets',{title:'Spot groups',observationsLabelOverride:'spot'});
+  const features=cfg.addView(ds,'featureList',{title:'Genes'});
+  const heat=cfg.addView(ds,'heatmap',{title:'Expression',observationsLabelOverride:'spot'});
+  const mobile=innerWidth<680, vh=innerHeight;
+  const fitZoom=Math.log2(Math.min(innerWidth*(mobile?1:2/3)/5480, (mobile?Math.max(315,vh*.52):Math.max(380,vh*.59))/4600));
+  cfg.linkViewsByObject([spatial,layers], {
+    spatialTargetZ:0,spatialTargetT:0,spatialTargetX:3740,spatialTargetY:4010,spatialZoom:fitZoom,
+    imageLayer:new CoordinationLevel({fileUid:'histology',spatialLayerOpacity:1,spatialLayerVisible:true,photometricInterpretation:'BlackIsZero',imageChannel:new CoordinationLevel([ [255,0,0],[0,255,0],[0,0,255] ].map((spatialChannelColor,spatialTargetC)=>({spatialTargetC,spatialChannelColor,spatialChannelVisible:true,spatialChannelOpacity:1,spatialChannelWindow:[0,255]})))}),
+    spotLayer:new CoordinationLevel({obsType:'spot',spatialLayerVisible:true,spatialLayerOpacity:.72,spatialSpotRadius:27.20613})
+  });
+  cfg.linkViews([spatial,layers,sets,features,heat],['obsType','obsSetSelection','obsColorEncoding','obsSetColor','featureSelection'],['spot',null,'cellSetSelection',null,null]);
+  const bounds=mobile?[[0,0,12,5],[0,5,12,3],[0,8,6,4],[6,8,6,4],[0,12,12,4]]:[[0,0,8,7],[8,0,4,7],[0,7,3,5],[3,7,3,5],[6,7,6,5]];
+  [spatial,layers,sets,features,heat].forEach((v,i)=>{const[x,y,w,h]=bounds[i];v.setXYWH(x,y,w,h)});
+  const config=cfg.toJSON();
+  const height=mobile?Math.max(1020,vh*1.55):Math.max(655,vh-42); mount.style.height=height+'px';
+  createRoot(mount).render(e(Vitessce,{config,theme:'dark',height}));
+} catch(error) {
+  console.error(error);
+  mount.textContent='The GBM3 viewer could not start. Reload to try again.';
+  mount.setAttribute('role','status');
+}
+</script></body></html>

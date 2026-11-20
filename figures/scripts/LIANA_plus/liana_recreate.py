@@ -1,0 +1,16 @@
+# LIANA+ consensus ligand-receptor inference on Zeisel cortex/hippocampus (mouse consensus resource)
+import os, sys; os.chdir(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0,"../_data")
+import liana as li, matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt, pandas as pd; from load_zeisel import load
+ad=load(); ad.obs["celltype"]=ad.obs.celltype.astype(str).astype("category")
+li.mt.rank_aggregate(ad,groupby="celltype",resource_name="mouseconsensus",expr_prop=.1,use_raw=False,verbose=False,n_perms=200,seed=1)
+r=ad.uns["liana_res"]; r.to_csv("liana_rank_aggregate.csv",index=False)
+p=li.pl.dotplot(adata=ad,colour="magnitude_rank",size="specificity_rank",inverse_size=True,inverse_colour=True,source_labels=["astrocytes_ependymal","microglia","endothelial-mural"],target_labels=["interneurons","pyramidal CA1","pyramidal SS","oligodendrocytes"],top_n=20,orderby="magnitude_rank",orderby_ascending=True,figure_size=(10,7))
+p.save("v1_dotplot.png",dpi=130,verbose=False)
+li.mt.cellphonedb(ad,groupby="celltype",resource_name="mouseconsensus",expr_prop=.1,use_raw=False,verbose=False,n_perms=200,seed=1,key_added="cpdb_res")
+ad.uns["cpdb_res"].to_csv("liana_cellphonedb.csv",index=False)
+sig=r[r.magnitude_rank<.01]; m=sig.groupby(["source","target"]).size().unstack(fill_value=0); m.to_csv("lr_counts_matrix.csv")
+import seaborn as sns; plt.figure(figsize=(6,5)); sns.heatmap(m,cmap="rocket_r",annot=True,fmt="d"); plt.title("# top-ranked LR pairs (magnitude_rank<0.01)"); plt.tight_layout(); plt.savefig("v3_interaction_count_heatmap.png",dpi=140)
+
+# v2: LIANA circle plot of top interactions (tileplot is broken with current plotnine/mizani)
+fig=li.pl.circle_plot(ad,groupby="celltype",score_key="magnitude_rank",inverse_score=True,source_labels="astrocytes_ependymal",top_n=150,orderby="magnitude_rank",orderby_ascending=True,figure_size=(7,7))
+plt.gcf().savefig("v2_circle_plot.png",dpi=140,bbox_inches="tight")

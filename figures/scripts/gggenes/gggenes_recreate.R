@@ -1,0 +1,12 @@
+# gggenes: gene-arrow maps of the mouse protocadherin-gamma and Hox-adjacent neuronal loci (coordinates from TxDb mm10)
+suppressPackageStartupMessages({library(gggenes); library(ggplot2); library(TxDb.Mmusculus.UCSC.mm10.knownGene); library(org.Mm.eg.db); library(GenomicFeatures)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+gr <- genes(TxDb.Mmusculus.UCSC.mm10.knownGene); gr$symbol <- mapIds(org.Mm.eg.db, gr$gene_id, "SYMBOL", "ENTREZID")
+reg <- list(Pcdhg = GRanges("chr18", IRanges(37800000, 38000000)), Grin2b_locus = GRanges("chr6", IRanges(135650000, 136250000)), Snap25_locus = GRanges("chr2", IRanges(136400000, 136800000)))
+d <- do.call(rbind, lapply(names(reg), function(n) { g <- subsetByOverlaps(gr, reg[[n]]); data.frame(molecule = n, gene = g$symbol, start = start(g), end = end(g), strand = as.character(strand(g)), forward = as.character(strand(g)) == "+") }))
+d <- d[!is.na(d$gene),]
+g <- ggplot(d, aes(xmin = start, xmax = end, y = molecule, fill = forward, label = gene, forward = forward)) + geom_gene_arrow(arrowhead_height = unit(3,"mm"), arrowhead_width = unit(1,"mm")) + geom_gene_label(align = "left", min.size = 3) + facet_wrap(~ molecule, scales = "free", ncol = 1) + scale_fill_brewer(palette = "Set2") + theme_genes() + labs(title = "gggenes: neuronal loci (mm10)")
+ggsave("v1_gene_arrows.png", g, width = 11, height = 5, dpi = 140, bg = "white")
+pc <- subset(d, molecule == "Pcdhg"); pc$cluster <- ifelse(grepl("^Pcdhga", pc$gene), "alpha-like", ifelse(grepl("^Pcdhgb", pc$gene), "beta-like", "c / other"))
+g <- ggplot(pc, aes(xmin = start, xmax = end, y = molecule, fill = cluster, label = gene)) + geom_gene_arrow() + geom_gene_label(min.size = 2, grow = TRUE) + scale_fill_manual(values = c("#66c2a5","#fc8d62","#8da0cb")) + theme_genes() + labs(title = "Protocadherin-gamma cluster, coloured by subfamily")
+ggsave("v2_pcdhg_cluster.png", g, width = 12, height = 2.8, dpi = 140, bg = "white")

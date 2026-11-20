@@ -1,0 +1,48 @@
+# BANKSY Marker Report — GBM2, 10x Visium (NOT Xenium; the pipeline template's title is generic)
+
+- **Input:** `output/GBM2/preprocessed.h5ad`
+- **Cells:** 2,891
+- **Clusters:** 20 (`banksy_cluster`)
+- **DE method:** Wilcoxon rank-sum (`scanpy.tl.rank_genes_groups`, use_raw)
+- **Cell-type assignment:** LLM (qwen3:8b · local Ollama, tissue: glioblastoma (human, Visium))
+
+## Putative cell-type breakdown
+
+| putative cell type | clusters |
+|:---|---:|
+| OPC-like tumor cells | 4 |
+| proliferating tumor cells | 3 |
+| astrocytes | 3 |
+| AC-like tumor cells | 3 |
+| MES-like tumor cells | 2 |
+| endothelial cells | 2 |
+| NPC-like tumor cells | 1 |
+| microglia/TAMs | 1 |
+| oligodendrocytes | 1 |
+
+## Cluster summary
+
+| cluster | n_cells | % of total | putative cell type | top markers |
+|---:|---:|---:|:---|:---|
+| 0 | 67 | 2.32% | MES-like tumor cells | IGFBP6, TIMP1, MT-CO2, MT2A, S100A6 |
+| 1 | 130 | 4.50% | OPC-like tumor cells | PTN, FAM3C, POSTN, NDUFA4, PDIA4 |
+| 2 | 198 | 6.85% | NPC-like tumor cells | NLRP1, AQP4, GJA1, SCRG1, RASD1 |
+| 3 | 275 | 9.51% | OPC-like tumor cells | TPM2, TAGLN, TDO2, NTS, AQP4 |
+| 4 | 155 | 5.36% | proliferating tumor cells | NTS, SSX2IP, STAT1, ATP1B2, RASD1 |
+| 5 | 105 | 3.63% | astrocytes | GFAP, CD74, A2M, HLA-DRA, IGKC |
+| 6 | 159 | 5.50% | OPC-like tumor cells | NTS, F13A1, TACSTD2, UCHL1, CSKMT |
+| 7 | 162 | 5.60% | microglia/TAMs | SOD2, HLA-DRA, CD74, WARS, SGPP2 |
+| 8 | 251 | 8.68% | proliferating tumor cells | TIMP1, FTL, MT2A, RPLP1, TMSB10 |
+| 9 | 107 | 3.70% | AC-like tumor cells | NDUFA4L2, IGFBP6, NDRG1, FABP3, SLC2A1 |
+| 10 | 168 | 5.81% | MES-like tumor cells | PTN, CCL2, CMYA5, NRCAM, METTL7B |
+| 11 | 73 | 2.53% | oligodendrocytes | MALAT1, ACTA2, B2M, RPL17, TUBA1A |
+| 12 | 109 | 3.77% | endothelial cells | COL1A2, IGLC2, MT-ND2, MT-ND1, MT-CYB |
+| 13 | 115 | 3.98% | AC-like tumor cells | NDRG1, NPW, SLC2A1, SLPI, IGFBP5 |
+| 14 | 157 | 5.43% | proliferating tumor cells | TIMP1, FTH1, CHI3L1, RPL13, MT2A |
+| 15 | 96 | 3.32% | astrocytes | MALAT1, A2M, LTF, GFAP, TUBA1A |
+| 16 | 144 | 4.98% | astrocytes | LTF, CLU, TUBA1A, CXCL14, UBA1 |
+| 17 | 227 | 7.85% | endothelial cells | COL1A2, COL3A1, C1QC, VWF, COL4A1 |
+| 18 | 66 | 2.28% | AC-like tumor cells | FABP3, UPP1, SCD, NDUFA4L2, GPNMB |
+| 19 | 127 | 4.39% | OPC-like tumor cells | TAGLN, ACTA2, SPARC, COL6A1, COL6A2 |
+
+Source: Ren et al. 2023, GSE194329 (GBM2, IDH-wildtype recurrent glioblastoma, 10x Visium).

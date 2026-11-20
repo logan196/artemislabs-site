@@ -1,0 +1,50 @@
+#more-demos{background:#0a0a0d;color:#ededed;padding:clamp(32px,5vw,65px) max(14px,calc((100% - 1168px)/2)) clamp(36px,5vw,65px)}
+#more-demos h2.more-heading{font:760 clamp(26px,4vw,40px)/1.06 system-ui,sans-serif;letter-spacing:-.037em;margin:0 0 7px}
+#more-demos .more-lead{font:450 14px/1.5 system-ui,sans-serif;color:#c4c4cf;margin:0 0 18px}
+#more-demos>details{border:1px solid #363846;border-radius:7px;margin:8px 0;background:#111218;overflow:clip}
+#more-demos>details>summary{padding:13px 17px;cursor:pointer;color:#f0edf8;font:650 14px/1.3 system-ui,sans-serif;background:#151620;list-style-position:inside;min-height:45px}
+#more-demos>details>summary::marker{color:#b4acf2}#more-demos>details>summary:hover{background:#242636}#more-demos>details>summary:focus-visible{outline:2px solid #e0cbff;outline-offset:-3px}
+#more-demos .more-label{display:inline;margin:0 0 0 5px}#more-demos .more-note{color:#bbc0cf;font-size:12px;font-weight:420;margin-left:12px}
+#more-demos :is(#umap-interrogated,#viewer,#tissue,#cores,#genomics){padding-top:clamp(24px,4vw,54px);padding-bottom:clamp(26px,4vw,54px)}
+#more-demos .sp-legacy{display:block;height:0;scroll-margin-top:22px}
+#more-demos .paper{position:relative}#more-demos .paper:before{content:"";position:absolute;inset:0 0 auto;height:26px;background:linear-gradient(180deg,#151620,var(--color-ink));pointer-events:none;z-index:1}
+#genomics .gen-hero-title{font:850 clamp(29px,5.6vw,62px)/1.02 system-ui,sans-serif;letter-spacing:-.052em;margin:0;max-width:19ch}
+#genomics .gen-lead{max-width:63ch;font-size:clamp(14px,2vw,17px);line-height:1.55;margin:11px 0 0}
+#genomics .gen-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px;max-width:1000px}
+#genomics .gen-item{border:1px solid currentColor;border-color:color-mix(in srgb,currentColor 21%,transparent);border-radius:6px;padding:11px 13px;font:460 13px/1.45 system-ui,sans-serif}
+#genomics .gen-item h3{font-weight:800;font-size:13px;letter-spacing:-.008em;margin:0 0 3px}#genomics .gen-item p{margin:0 0 4px}#genomics .gen-item a{text-decoration:underline;text-underline-offset:2px;font-size:12px}
+#genomics .gen-trackbar{position:relative;overflow:hidden}#genomics .gen-trackbar:after{content:"";position:absolute;inset:auto auto 0 0;width:40%;height:2px;background:linear-gradient(90deg,transparent,#8b76bb,transparent);opacity:0;pointer-events:none}
+@media(prefers-reduced-motion:no-preference){#genomics[data-entered] .gen-trackbar:after{animation:art-track 1.65s ease-out both}}@keyframes art-track{0%{transform:translateX(-100%);opacity:0}28%{opacity:.85}100%{transform:translateX(300%);opacity:0}}
+@media(max-width:650px){#genomics .gen-notes{grid-template-columns:1fr;gap:7px;margin-top:15px}#more-demos .more-note{display:none}#more-demos>details>summary{padding-inline:12px}}
+
+html{scroll-padding-top:16px}
+:root body:has(main>#spatial .art-specimen){background:#09090b;color:#f0efed}
+main:has(>#spatial .art-specimen){--art-ground:#09090b;--color-ink:#09090b;--color-ink-2:#101013;--color-panel:#141417;--color-line:#303034;--color-snow:#f1efec;--color-dim:#b9b6b2;background:var(--art-ground)}
+main:has(>#spatial .art-specimen)>.bg-sea{display:none}
+main:has(>#spatial .art-specimen)>div:nth-of-type(2),main:has(>#spatial .art-specimen)>div:nth-of-type(2)>section{background-color:var(--art-ground)}
+main:has(>#spatial .art-specimen)>:is(#about-us,#more-demos,#contact){background:var(--art-ground);background-image:none}
+main:has(>#spatial .art-specimen) #more-demos .paper{--color-ink:#09090b;--color-ink-2:#101013;--color-panel:#141417;--color-line:#333236;--color-snow:#f1efec;--color-dim:#b9b6b2;--color-violet:#cdb6db;--color-violet-deep:#d7bbe6;background:#09090b}
+main:has(>#spatial .art-specimen) #more-demos .paper:before{display:none}
+main:has(>#spatial .art-specimen) #more-demos>details,main:has(>#spatial .art-specimen) #more-demos>details>summary{background:#111113;border-color:#303033}
+main:has(>#spatial .art-specimen) #more-demos>details>summary:hover{background:#19191d}
+main:has(>#spatial .art-specimen) #more-demos .paper .igv-container{color-scheme:light}
+#spatial{color:#f3f0ef;background:#09090b;padding:clamp(10px,2vw,23px) 0 clamp(28px,5vw,54px)}
+#spatial .sp-wrap{width:min(1152px,calc(100% - 44px));margin-inline:auto;min-width:0}
+.art-specimen{overflow:hidden;isolation:isolate;position:relative;min-height:clamp(346px,49vw,600px);display:grid;align-items:end;justify-items:center;border:1px solid #ffffff1c;border-radius:9px;background:#09090b}
+.art-specimen__image{display:block;position:absolute;inset:0 0 auto;left:50%;width:min(100%,850px);height:100%;object-fit:cover;object-position:50% 47%;transform:translateX(-50%);mask-image:radial-gradient(ellipse at 50% 42%,#000 23%,#000e 46%,#0005 71%,transparent 95%);pointer-events:none}
+.art-specimen__veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#09090b55,transparent 28% 41%,#09090bfb 96%)}
+.art-specimen__id{position:absolute;left:clamp(14px,3vw,29px);top:clamp(13px,2.8vw,29px);color:#d8cfd7;font:600 11px/1.2 ui-monospace,monospace;letter-spacing:.145em;margin:0}
+.art-specimen__copy{position:relative;z-index:1;text-align:center;margin:0;padding:0 17px clamp(19px,5vw,54px)}
+.art-specimen h2{color:#fbf7f3;font:400 clamp(44px,8vw,103px)/.98 Georgia,'Times New Roman',serif;letter-spacing:-.058em;margin:0 0 clamp(11px,2vw,23px);text-wrap:balance;text-shadow:0 2px 22px #09090b}
+.art-specimen__cta{display:inline-flex;align-items:center;min-height:43px;padding:8px 15px;background:#171319cc;border:1px solid #d6bfda61;border-radius:5px;color:#fff8fc;font:650 13px/1.23 system-ui,sans-serif;text-decoration:none}
+.art-specimen__cta:hover{background:#2a212c;border-color:#d6bfda}
+#spatial .sp-sources{margin:8px 2px 17px;color:#b3aeb1;font:450 12px/1.5 system-ui,sans-serif}
+#spatial .sp-sources a,#spatial .sp-links a{color:#e2d6e4;text-decoration:underline;text-underline-offset:3px}
+#spatial .sp-links{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 0 16px;padding:0 2px;font:530 13px/1.4 system-ui,sans-serif}
+#spatial .sp-alt{border:1px solid #333236;border-radius:7px;overflow:hidden;background:#111113}
+#spatial .sp-alt>summary{color:#e5dce5;cursor:pointer;padding:12px 15px;min-height:44px;font:640 14px/1.25 system-ui,sans-serif}
+#spatial .sp-alt>summary:hover{background:#18181a}
+#spatial a:focus-visible,#spatial summary:focus-visible{outline:2px solid #e7c9ef;outline-offset:2px}
+#tissue-layers{--al-bg:#09090b!important;--al-b:#333335!important;--al-low:#c1bdc0!important}
+@media(max-width:620px){#spatial .sp-wrap{width:calc(100% - 28px)}.art-specimen{min-height:clamp(316px,100vw,420px)}.art-specimen__image{object-position:50% 45%;width:100%}.art-specimen__id{font-size:9px}.art-specimen h2{font-size:clamp(39px,11.8vw,58px)}.art-specimen__copy{padding-inline:12px}#spatial .sp-links{gap:6px 13px;font-size:12px}}
+@media(prefers-reduced-motion:no-preference){.art-specimen__image{animation:art-specimen-in 1.65s cubic-bezier(.22,.64,.35,1) both}@keyframes art-specimen-in{from{opacity:.64;transform:translateX(-50%) scale(1.018)}to{opacity:1;transform:translateX(-50%) scale(1)}}}

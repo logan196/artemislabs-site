@@ -1,0 +1,106 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Explore published Cai Lab seqFISH+ mouse brain data in Vitessce."><title>seqFISH+ · Artemis BioLabs</title><style>
+:root{color-scheme:dark;--ink:#0a0d12;--soft:#b9c3cf;--line:#8299ba26}*{box-sizing:border-box}html{background:var(--ink);color:#f2f4f8}body{margin:0;font:14px/1.5 Inter,system-ui,sans-serif;background:radial-gradient(ellipse min(70vw,850px) 680px at 95% 1%,#192234 0,transparent 79%),var(--ink);min-width:0}a{color:#d0e0fa;text-underline-offset:3px}a:focus-visible,select:focus-visible{outline:2px solid #cadedf;outline-offset:4px}.rail{max-width:1440px;margin:auto;padding-inline:clamp(12px,3vw,42px)}nav{display:flex;flex-wrap:wrap;gap:.4rem 1.3rem;justify-content:space-between;align-items:center;padding-block:17px}nav a{text-decoration:none}.intro{display:flex;align-items:end;justify-content:space-between;gap:16px;padding-block:16px 18px}h1{font-size:clamp(36px,5.1vw,62px);line-height:1;letter-spacing:-.05em;font-weight:580;margin:0 0 10px}.intro p{margin:0;max-width:66ch;color:var(--soft)}.intro small{display:block;color:var(--soft);margin-top:5px}label{display:block;color:var(--soft);font-size:12px}select{background:#151c28;color:#eaf0fa;border:1px solid #7a8ca861;border-radius:5px;font:inherit;min-height:36px;min-width:112px;margin-top:3px;padding-inline:8px}#root{height:clamp(830px,102vh,1090px);min-width:0;width:100%;position:relative}#viewer-status{padding:22px 0;color:var(--soft)}#viewer-status p{margin:0}footer{border-top:1px solid var(--line);margin-top:18px;padding:12px 0 24px;color:var(--soft);font-size:12px}footer p{margin:4px 0}#root [role=button]:focus-visible{outline:1px solid #d0e0fa} @media(max-width:720px){.intro{align-items:start;flex-direction:column;gap:10px;padding-block:10px 15px}#root{height:1740px}nav{font-size:12px;padding-block:13px}}
+</style><script type="importmap">{"imports":{"react":"https://esm.sh/react@18.2.0","react/jsx-runtime":"https://esm.sh/react@18.2.0/jsx-runtime","react/jsx-dev-runtime":"https://esm.sh/react@18.2.0/jsx-dev-runtime","react-dom":"https://esm.sh/react-dom@18.2.0?external=react","react-dom/client":"https://esm.sh/react-dom@18.2.0/client?external=react","vitessce":"https://cdn.vitessce.io/vitessce@3.9.11/dist/index.min.js"}}</script><link rel="icon" type="image/png" sizes="16x16" href="/brand/artemis-icon-16.v1.png"><link rel="icon" type="image/png" sizes="32x32" href="/brand/artemis-icon-32.v1.png"><link rel="icon" type="image/png" sizes="48x48" href="/brand/artemis-icon-48.v1.png"><link rel="apple-touch-icon" href="/brand/artemis-icon-180.v1.png"><link rel="stylesheet" href="/brand/brand.v1.css"><meta property="og:image" content="https://artemislabs.bio/brand/artemis-social.v1.png"><meta name="twitter:image" content="https://artemislabs.bio/brand/artemis-social.v1.png"></head><body><div class="rail"><nav aria-label="Viewer navigation"><a href="/#spatial" class="a-lock-link"><img class="a-lock a-lock-page" src="/brand/artemis-lockup.v1.png" width="514" height="191" alt="Artemis BioLabs"></a><a href="https://doi.org/10.1038/s41586-019-1049-y">Eng et al. · Nature, 2019</a></nav><main><header class="intro"><div><h1>seqFISH+</h1><p>Mouse brain data from Long Cai’s lab at Caltech. Explore the same measured cells in tissue coordinates and in UMAP.</p><small>913 cells · 2,000 genes in this dataset · Vitessce</small></div><div><label for="fov-select">Fluorescence field</label><select id="fov-select" aria-describedby="image-note"><option value="0" selected>Pos 0</option><option value="1">Pos 1</option><option value="2">Pos 2</option><option value="3">Pos 3</option><option value="4">Pos 4</option></select></div></header><p id="viewer-status" role="status">Loading the Vitessce viewer…</p><noscript><p>JavaScript is required for the interactive plots. <a href="https://doi.org/10.1038/s41586-019-1049-y">View the source paper</a>.</p></noscript><div id="root" aria-label="Interactive seqFISH+ data"></div></main><footer><p>Expression: <a href="https://doi.org/10.1038/s41586-019-1049-y">Eng et al., Nature (2019)</a>. Cell annotations and field stitching: <a href="https://doi.org/10.1186/s13059-021-02286-2">Dries et al., Genome Biology (2021)</a>.</p><p id="image-note">The DAPI/Nissl fluorescence panel is a separate image, not registered to the cell map. <a href="https://doi.org/10.5281/zenodo.4540850">Qian Zhu, Zenodo</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p></footer></div><script type="module">
+    const shared = {dataset:"A",obsSetSelection:"A",obsSetExpansion:"A",obsColorEncoding:"A",featureSelection:"A"};
+    function makeLayout(mobile, imageScopes) {
+      function view(component,scopes,x,y,w,h){return {component,coordinationScopes:scopes,x,y,w,h};}
+      const spatial={...shared,embeddingType:"A",embeddingObsRadiusMode:"S",embeddingObsRadius:"S"};
+      const umap={...shared,embeddingType:"B",embeddingObsRadiusMode:"U",embeddingObsRadius:"U"};
+      return mobile ? [view("scatterplot",spatial,0,0,12,3),view("scatterplot",umap,0,3,12,3),view("featureList",shared,0,6,12,2),view("spatialBeta",imageScopes,0,8,12,3),view("layerControllerBeta",imageScopes,0,11,12,2)] : [view("scatterplot",spatial,0,0,5,6),view("scatterplot",umap,5,0,5,6),view("featureList",shared,10,0,2,6),view("spatialBeta",imageScopes,0,6,8,6),view("layerControllerBeta",imageScopes,8,6,4,6)];
+    }
+    const CREDIT = "Segmentation staining images (DAPI/Nissl, per-FOV frame): Zhu et al., Zenodo 10.5281/zenodo.4540850 (CC-BY 4.0), companion to Dries et al. 2021.";
+
+    // Per-FOV 99.5th-percentile contrast windows computed during OME-zarr conversion.
+    const FOV_WINDOWS = {
+      0: { dapi: 9026,  nissl: 16912 },
+      1: { dapi: 10613, nissl: 27265 },
+      2: { dapi: 10977, nissl: 30711 },
+      3: { dapi: 11946, nissl: 31709 },
+      4: { dapi: 12140, nissl: 30997 }
+    };
+
+    function makeConfig(fov, mobile) {
+      const win = FOV_WINDOWS[fov];
+      // Explicit image-layer meta-coordination for the fluorescence panel:
+      // vitessce 3.9.11's initStrategy "auto" does not auto-create imageLayer
+      // coordination for spatialBeta, so the layer/channel scopes are spelled out.
+      const imageCoordination = {
+        "fileUid": {"image": "segmentation-staining"},
+        "imageLayer": {"image": "__dummy__"},
+        "spatialLayerOpacity": {"image": 1},
+        "spatialLayerVisible": {"image": true},
+        "photometricInterpretation": {"image": "BlackIsZero"},
+        "imageChannel": {"ch0": "__dummy__", "ch1": "__dummy__"},
+        "spatialTargetC": {"ch0": 0, "ch1": 1},
+        "spatialChannelColor": {"ch0": [0, 0, 255], "ch1": [0, 255, 0]},
+        "spatialChannelVisible": {"ch0": true, "ch1": true},
+        "spatialChannelOpacity": {"ch0": 1, "ch1": 1},
+        "spatialChannelWindow": {"ch0": [0, win.dapi], "ch1": [0, win.nissl]},
+        "spatialTargetZ": {"image": 0},
+        "spatialTargetT": {"image": 0},
+        "metaCoordinationScopes": {
+          "metaB": {"spatialTargetZ": "image", "spatialTargetT": "image", "imageLayer": ["image"]}
+        },
+        "metaCoordinationScopesBy": {
+          "metaB": {
+            "imageLayer": {
+              "fileUid": {"image": "image"},
+              "spatialLayerOpacity": {"image": "image"},
+              "spatialLayerVisible": {"image": "image"},
+              "photometricInterpretation": {"image": "image"},
+              "imageChannel": {"image": ["ch0", "ch1"]}
+            },
+            "imageChannel": {
+              "spatialTargetC": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelColor": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelVisible": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelOpacity": {"ch0": "ch0", "ch1": "ch1"},
+              "spatialChannelWindow": {"ch0": "ch0", "ch1": "ch1"}
+            }
+          }
+        }
+      };
+      const imageScopes = {"dataset": "B", "metaCoordinationScopes": ["metaB"], "metaCoordinationScopesBy": ["metaB"]};
+      const config = {"version": "1.0.16", "uid": "seqfish-fov" + fov, "name": "seqFISH+ mouse cortex & SVZ · Artemis BioLabs live demo", "description": "913 cells × 2,000 genes in this viewer, seqFISH+ mouse brain (cortex, SVZ, choroid plexus). Data: Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "datasets": [{"uid": "A", "name": "seqFISH+ cortex/SVZ", "files": [{"fileType": "anndata.zarr", "url": "./data.zarr", "options": {"obsLocations": {"path": "obsm/spatial"}, "obsEmbedding": [{"path": "obsm/spatial", "dims": [0, 1], "embeddingType": "Spatial"}, {"path": "obsm/X_umap", "dims": [0, 1], "embeddingType": "UMAP"}], "obsSets": [{"name": "Cell type (Dries et al. 2021)", "path": "obs/cell_type"}, {"name": "Leiden cluster", "path": "obs/leiden"}, {"name": "Louvain (Eng et al. 2019)", "path": "obs/louvain_eng2019"}, {"name": "Region", "path": "obs/region"}], "obsFeatureMatrix": {"path": "X", "initialFeatureFilterPath": "var/top_marker"}}, "coordinationValues": {"obsType": "cell"}}]}, {"uid": "B", "name": "Segmentation staining — per-FOV frame (Zhu et al., Zenodo 10.5281/zenodo.4540850, CC-BY 4.0)", "files": [{"fileType": "image.ome-zarr", "url": "./fov" + fov + ".ome.zarr", "coordinationValues": {"fileUid": "segmentation-staining"}}]}], "coordinationSpace": Object.assign({"dataset": {"A": "A", "B": "B"}, "embeddingType": {"A": "Spatial", "B": "UMAP"}, "obsSetSelection": {"A": [["Cell type (Dries et al. 2021)", "Astrocyte"], ["Cell type (Dries et al. 2021)", "Choroid Plexus"], ["Cell type (Dries et al. 2021)", "Endothelial"], ["Cell type (Dries et al. 2021)", "Ependymal"], ["Cell type (Dries et al. 2021)", "Excitatory neuron"], ["Cell type (Dries et al. 2021)", "Interneuron"], ["Cell type (Dries et al. 2021)", "Microglia"], ["Cell type (Dries et al. 2021)", "Neural Stem"], ["Cell type (Dries et al. 2021)", "Neuroblast"], ["Cell type (Dries et al. 2021)", "Oligodendrocyte"]]}, "obsSetExpansion": {"A": [["Cell type (Dries et al. 2021)"]]}, "obsColorEncoding": {"A": "cellSetSelection"}, "embeddingObsRadiusMode": {"S": "manual", "U": "manual"}, "embeddingObsRadius": {"S": 3.2, "U": 2.4}}, imageCoordination), "layout": makeLayout(mobile,imageScopes), "initStrategy": "auto", "vitessceMetadata": {"lab_name": "Artemis BioLabs", "portal_title": "seqFISH+ mouse cortex & SVZ live demo", "data_source": "Eng et al. 2019, Nature 568:235-239, doi:10.1038/s41586-019-1049-y (Cai lab, Caltech; CaiGroup/seqFISH-PLUS). Cell-type annotations & FOV stitching: Dries et al. 2021, Genome Biology 22:78 (Giotto). " + CREDIT, "has_spatial_coordinates": true, "spatial_coordinate_origin": "measured", "has_measured_spatial_coordinates": true}};
+
+      // Vitessce's zarr loader calls `new URL(url)`, which rejects relative
+      // strings. Resolve each data file URL against this page's location so the
+      // portal works from whatever host/port serves the folder.
+      for (const ds of (config.datasets || [])) {
+        for (const f of (ds.files || [])) {
+          if (f.url && !/^https?:\/\//.test(f.url)) {
+            f.url = new URL(f.url, new URL("/live/seqfish/", window.location.origin)).href;
+          }
+        }
+      }
+      config.coordinationSpace.featureSelection = {A: null};
+      return config;
+    }
+
+
+  async function boot() {
+    const status = document.getElementById("viewer-status");
+    const rootEl = document.getElementById("root");
+    try {
+      const deps = Promise.all([import("react"), import("react-dom/client"), import("vitessce")]);
+      let timer;
+      let [React,{createRoot},{Vitessce}] = await Promise.race([deps, new Promise((_, reject)=>{timer=setTimeout(()=>reject(new Error("Load deadline")),24000);})]).finally(()=>clearTimeout(timer));
+      document.documentElement.dataset.vitessceImports = "ready";
+      const root = createRoot(rootEl);
+      const fov = document.getElementById("fov-select");
+      const small = matchMedia("(max-width: 720px)");
+      function show() {
+        const mobile = small.matches;
+        root.render(React.createElement(Vitessce, {config: makeConfig(Number(fov.value),mobile), theme: "dark", rowHeight: null, height:rootEl.clientHeight}));
+      }
+      show();
+      fov.addEventListener("change",show);
+      small.addEventListener("change",show);
+      status.remove();
+    } catch(e) {
+      console.error("Vitessce could not start", e);
+      status.innerHTML='<p>The interactive viewer didn’t load. <a href="">Try again</a> or <a href="https://doi.org/10.1038/s41586-019-1049-y">open the study</a>.</p>';
+    }
+  }
+  boot();
+</script></body></html>

@@ -1,0 +1,15 @@
+# clusterProfiler + enrichplot: ORA and GSEA visualisations
+suppressPackageStartupMessages({library(clusterProfiler); library(enrichplot); library(org.Hs.eg.db); library(ggplot2)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+res <- as.data.frame(readRDS("../_data/airway_deseq2.rds")$res); res <- res[!is.na(res$padj) & !is.na(res$entrez),]
+up <- unique(res$entrez[res$padj < .01 & res$log2FoldChange > 1]); uni <- unique(res$entrez)
+ego <- enrichGO(up, OrgDb = org.Hs.eg.db, ont = "BP", universe = uni, readable = TRUE); ego <- simplify(ego)
+ggsave("v1_dotplot.png", dotplot(ego, showCategory = 15) + ggtitle("enrichGO BP: dexamethasone-up genes"), width = 7.5, height = 6.5, dpi = 140, bg = "white")
+ggsave("v2_barplot.png", barplot(ego, showCategory = 12), width = 7.5, height = 6, dpi = 140, bg = "white")
+fc <- setNames(res$log2FoldChange, res$entrez)
+ggsave("v3_cnetplot.png", cnetplot(ego, showCategory = 5, foldChange = fc[up], node_label = "all") , width = 9, height = 8, dpi = 120, bg = "white")
+ggsave("v4_emapplot.png", emapplot(pairwise_termsim(ego), showCategory = 30), width = 9, height = 8, dpi = 120, bg = "white")
+gl <- tapply(res$stat, res$entrez, mean); gl <- sort(setNames(as.numeric(gl), names(gl)), decreasing = TRUE)
+gse <- gseGO(gl, OrgDb = org.Hs.eg.db, ont = "BP", minGSSize = 15, maxGSSize = 400, pvalueCutoff = .05, seed = TRUE, eps = 0)
+ggsave("v5_gseaplot2.png", gseaplot2(gse, geneSetID = 1:3, pvalue_table = FALSE), width = 8, height = 6, dpi = 130, bg = "white")
+ggsave("v6_ridgeplot.png", ridgeplot(gse, showCategory = 15) + theme(axis.text.y = element_text(size = 7)), width = 8, height = 7, dpi = 130, bg = "white")

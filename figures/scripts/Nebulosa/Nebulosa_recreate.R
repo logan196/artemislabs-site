@@ -1,0 +1,7 @@
+suppressPackageStartupMessages({library(Nebulosa); library(Seurat); library(ggplot2); library(patchwork)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+so <- readRDS("../_data/zeisel_seurat.rds")
+ggsave("v1_density_single.png", plot_density(so, c("Pvalb","Sst","Vip","Aqp4")) + plot_layout(ncol = 2), width = 9, height = 8, dpi = 120, bg = "white")
+p <- plot_density(so, c("Gad1","Pvalb"), joint = TRUE, combine = FALSE)
+ggsave("v2_joint_density.png", wrap_plots(p, ncol = 3), width = 13, height = 4.5, dpi = 120, bg = "white")
+ggsave("v3_density_vs_featureplot.png", FeaturePlot(so, "Sst", order = TRUE) + ggtitle("FeaturePlot: Sst") | plot_density(so, "Sst") + ggtitle("Nebulosa density: Sst"), width = 11, height = 5, dpi = 120, bg = "white")

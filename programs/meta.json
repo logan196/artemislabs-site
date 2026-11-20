@@ -1,0 +1,75 @@
+{
+ "section": "AT4-FO-2",
+ "n": 50000,
+ "panels": [
+  {
+   "file": "at4_domains.jpg",
+   "title": "BANKSY spatial domains",
+   "legend": {
+    "Cellular tumour": "#56B4E9",
+    "Hypoxic core": "#E69F00",
+    "Infiltrated": "#009E73",
+    "Non-malignant": "#EDEDED"
+   },
+   "counts": {
+    "Cellular tumour": 19493,
+    "Infiltrated": 15259,
+    "Hypoxic core": 12715,
+    "Non-malignant": 2533
+   }
+  },
+  {
+   "file": "at4_hypoxia.jpg",
+   "title": "Hypoxia program",
+   "genes": [
+    "VEGFA",
+    "BNIP3L",
+    "SERPINE1",
+    "HILPDA"
+   ],
+   "color": "#E69F00"
+  },
+  {
+   "file": "at4_prolif.jpg",
+   "title": "Proliferation program",
+   "genes": [
+    "MKI67",
+    "TOP2A"
+   ],
+   "color": "#56B4E9"
+  },
+  {
+   "file": "at4_myeloid.jpg",
+   "title": "Myeloid program",
+   "genes": [
+    "CD68",
+    "AIF1",
+    "CD163",
+    "P2RY12",
+    "PTPRC"
+   ],
+   "color": "#D55E00"
+  },
+  {
+   "file": "at4_oligo.jpg",
+   "title": "Oligodendrocyte / white matter",
+   "genes": [
+    "MOBP",
+    "MOG"
+   ],
+   "color": "#009E73"
+  },
+  {
+   "file": "at10_domains.jpg",
+   "title": "BANKSY spatial domains \u00b7 second patient",
+   "section": "AT10-FO-1",
+   "n": 50000,
+   "legend": {
+    "Cellular tumour": "#56B4E9",
+    "Hypoxic core": "#E69F00",
+    "Infiltrated": "#009E73",
+    "Non-malignant": "#EDEDED"
+   }
+  }
+ ]
+}

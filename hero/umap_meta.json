@@ -1,0 +1,1 @@
+{"n": 120000, "layout": "int16[n*6] (umap xyz, tissue xyz) then uint8[n*3] rgb", "dataset": "Allen Brain Cell Atlas MERFISH-C57BL6J-638850 (Yao et al., Nature 2023)", "genes": 550, "umap": {"n_neighbors": 30, "min_dist": 0.25, "n_components": 3, "pcs": 50, "seed": 42}}

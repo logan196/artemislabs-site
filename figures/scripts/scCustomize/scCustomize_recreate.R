@@ -1,0 +1,7 @@
+suppressPackageStartupMessages({library(scCustomize); library(Seurat); library(ggplot2)})
+setwd(dirname(sub("--file=","",grep("--file=",commandArgs(FALSE),value=TRUE))))
+so <- readRDS("../_data/zeisel_seurat.rds"); mk <- c("Snap25","Gad1","Gad2","Pvalb","Sst","Satb2","Neurod6","Wfs1","Aqp4","Gfap","Mbp","Plp1","Cx3cr1","C1qa","Cldn5","Acta2")
+ggsave("v1_DimPlot_scCustom_figureplot.png", DimPlot_scCustom(so, figure_plot = TRUE, label = TRUE), width = 7, height = 6, dpi = 140, bg = "white")
+ggsave("v2_FeaturePlot_scCustom.png", FeaturePlot_scCustom(so, features = c("Pvalb","Sst","Aqp4","Cx3cr1"), num_columns = 2, colors_use = viridis_magma_dark_high, na_cutoff = 0.5), width = 9, height = 8, dpi = 120, bg = "white")
+png("v3_Clustered_DotPlot.png", 1500, 1100, res = 150); print(Clustered_DotPlot(so, features = mk, k = 4, plot_km_elbow = FALSE)); dev.off()
+ggsave("v4_Stacked_VlnPlot.png", Stacked_VlnPlot(so, features = mk[c(1,2,5,6,9,11,13,15)], x_lab_rotate = TRUE), width = 8, height = 9, dpi = 120, bg = "white")
