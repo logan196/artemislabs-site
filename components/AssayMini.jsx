@@ -16,7 +16,6 @@ const INK = (a) => `rgba(28,26,21,${a})`;
 const TEAL = "#0f766e", SEPIA = "#9a5b13", BLUE = "#1d4ed8", GREEN = "#15803d", AMBER = "#b45309";
 const CLUST = [TEAL, AMBER, BLUE, GREEN];
 const lerp = (a, b, p) => a + (b - a) * p;
-const clamp01 = (v) => Math.max(0, Math.min(1, v));
 const ease = (p) => p * p * (3 - 2 * p);
 const PAD = 8;
 
@@ -34,7 +33,7 @@ function blobPath(ctx, cx, cy, rx, ry, h, n = 56) {
 const DRAW = {
   singlecell(ctx, W, H, t, R) {
     const cs = [[0.28, 0.3], [0.72, 0.28], [0.3, 0.73], [0.71, 0.72]];
-    const p = ease(clamp01(t / 0.72));
+    const p = ease(0.5 - 0.5 * Math.cos(t * 6.283));
     for (let i = 0; i < 120; i++) {
       const k = i % 4;
       const sx = lerp(PAD, W - PAD, R()), sy = lerp(PAD, H - PAD, R());
@@ -67,20 +66,19 @@ const DRAW = {
 
   chromatin(ctx, W, H, t, R) {
     const laneH = (H - PAD * 2) / 3, cols = [TEAL, SEPIA, BLUE];
-    const xMax = PAD + (W - PAD * 2) * ease(t);
     for (let l = 0; l < 3; l++) {
       const base = PAD + laneH * (l + 0.82);
       const bumps = [];
       const nb = 3 + Math.floor(R() * 3);
-      for (let b = 0; b < nb; b++) bumps.push([PAD + 6 + R() * (W - PAD * 2 - 12), 5 + R() * 10, laneH * (0.3 + R() * 0.55)]);
+      for (let b = 0; b < nb; b++) bumps.push([PAD + 6 + R() * (W - PAD * 2 - 12), 5 + R() * 10, laneH * (0.3 + R() * 0.55), R() * 6.283]);
       ctx.beginPath(); ctx.moveTo(PAD, base);
-      for (let x = PAD; x <= xMax; x += 2) {
+      for (let x = PAD; x <= W - PAD; x += 2) {
         let y = base;
-        for (const [c, w, amp] of bumps) y -= amp * Math.exp(-(((x - c) / w) ** 2));
+        for (const [c, w, amp, ph] of bumps) y -= amp * (0.75 + 0.25 * Math.sin(t * 6.283 + ph)) * Math.exp(-(((x - c) / w) ** 2));
         ctx.lineTo(x, y);
       }
       ctx.strokeStyle = cols[l]; ctx.globalAlpha = 0.85; ctx.lineWidth = 1.3; ctx.stroke();
-      ctx.lineTo(xMax, base); ctx.closePath();
+      ctx.lineTo(W - PAD, base); ctx.closePath();
       ctx.fillStyle = cols[l]; ctx.globalAlpha = 0.14; ctx.fill();
       ctx.globalAlpha = 0.25; ctx.strokeStyle = INK(0.3); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(PAD, base); ctx.lineTo(W - PAD, base); ctx.stroke();
@@ -94,11 +92,11 @@ const DRAW = {
     ctx.beginPath(); ctx.moveTo(x0, PAD + 5); ctx.lineTo(x1, PAD + 5); ctx.stroke();
     const n = 6, rowH = (H - PAD * 2 - 16) / n;
     for (let i = 0; i < n; i++) {
-      const p = ease(clamp01((t - i * 0.13) / 0.22));
       const y = PAD + 16 + i * rowH;
       const rs = x0 + R() * (x1 - x0) * 0.28, re = x1 - R() * (x1 - x0) * 0.28;
-      const off = (1 - p) * 20 * (i % 2 ? 1 : -1);
-      ctx.globalAlpha = p * 0.9;
+      const ph = R() * 6.283;
+      const off = Math.sin(t * 6.283 + ph) * 2.5;
+      ctx.globalAlpha = 0.75;
       ctx.strokeStyle = TEAL; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(rs + off, y); ctx.lineTo(re + off, y); ctx.stroke();
       const nSeg = 2 + Math.floor(R() * 2), span = re - rs;
@@ -119,22 +117,20 @@ const DRAW = {
     ctx.beginPath(); ctx.ellipse(cx, cy, rx * 0.7, ry * 0.7, 0, 0, 6.283); ctx.stroke();
     const h = [R() * 2 - 1, R() * 2 - 1, R() * 2 - 1, R() * 2 - 1];
     const bx = cx + rx * 0.32, by = cy - ry * 0.12, br = Math.min(rx, ry) * 0.34;
-    const p1 = ease(clamp01(t / 0.55)), p2 = ease(clamp01((t - 0.62) / 0.3));
+    const breathe = 0.55 + 0.45 * Math.sin(t * 6.283);
     ctx.save();
     blobPath(ctx, bx, by, br, br * 0.85, h, 40);
     ctx.clip();
     ctx.strokeStyle = TEAL; ctx.globalAlpha = 0.7; ctx.lineWidth = 1;
-    const total = Math.ceil((4 * br) / 4), lit = Math.round(total * p1);
+    const total = Math.ceil((4 * br) / 4), lit = Math.max(1, Math.round(total * breathe));
     for (let i = 0; i < lit; i++) {
       const o = -2 * br + i * 4;
       ctx.beginPath(); ctx.moveTo(bx + o - br, by + br); ctx.lineTo(bx + o + br, by - br); ctx.stroke();
     }
     ctx.restore();
-    if (p2 > 0) {
-      blobPath(ctx, bx, by, br, br * 0.85, h, 40);
-      ctx.setLineDash([4, 3]); ctx.strokeStyle = TEAL; ctx.globalAlpha = p2; ctx.lineWidth = 1.4;
-      ctx.stroke(); ctx.setLineDash([]);
-    }
+    blobPath(ctx, bx, by, br, br * 0.85, h, 40);
+    ctx.setLineDash([4, 3]); ctx.strokeStyle = TEAL; ctx.globalAlpha = 0.5 + 0.4 * Math.sin(t * 6.283 + 1.2); ctx.lineWidth = 1.4;
+    ctx.stroke(); ctx.setLineDash([]);
     ctx.globalAlpha = 1;
   },
 
@@ -169,26 +165,30 @@ const DRAW = {
     const x0 = PAD, x1 = W - PAD, y0 = PAD + 2, y1 = H - PAD;
     ctx.strokeStyle = INK(0.25); ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0, y1); ctx.lineTo(x1, y1); ctx.stroke();
-    for (const [col, rate, floor] of [[TEAL, 1, 0.42], [SEPIA, 0.78, 0.68]]) {
-      const xMax = x0 + (x1 - x0) * ease(clamp01(t * rate * 1.15));
+    [[TEAL, 0.42], [SEPIA, 0.68]].forEach(([col, floor], ci) => {
       let x = x0, y = y0 + 2;
+      const pts = [[x, y]];
       ctx.strokeStyle = col; ctx.lineWidth = 1.6; ctx.globalAlpha = 0.9;
       ctx.beginPath(); ctx.moveTo(x, y);
-      for (let s = 0; s < 7 && x < xMax; s++) {
-        const nx = Math.min(x + (0.06 + R() * 0.12) * (x1 - x0), xMax);
+      for (let s = 0; s < 7 && x < x1; s++) {
+        const nx = Math.min(x + (0.1 + R() * 0.13) * (x1 - x0), x1);
         ctx.lineTo(nx, y);
-        if (R() < 0.55 && nx < xMax) { // censor tick cross on the plateau
+        if (R() < 0.55 && nx < x1) { // censor tick cross on the plateau
           const tx = (x + nx) / 2;
           ctx.moveTo(tx, y - 3); ctx.lineTo(tx, y + 3);
           ctx.moveTo(tx - 3, y); ctx.lineTo(tx + 3, y);
           ctx.moveTo(nx, y);
         }
-        if (nx < xMax) { const ny = Math.min(y + (3 + R() * 10), y0 + (y1 - y0) * floor); ctx.lineTo(nx, ny); y = ny; }
+        if (nx < x1) { const ny = Math.min(y + (3 + R() * 10), y0 + (y1 - y0) * floor); ctx.lineTo(nx, ny); y = ny; }
+        pts.push([nx, y]);
         x = nx;
       }
-      if (x < xMax) ctx.lineTo(xMax, y);
       ctx.stroke();
-    }
+      const travel = (((t + ci * 0.5) % 1) + 1) % 1;
+      const [mx, my] = pts[Math.min(pts.length - 1, Math.floor(travel * (pts.length - 1)))];
+      ctx.globalAlpha = 1; ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(mx, my, 2.2, 0, 6.283); ctx.fill();
+    });
     ctx.globalAlpha = 1;
   },
 
@@ -197,16 +197,13 @@ const DRAW = {
     ctx.strokeStyle = INK(0.4); ctx.lineWidth = 1.2;
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.283); ctx.stroke();
     let a = -Math.PI / 2;
-    const sweep = -Math.PI / 2 + ease(t) * 6.283;
     const cols = [TEAL, AMBER, BLUE, GREEN, SEPIA];
     for (let i = 0; i < 5; i++) {
       const span = 0.45 + R() * 0.75, gap = 0.12 + R() * 0.28;
-      const end = Math.min(a + span, sweep);
-      if (end > a) {
-        ctx.strokeStyle = cols[i]; ctx.lineWidth = 4.5; ctx.lineCap = "round"; ctx.globalAlpha = 0.85;
-        ctx.beginPath(); ctx.arc(cx, cy, r + (i % 2 ? 4 : -4) * 0.9, a, end); ctx.stroke();
-      }
-      a += span + gap;
+      const end = a + span;
+      ctx.strokeStyle = cols[i]; ctx.lineWidth = 4.5; ctx.lineCap = "round"; ctx.globalAlpha = 0.85;
+      ctx.beginPath(); ctx.arc(cx, cy, r + (i % 2 ? 4 : -4) * 0.9, a, end); ctx.stroke();
+      a = end + gap;
     }
     ctx.lineCap = "butt"; ctx.globalAlpha = 1;
     ctx.strokeStyle = INK(0.5); ctx.lineWidth = 1;
@@ -216,6 +213,10 @@ const DRAW = {
       ctx.lineTo(cx + Math.cos(ta) * (r + 7), cy + Math.sin(ta) * (r + 7));
       ctx.stroke();
     }
+    const sweep = -Math.PI / 2 + t * 6.283;
+    ctx.strokeStyle = "#f5f1e6"; ctx.globalAlpha = 0.9; ctx.lineWidth = 2; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.arc(cx, cy, r, sweep - 0.12, sweep); ctx.stroke();
+    ctx.lineCap = "butt"; ctx.globalAlpha = 1;
   },
 };
 

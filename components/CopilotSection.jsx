@@ -107,7 +107,7 @@ export default function CopilotSection() {
     <section id="copilot" className="relative px-6 md:px-14 py-28 md:py-40 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">09 · YOUR CO-SCIENTIST</p>
+          <p className="font-mono text-sm text-violet mb-4">05 · YOUR CO-SCIENTIST</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Text us like your core.
           </h2>
@@ -141,7 +141,7 @@ export default function CopilotSection() {
             </div>
 
             {/* thread */}
-            <div className="px-4 py-5 min-h-[380px] flex flex-col justify-end gap-2.5 bg-panel">
+            <div className="relative z-0 px-4 pt-5 pb-7 min-h-[380px] flex flex-col justify-end gap-2.5 bg-panel">
               <p className="text-center font-mono text-[10.5px] text-dim/80 mb-1">Today 9:41 AM</p>
               <AnimatePresence initial={false}>
                 {CHAT.slice(0, shown).map((m, i) => (
@@ -186,7 +186,7 @@ export default function CopilotSection() {
             </div>
 
             {/* input pill */}
-            <div className="border-t border-line bg-ground/60 px-4 py-3 flex items-center gap-2.5" aria-hidden>
+            <div className="relative z-10 border-t border-line bg-ground/60 px-4 py-3 flex items-center gap-2.5" aria-hidden>
               <span className="h-7 w-7 rounded-full border border-line text-dim flex items-center justify-center text-[15px] leading-none shrink-0">+</span>
               <div className="flex-1 rounded-full border border-line bg-panel px-4 py-1.5 text-[13.5px] text-dim/70 select-none">
                 Text your co-scientist…

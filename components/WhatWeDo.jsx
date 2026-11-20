@@ -18,7 +18,7 @@ export default function WhatWeDo() {
   return (
     <section id="whatwedo" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">04 · WHAT WE DO</p>
+        <p className="font-mono text-sm text-violet mb-4">03 · WHAT WE DO</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Eight cores. <span className="text-violet">One embedded team.</span>
         </h2>
@@ -32,7 +32,7 @@ export default function WhatWeDo() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
           {CORES.map((c) => (
             <div key={c.name} className="rounded-[4px] border border-line bg-panel/70 p-5">
-              <div className="rounded-[3px] bg-[#efeadd66] mb-3 overflow-hidden">
+              <div className="rounded-[3px] bg-[#efeadd] mb-3 overflow-hidden">
                 <AssayMini kind={c.kind} height={110} />
               </div>
               <p className="font-medium text-[17px]">{c.name}</p>
