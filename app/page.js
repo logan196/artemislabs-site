@@ -1,13 +1,16 @@
 import Hero from "@/components/Hero";
 import ClientMarquee from "@/components/ClientMarquee";
-import BanksySection from "@/components/BanksySection";
 import UmapExplorer from "@/components/UmapExplorer";
-import FoundationSection from "@/components/FoundationSection";
+import PrismaStory from "@/components/PrismaStory";
 import WhatWeDo from "@/components/WhatWeDo";
+import FoundersSection from "@/components/FoundersSection";
+import UseCasesSection from "@/components/UseCasesSection";
+import PortalFeature from "@/components/PortalFeature";
 import SpatialAgentsSection from "@/components/SpatialAgentsSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import ToolGraph from "@/components/ToolGraph";
+import FableSection from "@/components/FableSection";
 import Cta from "@/components/Cta";
 
 export default function Home() {
@@ -16,14 +19,17 @@ export default function Home() {
       <div className="bg-sea" aria-hidden />
       <Hero />
       <ClientMarquee />
-      <BanksySection />
-      <WhatWeDo />
-      <SpatialAgentsSection />
       <UmapExplorer />
-      <FoundationSection />
+      <PrismaStory />
+      <WhatWeDo />
+      <FoundersSection />
+      <UseCasesSection />
+      <PortalFeature />
+      <SpatialAgentsSection />
       <CopilotSection />
       <ToolsGrid />
       <ToolGraph />
+      <FableSection />
       <Cta />
     </main>
   );

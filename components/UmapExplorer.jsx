@@ -393,7 +393,7 @@ export default function UmapExplorer() {
   return (
     <section id="umap-interrogated" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">07 · DEMOCRATIZING BIOINFORMATICS</p>
+        <p className="font-mono text-sm text-violet mb-4">01 · DEMOCRATIZING BIOINFORMATICS</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Your computational biology core, <span className="text-violet">reimagined.</span>
         </h2>
