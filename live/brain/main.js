@@ -312,15 +312,44 @@ function hypoIds(m){
   return {a, b, countA:L[a].count, countB:L[b].count, total:L[a].count+L[b].count,
           nameA:L[a].name, nameB:L[b].name};
 }
-function showHypothalamus(){
+function schId(m){
+  const L = m.levels.subclass;
+  const i = L.findIndex(x=>x.name.includes('SCH Six6 Cdc14a Gaba'));
+  return i < 0 ? null : {i, count:L[i].count, name:L[i].name};
+}
+function lhaIds(m){
+  const L = m.levels.subclass;
+  const a = L.findIndex(x=>x.name.includes('LHA Barhl2 Glut'));
+  const b = L.findIndex(x=>x.name.includes('DMH-LHA Gsx1 Gaba'));
+  if (a < 0 || b < 0) return null;
+  const n = L.filter(x=>x.name.includes('LHA')).length;
+  return {a, b, countA:L[a].count, countB:L[b].count, nameA:L[a].name, nameB:L[b].name, nLha:n};
+}
+/* Region-by-region mini-tour of the hypothalamus. One structure, distinct
+   nuclei with distinct jobs — feeding (ARH), circadian time (SCH/SCN),
+   arousal and appetite (LHA). All counts read from the manifest at runtime;
+   this atlas is ONE adult mouse, so no ageing claims are made here. */
+const HYPO_TL = [
+  {t0:0.0, t1:8.0, enter(m){ clearHl(); setMode(2); const hy = hypoIds(m); if (!hy) return;
+     setHl(2, hy.a, hy.b); diveTo(2, hy.a, hy.total);
+     setCaption('Arcuate nucleus - energy balance and feeding.',
+       `${hy.nameA} (${fmt(hy.countA)}) + ${hy.nameB} (${fmt(hy.countB)}) - the ARH subclasses housing the AgRP / POMC appetite circuit`); }},
+  {t0:8.0, t1:16.0, enter(m){ clearHl(); setMode(2); const sc = schId(m); if (!sc) return;
+     setHl(2, sc.i); diveTo(2, sc.i, sc.count);
+     setCaption('Suprachiasmatic nucleus - the circadian clock.',
+       `${sc.name} - ${fmt(sc.count)} cells, the brain's daily timekeeper in a single taxonomy-defined subclass`); }},
+  {t0:16.0, t1:24.0, enter(m){ clearHl(); setMode(2); const lh = lhaIds(m); if (!lh) return;
+     setHl(2, lh.a, lh.b); diveTo(2, lh.a, lh.countA + lh.countB);
+     setCaption('Lateral hypothalamus - arousal and appetite.',
+       `${lh.nameA} (${fmt(lh.countA)}) + ${lh.nameB} (${fmt(lh.countB)}) - two of the ${lh.nLha} subclasses spanning the LHA`); }},
+  {t0:24.0, t1:28.0, enter(){ clearHl(); setMode(2);
+     setCaption('One structure, many clocks.',
+       'arcuate · suprachiasmatic · lateral - distinct nuclei, distinct cell types. Search any of them by name.'); }, back:true},
+];
+function startHypoTour(){
   if (!manifest) return;
-  const hy = hypoIds(manifest); if (!hy) return;
-  clearHl(); setMode(2); setHl(2, hy.a, hy.b);
-  diveTo(2, hy.a, hy.total);
-  setCaption('Hypothalamus - the arcuate feeding circuit.',
-    `${hy.nameA} (${fmt(hy.countA)}) + ${hy.nameB} (${fmt(hy.countB)}) - the ARH subclasses housing AgRP / POMC neurons - highlighted gold for 12s`);
-  clearTimeout(showHypothalamus._t);
-  showHypothalamus._t = setTimeout(()=>{ clearHl(); hideCaption(); }, 12000);
+  if (!window.__INTRO_DONE) endIntro();
+  tl = HYPO_TL; startTimeline();
 }
 let tl = FILM_V === 'merfish' ? MERFISH_TL : (FILM ? FILM_TL : INTRO), tlStart = 0, playing = true, curScene = -1;
 
@@ -441,10 +470,10 @@ function buildRail(m){
     {h:'LARGEST SUBCLASS', big:fmt(topSub.count), p:`<b>${topSub.name}</b> — the most populated of ${L.subclass.length} subclasses.`,
      show:()=>{ setMode(2); const id = L.subclass.findIndex(x=>x.name===topSub.name); setHl(2, id); setTimeout(clearHl, 6000); }},
   ];
-  const hy = hypoIds(m);
-  if (hy) cards.push({h:'ARCUATE · FEEDING CIRCUIT', big:fmt(hy.total),
-    p:`cells in the two arcuate (ARH) subclasses — <b>${hy.nameA}</b> + <b>${hy.nameB}</b> — the hypothalamic hub that houses the AgRP / POMC appetite neurons.`,
-    show:showHypothalamus});
+  const hy = hypoIds(m), sc = schId(m);
+  if (hy && sc) cards.push({h:'HYPOTHALAMUS · REGION BY REGION', big:'ARH · SCN · LHA',
+    p:`not one uniform structure: the <b>arcuate</b> feeding circuit (AgRP/POMC hub, ${fmt(hy.total)} cells), the <b>suprachiasmatic</b> circadian clock (${fmt(sc.count)} cells), and the <b>lateral hypothalamus</b> — each its own cell types. 28-second tour.`,
+    show:startHypoTour});
   $('rail').innerHTML = cards.map((c,i)=>`<div class="card"><h4>${c.h}</h4><div class="big">${c.big}</div><p>${c.p}</p>${c.show?`<button class="showme" data-i="${i}">show me</button>`:''}</div>`).join('');
   $('rail').querySelectorAll('.showme').forEach(b=>b.onclick=()=>cards[+b.dataset.i].show());
   $('srctext').textContent = `${fmt(m.cells)} cells · ${fmt(L.class.length)} classes · ${fmt(L.subclass.length)} subclasses · ${fmt(L.supertype.length)} supertypes · ${fmt(L.cluster.length)} clusters. Source: Allen Brain Cell Atlas dataset ${m.dataset}, streamed as packed binary and decoded on your GPU.`;
@@ -478,7 +507,7 @@ document.querySelectorAll('.chip[data-mode]').forEach(c=>c.onclick=()=>{
   else { clearHl(); setMode(+c.dataset.mode); }
 });
 $('wmchip').onclick = ()=>{ showWhiteMatter(); };
-{ const hc = $('hypochip'); if (hc) hc.onclick = ()=>{ if (!window.__INTRO_DONE) endIntro(); showHypothalamus(); }; }
+{ const hc = $('hypochip'); if (hc) hc.onclick = ()=>{ startHypoTour(); }; }
 $('tourchip').onclick = ()=>{
   if (!window.__INTRO_DONE) endIntro();
   tl = TOUR_TL; startTimeline();
