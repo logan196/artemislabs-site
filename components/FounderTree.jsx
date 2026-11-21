@@ -3,6 +3,39 @@
 import { useEffect, useRef } from "react";
 import Reveal from "./Reveal";
 
+const MARKS = [
+  { src: "logos/caltech-wordmark.png", alt: "Caltech", delay: "0s" },
+  { src: "logos/pfizer.svg", alt: "Pfizer", delay: "0.4s" },
+  { src: "logos/a2-white.svg", alt: "A2 Biotherapeutics", delay: "0.8s" },
+  { src: "logos/usc.svg", alt: "USC", delay: "1.2s" },
+  { src: "logos/johns-hopkins.png", alt: "Johns Hopkins University", delay: "1.6s" },
+  { src: "logos/cedars-sinai.svg", alt: "Cedars-Sinai", delay: "2s" },
+];
+
+function FounderMarks() {
+  const row = [...MARKS, ...MARKS];
+  return (
+    <div className="founder-marquee relative mt-10 overflow-hidden py-4" aria-label="Institutions in the founders' path">
+      <div className="founder-track flex w-max items-center gap-14 pr-14">
+        {row.map((mark, i) => (
+          <span
+            key={`${mark.alt}-${i}`}
+            role="img"
+            aria-label={i < MARKS.length ? mark.alt : undefined}
+            aria-hidden={i >= MARKS.length}
+            className="founder-mark"
+            style={{
+              WebkitMaskImage: `url(${mark.src})`,
+              maskImage: `url(${mark.src})`,
+              animationDelay: mark.delay,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const LOGAN = [
   { k: "Previously", v: "A2 Biotherapeutics, CAR-T process development" },
   { k: "Previously", v: "Pfizer, Medical Affairs" },
@@ -102,6 +135,7 @@ export default function FounderTree() {
           Logan Beharry and Bella Germano. They met at Caltech, in Pasadena.
         </p>
       </Reveal>
+      <FounderMarks />
 
       <Reveal delay={0.06} className="mt-12">
         <div className="grid gap-4 md:grid-cols-2">
