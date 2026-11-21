@@ -1,78 +1,39 @@
 "use client";
 
 import Reveal from "./Reveal";
-import BioDodecahedron from "./BioDodecahedron";
+import { BOOKING, EMAIL, MAILTO } from "@/lib/links";
 
 export default function Cta() {
   return (
-    <section id="contact" className="relative px-6 md:px-14 py-28 md:py-40 overflow-hidden">
-      
-
-      <Reveal className="max-w-5xl mx-auto">
-        <p className="font-mono text-sm text-violet mb-4 text-center">HOW AN ENGAGEMENT WORKS</p>
-        <div className="grid sm:grid-cols-4 gap-4">
-          {[
-            ["1 · pilot", "Send one dataset — Visium, Xenium, MERFISH or .h5ad — and get back a hosted live portal plus the marker report, free."],
-            ["2 · scope", "One call. We map your assays and questions to a concrete deliverable list."],
-            ["3 · deliverables", "A live portal, the written report, the figures — and the code that made all three."],
-            ["4 · your data stays yours", "Local-mode runs mean zero egress; cloud models are opt-in per project; deletion on request."],
-          ].map(([t, b]) => (
-            <div key={t} className="rounded-[3px] border border-line bg-panel/80 p-5">
-              <p className="font-mono text-[12px] tracking-[0.15em] text-violet uppercase mb-2">{t}</p>
-              <p className="text-[14px] text-dim leading-relaxed">{b}</p>
-            </div>
-          ))}
+    <section id="contact" className="px-6 py-24 md:px-10 md:py-32">
+      <Reveal className="mx-auto max-w-4xl text-center">
+        <img src="brand/artemis-emblem.v1.png" alt="" className="mx-auto h-20 w-20 object-contain" />
+        <h2 className="font-display mt-8 text-4xl text-snow md:text-6xl">Join the Hunt.</h2>
+        <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-dim">
+          Tell us the question. We agree the scope in writing, then we start.
+        </p>
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a href={BOOKING} target="_blank" rel="noreferrer" className="hunt-cta inline-flex rounded-full px-8 py-3.5 text-[16px] font-medium text-white">
+            Join the Hunt
+          </a>
+          <a href={BOOKING} target="_blank" rel="noreferrer" className="inline-flex rounded-full border border-white/20 px-8 py-3.5 text-[16px] text-snow hover:border-violet">
+            Book a call
+          </a>
         </div>
-      </Reveal>
-
-      <Reveal className="max-w-5xl mx-auto mt-16">
-        <p className="font-mono text-[14px] tracking-[0.2em] text-violet text-center uppercase">
-          built by Caltech researchers
+        <p className="mt-6 text-[15px] text-dim">
+          <a href={MAILTO} className="text-snow hover:text-violet">{EMAIL}</a>
         </p>
       </Reveal>
 
-      <div className="max-w-3xl mx-auto text-center mt-24">
-        <Reveal>
-          {/* The closing figure, bookending the hero: the page opens on a field
-              of marks resolving into tissue and closes on the solid you can
-              take hold of. Interactive — drag it. */}
-          <div className="relative w-full max-w-[460px] mx-auto mb-10" aria-hidden>
-            <BioDodecahedron size={360} labels={false} helix />
-          </div>
-          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            Your data has a story.
-          </h2>
-          <p className="mt-6 text-lg text-dim leading-relaxed">
-            If your lab is sitting on spatial data and short on computational hands, the
-            first analysis is on us — pick a public or in-house dataset and we'll turn it
-            around as a live portal.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"
-            >
-              Book a demo
-            </a>
-            <a
-              href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20analysis"
-              className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:text-snow hover:border-violet transition-all"
-            >
-              Or start with an email
-            </a>
-          </div>
-        </Reveal>
-      </div>
-
-      <footer className="mt-24 border-t border-line pt-8 flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
+      <footer className="mx-auto mt-20 flex max-w-7xl flex-col items-start justify-between gap-4 border-t border-line pt-8 md:flex-row md:items-center">
         <span className="flex items-center gap-3">
           <img src="artemis_mark.svg" alt="" className="h-8" />
-          <span className="font-semibold tracking-[0.18em] text-[14px]">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
+          <span className="text-[14px] tracking-[0.16em] text-snow">ARTEMIS BIOLABS</span>
         </span>
-        <p className="font-mono text-[13px] text-dim">
-          © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
+        <p className="font-mono text-[12px] leading-relaxed text-dim">
+          Funded by Bill Gross
+          <span className="mx-2 text-white/20">/</span>
+          © 2026 Artemis BioLabs
         </p>
       </footer>
     </section>

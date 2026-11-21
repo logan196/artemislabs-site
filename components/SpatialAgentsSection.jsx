@@ -18,12 +18,12 @@ export default function SpatialAgentsSection() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
             <div>
               <h2 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
-                A PhD-led agent team for your spatial data.
+                A scientist leads the spatial work.
               </h2>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-dim">
-                Give Artemis the question, assay context, and data access. A lead scientist
-                directs specialized agents through quality control, annotation, spatial
-                inference, and interpretation — with a human review loop at every decision.
+                Send the question, the assay, and access to the data. A lead scientist
+                directs the agents through quality control, annotation, spatial inference,
+                and interpretation. A person reviews every decision.
               </p>
             </div>
             <div className="rounded-[4px] border border-violet/30 bg-panel p-5 font-mono text-[13px] text-dim">

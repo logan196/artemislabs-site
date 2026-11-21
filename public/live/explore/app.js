@@ -38,7 +38,7 @@
     $("sampleId").textContent = data.sample;
     $("sampleSub").textContent = data.subtitle;
     $("citation").innerHTML =
-      `Data: ${data.citation.replace("·", "·")} — ${data.n_spots.toLocaleString()} spots, ` +
+      `Data: ${data.citation.replace("·", "·")}. ${data.n_spots.toLocaleString()} spots, ` +
       `${data.states.n_dominant_states} dominant cell states. Viewer: Artemis BioLabs.`;
 
     const [he, st, ...marks] = await Promise.all([
@@ -102,11 +102,22 @@
   }
 
   /* ---------------- rendering ---------------- */
+  const reduceGlow = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   function drawMarkers(ctx) {
+    ctx.save();
     ctx.globalCompositeOperation = "lighter";
+    if (!reduceGlow) {
+      ctx.filter = "blur(7px)";
+      ctx.globalAlpha = 0.62;
+      for (const L of S.layers.values())
+        if (L.enabled && L.canvas) ctx.drawImage(L.canvas, 0, 0);
+      ctx.filter = "none";
+      ctx.globalAlpha = 1;
+    }
     for (const L of S.layers.values())
       if (L.enabled && L.canvas) ctx.drawImage(L.canvas, 0, 0);
-    ctx.globalCompositeOperation = "source-over";
+    ctx.restore();
   }
 
   function renderPane(p, kind) {
