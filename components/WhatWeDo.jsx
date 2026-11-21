@@ -29,7 +29,7 @@ function LitCard({ children }) {
     <article
       ref={ref}
       onMouseMove={move}
-      className="reveal lit-card relative overflow-hidden rounded-2xl border border-line bg-panel/80 p-4"
+      className="reveal lit-card relative overflow-hidden rounded-[4px] border border-line bg-panel/80 p-4"
     >
       {children}
     </article>
@@ -38,10 +38,10 @@ function LitCard({ children }) {
 
 export default function WhatWeDo() {
   return (
-    <section id="services" className="relative mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-32">
+    <section id="whatwedo" className="relative mx-auto max-w-7xl px-6 py-24 md:px-14 md:py-36">
       <Reveal>
-        <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-violet">Services</p>
-        <h2 className="font-display mt-4 max-w-3xl text-4xl text-snow md:text-6xl">
+        <p className="mb-4 font-mono text-sm text-violet">WHAT WE DO</p>
+        <h2 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
           Eight cores. One team.
         </h2>
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-dim">
@@ -53,7 +53,7 @@ export default function WhatWeDo() {
         {CORES.map((c) => (
           <LitCard key={c.name}>
             <div className="relative z-10">
-              <div className="mb-4 overflow-hidden rounded-xl bg-[#f4efe4]">
+              <div className="mb-4 overflow-hidden rounded-[3px] bg-[#efeadd66]">
                 <AssayMini kind={c.kind} height={108} />
               </div>
               <p className="font-mono text-[11px] tracking-[0.16em] text-violet">{c.n}</p>

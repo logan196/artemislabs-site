@@ -73,8 +73,8 @@ function TreeSvg() {
 
 function Profile({ name, role, img, rows, children }) {
   return (
-    <article className="rounded-3xl border border-line bg-panel/70 p-6">
-      <img src={img} alt="" className="h-28 w-28 rounded-2xl object-cover" />
+    <article className="rounded-[4px] border border-line bg-panel/70 p-6">
+      <img src={img} alt="" className="h-28 w-28 rounded-[4px] border border-line object-cover" />
       <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-violet">{role}</p>
       <h3 className="mt-1 text-2xl font-medium text-snow">{name}</h3>
       <ul className="mt-5 space-y-2">
@@ -92,10 +92,10 @@ function Profile({ name, role, img, rows, children }) {
 
 export default function FounderTree() {
   return (
-    <section id="founders" className="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-32">
+    <section id="founders" className="mx-auto max-w-7xl px-6 py-24 md:px-14 md:py-36">
       <Reveal>
-        <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-violet">Founders</p>
-        <h2 className="font-display mt-4 max-w-3xl text-4xl text-snow md:text-6xl">
+        <p className="mb-4 font-mono text-sm text-violet">FOUNDERS</p>
+        <h2 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
           Two founders. One lab.
         </h2>
         <p className="mt-5 max-w-2xl text-lg text-dim">
@@ -136,14 +136,14 @@ export default function FounderTree() {
         <div className="mx-auto my-3 h-10 w-px bg-[#8fd4da] md:hidden" aria-hidden />
         <TreeSvg />
         <ol className="mx-auto mt-2 grid max-w-3xl gap-3 md:mt-0" aria-label="From Caltech to Artemis">
-          <li className="flex items-center gap-4 rounded-2xl border border-line bg-ink px-5 py-4">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-violet shadow-[0_0_12px_#1F6F78]" />
+          <li className="flex items-center gap-4 rounded-[4px] border border-line bg-ink px-5 py-4">
+            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-violet shadow-[0_0_12px_#14b8a6]" />
             <span>
               <span className="block font-medium text-snow">Caltech</span>
               <span className="block text-[14px] text-dim">Where we met, in Pasadena.</span>
             </span>
           </li>
-          <li className="flex items-center gap-4 rounded-2xl border border-violet/40 bg-panel px-5 py-4 shadow-[0_0_40px_-18px_rgba(31,111,120,0.9)]">
+          <li className="flex items-center gap-4 rounded-[4px] border border-violet/40 bg-panel px-5 py-4 shadow-[0_0_40px_-18px_rgba(20,184,166,0.85)]">
             <img src="brand/artemis-emblem.v1.png" alt="" className="h-12 w-12 object-contain" />
             <span>
               <span className="block font-medium text-snow">Artemis BioLabs</span>
@@ -157,7 +157,7 @@ export default function FounderTree() {
         <h3 className="font-mono text-[12px] uppercase tracking-[0.18em] text-violet">Prior research</h3>
         <div className="mt-5 grid gap-4 lg:grid-cols-2">
           {PAPERS.map((p) => (
-            <a key={p.href} href={p.href} target="_blank" rel="noreferrer" className="lit-card block rounded-2xl border border-line bg-panel/60 p-5">
+            <a key={p.href} href={p.href} target="_blank" rel="noreferrer" className="lit-card block rounded-[4px] border border-line bg-panel/60 p-5">
               <p className="font-mono text-[11px] text-violet">{p.year}</p>
               <p className="mt-2 text-[17px] font-medium leading-snug text-snow">{p.title}</p>
               <p className="mt-2 text-[13.5px] text-dim">{p.cite}</p>
@@ -170,7 +170,7 @@ export default function FounderTree() {
       <Reveal delay={0.1} className="mt-16">
         <h3 className="text-2xl font-medium text-snow">Also on the team</h3>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <article className="rounded-2xl border border-line p-5">
+          <article className="rounded-[4px] border border-line bg-panel/50 p-5">
             <h4 className="text-lg text-snow">Haley Nessy</h4>
             <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-violet">Chief of Growth</p>
             <p className="mt-2 text-[13px] text-dim">Legal studies, University of Toronto</p>
@@ -179,14 +179,14 @@ export default function FounderTree() {
             </p>
             <a className="mt-3 inline-block text-[14px] text-violet" href="https://www.linkedin.com/in/haley-nessy-677828149">LinkedIn</a>
           </article>
-          <article className="rounded-2xl border border-line p-5">
+          <article className="rounded-[4px] border border-line bg-panel/50 p-5">
             <h4 className="text-lg text-snow">Samanda Saltibus</h4>
             <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-violet">Chief of Compliance</p>
             <p className="mt-2 text-[13px] text-dim">University of Toronto</p>
             <a className="mt-3 inline-block text-[14px] text-violet" href="https://www.linkedin.com/in/samanda-saltibus-723b65212/">LinkedIn</a>
           </article>
-          <article className="rounded-2xl border border-line p-5">
-            <img src="team/emma-nemes.v1.webp" alt="" className="mb-4 h-16 w-16 rounded-xl object-cover" />
+          <article className="rounded-[4px] border border-line bg-panel/50 p-5">
+            <img src="team/emma-nemes.v1.webp" alt="" className="mb-4 h-16 w-16 rounded-[4px] border border-line object-cover" />
             <h4 className="text-lg text-snow">Emma Nemes</h4>
             <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-violet">Intern</p>
             <p className="mt-2 text-[13px] text-dim">Biology, UCLA</p>

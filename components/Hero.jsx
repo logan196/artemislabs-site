@@ -1,91 +1,224 @@
 "use client";
 
-import { BOOKING, MAILTO } from "@/lib/links";
-import SpatialField from "./SpatialField";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import FounderLock from "./FounderLock";
+import TissueDither from "./TissueDither";
+import SplitText from "./SplitText";
 
+const BOOKING =
+  "https://calendar.app.google/Gcn7m6neU3P3ktQA8";
+
+// Every target must exist in the rendered page. #pipeline and #gallery were
+// left pointing at components that app/page.js no longer renders, so four
+// controls — including the skip link — were silent no-ops.
 const NAV = [
-  ["#services", "Services"],
-  ["#glioblastoma", "Glioblastoma"],
-  ["#founders", "Founders"],
-  ["#partner", "Partner"],
+  ["#banksy", "BANKSY"],
+  ["#whatwedo", "What we do"],
+  ["#copilot", "Co-scientist"],
+  ["#stack", "The stack"],
+];
+
+/**
+ * Callouts pinned into the tissue scene, each anchored near a niche centre in
+ * TickField. They name what actually happens to the sample, in pipeline order,
+ * so the hero reads as an annotated figure rather than decoration.
+ */
+const CALLOUTS = [
+  { x: 0.185, y: 0.235, label: "Segment cells", at: 0.80 },
+  { x: 0.625, y: 0.175, label: "Call spatial niches", at: 0.95 },
+  { x: 0.135, y: 0.66, label: "Annotate cell states", at: 1.10 },
+  { x: 0.70, y: 0.70, label: "Map expression gradients", at: 1.25 },
 ];
 
 export default function Hero() {
+  const ref = useRef(null);
+  const [saluting, setSaluting] = useState(false);
+  const [lit, setLit] = useState(false);
+  // initial={false} tells framer-motion to mount at the animate values, so a
+  // reduced-motion visitor gets the finished hero instead of a moving one.
+  const shouldReduce = useReducedMotion();
+  const saluteTimer = useRef(null);
+
+  useEffect(() => () => clearTimeout(saluteTimer.current), []);
+
+  // the field sweeps in first; type and callouts follow it
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const t = setTimeout(() => setLit(true), reduced ? 0 : 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  const salute = (e) => {
+    e.preventDefault();
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    window.dispatchEvent(new CustomEvent("artemis-salute"));
+    setSaluting(true);
+    clearTimeout(saluteTimer.current);
+    saluteTimer.current = setTimeout(() => setSaluting(false), 1200);
+  };
+
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const fieldFade = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  // Scroll-coupled translation is the classic vestibular trigger (WCAG 2.3.3);
+  // every other animation here honors the setting, so this must too.
+  const fieldLift = useTransform(scrollYProgress, [0, 1], [0, shouldReduce ? 0 : -60]);
+
   return (
-    <header className="relative">
+    <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
       <a
-        href="#services"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-3 focus:top-3 focus:rounded-md focus:bg-panel focus:px-3 focus:py-2 focus:text-snow"
+        href="#banksy"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"
       >
         Skip to content
       </a>
-      <nav className="sticky top-0 z-40 border-b border-line bg-ink/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-10">
-          <a href="/" aria-label="Artemis BioLabs, home" className="shrink-0">
-            <img src="artemis_lockup.svg" alt="Artemis BioLabs" className="h-8 w-auto md:h-9" />
-          </a>
-          <div className="hidden items-center gap-7 text-[15px] text-snow/90 md:flex">
+
+      {/* THE OPENING: a tissue section resolves out of a field of line glyphs */}
+      <div className="absolute inset-0 -z-10">
+        <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
+        <motion.div style={{ opacity: fieldFade, y: fieldLift }} className="absolute inset-0">
+          <TissueDither className="absolute inset-0 h-full w-full" />
+          {CALLOUTS.map((c) => (
+            <motion.div
+              key={c.label}
+              initial={shouldReduce ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={shouldReduce ? { duration: 0 } : { duration: 0.5, delay: c.at, ease: [0.21, 0.6, 0.27, 1] }}
+              className="absolute hidden md:flex items-center gap-2 font-mono text-[10.5px] tracking-[0.18em] uppercase text-[#93a7ad]"
+              style={{ left: `${c.x * 100}%`, top: `${c.y * 100}%` }}
+              aria-hidden
+            >
+              <span className="h-[5px] w-[5px] rounded-full bg-violet shadow-[0_0_8px_rgba(20,184,166,0.9)]" />
+              {c.label}
+            </motion.div>
+          ))}
+        </motion.div>
+        {/* Scrim, not a blackout: dark enough behind the headline to keep it
+            legible over the densest part of the core, but transparent through
+            the mid-field so the scene actually reads, with a soft rim falloff. */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(7,6,11,0.72)_0%,rgba(7,6,11,0.34)_36%,rgba(7,6,11,0.08)_62%,rgba(7,6,11,0.58)_100%)]" />
+        {/* The densest part of the scene sits directly under the headline and
+            tagline. A band confined to the text column protects that copy
+            without flattening the rest of the field. */}
+        <div className="absolute inset-x-0 top-[14%] h-[58%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(7,6,11,0.58)_34%,rgba(7,6,11,0.58)_66%,transparent_100%)]" />
+      </div>
+
+      <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
+        <a href="/" aria-label="Artemis BioLabs — home" onClick={salute}>
+          <img
+            src="artemis_lockup.svg"
+            alt="Artemis BioLabs"
+            className={`h-8 md:h-11 w-auto transition-all duration-300 ${
+              saluting ? "scale-105 [filter:drop-shadow(0_0_9px_rgba(15,118,110,0.75))]" : ""
+            }`}
+          />
+        </a>
+        <div className="flex items-center gap-3 md:gap-8 text-[14.5px] text-snow">
+          <div className="hidden md:flex items-center gap-8 font-medium">
             {NAV.map(([href, label]) => (
-              <a key={href} href={href} className="rounded-sm hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet">
+              <a key={href} href={href} className="whitespace-nowrap hover:text-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet rounded-sm transition-colors">
                 {label}
               </a>
             ))}
-            <a
-              href={BOOKING}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full bg-violet-deep px-4 py-2 text-[14px] font-medium text-white hover:bg-[#278893]"
-            >
-              Book a call
-            </a>
           </div>
+          <a
+            href={BOOKING}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-[3px] border border-snow/50 px-4 py-1.5 text-snow hover:border-violet hover:bg-violet/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-all whitespace-nowrap"
+          >
+            Book a demo
+          </a>
+          <FounderLock />
           <details className="relative md:hidden">
-            <summary className="cursor-pointer list-none rounded-full border border-line px-3 py-1.5 text-[14px] text-snow">
+            <summary className="list-none cursor-pointer rounded-[3px] border border-snow/50 px-3 py-1.5 text-snow select-none" aria-label="Open navigation menu">
               Menu
             </summary>
-            <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-line bg-ink p-2 shadow-2xl">
+            <div className="absolute right-0 top-11 z-50 w-44 rounded-[4px] border border-line bg-panel shadow-xl p-2 flex flex-col">
               {NAV.map(([href, label]) => (
-                <a key={href} href={href} className="block rounded-lg px-3 py-2.5 text-snow hover:bg-panel">
-                  {label}
-                </a>
+                <a key={href} href={href} className="px-3 py-2 rounded-sm hover:bg-ink-2 text-snow">{label}</a>
               ))}
-              <a href={BOOKING} target="_blank" rel="noreferrer" className="mt-1 block rounded-lg bg-violet-deep px-3 py-2.5 text-center font-medium text-white">
-                Book a call
-              </a>
+              <a href="#contact" className="px-3 py-2 rounded-sm hover:bg-ink-2 text-violet font-medium">Work with us</a>
             </div>
           </details>
         </div>
       </nav>
 
-      <section className="hero-wash relative isolate flex min-h-[calc(100svh-4.25rem)] items-center overflow-hidden">
-        <SpatialField className="absolute inset-0 h-full w-full" />
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-[radial-gradient(ellipse_at_18%_55%,rgba(11,31,42,0.82)_0%,rgba(11,31,42,0.35)_42%,transparent_68%)] md:w-[70%]" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20 md:px-10 md:py-28">
-          <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-violet">
-            Funded by Bill Gross
+      <motion.div style={{ opacity: fade }} className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
+        <h1
+          aria-label="Artemis BioLabs"
+          className="w-full max-w-[1500px] text-[clamp(2.6rem,10.4vw,9.5rem)] leading-[0.92] font-semibold tracking-[-0.035em]"
+          style={{ fontFamily: "var(--font-display), ui-sans-serif, system-ui, sans-serif" }}
+        >
+          <SplitText text="ARTEMIS" as="span" className="inline-block" start={lit} delay={0} />{" "}
+          <SplitText
+            text="BIOLABS"
+            as="span"
+            className="inline-block text-violet"
+            start={lit}
+            delay={0.12}
+          />
+        </h1>
+
+        <motion.p
+          initial={shouldReduce ? false : { opacity: 0 }}
+          animate={{ opacity: lit ? 1 : 0 }}
+          transition={shouldReduce ? { duration: 0 } : { duration: 0.7, delay: 0.42 }}
+          className="mt-5 font-mono text-[12px] sm:text-[13px] tracking-[0.3em] sm:tracking-[0.35em] text-snow/75 uppercase [text-shadow:0_1px_12px_rgba(7,6,11,0.95)]"
+        >
+          computational biology, accelerated.
+        </motion.p>
+
+        <motion.div
+          initial={shouldReduce ? false : { opacity: 0, y: 14 }}
+          animate={lit ? { opacity: 1, y: 0 } : {}}
+          transition={shouldReduce ? { duration: 0 } : { duration: 0.7, delay: 0.58, ease: [0.21, 0.6, 0.27, 1] }}
+        >
+          <p className="mt-6 max-w-xl mx-auto text-lg md:text-xl text-snow leading-relaxed [text-shadow:0_1px_14px_rgba(7,6,11,0.9)]">
+            Every core service your lab needs.
+            <br className="hidden sm:block" />
+            <span className="text-dim whitespace-nowrap"> One AI-powered team.</span>
           </p>
-          <h1 className="font-display mt-5 max-w-4xl text-[clamp(2.7rem,7vw,6.4rem)] leading-[0.96] text-snow">
-            Your lab&apos;s computational team.
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-snow/85 md:text-xl">
-            Spatial, single-cell, imaging, and sequencing. A scientist directs the work.
-            You leave with a portal, figures, and code your lab can rerun.
-          </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href={BOOKING}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-violet-deep px-7 py-3.5 text-[16px] font-medium text-white shadow-[0_12px_40px_-16px_rgba(31,111,120,0.95)] hover:bg-[#278893]"
+              className="rounded-[3px] bg-violet-deep text-ink px-7 py-3 font-medium hover:bg-violet focus-visible:outline focus-visible:outline-2 focus-visible:outline-snow transition-colors"
             >
-              Book a call
-            </a>
-            <a href={MAILTO} className="inline-flex items-center justify-center rounded-full border border-white/20 px-7 py-3.5 text-[16px] text-snow hover:border-violet">
-              loganbeharry@gmail.com
+              Book a demo
             </a>
           </div>
-        </div>
-      </section>
-    </header>
+          <p className="mt-4 font-mono text-[12.5px] text-dim [text-shadow:0_1px_10px_rgba(7,6,11,0.95)]">
+            The first analysis is on us.
+          </p>
+        </motion.div>
+      </motion.div>
+
+      {/* Provenance, the way a figure carries it. Every value here is true of
+          the image actually being rendered — no invented n, no invented scale
+          bar. The point of the line is that the hero is the specimen. */}
+      <div className="pointer-events-none absolute bottom-5 left-5 md:left-14 z-10 hidden sm:block font-mono text-[10.5px] leading-relaxed tracking-[0.1em] text-[#93a7ad] [text-shadow:0_1px_10px_rgba(7,6,11,0.95)]">
+        <span className="text-violet">■</span> field rendered from the section&rsquo;s own luminance
+        <br />
+        AT14-BRA-4-FO-2_1 &middot; glioblastoma &middot; H&amp;E &middot; de Jong et al. 2026
+      </div>
+
+      <div className="relative z-10 md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
+        <a href="#banksy" className="hover:text-snow">BANKSY</a>
+        <a href="#whatwedo" className="hover:text-snow">What we do</a>
+      </div>
+
+      <motion.div
+        animate={shouldReduce ? { y: 0 } : { y: [0, 8, 0] }}
+        transition={shouldReduce ? { duration: 0 } : { repeat: Infinity, duration: 2.2 }}
+        className="relative z-10 pb-5 text-center text-dim text-xl"
+        aria-hidden
+      >
+        ↓
+      </motion.div>
+    </section>
   );
 }

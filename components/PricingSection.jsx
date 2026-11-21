@@ -47,11 +47,11 @@ const INCLUDED = [
 
 export default function PricingSection() {
   return (
-    <section id="partner" className="border-y border-line bg-ink-2/50 py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+    <section id="partner" className="border-y border-line bg-ink-2/60 py-24 md:py-36">
+      <div className="mx-auto max-w-7xl px-6 md:px-14">
         <Reveal>
-          <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-violet">Partner with us</p>
-          <h2 className="font-display mt-4 max-w-3xl text-4xl text-snow md:text-6xl">
+          <p className="mb-4 font-mono text-sm text-violet">PARTNER WITH US</p>
+          <h2 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
             Pick a way in.
           </h2>
           <p className="mt-5 max-w-2xl text-lg text-dim">
@@ -63,21 +63,21 @@ export default function PricingSection() {
           {TIERS.map((t) => (
             <article
               key={t.name}
-              className={`relative flex flex-col rounded-3xl border p-6 md:p-7 ${
+              className={`relative flex flex-col rounded-[4px] border p-6 md:p-7 ${
                 t.hunt
-                  ? "hunt-card border-transparent text-snow lg:-mt-3 lg:mb-3"
+                  ? "border-violet bg-panel text-snow glow-ring"
                   : t.recommended
-                    ? "border-violet/70 bg-panel shadow-[0_0_0_1px_rgba(31,111,120,0.45)]"
+                    ? "border-violet/70 bg-panel"
                     : "border-line bg-panel/70"
               }`}
             >
               {t.recommended ? (
-                <p className="absolute -top-3 left-6 rounded-full bg-violet-deep px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-white">
+                <p className="absolute -top-3 left-6 rounded-[3px] bg-violet-deep px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-ink">
                   Recommended
                 </p>
               ) : null}
               <p className="font-mono text-[12px] tracking-[0.16em] text-violet">{t.n}</p>
-              <h3 className={`mt-3 text-2xl font-medium ${t.hunt ? "font-display text-4xl" : ""}`}>{t.name}</h3>
+              <h3 className={`mt-3 font-semibold tracking-tight ${t.hunt ? "text-3xl" : "text-2xl"}`}>{t.name}</h3>
               <p className="mt-4 text-3xl font-medium tracking-tight text-snow">{t.price}</p>
               <p className="mt-1 text-[14px] text-dim">{t.unit}</p>
               <p className="mt-5 flex-1 text-[15.5px] leading-relaxed text-snow/85">{t.body}</p>
@@ -85,8 +85,8 @@ export default function PricingSection() {
                 href={BOOKING}
                 target="_blank"
                 rel="noreferrer"
-                className={`mt-7 inline-flex items-center justify-center rounded-full px-5 py-3 text-center text-[15px] font-medium ${
-                  t.hunt ? "hunt-cta text-white" : "bg-white/10 text-snow ring-1 ring-white/15 hover:ring-violet"
+                className={`mt-7 inline-flex items-center justify-center rounded-[3px] px-5 py-3 text-center text-[15px] font-medium ${
+                  t.hunt ? "bg-violet-deep text-ink hover:bg-violet glow-ring" : "border border-snow/50 text-snow hover:border-violet"
                 }`}
               >
                 {t.cta}
@@ -99,7 +99,7 @@ export default function PricingSection() {
           <h3 className="text-xl font-medium text-snow">In every engagement</h3>
           <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {INCLUDED.map((item) => (
-              <li key={item} className="rounded-xl border border-line bg-ink/50 px-4 py-3 text-[15px] text-snow/90">
+              <li key={item} className="rounded-[4px] border border-line bg-panel/70 px-4 py-3 text-[15px] text-dim">
                 {item}
               </li>
             ))}

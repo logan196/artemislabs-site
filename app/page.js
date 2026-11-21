@@ -9,6 +9,7 @@ import Cta from "@/components/Cta";
 export default function Home() {
   return (
     <main className="grain">
+      <div className="bg-sea" aria-hidden />
       <Hero />
       <ClientMarquee />
       <WhatWeDo />

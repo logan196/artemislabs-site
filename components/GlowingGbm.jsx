@@ -155,7 +155,7 @@ function GlowField() {
   }, []);
 
   return (
-    <figure className="overflow-hidden rounded-3xl border border-line bg-[#07161c] shadow-[0_0_80px_-20px_rgba(31,111,120,0.65)]">
+    <figure className="overflow-hidden rounded-[4px] border border-snow/60 bg-ink shadow-[0_0_70px_-24px_rgba(20,184,166,0.55)]">
       <canvas ref={ref} className="block h-[320px] w-full md:h-[540px]" role="img" aria-label="GBM1 Visium spots glowing by cell state over the H and E slide" />
       <figcaption className="flex flex-col gap-3 border-t border-line px-5 py-4 md:flex-row md:items-center md:justify-between">
         <p className="max-w-xl text-[13.5px] leading-relaxed text-dim">
@@ -196,7 +196,7 @@ function LivingFigure() {
   }, []);
 
   return (
-    <figure ref={ref} className="overflow-hidden rounded-3xl border border-line bg-black">
+    <figure ref={ref} className="overflow-hidden rounded-[4px] border border-snow/60 bg-ink">
       <div className="relative aspect-[16/9] overflow-hidden">
         <img
           src="dejong/AT15-BRA-4-FO-B2-S25_he.jpg"
@@ -219,11 +219,11 @@ function LivingFigure() {
 
 export default function GlowingGbm() {
   return (
-    <section id="glioblastoma" className="relative border-y border-line bg-ink-2/40 py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+    <section id="glioblastoma" className="relative border-y border-line bg-ink-2/60 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-6 md:px-14">
         <Reveal>
-          <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-violet">Glioblastoma</p>
-          <h2 className="font-display mt-4 max-w-3xl text-4xl text-snow md:text-6xl">
+          <p className="mb-4 font-mono text-sm text-violet">GLIOBLASTOMA</p>
+          <h2 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
             A section, glowing.
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-dim">
@@ -242,7 +242,7 @@ export default function GlowingGbm() {
               href={`live/${s.id}/index.html`}
               target="_blank"
               rel="noreferrer"
-              className="lit-card group relative w-[78%] shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-panel sm:w-[46%] lg:w-auto lg:min-w-0 lg:flex-1"
+              className="lit-card group relative w-[78%] shrink-0 snap-start overflow-hidden rounded-[4px] border border-line bg-panel sm:w-[46%] lg:w-auto lg:min-w-0 lg:flex-1"
             >
               <span className="relative block aspect-[4/3] overflow-hidden bg-black">
                 <img src={`gbm/${s.id}_he.jpg`} alt="" className="absolute inset-0 h-full w-full object-cover" />
@@ -263,14 +263,14 @@ export default function GlowingGbm() {
 
         <Reveal delay={0.1} className="mt-8">
           <div className="flex flex-wrap items-center gap-3">
-            <a href="live/explore/index.html" target="_blank" rel="noreferrer" className="rounded-full bg-violet-deep px-5 py-2.5 text-[15px] font-medium text-white hover:bg-[#278893]">
+            <a href="live/explore/index.html" target="_blank" rel="noreferrer" className="rounded-[3px] bg-violet-deep px-5 py-2.5 text-[15px] font-medium text-ink hover:bg-violet">
               Open the live H&amp;E viewer
             </a>
-            <a href="live/GBM3/portal.html" target="_blank" rel="noreferrer" className="rounded-full border border-white/20 px-5 py-2.5 text-[15px] text-snow hover:border-violet">
+            <a href="live/GBM3/portal.html" target="_blank" rel="noreferrer" className="rounded-[3px] border border-snow/50 px-5 py-2.5 text-[15px] text-dim hover:border-violet hover:text-snow">
               GBM3 portal
             </a>
           </div>
-          <div className="relative mt-5 overflow-hidden rounded-3xl border border-line bg-black">
+          <div className="relative mt-5 overflow-hidden rounded-[4px] border border-snow/60 bg-ink">
             <iframe
               src="live/explore/index.html"
               title="Artemis Explore, live glioblastoma viewer with H and E, markers, and cell states"
@@ -280,7 +280,7 @@ export default function GlowingGbm() {
             <a href="live/explore/index.html" target="_blank" rel="noreferrer" className="relative block aspect-[4/3] md:hidden">
               <img src="live/explore/he.jpg" alt="AT15 glioblastoma H and E" className="absolute inset-0 h-full w-full object-contain bg-[#f3efe4]" />
               <img src="live/explore/states.png" alt="" className="glow-plate absolute inset-0 h-full w-full object-contain opacity-80" />
-              <span className="absolute bottom-3 left-3 rounded-full bg-violet-deep px-3 py-1 text-[13px] font-medium text-white">
+              <span className="absolute bottom-3 left-3 rounded-[3px] bg-violet-deep px-3 py-1 text-[13px] font-medium text-ink">
                 Open the viewer
               </span>
             </a>

@@ -5,18 +5,19 @@ import { BOOKING, EMAIL, MAILTO } from "@/lib/links";
 
 export default function Cta() {
   return (
-    <section id="contact" className="px-6 py-24 md:px-10 md:py-32">
-      <Reveal className="mx-auto max-w-4xl text-center">
-        <img src="brand/artemis-emblem.v1.png" alt="" className="mx-auto h-20 w-20 object-contain" />
-        <h2 className="font-display mt-8 text-4xl text-snow md:text-6xl">Join the Hunt.</h2>
-        <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-dim">
+    <section id="contact" className="px-6 py-24 md:px-14 md:py-36">
+      <Reveal className="mx-auto max-w-3xl text-center">
+        <img src="brand/artemis-emblem.v1.png" alt="" className="mx-auto h-16 w-16 object-contain" />
+        <p className="mb-4 mt-8 font-mono text-sm text-violet">FUNDED BY BILL GROSS</p>
+        <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">Join the Hunt.</h2>
+        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-dim">
           Tell us the question. We agree the scope in writing, then we start.
         </p>
-        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href={BOOKING} target="_blank" rel="noreferrer" className="hunt-cta inline-flex rounded-full px-8 py-3.5 text-[16px] font-medium text-white">
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href={BOOKING} target="_blank" rel="noreferrer" className="inline-block rounded-[3px] bg-violet-deep px-8 py-3.5 font-medium text-ink glow-ring hover:bg-violet">
             Join the Hunt
           </a>
-          <a href={BOOKING} target="_blank" rel="noreferrer" className="inline-flex rounded-full border border-white/20 px-8 py-3.5 text-[16px] text-snow hover:border-violet">
+          <a href={BOOKING} target="_blank" rel="noreferrer" className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:border-violet hover:text-snow">
             Book a call
           </a>
         </div>

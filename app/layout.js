@@ -1,13 +1,9 @@
-import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const sans = Instrument_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-instrument",
-  display: "swap",
-});
-
+// globals.css already points --font-mono at --font-jetbrains, but nothing ever
+// loaded it, so every "mono" label on the site was falling back to the system
+// face. Instrument Serif is the editorial display voice for the Option B hero.
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -25,24 +21,24 @@ const serif = Instrument_Serif({
 
 export const metadata = {
   metadataBase: new URL("https://artemislabs.bio"),
-  title: "Artemis BioLabs",
+  title: "Artemis BioLabs · Computational Biology, Accelerated",
   description:
-    "Scientist-led computational biology for spatial, single-cell, imaging, and sequencing studies. Funded by Bill Gross.",
+    "Computational biology support for spatial, single-cell, sequencing, imaging, and clinical studies.",
   icons: { icon: "artemis_mark.svg" },
   openGraph: {
     title: "Artemis BioLabs",
-    description: "Your lab's computational team. Portals, figures, and code you can rerun.",
+    description: "Every core service your lab needs. One AI-powered team. Computational biology, accelerated.",
     url: "https://artemislabs.bio",
     siteName: "Artemis BioLabs",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Artemis BioLabs" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Artemis BioLabs lockup" }],
     type: "website",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`antialiased ${sans.variable} ${jetbrains.variable} ${serif.variable}`}>
-      <body className="overflow-x-hidden bg-ink font-sans text-snow">{children}</body>
+    <html lang="en" className={`antialiased ${jetbrains.variable} ${serif.variable}`}>
+      <body className="bg-ink text-snow font-sans overflow-x-hidden">{children}</body>
     </html>
   );
 }
