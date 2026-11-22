@@ -58,7 +58,7 @@ function PortalChrome({ interactive = true }) {
     <div className="w-full max-w-5xl mx-auto rounded-[12px] border border-line bg-panel shadow-lg overflow-hidden">
       <iframe
         id="search-live-workbench"
-        src="/live/workbench/index.html?embed=1&tight=1"
+        src="/live/workbench/index.html?embed=1&v=7"
         title="Interactive GBM3 workbench: linked UMAP and tissue views"
         className="w-full block"
         loading="lazy"
@@ -192,7 +192,7 @@ function StaticStory() {
       </div>
 
       {/* 4 · portal */}
-      <div>
+      <div id="portal">
         <p className="font-mono text-xs uppercase tracking-widest text-violet mb-3">04 · portal</p>
         <PortalChrome />
       </div>
@@ -420,6 +420,7 @@ export default function PrismaStory() {
 
   return (
     <section id="pipeline" ref={wrapRef} className="relative h-[300vh] md:h-[340vh]">
+      <div id="portal" aria-hidden className="absolute left-0 top-[65%] h-px w-px pointer-events-none" />
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         {/* header — recedes while the atlas thumbnails fly through */}
         <motion.div
