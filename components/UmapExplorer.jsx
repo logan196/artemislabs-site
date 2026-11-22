@@ -436,7 +436,7 @@ export default function UmapExplorer() {
                     : "border-line text-dim hover:text-snow hover:border-snow/50"
                 }`}
               >
-                {auto ? "⏸ pause" : "▶ play"}
+                {auto ? "Pause" : "Play"}
               </button>
             )}
           </div>

@@ -205,7 +205,7 @@ export default function CopilotSection() {
                 onClick={play}
                 className="shrink-0 font-mono text-[11px] text-violet hover:text-snow border border-line rounded-[3px] px-2.5 py-1 transition-colors"
               >
-                ↻ replay
+                Replay
               </button>
             )}
           </div>

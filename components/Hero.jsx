@@ -35,6 +35,7 @@ export default function Hero() {
   const ref = useRef(null);
   const [saluting, setSaluting] = useState(false);
   const [lit, setLit] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   // initial={false} tells framer-motion to mount at the animate values, so a
   // reduced-motion visitor gets the finished hero instead of a moving one.
   const shouldReduce = useReducedMotion();
@@ -105,7 +106,7 @@ export default function Hero() {
         <div className="absolute inset-x-0 top-[14%] h-[58%] bg-[linear-gradient(to_bottom,transparent_0%,rgba(7,6,11,0.58)_34%,rgba(7,6,11,0.58)_66%,transparent_100%)]" />
       </div>
 
-      <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
+      <nav className="relative z-50 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
         <a href="/" aria-label="Artemis BioLabs home" onClick={salute}>
           <img
             src="artemis_lockup.svg"
@@ -132,17 +133,43 @@ export default function Hero() {
             Book a demo
           </a>
           <FounderLock />
-          <details className="relative md:hidden">
-            <summary className="list-none cursor-pointer rounded-[3px] border border-snow/50 px-3 py-1.5 text-snow select-none" aria-label="Open navigation menu">
+          <div className="relative md:hidden">
+            <button
+              type="button"
+              className="rounded-[3px] border border-snow/50 px-3 py-2 min-h-11 min-w-11 text-snow"
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
+              onClick={() => setMenuOpen((o) => !o)}
+            >
               Menu
-            </summary>
-            <div className="absolute right-0 top-11 z-50 w-44 rounded-[4px] border border-line bg-panel shadow-xl p-2 flex flex-col">
-              {NAV.map(([href, label]) => (
-                <a key={href} href={href} className="px-3 py-2 rounded-sm hover:bg-ink-2 text-snow">{label}</a>
-              ))}
-              <a href="#contact" className="px-3 py-2 rounded-sm hover:bg-ink-2 text-violet font-medium">Work with us</a>
-            </div>
-          </details>
+            </button>
+            {menuOpen && (
+              <div
+                id="mobile-nav"
+                role="navigation"
+                className="absolute right-0 top-12 z-50 w-48 rounded-[4px] border border-line bg-panel shadow-xl p-2 flex flex-col"
+              >
+                {NAV.map(([href, label]) => (
+                  <a
+                    key={href}
+                    href={href}
+                    className="px-3 py-3 rounded-sm hover:bg-ink-2 text-snow"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {label}
+                  </a>
+                ))}
+                <a
+                  href="#contact"
+                  className="px-3 py-3 rounded-sm hover:bg-ink-2 text-violet font-medium"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Work with us
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 

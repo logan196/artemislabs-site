@@ -71,7 +71,7 @@ export default function Cta() {
           <span className="font-semibold tracking-[0.18em] text-[14px]">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
         </span>
         <p className="font-mono text-[13px] text-dim">
-          © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
+          (c) 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
         </p>
       </footer>
     </section>

@@ -37,7 +37,7 @@ function LiveExplorer() {
             rel="noreferrer"
             className="font-medium text-[13.5px] text-violet hover:text-snow transition-colors"
           >
-            Open the full explorer ↗
+            Open the full explorer
           </a>
         </div>
       </div>

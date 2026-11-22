@@ -7,7 +7,7 @@
      actually showing. Do not hide or retarget #portal: that id belongs
      to the live Gudjonsson explorer further down the page. */
 
-  var WB_SRC = "/live/workbench/index.html?embed=1&v=12";
+  var WB_SRC = "/live/workbench/index.html?embed=1&v=13";
   var ACT4_PROGRESS = 0.75;
   var STYLE_ID = "wb-portal-style";
   var STYLE_TEXT =
@@ -77,8 +77,8 @@
     if (!held) {
       if (existing && existing !== "about:blank" && existing.indexOf("workbench") !== -1) {
         held = existing.indexOf("v=") === -1
-          ? existing + (existing.indexOf("?") >= 0 ? "&" : "?") + "v=12"
-          : existing.replace(/v=\d+/, "v=12");
+          ? existing + (existing.indexOf("?") >= 0 ? "&" : "?") + "v=13"
+          : existing.replace(/v=\d+/, "v=13");
       } else {
         held = WB_SRC;
       }

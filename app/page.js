@@ -10,6 +10,7 @@ import SpatialAgentsSection from "@/components/SpatialAgentsSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import ToolGraph from "@/components/ToolGraph";
+import FableSection from "@/components/FableSection";
 import Cta from "@/components/Cta";
 
 export default function Home() {
@@ -28,6 +29,7 @@ export default function Home() {
       <CopilotSection />
       <ToolsGrid />
       <ToolGraph />
+      <FableSection />
       <Cta />
     </main>
   );

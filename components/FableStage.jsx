@@ -121,7 +121,7 @@ const CODE_LINES = [
 const CAPTIONS = [
   { text: "Raw data is a wilderness.", at: 0.3, hold: 1.1 },
   { text: "She strings the bow with living code.", at: 1.75, hold: 0.4 },
-  { text: "One arrow — LLMs, analysis, HPC. Galvanizing discovery.", at: 2.8, hold: 1.55 },
+  { text: "One arrow: LLMs, analysis, HPC. Galvanizing discovery.", at: 2.8, hold: 1.55 },
   { text: "Structure \u2014 alive.", at: 5.35, hold: 2.3 },
 ];
 
@@ -132,12 +132,29 @@ export default function FableStage() {
   const impactRef = useRef(null); // performance.now() of impact, null before
   const [stage, setStage] = useState("drawing"); // drawing | flight | impacted
   const [run, setRun] = useState(0); // bump to replay the fable
+  const [inView, setInView] = useState(false);
   const reducedRef = useRef(false);
+  const rootRef = useRef(null);
 
-  // beat scheduler — replays when `run` bumps (logo salute re-fires the shot)
+  // Only observe the stage. Canvas/rAF must not start at mount.
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (ents) => {
+        setInView(ents.some((e) => e.isIntersecting && e.intersectionRatio > 0));
+      },
+      { threshold: 0.05, rootMargin: "80px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // beat scheduler — only while the stage is on screen (logo salute re-fires the shot)
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     reducedRef.current = reduced;
+    if (!inView) return;
     if (reduced) {
       setStage("impacted");
       impactRef.current = performance.now() - 60000; // settled living state
@@ -154,7 +171,7 @@ export default function FableStage() {
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [run]);
+  }, [run, inView]);
 
   useEffect(() => {
     const onSalute = () => setRun((r) => r + 1);
@@ -601,10 +618,23 @@ export default function FableStage() {
     canvas.addEventListener("pointercancel", onUp);
     canvas.addEventListener("pointerleave", onLeave);
 
-    if (reduced) draw(performance.now());
-    else start();
+    const io = new IntersectionObserver(
+      (ents) => {
+        const on = ents.some((e) => e.isIntersecting && e.intersectionRatio > 0);
+        if (on) {
+          if (reduced) draw(performance.now());
+          else start();
+        } else {
+          running = false;
+          cancelAnimationFrame(raf);
+        }
+      },
+      { threshold: 0.05, rootMargin: "80px 0px" }
+    );
+    io.observe(canvas);
 
     return () => {
+      io.disconnect();
       running = false;
       cancelAnimationFrame(raf);
       canvas.removeEventListener("pointerdown", onDown);
@@ -618,7 +648,7 @@ export default function FableStage() {
   const drawn = stage !== "drawing";
 
   return (
-    <div className="absolute inset-0" aria-hidden>
+    <div ref={rootRef} className="absolute inset-0" aria-hidden>
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full select-none"
