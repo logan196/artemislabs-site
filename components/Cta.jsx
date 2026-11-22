@@ -12,9 +12,9 @@ export default function Cta() {
         <p className="font-mono text-sm text-violet mb-4 text-center">HOW AN ENGAGEMENT WORKS</p>
         <div className="grid sm:grid-cols-4 gap-4">
           {[
-            ["1 · pilot", "Send one dataset — Visium, Xenium, MERFISH or .h5ad — and get back a hosted live portal plus the marker report, free."],
+            ["1 · pilot", "Send one dataset (Visium, Xenium, MERFISH or .h5ad) and get back a hosted live portal plus the marker report, free."],
             ["2 · scope", "One call. We map your assays and questions to a concrete deliverable list."],
-            ["3 · deliverables", "A live portal, the written report, the figures — and the code that made all three."],
+            ["3 · deliverables", "A live portal, the written report, the figures, and the code that made all three."],
             ["4 · your data stays yours", "Local-mode runs mean zero egress; cloud models are opt-in per project; deletion on request."],
           ].map(([t, b]) => (
             <div key={t} className="rounded-[3px] border border-line bg-panel/80 p-5">
@@ -40,12 +40,11 @@ export default function Cta() {
             <BioDodecahedron size={360} labels={false} helix />
           </div>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            Your data has a story.
+            Work with us.
           </h2>
           <p className="mt-6 text-lg text-dim leading-relaxed">
-            If your lab is sitting on spatial data and short on computational hands, the
-            first analysis is on us — pick a public or in-house dataset and we'll turn it
-            around as a live portal.
+            If your lab has spatial data and needs computational help, the first analysis
+            is on us. Send a public or in-house dataset and we will return a live portal.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a

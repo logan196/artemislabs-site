@@ -58,13 +58,13 @@ function PortalChrome({ interactive = true }) {
     <div className="w-full max-w-3xl mx-auto rounded-[6px] border border-line bg-panel shadow-lg overflow-hidden">
       <iframe
         id="search-live-workbench"
-        src="/live/workbench/index.html?embed=1"
+        data-wb-src="/live/workbench/index.html?embed=1&v=12"
         title="Interactive GBM3 workbench: linked UMAP and tissue views"
         className="w-full block"
         loading="lazy"
         referrerPolicy="strict-origin"
         tabIndex={interactive ? 0 : -1}
-        style={{ height: "clamp(320px, 44svh, 410px)", border: 0, background: "#000" }}
+        style={{ height: "min(500px, calc(100svh - 16rem))", border: 0, background: "#1a1a1a" }}
       />
       <div className="px-4 py-3 border-t border-line flex flex-wrap items-center justify-between gap-3">
         <p className="font-mono text-[11px] md:text-xs text-dim">
@@ -87,7 +87,7 @@ function PortalChrome({ interactive = true }) {
 function Caption() {
   return (
     <p className="text-[11px] md:text-[13px] text-dim leading-relaxed max-w-4xl mt-4 md:mt-6 px-1">
-      <span className="font-semibold text-snow">Fig. 1&nbsp;|</span> From search to portal — the
+      <span className="font-semibold text-snow">Fig. 1&nbsp;|</span> From search to portal: the
       GEO DataSets query{" "}
       <span className="font-mono text-[12px]">
         (glioblastoma) AND (spatial transcriptomics) AND &quot;Homo sapiens&quot;[organism] AND
@@ -95,9 +95,9 @@ function Caption() {
       </span>{" "}
       returned {N_IDENTIFIED} human series (accessed {ACCESSED}). The funnel shows{" "}
       <span className="text-snow">our working subset, not a published systematic review</span>: the
-      sections this page actually processes — GSE194329 (Ren et&nbsp;al., <i>Nat Commun</i> 2023; 4
+      sections this page actually processes: GSE194329 (Ren et&nbsp;al., <i>Nat Commun</i> 2023; 4
       sections), the 10x Genomics Parent Visium GBM demonstration dataset (1 section), and the
-      gbmspace.org atlas (de&nbsp;Jong et&nbsp;al., <i>Nature</i> 2026; 3 sections) — the remaining{" "}
+      gbmspace.org atlas (de&nbsp;Jong et&nbsp;al., <i>Nature</i> 2026; 3 sections). The remaining{" "}
       {N_NOT_INGESTED} GEO series were not individually adjudicated.
     </p>
   );
@@ -125,9 +125,9 @@ function IncludedBody({ nRef }) {
         on this page
       </p>
       <ul className="list-none mt-1 space-y-0.5 text-dim">
-        <li>· GSE194329 — 4 sections (Ren et al. 2023)</li>
-        <li>· 10x Parent Visium — 1 section</li>
-        <li>· gbmspace.org atlas — 3 sections (de Jong et al. 2026)</li>
+        <li>· GSE194329: 4 sections (Ren et al. 2023)</li>
+        <li>· 10x Parent Visium: 1 section</li>
+        <li>· gbmspace.org atlas: 3 sections (de Jong et al. 2026)</li>
       </ul>
     </>
   );
@@ -409,7 +409,7 @@ export default function PrismaStory() {
           One query, <span className="text-violet">eight sections</span>, one portal.
         </h2>
         <p className="mt-4 mb-12 max-w-2xl text-[15px] md:text-base text-dim leading-relaxed">
-          The section above is one of eight — here is the paper trail that found them,
+          The section above is one of eight. Here is the paper trail that found them,
           screened them, and shipped them live.
         </p>
         <StaticStory />
@@ -431,7 +431,7 @@ export default function PrismaStory() {
             One query, <span className="text-violet">eight sections</span>, one portal.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] md:text-base text-dim leading-relaxed">
-            The section above is one of eight — here is the paper trail that found them,
+            The section above is one of eight. Here is the paper trail that found them,
             screened them, and shipped them live.
           </p>
         </motion.div>
@@ -521,7 +521,7 @@ export default function PrismaStory() {
                   </div>
                 </WfRow>
                 <WfRow progress={scrollYProgress} range={[0.49, 0.525]} name="PORTAL:BUILD"
-                  right="live — every included section" />
+                  right="live: every included section" />
               </div>
             </div>
           </motion.div>

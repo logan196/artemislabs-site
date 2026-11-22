@@ -252,7 +252,7 @@ export default function UmapExplorer() {
       const st = data.settings[view.current.active];
       const where =
         m < 0.04
-          ? "tissue coordinates — the section itself"
+          ? "tissue coordinates"
           : m > 0.96
             ? `umap: min_dist=${st.min_dist} spread=${st.spread}`
             : "folding tissue → embedding…";
@@ -393,17 +393,14 @@ export default function UmapExplorer() {
   return (
     <section id="umap-interrogated" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">01 · DEMOCRATIZING BIOINFORMATICS</p>
+        <p className="font-mono text-sm text-violet mb-4">01 · LIVE DEMO</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
-          Your computational biology core, <span className="text-violet">reimagined.</span>
+          Your computational biology core.
         </h2>
         <p className="mt-5 max-w-2xl text-lg text-dim leading-relaxed">
-          <span className="text-snow">The analysis isn&rsquo;t a PDF you receive — it&rsquo;s an
-          instrument you hold.</span> Below, 1,775 spots from a public GBM section breathe
-          between the tissue they were cut from and the embedding that organizes them.
-          Cell types keep their colors and their names the whole way, so you can watch
-          morphology become biology — then take the dials yourself: drag the slider,
-          switch the parameterization, or color by SOX2, EGFR or CD68.
+          Below: 1,775 spots from a public GBM section. Drag the slider to morph
+          between tissue coordinates and the UMAP embedding. Cell types keep their
+          colors and names. Color by SOX2, EGFR or CD68.
         </p>
       </Reveal>
 
@@ -439,7 +436,7 @@ export default function UmapExplorer() {
                     : "border-line text-dim hover:text-snow hover:border-snow/50"
                 }`}
               >
-                {auto ? "⏸ breathing" : "▶ auto"}
+                {auto ? "⏸ pause" : "▶ play"}
               </button>
             )}
           </div>
@@ -553,12 +550,11 @@ export default function UmapExplorer() {
           )}
         </div>
         <p className="mt-2.5 text-[13.5px] text-dim leading-relaxed max-w-3xl">
-          <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> A living figure:
-          the same 1,775 spots glide between tissue coordinates and four UMAP
-          parameterizations computed offline from one shared neighbors graph (fixed
-          seed) — cell-type labels ride their clusters through the fold. One UMAP is a
-          choice, not a fact; here you hold the dials. GBM3, Ren et al. 2023 (GSE194329);
-          every view computed, none curated.
+          <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> The same 1,775
+          spots morph between tissue coordinates and four UMAP parameterizations
+          computed offline from one shared neighbors graph (fixed seed). Cell-type
+          labels stay with their clusters. One UMAP is a choice, not a fact. GBM3,
+          Ren et al. 2023 (GSE194329); every view computed, none curated.
         </p>
       </Reveal>
     </section>

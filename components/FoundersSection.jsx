@@ -36,7 +36,7 @@ const PUBLICATIONS = [
     title: "Leukocyte cytokine responses in adult patients with mitochondrial DNA defects",
     cite: "Karan et al. · Journal of Molecular Medicine · 100, 963–971",
     contribution:
-      "Logan's contribution — acknowledged for assistance with the systematic literature review.",
+      "Logan's contribution: acknowledged for assistance with the systematic literature review.",
     img: "pubs/mito-jmolmed-2022.png",
     alt: "Springer Nature page for 'Leukocyte cytokine responses in adult patients with mitochondrial DNA defects', Journal of Molecular Medicine 100, 963–971 (2022)",
     href: "https://doi.org/10.1007/s00109-022-02206-2",
@@ -45,7 +45,7 @@ const PUBLICATIONS = [
     tag: "Ophthalmology · 2024",
     title: "Effect of vertical central plication on vertical deviations",
     cite: "Strube, Cheung, Germano, Hopman & Wright · Journal of AAPOS · 28(2), 103861",
-    contribution: "Bella's contribution — co-author (Germano BR), Caltech affiliation.",
+    contribution: "Bella's contribution: co-author (Germano BR), Caltech affiliation.",
     img: "pubs/plication-epmc-2024.png",
     alt: "Europe PMC record for 'Effect of vertical central plication on vertical deviations', Journal of AAPOS 28(2):103861 (2024), authors Strube, Cheung, Germano, Hopman, Wright",
     href: "https://doi.org/10.1016/j.jaapos.2024.103861",
@@ -85,7 +85,7 @@ export default function FoundersSection() {
 
       <Reveal delay={0.12}>
         <p className="font-mono text-[12px] tracking-[0.2em] text-violet uppercase mt-16 mb-5">
-          In the literature — the records themselves
+          In the literature
         </p>
         <div className="grid lg:grid-cols-2 gap-4 max-w-6xl">
           {PUBLICATIONS.map((p) => (

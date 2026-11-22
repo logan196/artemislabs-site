@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`antialiased ${jetbrains.variable} ${serif.variable}`}>
       <body className="bg-ink text-snow font-sans overflow-x-hidden">
         {children}
-        <Script src="/home-workbench-tour.js" strategy="afterInteractive" />
+        <Script src="/home-workbench-tour.js?v=12" strategy="afterInteractive" />
       </body>
     </html>
   );

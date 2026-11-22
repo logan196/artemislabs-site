@@ -23,7 +23,7 @@ export default function SpatialAgentsSection() {
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-dim">
                 Give Artemis the question, assay context, and data access. A lead scientist
                 directs specialized agents through quality control, annotation, spatial
-                inference, and interpretation — with a human review loop at every decision.
+                inference, and interpretation, with a human review loop at every decision.
               </p>
             </div>
             <div className="rounded-[4px] border border-violet/30 bg-panel p-5 font-mono text-[13px] text-dim">

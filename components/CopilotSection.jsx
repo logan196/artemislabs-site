@@ -10,12 +10,12 @@ const CHAT = [
   { role: "user", text: "Which regions look hypoxic in this section?" },
   {
     role: "ai",
-    text: "Cluster 17 carries the hypoxia program — ADM, VEGFA and HILPDA all sit in its top-10 Wilcoxon markers. Spatially it forms one contiguous domain: VEGFA's Moran's I is 0.65 and ADM's 0.58 on the k-nearest-neighbor graph.",
+    text: "Cluster 17 carries the hypoxia program: ADM, VEGFA and HILPDA all sit in its top-10 Wilcoxon markers. Spatially it forms one contiguous domain: VEGFA's Moran's I is 0.65 and ADM's 0.58 on the k-nearest-neighbor graph.",
   },
   { role: "user", text: "Any immune infiltration near it?" },
   {
     role: "ai",
-    text: "Four domains annotate as microglia/TAMs — the largest spans 246 spots, and a 71-spot domain carries SPP1 and C1QB in its top markers. Want me to run DE between it and the rest of the section?",
+    text: "Four domains annotate as microglia/TAMs. The largest spans 246 spots, and a 71-spot domain carries SPP1 and C1QB in its top markers. Want me to run DE between it and the rest of the section?",
   },
 ];
 
@@ -109,17 +109,17 @@ export default function CopilotSection() {
         <Reveal>
           <p className="font-mono text-sm text-violet mb-4">06 · YOUR CO-SCIENTIST</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            Text us like your core.
+            Ask the co-scientist.
           </h2>
           <p className="mt-6 text-lg text-dim leading-relaxed max-w-xl">
-            A dedicated co-scientist rides inside <span className="text-snow">every portal
-            we ship</span> — grounded in your clusters, markers and spatial statistics,
-            answering the way a good core facility does, minus the three-week queue. Run it
-            on a frontier cloud model, or flip the dropdown to a local open-source model
+            A dedicated co-scientist is included in <span className="text-snow">every portal
+            we ship</span>, grounded in your clusters, markers and spatial statistics.
+            It answers the way a good core facility does, without the three-week queue. Run it
+            on a frontier cloud model, or switch the dropdown to a local open-source model
             through Ollama: no API keys, no cloud, no PHI exposure.
           </p>
           <p className="mt-6 text-[14.5px] text-dim leading-relaxed max-w-xl">
-            One co-scientist, every portal on this page — and the same rail ships with every
+            The same co-scientist ships with every portal on this page, and with every
             assay we support.
           </p>
         </Reveal>
@@ -128,7 +128,7 @@ export default function CopilotSection() {
         <Reveal delay={0.08}>
           <div
             ref={ref}
-            className="mx-auto w-full max-w-[420px] rounded-[28px] border border-line bg-panel shadow-xl overflow-hidden glow-ring"
+            className="mx-auto w-full max-w-[420px] rounded-[28px] border border-line bg-panel shadow-xl overflow-hidden"
           >
             {/* contact header */}
             <div className="border-b border-line bg-ground/60 px-5 pt-4 pb-3 text-center relative">
@@ -196,7 +196,7 @@ export default function CopilotSection() {
 
           <div className="mt-3 flex items-start justify-between gap-4 max-w-[420px] mx-auto">
             <p className="text-[12px] text-dim leading-relaxed">
-              Illustrative exchange — the prose is scripted, every number is real:
+              Illustrative exchange. The prose is scripted; every number is real:
               output/TenX_GBM/report.md; Moran&rsquo;s I computed with the portal&rsquo;s live tool
               (backend/analysis/live.py) on the same section.
             </p>

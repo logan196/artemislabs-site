@@ -13,7 +13,7 @@ const BOOKING =
 // left pointing at components that app/page.js no longer renders, so four
 // controls — including the skip link — were silent no-ops.
 const NAV = [
-  ["#banksy", "BANKSY"],
+  ["#umap-interrogated", "Demo"],
   ["#whatwedo", "What we do"],
   ["#copilot", "Co-scientist"],
   ["#stack", "The stack"],
@@ -69,7 +69,7 @@ export default function Hero() {
   return (
     <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
       <a
-        href="#banksy"
+        href="#umap-interrogated"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"
       >
         Skip to content
@@ -77,7 +77,7 @@ export default function Hero() {
 
       {/* THE OPENING: a tissue section resolves out of a field of line glyphs */}
       <div className="absolute inset-0 -z-10">
-        <div className="aurora absolute -top-1/4 left-1/2 h-[80vh] w-[80vw] -translate-x-1/2 rounded-full bg-violet-deep/10 blur-[140px]" />
+        <div className="absolute -top-1/4 left-1/2 h-[60vh] w-[60vw] -translate-x-1/2 rounded-full bg-violet-deep/5 blur-[80px]" />
         <motion.div style={{ opacity: fieldFade, y: fieldLift }} className="absolute inset-0">
           <TissueDither className="absolute inset-0 h-full w-full" />
           {CALLOUTS.map((c) => (
@@ -111,7 +111,7 @@ export default function Hero() {
             src="artemis_lockup.svg"
             alt="Artemis BioLabs"
             className={`h-8 md:h-11 w-auto transition-all duration-300 ${
-              saluting ? "scale-105 [filter:drop-shadow(0_0_9px_rgba(15,118,110,0.75))]" : ""
+              saluting ? "scale-105" : ""
             }`}
           />
         </a>
@@ -201,13 +201,11 @@ export default function Hero() {
           the image actually being rendered — no invented n, no invented scale
           bar. The point of the line is that the hero is the specimen. */}
       <div className="pointer-events-none absolute bottom-5 left-5 md:left-14 z-10 hidden sm:block font-mono text-[10.5px] leading-relaxed tracking-[0.1em] text-[#93a7ad] [text-shadow:0_1px_10px_rgba(7,6,11,0.95)]">
-        <span className="text-violet">■</span> field rendered from the section&rsquo;s own luminance
-        <br />
         AT14-BRA-4-FO-2_1 &middot; glioblastoma &middot; H&amp;E &middot; de Jong et al. 2026
       </div>
 
       <div className="relative z-10 md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
-        <a href="#banksy" className="hover:text-snow">BANKSY</a>
+        <a href="#umap-interrogated" className="hover:text-snow">BANKSY</a>
         <a href="#whatwedo" className="hover:text-snow">What we do</a>
       </div>
 

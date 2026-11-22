@@ -170,7 +170,7 @@ const CASES = [
     id: "seqfish",
     tag: "SEQFISH+ · MOUSE BRAIN",
     title: "Single-molecule cortex, rebuilt live",
-    body: "The Eng et al. 2019 Cai-lab seqFISH+ dataset — mouse cortex, SVZ and choroid plexus — served as a live portal: cell types on tissue, UMAP and expression heatmap side by side, with the original segmentation staining underneath.",
+    body: "The Eng et al. 2019 Cai-lab seqFISH+ dataset (mouse cortex, SVZ and choroid plexus) served as a live portal: cell types on tissue, UMAP and expression heatmap side by side, with the original segmentation staining underneath.",
     stats: "913 cells × 10,000 genes · Eng et al. 2019",
     href: "live/seqfish/portal.html",
     linkLabel: "Open the live seqFISH+ portal",
@@ -222,8 +222,8 @@ export default function UseCasesSection() {
           Real datasets, <span className="text-violet">live in the browser.</span>
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          Not slideware — each of these is an analysis we ran end to end, served as an
-          interactive portal or replay you can open right now.
+          Each of these is an analysis we ran end to end, served as an interactive
+          portal or replay you can open now.
         </p>
       </Reveal>
 
