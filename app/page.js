@@ -7,7 +7,7 @@ import WhatWeDo from "@/components/WhatWeDo";
 import SpatialAgentsSection from "@/components/SpatialAgentsSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
-import ToolGraph from "@/components/ToolGraph";
+import StackMetro from "@/components/StackMetro";
 import Cta from "@/components/Cta";
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
       <FoundationSection />
       <CopilotSection />
       <ToolsGrid />
-      <ToolGraph />
+      <StackMetro />
       <Cta />
     </main>
   );
