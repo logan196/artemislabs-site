@@ -7,7 +7,7 @@ import Reveal from "./Reveal";
 const FOUNDERS = [
   {
     name: "Logan Beharry",
-    role: "Co-founder & CSO",
+    role: "Founder & CEO",
     img: "team/logan-beharry.webp",
     credits: [
       "Previously · A2 Biotherapeutics (CAR-T process development)",

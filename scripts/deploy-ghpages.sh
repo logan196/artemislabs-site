@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 # Rebuild the static export and deploy it to GitHub Pages (gh-pages branch).
+# This script replaces gh-pages with the contents of out/. Keep these with that publish:
+#   out/specimen/index.html  the 3 MB optical-stack viewer embedded by /delivered
+#                            (source: public/specimen/index.html)
+#   out/live/                portals copied from public/live
+#   figures/, demos/, booklet/, fable/, and any other gh-pages directory that
+#   is not regenerated into out/ must be merged back before this force-push,
+#   or the publish deletes them.
 # Live at: https://logan196.github.io/artemislabs-site/
 # When artemislabs.bio is bought: echo "artemislabs.bio" > CNAME in the deploy
 # dir below (before commit), and point Porkbun DNS at GitHub Pages

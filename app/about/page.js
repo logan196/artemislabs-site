@@ -22,7 +22,7 @@ export default function AboutPage() {
         <p className="mt-4 text-lg text-dim">Artemis BioLabs builds computational tools for working with biological data.</p>
 
         <h2 className="mt-12 text-2xl font-semibold">Logan Beharry</h2>
-        <p className="mt-2 font-mono text-[12px] uppercase tracking-[0.14em] text-violet">Co-founder and CEO</p>
+        <p className="mt-2 font-mono text-[12px] uppercase tracking-[0.14em] text-violet">Founder & CEO</p>
         <p className="mt-3 text-[15px] leading-relaxed text-dim">
           Previously at A2 Biotherapeutics (CAR-T process development) and Pfizer Medical Affairs.
           Education: Caltech and the Keck School of Medicine of USC.
@@ -32,7 +32,7 @@ export default function AboutPage() {
         </p>
 
         <h2 className="mt-10 text-2xl font-semibold">Bella Germano</h2>
-        <p className="mt-2 font-mono text-[12px] uppercase tracking-[0.14em] text-violet">Co-founder and COO</p>
+        <p className="mt-2 font-mono text-[12px] uppercase tracking-[0.14em] text-violet">Co-founder & COO</p>
         <p className="mt-3 text-[15px] leading-relaxed text-dim">
           Current research at Cedars-Sinai.
           Education: Caltech, and an M.S. student in Regenerative and Stem Cell Technologies at Johns Hopkins University.
