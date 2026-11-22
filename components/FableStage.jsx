@@ -133,10 +133,13 @@ export default function FableStage() {
   const [stage, setStage] = useState("drawing"); // drawing | flight | impacted
   const [run, setRun] = useState(0); // bump to replay the fable
   const [inView, setInView] = useState(false);
+  const [armed, setArmed] = useState(false); // first time the stage enters the viewport
   const reducedRef = useRef(false);
   const rootRef = useRef(null);
 
   // Only observe the stage. Canvas/rAF must not start at mount.
+  // `armed` is one-way: leaving the viewport pauses rAF only, it does not
+  // reset the beat or remount Framer/Decode timelines mid-play.
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
@@ -150,11 +153,15 @@ export default function FableStage() {
     return () => io.disconnect();
   }, []);
 
-  // beat scheduler — only while the stage is on screen (logo salute re-fires the shot)
   useEffect(() => {
+    if (inView) setArmed(true);
+  }, [inView]);
+
+  // beat scheduler — starts on first intersection, replays when `run` bumps
+  useEffect(() => {
+    if (!armed) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     reducedRef.current = reduced;
-    if (!inView) return;
     if (reduced) {
       setStage("impacted");
       impactRef.current = performance.now() - 60000; // settled living state
@@ -171,7 +178,7 @@ export default function FableStage() {
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [run, inView]);
+  }, [run, armed]);
 
   useEffect(() => {
     const onSalute = () => setRun((r) => r + 1);
@@ -538,6 +545,7 @@ export default function FableStage() {
       if (running) return;
       running = true;
       lastNow = performance.now();
+      draw(lastNow); // size the backing store immediately (avoid 300×150 first paint)
       raf = requestAnimationFrame(draw);
     };
     const stopIfIdle = () => {
@@ -655,6 +663,7 @@ export default function FableStage() {
         style={{ touchAction: "pan-y" }}
       />
 
+      {armed && <>
       {/* the engraving — Artemis constructed stroke by stroke, like a plotter */}
       <svg
         key={run}
@@ -987,6 +996,7 @@ export default function FableStage() {
           </motion.p>
         ))}
       </div>
+      </>}
     </div>
   );
 }
