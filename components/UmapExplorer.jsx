@@ -403,8 +403,7 @@ export default function UmapExplorer() {
           between the tissue they were cut from and the embedding that organizes them.
           Cell types keep their colors and their names the whole way, so you can watch
           morphology become biology — then take the dials yourself: drag the slider,
-          switch the parameterization, color by SOX2 — the same stemness factor caught
-          sitting on its own gene in the browser above.
+          switch the parameterization, or color by SOX2, EGFR or CD68.
         </p>
       </Reveal>
 
@@ -440,7 +439,7 @@ export default function UmapExplorer() {
                     : "border-line text-dim hover:text-snow hover:border-snow/50"
                 }`}
               >
-                {auto ? "⏸ breathing" : "▶ auto"}
+                {auto ? "Pause" : "Play"}
               </button>
             )}
           </div>

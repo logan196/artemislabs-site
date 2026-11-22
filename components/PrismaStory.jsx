@@ -55,37 +55,29 @@ function FlowBox({ title, children, tone = "main", className = "" }) {
 
 function PortalChrome({ interactive = true }) {
   return (
-    <div className="w-full max-w-3xl mx-auto rounded-[6px] border border-line bg-panel shadow-lg overflow-hidden">
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-line bg-ink-2">
-        <span className="h-2.5 w-2.5 rounded-full bg-line" />
-        <span className="h-2.5 w-2.5 rounded-full bg-line" />
-        <span className="h-2.5 w-2.5 rounded-full bg-line" />
-        <span className="ml-3 flex items-center gap-2 rounded-[3px] border border-line bg-panel px-3 py-0.5 font-mono text-[11px] md:text-xs text-dim">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-violet" />
-          </span>
-          artemislabs.bio/live
-        </span>
-      </div>
-      <img
-        src="demo/poster.png"
-        alt="The live Artemis portal — spatial view, UMAP and copilot rail on a real GBM section"
+    <div className="w-full max-w-5xl mx-auto rounded-[12px] border border-line bg-panel shadow-lg overflow-hidden">
+      <iframe
+        id="search-live-workbench"
+        data-wb-src="/live/workbench/index.html?embed=1&v=13"
+        title="Interactive GBM3 workbench: linked UMAP and tissue views"
         className="w-full block"
         loading="lazy"
+        referrerPolicy="strict-origin"
+        tabIndex={interactive ? 0 : -1}
+        style={{ height: "min(500px, calc(100svh - 16rem))", border: 0, background: "#1a1a1a" }}
       />
       <div className="px-4 py-3 border-t border-line flex flex-wrap items-center justify-between gap-3">
         <p className="font-mono text-[11px] md:text-xs text-dim">
-          {N_SECTIONS} sections · 3 sources · one portal
+          GBM3 · linked UMAP and tissue views
         </p>
         <a
-          href="live/GBM3/portal.html"
+          href="/live/workbench/"
           target="_blank"
           rel="noreferrer"
           tabIndex={interactive ? 0 : -1}
           className="rounded-[3px] bg-violet-deep text-ink px-5 py-2 text-sm md:text-[15px] font-medium hover:bg-violet transition-colors"
         >
-          Open the live portal →
+          Open full screen
         </a>
       </div>
     </div>

@@ -120,8 +120,7 @@ export default function CopilotSection() {
           </p>
           <p className="mt-6 text-[14.5px] text-dim leading-relaxed max-w-xl">
             One co-scientist, every portal on this page — and the same rail ships with every
-            assay we support: the live genome browser above is where CUT&amp;RUN and long
-            reads land.
+            assay we support.
           </p>
         </Reveal>
 
@@ -206,7 +205,7 @@ export default function CopilotSection() {
                 onClick={play}
                 className="shrink-0 font-mono text-[11px] text-violet hover:text-snow border border-line rounded-[3px] px-2.5 py-1 transition-colors"
               >
-                ↻ replay
+                Replay
               </button>
             )}
           </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
 import AssayMini from "./AssayMini";
 
@@ -15,10 +16,38 @@ const CORES = [
 ];
 
 export default function WhatWeDo() {
+  const sentinelRef = useRef(null);
+  const armedRef = useRef(false);
+  const [armed, setArmed] = useState(false);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const armIfSeen = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 0;
+      if (r.bottom > 0 && r.top < vh * 0.95 && !armedRef.current) {
+        armedRef.current = true;
+        setArmed(true);
+      }
+    };
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) armIfSeen(); }, { threshold: 0.15 });
+    io.observe(el);
+    window.addEventListener("scroll", armIfSeen, { passive: true });
+    window.addEventListener("resize", armIfSeen);
+    armIfSeen();
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", armIfSeen);
+      window.removeEventListener("resize", armIfSeen);
+    };
+  }, []);
+
   return (
     <section id="whatwedo" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
+      <span ref={sentinelRef} className="block h-px w-full" aria-hidden />
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">04 · WHAT WE DO</p>
+        <p className="font-mono text-sm text-violet mb-4">03 · WHAT WE DO</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Eight cores. <span className="text-violet">One embedded team.</span>
         </h2>
@@ -32,8 +61,8 @@ export default function WhatWeDo() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
           {CORES.map((c) => (
             <div key={c.name} className="rounded-[4px] border border-line bg-panel/70 p-5">
-              <div className="rounded-[3px] bg-[#efeadd66] mb-3 overflow-hidden">
-                <AssayMini kind={c.kind} height={110} />
+              <div className="rounded-[3px] bg-[#090A0B] mb-3 overflow-hidden">
+                <AssayMini kind={c.kind} height={110} armed={armed} />
               </div>
               <p className="font-medium text-[17px]">{c.name}</p>
               <p className="text-dim text-[14.5px] mt-1.5">{c.desc}</p>
