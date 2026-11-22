@@ -9,7 +9,7 @@ import PortalFeature from "@/components/PortalFeature";
 import SpatialAgentsSection from "@/components/SpatialAgentsSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
-import ToolGraph from "@/components/ToolGraph";
+import StackMetro from "@/components/StackMetro";
 import FableSection from "@/components/FableSection";
 import Cta from "@/components/Cta";
 
@@ -28,7 +28,7 @@ export default function Home() {
       <SpatialAgentsSection />
       <CopilotSection />
       <ToolsGrid />
-      <ToolGraph />
+      <StackMetro />
       <FableSection />
       <Cta />
     </main>
