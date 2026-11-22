@@ -190,25 +190,20 @@ function Glyph({ kind, s }) {
   }
 }
 
-export function LogoBadge({ x, y, spec, lit, pulse, compact }) {
+export function LogoBadge({ x, y, spec, lit, pulse, compact, state }) {
   const { w, h } = badgeSize(spec, compact);
   const pad = compact ? 4 : 6;
   const extraFrac = spec.extraFrac == null ? 0.68 : spec.extraFrac;
   const split = w - pad * 2 - 6;
   const innerW = spec.extra ? split * (1 - extraFrac) : w - pad * 2;
   const extraW = split * extraFrac;
-  const lift = pulse ? (compact ? -2 : -4) : 0;
-  const glow = pulse
-    ? "drop-shadow(0 0 8px rgba(43,181,160,0.65))"
-    : lit
-      ? "drop-shadow(0 1px 3px rgba(43,181,160,0.28))"
-      : "none";
-  const stroke = pulse || lit ? "#2BB5A0" : (spec.accent ? "#2BB5A0" : TILE_STROKE);
-  const sw = pulse ? 2.2 : lit || spec.accent ? 1.6 : 0.9;
+  const st = state || (pulse ? "active" : lit ? "done" : "pending");
+  const stroke = st === "pending" ? (spec.accent ? "#2BB5A0" : TILE_STROKE) : "#2BB5A0";
+  const sw = st === "active" ? 2.1 : st === "done" ? 1.5 : (spec.accent ? 1.2 : 0.9);
   return (
     <g
-      transform={`translate(${x - w / 2}, ${y - h / 2 + lift})`}
-      style={{ filter: glow, transition: "transform 280ms ease, filter 280ms ease" }}
+      transform={`translate(${x - w / 2}, ${y - h / 2})`}
+      style={{ transition: "stroke 180ms linear" }}
     >
       {spec.file ? (
         <FileDoc

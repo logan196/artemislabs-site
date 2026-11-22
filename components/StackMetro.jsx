@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Reveal from "./Reveal";
 import { LogoBadge, badgeSize } from "./StackMetroMarks";
 import {
   T_BOX, T_TRACK, T_LOAD, T_LOAD_END,
   PIPELINE, boxHeader, trackSpan, INITIAL_LIT, finalLit, completedLines,
-  snapshotAt, stageEndTime, stageRunTime,
-  emptyCompute, applyCompute, liveCompute, CPU_TOTAL, GPU_TOTAL,
+  flowState, segmentPaint, stageRunTime,
+  emptyCompute, liveCompute, CPU_TOTAL, GPU_TOTAL,
   artemisArc, ARTEMIS_MARK_SIZE, ARTEMIS_MARK_SIZE_COMPACT,
+  CTRL_MS,
 } from "./StackMetroRun";
 
 /* ------------------------------------------------------------------ */
@@ -72,7 +73,7 @@ const STATION_COPY = {
   metadata:  { label: ["Metadata reconciliation", "CL / OBO Foundry"], blurb: "Metadata examination and reconciliation. Align sample sheets and map labels onto Cell Ontology (CL) via OBO Foundry." },
   norm:      { label: ["Normalize + integrate", "Harmony / scVI"], blurb: "Normalization and batch integration with Harmony (or scVI). Make counts comparable across samples before embedding." },
   advqc:     { label: ["Adversarial QC review", "SoupX / scDblFinder"], blurb: "One unified quality check. Every assay line passes through this review (scanpy.pp, SoupX, scDblFinder) before integrated analysis is allowed to proceed." },
-  artemis:   { label: "Artemis agent",                       blurb: "The wrangling agent. It routes ingest, literature review, pipeline selection, metadata reconciliation, QC, and integration." },
+  artemis:   { label: "Artemis agent",                       blurb: "The wrangling agent. It sequences and governs every stage, from ingest through portal delivery." },
   scanpy:    { label: "scanpy 1.10  ·  Python 3.12",         blurb: "scanpy 1.10 on Python 3.12. Clustering, neighbors, and pseudotime. The workhorse of our single-cell runs." },
   rlang:     { label: "Seurat 5  ·  Bioconductor 3.19",      blurb: "Seurat 5 and Bioconductor 3.19. The statistical lingua franca of genomics, used when a method ships as an R package." },
   nextflow:  { label: "Nextflow 24.10  ·  -profile hpc",     blurb: "Nextflow 24.10 with -profile hpc. Workflow engine for runs too large for a notebook. Every step declared, containerized, and resumable." },
@@ -484,6 +485,61 @@ function labelLines(copy) {
   return [copy.label];
 }
 
+/* Thin dashed control rail from the agent to every stage box.
+   Shared spine is drawn once; only short dock ticks and pulses are per stage. */
+function controlNetwork(L) {
+  const boxes = {};
+  L.boxes.forEach((b) => { boxes[b.id] = b; });
+  const ax = L.stations.artemis.x;
+  const ay = L.stations.artemis.y;
+  const markR = (L.compact ? ARTEMIS_MARK_SIZE_COMPACT : ARTEMIS_MARK_SIZE) * 0.56;
+  if (L.vertical) {
+    const railX = 8;
+    const docks = L.boxes.map((b) => ({ id: b.id, x: b.x, y: b.y + 24 }));
+    const skeleton = [
+      `M ${railX} ${docks[0].y} L ${railX} ${docks[docks.length - 1].y}`,
+      `M ${ax - markR} ${ay} L ${railX} ${ay}`,
+    ];
+    const routes = docks.map((d) => ({
+      id: d.id,
+      d: `M ${ax - markR} ${ay} L ${railX} ${ay} L ${railX} ${d.y} L ${d.x} ${d.y}`,
+      branch: `M ${railX} ${d.y} L ${d.x} ${d.y}`,
+      dock: { x: d.x, y: d.y },
+    }));
+    return { skeleton, routes };
+  }
+  const railY = 36;
+  const spineX = 338;
+  const gapY = 612;
+  const startX = ax;
+  const startY = ay + markR;
+  const mid = (b) => b.x + b.w / 2;
+  const drop = {
+    inputs: mid(boxes.inputs),
+    wrangle: mid(boxes.wrangle),
+    analysis: mid(boxes.analysis),
+    pathways: mid(boxes.pathways),
+  };
+  const portalY = boxes.portal.y + boxes.portal.h / 2;
+  const computeY = boxes.compute.y + boxes.compute.h / 2;
+  const skeleton = [
+    `M ${startX} ${startY} L ${startX} ${gapY} L ${spineX} ${gapY} L ${spineX} ${railY}`,
+    `M ${drop.inputs} ${railY} L ${drop.pathways} ${railY}`,
+    `M ${spineX} ${gapY} L ${spineX} ${computeY}`,
+  ];
+  const viaRail = (x, y) =>
+    `M ${startX} ${startY} L ${startX} ${gapY} L ${spineX} ${gapY} L ${spineX} ${railY} L ${x} ${railY} L ${x} ${y}`;
+  const routes = [
+    { id: "inputs", d: viaRail(drop.inputs, boxes.inputs.y), branch: `M ${drop.inputs} ${railY} L ${drop.inputs} ${boxes.inputs.y}`, dock: { x: drop.inputs, y: boxes.inputs.y } },
+    { id: "wrangle", d: viaRail(drop.wrangle, boxes.wrangle.y), branch: `M ${drop.wrangle} ${railY} L ${drop.wrangle} ${boxes.wrangle.y}`, dock: { x: drop.wrangle, y: boxes.wrangle.y } },
+    { id: "analysis", d: viaRail(drop.analysis, boxes.analysis.y), branch: `M ${drop.analysis} ${railY} L ${drop.analysis} ${boxes.analysis.y}`, dock: { x: drop.analysis, y: boxes.analysis.y } },
+    { id: "pathways", d: viaRail(drop.pathways, boxes.pathways.y), branch: `M ${drop.pathways} ${railY} L ${drop.pathways} ${boxes.pathways.y}`, dock: { x: drop.pathways, y: boxes.pathways.y } },
+    { id: "portal", d: `M ${startX} ${startY} L ${startX} ${gapY} L ${spineX} ${gapY} L ${spineX} ${portalY} L ${boxes.portal.x} ${portalY}`, branch: `M ${spineX} ${portalY} L ${boxes.portal.x} ${portalY}`, dock: { x: boxes.portal.x, y: portalY } },
+    { id: "compute", d: `M ${startX} ${startY} L ${startX} ${gapY} L ${spineX} ${gapY} L ${spineX} ${computeY} L ${boxes.compute.x} ${computeY}`, branch: `M ${spineX} ${computeY} L ${boxes.compute.x} ${computeY}`, dock: { x: boxes.compute.x, y: computeY } },
+  ];
+  return { skeleton, routes };
+}
+
 function layoutDesktop() {
   const W = 1520;
   const H = 1040;
@@ -867,7 +923,7 @@ function layoutMobile() {
     [S.jupyter.x, S.jupyter.y], [S.report.x, S.report.y],
   ], 14);
 
-  const above = new Set(["litreview", "pipeline", "fetch", "scanpy", "rlang", "nextflow", "annotate", "pathway", "zarr", "vitessce", "jupyter", "banksy", "advqc"]);
+  const above = new Set(["litreview", "pipeline", "fetch", "scanpy", "rlang", "nextflow", "pathway", "zarr", "vitessce", "jupyter", "banksy", "advqc"]);
   const labels = {};
   Object.keys(S).forEach((id) => {
     if (INPUT_IDS.includes(id)) {
@@ -877,6 +933,7 @@ function layoutMobile() {
     else if (["kegg", "reactome", "string", "enrichr"].includes(id)) labels[id] = { anchor: "end", dx: -36, dy: 4 };
     else if (id === "artemis") labels[id] = { anchor: "middle", dx: 0, dy: 56 };
     else if (id === "report") labels[id] = { anchor: "middle", dx: 0, dy: 32 };
+    else if (id === "annotate") labels[id] = { anchor: "end", dx: -40, dy: 4 };
     else if (id === "metadata" || id === "norm" || id === "pipeline" || id === "de") labels[id] = { anchor: "middle", dx: 0, dy: 36 };
     else if (id === "advqc") labels[id] = { anchor: "middle", dx: 0, dy: -36 };
     else if (above.has(id)) labels[id] = { anchor: "middle", dx: 0, dy: -32 };
@@ -1254,11 +1311,18 @@ export default function StackMetro() {
   const sentinelRef = useRef(null);
   const stageRef = useRef(null);
   const pathRefs = useRef({});
+  const pathDoneRefs = useRef({});
+  const pathPulseRefs = useRef({});
   const boxRefs = useRef({});
   const boxFillRefs = useRef({});
+  const ctrlPathRefs = useRef({});
+  const ctrlPulseRefs = useRef({});
+  const ctrlPipRefs = useRef({});
   const agentPathRef = useRef(null);
   const trainRefs = useRef([]);
   const agentRef = useRef(null);
+  const flowRef = useRef(null);
+  const paintFlowRef = useRef(() => {});
   const [armed, setArmed] = useState(false);
   const [hoverId, setHoverId] = useState(null);
   const [modalId, setModalId] = useState(null);
@@ -1271,6 +1335,7 @@ export default function StackMetro() {
   const [highlight, setHighlight] = useState(null);
   const [stageN, setStageN] = useState(0);
   const [compute, setCompute] = useState(() => emptyCompute());
+  const [ctrlMap, setCtrlMap] = useState({});
   const [hoverPos, setHoverPos] = useState({ x: 0, y: 0, w: 0, h: 0 });
   const [vertical, setVertical] = useState(() =>
     typeof window !== "undefined" ? window.matchMedia("(max-width: 767px)").matches : false
@@ -1354,6 +1419,8 @@ export default function StackMetro() {
   }, []);
 
   const mainTracks = useMemo(() => L.tracks.filter((t) => !t.feeder), [L]);
+  const ctrlNet = useMemo(() => controlNetwork(L), [L]);
+  const ctrlRoutes = ctrlNet.routes;
 
   useEffect(() => {
     const setDash = (el, progress) => {
@@ -1377,6 +1444,76 @@ export default function StackMetro() {
         setDash(pathRefs.current[tr.id], p);
       });
     };
+    const paintFlow = (flow, sceneNow) => {
+      const full = !!(flow && (flow.live || reduce || sceneNow === "live"));
+      const rt = flow ? flow.rt : 0;
+      L.tracks.forEach((tr) => {
+        const base = pathRefs.current[tr.id];
+        const doneEl = pathDoneRefs.current[tr.id];
+        const pulseEl = pathPulseRefs.current[tr.id];
+        if (!base || !base.getTotalLength) return;
+        const len = base.getTotalLength();
+        if (!len) return;
+        const paint = segmentPaint(tr.through, flow, len, rt, { full });
+        if (doneEl) {
+          doneEl.setAttribute("stroke-dasharray", paint.doneDasharray);
+          doneEl.setAttribute("stroke-dashoffset", "0");
+          doneEl.setAttribute("opacity", full || paint.anyDone ? "0.96" : "0");
+        }
+        if (pulseEl) {
+          const pu = paint.pulses && paint.pulses[0];
+          if (pu && !full && !reduce) {
+            const plen = 20;
+            pulseEl.setAttribute("stroke-dasharray", `${plen} ${Math.max(len, 1)}`);
+            pulseEl.setAttribute("stroke-dashoffset", String(-(pu.offset - plen / 2)));
+            pulseEl.setAttribute("opacity", "1");
+          } else {
+            pulseEl.setAttribute("opacity", "0");
+          }
+        }
+      });
+      ctrlRoutes.forEach((r) => {
+        const el = ctrlPathRefs.current[r.id];
+        const pul = ctrlPulseRefs.current[r.id];
+        const pip = ctrlPipRefs.current[r.id];
+        const c = flow && flow.ctrl ? flow.ctrl[r.id] : null;
+        const state = full ? "done" : (c && c.state) || "pending";
+        if (el) {
+          el.setAttribute("stroke", state === "pending" ? "#3d5c57" : "#2BB5A0");
+          el.setAttribute("opacity", state === "pending" ? "0.42" : state === "active" ? "0.95" : "0.78");
+        }
+        if (pul && el && el.getTotalLength) {
+          const len = el.getTotalLength();
+          if (state === "active" && c && len) {
+            const prog = Math.max(0, Math.min(1, (rt - c.t0) / Math.max(1, c.dur || CTRL_MS)));
+            const plen = 16;
+            pul.setAttribute("stroke-dasharray", `${plen} ${len}`);
+            pul.setAttribute("stroke-dashoffset", String(-(prog * len - plen / 2)));
+            pul.setAttribute("opacity", "1");
+          } else if (pul) {
+            pul.setAttribute("opacity", "0");
+          }
+        }
+        if (pip) {
+          pip.setAttribute("fill", state === "pending" ? "#1c1c1e" : "#2BB5A0");
+          pip.setAttribute("stroke", state === "pending" ? "#4a4a4a" : "#d8f4ee");
+          pip.setAttribute("r", state === "active" ? "5" : "3.6");
+        }
+      });
+    };
+    paintFlowRef.current = paintFlow;
+    const applyFlowReact = (flow) => {
+      if (!flow) return;
+      litRef.current = flow.lit;
+      setLitSet(new Set(flow.lit));
+      setPulseSet(new Set(flow.pulse));
+      setTermLines(flow.lines);
+      setTyping(flow.typing || "");
+      setHighlight(flow.highlight);
+      setStageN(flow.live ? 8 : (flow.stageN || 0));
+      setCompute(flow.compute || emptyCompute());
+      setCtrlMap(flow.ctrl || {});
+    };
     const resetRun = (opts = {}) => {
       const lit = opts.lit || new Set(INITIAL_LIT);
       litRef.current = lit;
@@ -1387,6 +1524,7 @@ export default function StackMetro() {
       setHighlight(null);
       setStageN(opts.stageN || 0);
       setCompute(opts.compute || emptyCompute());
+      setCtrlMap(opts.ctrl || {});
     };
     if (!armed) {
       paintDraw(0, false);
@@ -1399,7 +1537,10 @@ export default function StackMetro() {
       paintDraw(T_LOAD_END, true);
       sceneRef.current = "live";
       setScene("live");
-      resetRun({ lit: finalLit(), lines: completedLines(), stageN: 8, compute: liveCompute() });
+      const flow = flowState(PIPELINE.duration + 1);
+      flowRef.current = flow;
+      resetRun({ lit: finalLit(), lines: completedLines(), stageN: 8, compute: liveCompute(), ctrl: flow.ctrl });
+      paintFlow(flow, "live");
       return;
     }
     const preview = typeof window !== "undefined"
@@ -1408,26 +1549,19 @@ export default function StackMetro() {
     if (preview === "live" || preview === "mid" || (preview && /^\d+$/.test(preview))) {
       paintDraw(T_LOAD_END, true);
       const rt = preview === "live" ? PIPELINE.duration + 1 : preview === "mid" ? stageRunTime(4) : Number(preview);
-      const snap = snapshotAt(rt);
-      litRef.current = snap.lit;
-      setLitSet(new Set(snap.lit));
-      setPulseSet(new Set(snap.pulse));
-      setTermLines(snap.lines);
-      setTyping("");
-      setHighlight(snap.highlight);
-      setStageN(snap.live ? 8 : (snap.stageN || 0));
-      setCompute(snap.live ? liveCompute() : (snap.compute || emptyCompute()));
+      const snap = flowState(rt);
+      flowRef.current = snap;
+      applyFlowReact(snap);
+      if (preview !== "live" && !snap.live && snap.typing) setTyping(snap.typing);
+      else if (preview === "live" || snap.live) setTyping("");
       sceneRef.current = snap.live || preview === "live" ? "live" : "run";
       setScene(sceneRef.current);
+      paintFlow(snap, sceneRef.current);
       return;
     }
     let raf = 0;
     const t0 = performance.now();
-    let evI = 0;
-    let typingText = "";
-    let typingFrom = 0;
-    let typBuf = "";
-    const events = PIPELINE.events;
+    let lastSig = "";
     const tick = (now) => {
       const t = now - t0;
       if (t < T_LOAD_END) {
@@ -1447,100 +1581,49 @@ export default function StackMetro() {
       if (sceneRef.current !== "run" && sceneRef.current !== "live") {
         sceneRef.current = "run";
         setScene("run");
-        // Artemis stays lit from loading
         litRef.current = new Set(INITIAL_LIT);
         setLitSet(new Set(INITIAL_LIT));
       }
-      let litChanged = false;
-      let pulseChanged = false;
-      let linesChanged = false;
-      const nextLit = new Set(litRef.current);
-      const nextPulse = new Set();
-      let pulseTouched = false;
-      const addLines = [];
-      const computeEvents = [];
-      let nextHighlight = undefined;
-      let nextStage = undefined;
-      let goLive = false;
-      while (evI < events.length && events[evI].t <= rt) {
-        const ev = events[evI++];
-        if (ev.type === "line") {
-          addLines.push({ text: ev.text, kind: ev.kind || "log", station: ev.station || null });
-          linesChanged = true;
-        } else if (ev.type === "cmd") {
-          typingText = ev.text;
-          typingFrom = ev.t;
-          typBuf = "";
-        } else if (ev.type === "light") {
-          if (!nextLit.has(ev.station)) {
-            nextLit.add(ev.station);
-            litChanged = true;
-          }
-        } else if (ev.type === "pulse") {
-          nextPulse.add(ev.station);
-          pulseTouched = true;
-          pulseChanged = true;
-        } else if (ev.type === "unpulse") {
-          pulseTouched = true;
-          pulseChanged = true;
-        } else if (ev.type === "highlight") {
-          nextHighlight = ev.station;
-        } else if (ev.type === "stage") {
-          nextStage = ev.n;
-        } else if (ev.type === "sbatch" || ev.type === "sfin") {
-          computeEvents.push(ev);
-        } else if (ev.type === "live") {
-          goLive = true;
-        }
+      const flow = flowState(rt);
+      flowRef.current = flow;
+      paintFlow(flow, sceneRef.current);
+      const sig = [
+        flow.stageN,
+        flow.lines.length,
+        flow.typing,
+        flow.highlight,
+        flow.live ? 1 : 0,
+        [...flow.lit].join(","),
+        [...flow.pulse].join(","),
+        flow.compute ? `${flow.compute.cpuUsed}:${flow.compute.gpuUsed}` : "",
+        Object.keys(flow.ctrl).map((k) => `${k}:${flow.ctrl[k].state}`).join(","),
+      ].join("|");
+      if (sig !== lastSig) {
+        lastSig = sig;
+        applyFlowReact(flow);
+      } else if (flow.typing !== undefined) {
+        setTyping(flow.typing || "");
       }
-      // collect pulses still active
-      for (let i = 0; i < evI; i++) {
-        const ev = events[i];
-        if (ev.type === "pulse" && ev.t <= rt && ev.t + 700 > rt) nextPulse.add(ev.station);
-      }
-      if (typingText) {
-        const n = Math.min(typingText.length, Math.floor((rt - typingFrom) / 8));
-        typBuf = typingText.slice(0, n);
-        if (n >= typingText.length) {
-          addLines.push({ text: typingText, kind: "cmd", station: null });
-          linesChanged = true;
-          typingText = "";
-          typBuf = "";
-        }
-        setTyping(typBuf);
-      } else if (typBuf) {
-        typBuf = "";
-        setTyping("");
-      }
-      if (litChanged) {
-        litRef.current = nextLit;
-        setLitSet(new Set(nextLit));
-      }
-      if (pulseChanged) setPulseSet(new Set(nextPulse));
-      if (linesChanged && addLines.length) {
-        setTermLines((prev) => {
-          const next = prev.concat(addLines);
-          return next.length > 80 ? next.slice(-80) : next;
-        });
-      }
-      if (nextHighlight !== undefined) setHighlight(nextHighlight);
-      if (nextStage !== undefined) setStageN(nextStage);
-      if (computeEvents.length) {
-        setCompute((prev) => computeEvents.reduce((acc, ev) => applyCompute(acc, ev), prev));
-      }
-      if (goLive) {
+      if (flow.live) {
         sceneRef.current = "live";
         setScene("live");
         setTyping("");
         setHighlight(null);
         setCompute(liveCompute());
+        paintFlow(flow, "live");
         return;
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [armed, reduce, L]);
+  }, [armed, reduce, L, ctrlRoutes]);
+
+  useLayoutEffect(() => {
+    const flow = flowRef.current;
+    if (!flow) return;
+    paintFlowRef.current(flow, sceneRef.current);
+  }, [L, scene, reduce, armed, ctrlRoutes, litSet, pulseSet, ctrlMap]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1563,7 +1646,7 @@ export default function StackMetro() {
       });
     });
     const tick = (now) => {
-      const running = sceneRef.current === "run" || sceneRef.current === "live";
+      const running = sceneRef.current === "live";
       if (!running) {
         trains.forEach((_, i) => {
           const node = trainRefs.current[i];
@@ -1704,16 +1787,10 @@ export default function StackMetro() {
             aria-label="Live metro map of the Artemis wrangling stack. Multi-assay inputs pass through one adversarial QC review into an integrated analysis and portal."
             style={{ display: "block", width: "100%", height: "auto" }}
           >
-            <defs>
-              <radialGradient id="artemis-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="rgba(43,181,160,0.85)" />
-                <stop offset="55%" stopColor="rgba(43,181,160,0.28)" />
-                <stop offset="100%" stopColor="rgba(43,181,160,0)" />
-              </radialGradient>
-            </defs>
+            <defs />
             <rect width={L.W} height={L.H} fill={BG} />
 
-            <text x="20" y="28" fill={INK} fontSize="14" fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">
+            <text x="20" y="22" fill={INK} fontSize="13" fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">
               {L.title}
             </text>
 
@@ -1730,11 +1807,17 @@ export default function StackMetro() {
                   ref={(el) => { boxRefs.current[b.id] = el; }}
                   d={roundedRectPath(b.x, b.y, b.w, b.h, 10)}
                   fill="none"
-                  stroke={BOX_STROKE}
-                  strokeWidth="1.4"
+                  stroke={(() => {
+                    const hdr = boxHeader(b.id, stageN, reduce || scene === "live", (ctrlMap[b.id] && ctrlMap[b.id].state) || (reduce || scene === "live" ? "done" : "pending"));
+                    return hdr.state === "running" ? "#2BB5A0" : hdr.state === "done" ? "#4a8f84" : BOX_STROKE;
+                  })()}
+                  strokeWidth={(() => {
+                    const hdr = boxHeader(b.id, stageN, reduce || scene === "live", (ctrlMap[b.id] && ctrlMap[b.id].state) || (reduce || scene === "live" ? "done" : "pending"));
+                    return hdr.state === "running" ? 1.8 : 1.4;
+                  })()}
                 />
                 {(() => {
-                  const hdr = boxHeader(b.id, stageN, reduce || scene === "live");
+                  const hdr = boxHeader(b.id, stageN, reduce || scene === "live", (ctrlMap[b.id] && ctrlMap[b.id].state) || (reduce || scene === "live" ? "done" : "pending"));
                   const stateFill = hdr.state === "running" ? "#2BB5A0" : hdr.state === "done" ? "#8fd0c0" : "#6a6a6a";
                   return (
                     <>
@@ -1762,33 +1845,88 @@ export default function StackMetro() {
             />
 
             <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-              {L.tracks.map((t) => (
+              {L.tracks.map((t) => {
+                const hid = hoverId || modalId;
+                const hoverDim = hid && !(t.through || []).includes(hid);
+                const drawing = scene === "idle" || scene === "boxes" || scene === "tracks" || scene === "loading";
+                const baseOp = hoverDim ? 0.14 : (drawing && !reduce ? 1 : 0.22);
+                return (
+                  <g key={t.id} style={{ opacity: hoverDim ? 0.55 : 1, transition: "opacity 200ms linear" }}>
+                    <path
+                      ref={(el) => { pathRefs.current[t.id] = el; }}
+                      d={t.d}
+                      stroke={t.color}
+                      strokeWidth={t.feeder ? STROKE_FEED : STROKE}
+                      opacity={baseOp}
+                    />
+                    <path
+                      ref={(el) => { pathDoneRefs.current[t.id] = el; }}
+                      d={t.d}
+                      stroke={t.color}
+                      strokeWidth={t.feeder ? STROKE_FEED : STROKE}
+                      opacity={0}
+                    />
+                    <path
+                      ref={(el) => { pathPulseRefs.current[t.id] = el; }}
+                      d={t.d}
+                      stroke="#f4f4f4"
+                      strokeWidth={(t.feeder ? STROKE_FEED : STROKE) - 0.6}
+                      opacity={0}
+                    />
+                  </g>
+                );
+              })}
+              <path ref={agentPathRef} d={L.agent} fill="none" stroke="none" />
+            </g>
+
+            <g fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ pointerEvents: "none" }}>
+              {(ctrlNet.skeleton || []).map((d, i) => (
                 <path
-                  key={t.id}
-                  ref={(el) => { pathRefs.current[t.id] = el; }}
-                  d={t.d}
-                  stroke={t.color}
-                  strokeWidth={t.feeder ? STROKE_FEED : STROKE}
-                  style={{
-                    opacity: (() => {
-                      const hid = hoverId || modalId;
-                      if (hid && !(t.through || []).includes(hid)) return 0.18;
-                      const span = trackSpan(t.through || [], litSet);
-                      if (reduce || scene === "live") return 1;
-                      if (scene === "idle" || scene === "boxes" || scene === "tracks" || scene === "loading") return 1;
-                      return span > 0 ? 0.45 + 0.55 * span : 0.28;
-                    })(),
-                    transition: "opacity 280ms linear",
-                  }}
+                  key={`ctrl-skel-${i}`}
+                  d={d}
+                  stroke="#3d5c57"
+                  strokeWidth="1.25"
+                  strokeDasharray="3.5 3.5"
+                  opacity={scene === "idle" || scene === "boxes" ? 0 : 0.55}
                 />
               ))}
-              <path ref={agentPathRef} d={L.agent} fill="none" stroke="none" />
+              {ctrlRoutes.map((r) => (
+                <g key={`ctrl-${r.id}`}>
+                  <path
+                    ref={(el) => { ctrlPathRefs.current[r.id] = el; }}
+                    d={r.branch || r.d}
+                    stroke="#3d5c57"
+                    strokeWidth="1.25"
+                    strokeDasharray="3.5 3.5"
+                    opacity={scene === "idle" || scene === "boxes" ? 0 : 0.42}
+                  />
+                  <path
+                    ref={(el) => { ctrlPulseRefs.current[r.id] = el; }}
+                    d={r.d}
+                    stroke="#d8f4ee"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    opacity={0}
+                  />
+                  <circle
+                    ref={(el) => { ctrlPipRefs.current[r.id] = el; }}
+                    cx={r.dock.x}
+                    cy={r.dock.y}
+                    r="3.6"
+                    fill="#1c1c1e"
+                    stroke="#4a4a4a"
+                    strokeWidth="1.1"
+                    opacity={scene === "idle" || scene === "boxes" ? 0 : 1}
+                  />
+                </g>
+              ))}
             </g>
 
             {Object.entries(L.stations).map(([id, s]) => {
               const visible = stationVisible(id);
               const lit = stationLit(id);
               const pulsing = stationPulse(id) && !reduce;
+              const st = pulsing ? "active" : lit ? "done" : "pending";
               const copy = STATION_COPY[id];
               const lab = L.labels[id] || { anchor: "middle", dx: 0, dy: -22 };
               const lines = labelLines(copy);
@@ -1814,10 +1952,11 @@ export default function StackMetro() {
                     <g>
                       {(() => {
                         const sz = L.compact ? ARTEMIS_MARK_SIZE_COMPACT : ARTEMIS_MARK_SIZE;
-                        const glowR = loading ? sz * 0.92 : (pulsing || lit) ? sz * 0.82 : sz * 0.7;
+                        const ringOn = loading || pulsing || !!(ctrlMap && Object.values(ctrlMap).some((c) => c && c.state === "active"));
+                        const r = sz * 0.58;
                         return (
                           <>
-                            <circle r={glowR} fill="url(#artemis-glow)" />
+                            <circle r={r} fill="none" stroke="#2BB5A0" strokeWidth={ringOn ? 2 : 1.35} opacity={ringOn ? 1 : 0.88} />
                             <image href="artemis_mark.svg" x={-sz / 2} y={-sz / 2} width={sz} height={sz} preserveAspectRatio="xMidYMid meet" />
                           </>
                         );
@@ -1829,9 +1968,9 @@ export default function StackMetro() {
                       )}
                     </g>
                   ) : logo ? (
-                    <LogoBadge x={0} y={0} spec={logo} lit={lit} pulse={pulsing} compact={L.compact} />
+                    <LogoBadge x={0} y={0} spec={logo} lit={lit} pulse={pulsing} state={st} compact={L.compact} />
                   ) : (
-                    <circle r={s.interchange ? 8 : pulsing ? 6.4 : 5.2} fill="#f4f4f4" stroke={lit || pulsing ? "#2BB5A0" : BG} strokeWidth={lit || pulsing ? 2 : 1.5} />
+                    <circle r={s.interchange ? 8 : st === "active" ? 6.4 : 5.2} fill="#f4f4f4" stroke={st === "pending" ? "#5a5a5a" : "#2BB5A0"} strokeWidth={st === "active" ? 2.1 : st === "done" ? 1.6 : 1.2} />
                   )}
                   {(() => {
                     const fs = id === "artemis" ? 13 : L.compact ? 10 : 11.5;

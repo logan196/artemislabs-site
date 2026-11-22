@@ -30,23 +30,66 @@ const WRANGLE_TITLES = {
   5: { n: "5", title: "Normalize + integrate" },
 };
 
-export function boxHeader(boxId, stageN, live) {
+export const CTRL_MS = 400;
+export const EDGE_MS = 280;
+export const STAGE_BOX = {
+  1: "inputs",
+  2: "wrangle",
+  3: "wrangle",
+  4: "wrangle",
+  5: "wrangle",
+  6: "analysis",
+  7: "pathways",
+  8: "portal",
+};
+export const HOP_FROM = {
+  fetch: ["geo", "tenx", "cxg", "h5ad", "fastq", "atac", "prot"],
+  pipeline: ["litreview"],
+  metadata: ["pipeline", "fetch"],
+  advqc: ["metadata", "fetch"],
+  norm: ["advqc"],
+  scanpy: ["artemis"],
+  rlang: ["artemis"],
+  nextflow: ["artemis"],
+  umap: ["scanpy"],
+  banksy: ["artemis"],
+  de: ["umap", "nextflow"],
+  annotate: ["de"],
+  pathway: ["annotate"],
+  kegg: ["pathway"],
+  reactome: ["kegg"],
+  string: ["reactome"],
+  enrichr: ["pathway"],
+  zarr: ["banksy"],
+  vitessce: ["zarr"],
+  jupyter: ["annotate"],
+  report: ["vitessce", "jupyter", "enrichr", "string"],
+};
+
+export function boxHeader(boxId, stageN, live, ctrl) {
   if (boxId === "compute") {
     const title = "Compute  ·  SLURM";
+    if (ctrl === "active") return { n: "HPC", title, state: "running" };
     if (stageN < 1 && !live) return { n: "HPC", title, state: "idle" };
     return { n: "HPC", title, state: "running" };
   }
   const meta = BOX_META[boxId];
   if (boxId === "wrangle") {
     if (live || stageN >= 6) return { ...meta, state: "done" };
-    if (stageN < 2) return { ...meta, state: "queued" };
+    if (stageN < 2) {
+      if (ctrl === "active") return { ...meta, state: "running", step: "2", subtitle: WRANGLE_TITLES[2].title };
+      return { ...meta, state: "queued" };
+    }
     const step = WRANGLE_TITLES[stageN];
     return { ...meta, state: "running", step: step.n, subtitle: step.title };
   }
   if (live || stageN >= 8) return { ...meta, state: "done" };
   const need = BOX_STAGES[boxId];
   const n = Array.isArray(need) ? need[0] : need;
-  if (stageN < n) return { ...meta, state: "queued" };
+  if (stageN < n) {
+    if (ctrl === "active") return { ...meta, state: "running" };
+    return { ...meta, state: "queued" };
+  }
   if (stageN === n) return { ...meta, state: "running" };
   return { ...meta, state: "done" };
 }
@@ -76,17 +119,34 @@ export function buildPipeline() {
   };
   const light = (station) => {
     events.push({ t, type: "light", station });
-    events.push({ t, type: "pulse", station });
-    events.push({ t: t + 700, type: "unpulse", station });
   };
   const highlight = (station) => {
     events.push({ t, type: "highlight", station });
   };
   const stage = (n) => {
+    const box = STAGE_BOX[n];
+    if (box) {
+      events.push({ t, type: "ctrl", box, state: "active", dur: CTRL_MS });
+      if (n === 1) events.push({ t, type: "ctrl", box: "compute", state: "active", dur: CTRL_MS });
+      t += CTRL_MS;
+      events.push({ t, type: "ctrl", box, state: "done" });
+      if (n === 1) events.push({ t, type: "ctrl", box: "compute", state: "done" });
+    }
     events.push({ t, type: "stage", n, state: "running" });
   };
   const stageDone = (n) => {
     events.push({ t, type: "stage", n, state: "done" });
+  };
+  const hopTo = (station) => {
+    const froms = (HOP_FROM[station] || []).filter(Boolean);
+    froms.forEach((fr) => {
+      events.push({ t, type: "edge", from: fr, to: station, state: "active", dur: EDGE_MS });
+    });
+    if (froms.length) t += EDGE_MS;
+    froms.forEach((fr) => {
+      events.push({ t, type: "edge", from: fr, to: station, state: "done" });
+    });
+    events.push({ t, type: "active", station });
   };
 
   let jobSeq = 184201;
@@ -109,6 +169,7 @@ export function buildPipeline() {
     highlight(p.station);
     const jid = dispatch(part, p.name, nodes, p.station);
     if (p.cmd) cmd(p.cmd);
+    hopTo(p.station);
     line(`[${stamp(clock++)}] [${p.hash}] process > ${p.name}`, { kind: "proc", station: p.station, id: p.hash }, p.runDelay || 400);
     line(`[${stamp(clock++)}]   [100%] ${p.n} of ${p.n} done`, { kind: "done", station: p.station, id: p.hash }, 140);
     light(p.station);
@@ -146,6 +207,7 @@ export function buildPipeline() {
   cmd("$ artemis lit pubmed_review --query BANKSY+GBM");
   const job_lit = dispatch("cpu", "LIT:PUBMED", 1, "litreview");
   highlight("litreview");
+  hopTo("litreview");
   line(`[${stamp(clock++)}] [c1/77e0] process > LIT:PUBMED`, { kind: "proc", station: "litreview" }, 400);
   line(`[${stamp(clock++)}]   [100%] 25 of 25 done`, { kind: "done", station: "litreview" }, 140);
   light("litreview");
@@ -155,6 +217,7 @@ export function buildPipeline() {
   cmd("$ artemis pipe select --from lit/review.json");
   const job_pipe = dispatch("cpu", "PIPELINE:SELECT", 1, "pipeline");
   highlight("pipeline");
+  hopTo("pipeline");
   line(`[${stamp(clock++)}] [c2/19aa] process > PIPELINE:SELECT`, { kind: "proc", station: "pipeline" }, 400);
   line(`[${stamp(clock++)}]   [100%] 1 of 1 done`, { kind: "done", station: "pipeline" }, 140);
   light("pipeline");
@@ -168,6 +231,7 @@ export function buildPipeline() {
   cmd("$ artemis meta reconcile --obo cl.obo");
   const job_meta = dispatch("cpu", "META:RECONCILE", 1, "metadata");
   highlight("metadata");
+  hopTo("metadata");
   line(`[${stamp(clock++)}] [d8/3b12] process > META:RECONCILE`, { kind: "proc", station: "metadata" }, 440);
   line(`[${stamp(clock++)}]   [100%] 44 of 44 done`, { kind: "done", station: "metadata" }, 140);
   light("metadata");
@@ -181,6 +245,7 @@ export function buildPipeline() {
   cmd("$ artemis qc adversarial --assays all");
   const job_qc = dispatch("cpu", "QC:ADVERSARIAL", 4, "advqc");
   highlight("advqc");
+  hopTo("advqc");
   line(`[${stamp(clock++)}] [e5/aa09] process > QC:ADVERSARIAL`, { kind: "proc", station: "advqc" }, 320);
   line(`[${stamp(clock++)}]     spatial PASS  mt%=4.1  spots=1775`, { kind: "meta" }, 280);
   line(`[${stamp(clock++)}]     scrna PASS  doublets=2.4%  cells=8432`, { kind: "meta" }, 280);
@@ -200,6 +265,7 @@ export function buildPipeline() {
   const job_harm = dispatch("cpu", "INTEGRATE:HARMONY", 4, "norm");
   const job_scvi = dispatch("gpu", "INTEGRATE:SCVI", 1, "norm");
   highlight("norm");
+  hopTo("norm");
   line(`[${stamp(clock++)}] [f0/c414] process > INTEGRATE:HARMONY`, { kind: "proc", station: "norm" }, 400);
   line(`[${stamp(clock++)}] [f0/c415] process > INTEGRATE:SCVI`, { kind: "proc", station: "norm" }, 360);
   line(`[${stamp(clock++)}]   [100%] 4 of 4 done`, { kind: "done", station: "norm" }, 140);
@@ -412,7 +478,99 @@ export function artemisArc(cx, cy, inDeg, outDeg, size = ARTEMIS_MARK_SIZE) {
   return path;
 }
 
-export function snapshotAt(rt) {
+export function edgeKey(from, to) {
+  return `${from}>${to}`;
+}
+
+export function lookupEdge(edges, a, b) {
+  if (!edges) return null;
+  return edges[edgeKey(a, b)] || edges[edgeKey(b, a)] || null;
+}
+
+export function edgeProgress(edge, rt) {
+  if (!edge) return 0;
+  if (edge.state === "done") return 1;
+  if (edge.state === "active") {
+    const dur = Math.max(1, edge.dur || EDGE_MS);
+    return Math.max(0, Math.min(1, (rt - edge.t0) / dur));
+  }
+  return 0;
+}
+
+export function nodeState(flow, id) {
+  if (!flow) return "pending";
+  if (flow.live && flow.lit && flow.lit.has(id)) return "done";
+  return flow.nodes[id] || (flow.lit && flow.lit.has(id) ? "done" : "pending");
+}
+
+export function ctrlState(flow, boxId) {
+  if (!flow) return "pending";
+  if (flow.live) return "done";
+  const c = flow.ctrl[boxId];
+  return (c && c.state) || "pending";
+}
+
+/** Per-segment paint for a metro track. Fractions are equal-length along the path. */
+export function segmentPaint(through, flow, len, rt, opts = {}) {
+  const ids = through || [];
+  const n = Math.max(1, ids.length - 1);
+  const full = !!(opts.full);
+  const usable = Math.max(0, len || 0);
+  const segLen = usable / n;
+  const doneParts = [];
+  const pulses = [];
+  if (full || !flow || usable <= 0) {
+    return {
+      doneDasharray: full && usable ? `${usable} 0` : (usable ? `0 ${usable}` : "0"),
+      pulses,
+      anyDone: !!full,
+    };
+  }
+  for (let i = 0; i < n; i++) {
+    const a = ids[i];
+    const b = ids[i + 1];
+    const e = lookupEdge(flow.edges, a, b);
+    const aDone = nodeState(flow, a) === "done";
+    const bDone = nodeState(flow, b) === "done";
+    let state = "pending";
+    let prog = 0;
+    let forward = true;
+    if (e) {
+      state = e.state;
+      prog = edgeProgress(e, rt);
+      forward = e.from === a;
+    } else if (aDone && bDone) {
+      state = "done";
+      prog = 1;
+    }
+    if (state === "done" || (state === "active" && prog >= 1)) {
+      doneParts.push(`${segLen.toFixed(2)} 0`);
+    } else if (state === "active") {
+      const drawn = segLen * prog;
+      if (forward) {
+        doneParts.push(`${drawn.toFixed(2)} ${(segLen - drawn).toFixed(2)}`);
+        pulses.push({ offset: i * segLen + drawn, dir: 1 });
+      } else {
+        const rest = segLen - drawn;
+        doneParts.push(`0 ${rest.toFixed(2)} ${drawn.toFixed(2)} 0`);
+        pulses.push({ offset: (i + 1) * segLen - drawn, dir: -1 });
+      }
+    } else {
+      doneParts.push(`0 ${segLen.toFixed(2)}`);
+    }
+  }
+  return {
+    doneDasharray: doneParts.join(" "),
+    pulses,
+    anyDone: doneParts.some((p) => !p.startsWith("0 ")),
+  };
+}
+
+export function flowState(rt) {
+  const nodes = {};
+  for (const id of INITIAL_LIT) nodes[id] = "done";
+  const edges = {};
+  const ctrl = {};
   const lit = new Set(INITIAL_LIT);
   const pulse = new Set();
   const lines = [];
@@ -422,20 +580,37 @@ export function snapshotAt(rt) {
   let live = false;
   let pendingCmd = null;
   let compute = emptyCompute();
-  for (const ev of PIPELINE.events) {
+  const events = PIPELINE.events;
+  for (let i = 0; i < events.length; i++) {
+    const ev = events[i];
     if (ev.t > rt) continue;
     if (ev.type === "cmd") {
-      // if the next event is after rt, we may still be typing
       pendingCmd = ev;
-      // tentatively: if enough time has passed, commit full command
-      lines.push({ text: ev.text, kind: "cmd", station: null });
     } else if (ev.type === "line") {
-      pendingCmd = null;
+      if (pendingCmd) {
+        lines.push({ text: pendingCmd.text, kind: "cmd", station: null });
+        pendingCmd = null;
+      }
       lines.push({ text: ev.text, kind: ev.kind || "log", station: ev.station || null });
     } else if (ev.type === "light") {
+      nodes[ev.station] = "done";
       lit.add(ev.station);
-    } else if (ev.type === "pulse" && ev.t + 700 > rt) {
-      pulse.add(ev.station);
+      pulse.delete(ev.station);
+    } else if (ev.type === "active") {
+      if (nodes[ev.station] !== "done") {
+        nodes[ev.station] = "active";
+        pulse.add(ev.station);
+      }
+    } else if (ev.type === "edge") {
+      edges[edgeKey(ev.from, ev.to)] = {
+        state: ev.state,
+        from: ev.from,
+        to: ev.to,
+        t0: ev.t,
+        dur: ev.dur || EDGE_MS,
+      };
+    } else if (ev.type === "ctrl") {
+      ctrl[ev.box] = { state: ev.state, t0: ev.t, dur: ev.dur || CTRL_MS };
     } else if (ev.type === "highlight") {
       highlight = ev.station;
     } else if (ev.type === "stage") {
@@ -446,13 +621,52 @@ export function snapshotAt(rt) {
       live = true;
     }
   }
+  if (pendingCmd) {
+    const elapsed = rt - pendingCmd.t;
+    const n = Math.min(pendingCmd.text.length, Math.floor(elapsed / 8));
+    if (n >= pendingCmd.text.length) {
+      lines.push({ text: pendingCmd.text, kind: "cmd", station: null });
+      typing = "";
+    } else {
+      typing = pendingCmd.text.slice(0, Math.max(0, n));
+    }
+  }
   if (live) {
-    for (const id of finalLit()) lit.add(id);
+    for (const id of finalLit()) {
+      lit.add(id);
+      nodes[id] = "done";
+    }
+    Object.keys(edges).forEach((k) => {
+      edges[k] = { ...edges[k], state: "done" };
+    });
+    Object.keys(ctrl).forEach((k) => {
+      ctrl[k] = { ...ctrl[k], state: "done" };
+    });
+    ["inputs", "wrangle", "analysis", "pathways", "portal", "compute"].forEach((id) => {
+      if (!ctrl[id]) ctrl[id] = { state: "done", t0: 0, dur: 0 };
+    });
     highlight = null;
     typing = "";
     compute = liveCompute();
   }
-  return { lit, pulse, lines, highlight, stageN, typing, live, compute };
+  return {
+    nodes,
+    edges,
+    ctrl,
+    lit,
+    pulse,
+    lines,
+    highlight,
+    stageN,
+    typing,
+    live,
+    compute,
+    rt,
+  };
+}
+
+export function snapshotAt(rt) {
+  return flowState(rt);
 }
 
 export function stageEndTime(n) {
