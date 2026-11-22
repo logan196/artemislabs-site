@@ -40,7 +40,7 @@ export default function FigureBookletPromo() {
           href={FIGURES}
           className="inline-flex items-center justify-center rounded-[3px] bg-snow text-ink px-7 py-3 font-medium hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet transition-colors"
         >
-          Open the full Figure Booklet <span aria-hidden className="ml-2">↗</span>
+          Open the full Figure Booklet 
         </a>
         <a
           href={PDF}
