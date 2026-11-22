@@ -49,7 +49,7 @@ export default function Cta() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
+              href="https://calendar.app.google/Gcn7m6neU3P3ktQA8"
               target="_blank"
               rel="noreferrer"
               className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"

@@ -1,4 +1,5 @@
 import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 // globals.css already points --font-mono at --font-jetbrains, but nothing ever
@@ -38,7 +39,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`antialiased ${jetbrains.variable} ${serif.variable}`}>
-      <body className="bg-ink text-snow font-sans overflow-x-hidden">{children}</body>
+      <body className="bg-ink text-snow font-sans overflow-x-hidden">
+        {children}
+        <Script src="/home-workbench-tour.js" strategy="afterInteractive" />
+      </body>
     </html>
   );
 }

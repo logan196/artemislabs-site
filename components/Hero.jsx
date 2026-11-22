@@ -7,7 +7,7 @@ import TissueDither from "./TissueDither";
 import SplitText from "./SplitText";
 
 const BOOKING =
-  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
+  "https://calendar.app.google/Gcn7m6neU3P3ktQA8";
 
 // Every target must exist in the rendered page. #pipeline and #gallery were
 // left pointing at components that app/page.js no longer renders, so four
@@ -106,7 +106,7 @@ export default function Hero() {
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
-        <a href="#" aria-label="Artemis BioLabs — top of page" onClick={salute}>
+        <a href="/" aria-label="Artemis BioLabs home" onClick={salute}>
           <img
             src="artemis_lockup.svg"
             alt="Artemis BioLabs"
