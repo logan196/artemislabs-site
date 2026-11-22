@@ -58,13 +58,13 @@ function PortalChrome({ interactive = true }) {
     <div className="w-full max-w-5xl mx-auto rounded-[12px] border border-line bg-panel shadow-lg overflow-hidden">
       <iframe
         id="search-live-workbench"
-        src="/live/workbench/index.html?embed=1&v=10"
+        src="/live/workbench/index.html?embed=1&v=11"
         title="Interactive GBM3 workbench: linked UMAP and tissue views"
         className="w-full block"
         loading="lazy"
         referrerPolicy="strict-origin"
         tabIndex={interactive ? 0 : -1}
-        style={{ height: "min(440px, calc(100svh - 19rem))", border: 0, background: "#1a1a1a" }}
+        style={{ height: "min(500px, calc(100svh - 16rem))", border: 0, background: "#1a1a1a" }}
       />
       <div className="px-4 py-3 border-t border-line flex flex-wrap items-center justify-between gap-3">
         <p className="font-mono text-[11px] md:text-xs text-dim">
