@@ -23,7 +23,7 @@ const INCLUDED = [
   "Regular working sessions with the computational team",
 ];
 
-export default function PricingSection() {
+export default function PricingSection({ bookingUrl = BOOKING } = {}) {
   return (
     <section id="engagement" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
       <Reveal>
@@ -72,7 +72,7 @@ export default function PricingSection() {
             volume and priorities.
           </p>
           <a
-            href={BOOKING}
+            href={bookingUrl}
             target="_blank"
             rel="noreferrer"
             className="mt-5 block text-center rounded-[3px] bg-violet-deep text-ink px-5 py-2.5 font-medium hover:bg-violet transition-colors"
