@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import ScreenFunnel from "./ScreenFunnel";
 
 /* ------------------------------------------------------------------ */
 /* Real numbers. Source: NCBI GEO DataSets (eutils esearch, db=gds),   */
@@ -41,16 +42,6 @@ const ACTS = ["search", "screen", "atlas", "portal"];
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
 /* ---------------------------- shared markup ---------------------------- */
-
-function FlowBox({ title, children, tone = "main", className = "" }) {
-  const border = tone === "excl" ? "border-magma/50" : "border-violet/50";
-  return (
-    <div className={`rounded-[3px] border ${border} bg-panel shadow-sm px-4 py-3 ${className}`}>
-      <p className="font-mono text-[11px] uppercase tracking-widest text-dim mb-1">{title}</p>
-      <div className="text-[13px] md:text-sm leading-relaxed text-snow">{children}</div>
-    </div>
-  );
-}
 
 function PortalChrome({ interactive = true }) {
   return (
@@ -110,36 +101,6 @@ function Caption() {
   );
 }
 
-function ExclusionBody() {
-  return (
-    <ul className="list-none space-y-0.5 text-dim">
-      <li>· no per-sample spatial files</li>
-      <li>· non-target platform</li>
-      <li>· not yet ingested</li>
-      <li className="font-mono text-[11px] pt-1">not individually adjudicated</li>
-    </ul>
-  );
-}
-
-function IncludedBody({ nRef }) {
-  return (
-    <>
-      <p className="font-semibold">
-        3 sources ·{" "}
-        <span className="text-violet">
-          {nRef ? <span ref={nRef}>{N_SECTIONS}</span> : N_SECTIONS} sections
-        </span>{" "}
-        on this page
-      </p>
-      <ul className="list-none mt-1 space-y-0.5 text-dim">
-        <li>· GSE194329, 4 sections (Ren et al. 2023)</li>
-        <li>· 10x Parent Visium, 1 section</li>
-        <li>· gbmspace.org atlas, 3 sections (de Jong et al. 2026)</li>
-      </ul>
-    </>
-  );
-}
-
 /* ----------------------- reduced-motion fallback ----------------------- */
 
 function StaticStory() {
@@ -159,23 +120,8 @@ function StaticStory() {
       </div>
 
       {/* 2 · screen */}
-      <div>
-        <p className="font-mono text-xs uppercase tracking-widest text-violet mb-3">02 · screen</p>
-        <div className="grid gap-4 md:grid-cols-2 max-w-3xl">
-          <FlowBox title={`identified · n=${N_IDENTIFIED}`}>
-            GEO series matching the query, plus 2 sources identified outside GEO (10x Genomics,
-            gbmspace.org).
-          </FlowBox>
-          <FlowBox title="screened for">
-            Human GBM · Visium / MERFISH / seqFISH · per-sample spatial files + H&amp;E.
-          </FlowBox>
-          <FlowBox title={`not ingested · n=${N_NOT_INGESTED}`} tone="excl">
-            <ExclusionBody />
-          </FlowBox>
-          <FlowBox title="included in this page's GBM demos">
-            <IncludedBody />
-          </FlowBox>
-        </div>
+      <div className="max-w-3xl">
+        <ScreenFunnel reduced />
       </div>
 
       {/* 3 · atlas */}
@@ -225,50 +171,6 @@ function Chip({ chip, progress, i }) {
         aria-hidden
       />
       {chip.label}
-    </motion.span>
-  );
-}
-
-function WfRow({ progress, range, name, right, tone = "main", children }) {
-  const [a, b] = range;
-  const opacity = useTransform(progress, [a - 0.012, a], [0, 1]);
-  const bar = useTransform(progress, range, [0, 1]);
-  const runOp = useTransform(progress, [a, b - 0.005, b], [1, 1, 0]);
-  const doneOp = useTransform(progress, [b - 0.005, b], [0, 1]);
-  const excl = tone === "excl";
-  return (
-    <motion.div style={{ opacity }} className="pointer-events-none">
-      <div className="flex items-baseline gap-3">
-        <span className="relative w-[14px] shrink-0 font-mono text-[12px] leading-none">
-          <motion.span style={{ opacity: runOp }} className="absolute inset-0 text-[#9a5b13]">●</motion.span>
-          <motion.span style={{ opacity: doneOp }} className={excl ? "text-magma" : "text-violet"}>
-            {excl ? "⊘" : "✓"}
-          </motion.span>
-        </span>
-        <span className="font-mono text-[11px] md:text-[11.5px] tracking-wide text-snow shrink-0">{name}</span>
-        <span className="flex-1" />
-        <span className="font-mono text-[10.5px] md:text-[11px] text-dim text-right">{right}</span>
-      </div>
-      <div className="mt-1 ml-[26px] h-[3px] rounded-full bg-line/50 overflow-hidden">
-        <motion.div
-          className={`h-full origin-left ${excl ? "bg-magma" : "bg-violet-deep"}`}
-          style={{ scaleX: bar }}
-        />
-      </div>
-      {children}
-    </motion.div>
-  );
-}
-
-function WfTask({ progress, at, label }) {
-  const op = useTransform(progress, [at, at + 0.008], [0, 1]);
-  return (
-    <motion.span
-      style={{ opacity: op }}
-      className="flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 rounded-[3px] border border-line bg-ground/50 text-dim"
-    >
-      <span className="text-violet">✓</span>
-      {label}
     </motion.span>
   );
 }
@@ -346,9 +248,6 @@ export default function PrismaStory() {
   const wrapRef = useRef(null);
   const typedRef = useRef(null);
   const countRef = useRef(null);
-  const idRef = useRef(null);
-  const exclRef = useRef(null);
-  const inclRef = useRef(null);
   const [active, setActive] = useState(0);
   const [reduced, setReduced] = useState(false);
 
@@ -375,21 +274,6 @@ export default function PrismaStory() {
       if (countRef.current) {
         countRef.current.textContent = String(
           Math.round(clamp01((p - 0.1) / 0.1) * N_IDENTIFIED)
-        );
-      }
-      if (idRef.current) {
-        idRef.current.textContent = String(
-          Math.round(clamp01((p - 0.27) / 0.04) * N_IDENTIFIED)
-        );
-      }
-      if (exclRef.current) {
-        exclRef.current.textContent = String(
-          Math.round(clamp01((p - 0.39) / 0.04) * N_NOT_INGESTED)
-        );
-      }
-      if (inclRef.current) {
-        inclRef.current.textContent = String(
-          Math.round(clamp01((p - 0.45) / 0.04) * N_SECTIONS)
         );
       }
       const idx = p < 0.26 ? 0 : p < 0.55 ? 1 : p < 0.79 ? 2 : 3;
@@ -426,7 +310,8 @@ export default function PrismaStory() {
   }
 
   return (
-    <section id="pipeline" ref={wrapRef} className="relative h-[300vh] md:h-[340vh]">
+    <section id="pipeline" className="relative">
+      <div ref={wrapRef} className="relative h-[300vh] md:h-[340vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         {/* header, recedes while the atlas thumbnails fly through */}
         <motion.div
@@ -456,7 +341,7 @@ export default function PrismaStory() {
                 }`}
               />
               <span
-                className={`font-mono text-[10px] md:text-[11px] uppercase tracking-widest transition-colors duration-300 ${
+                className={`hidden md:inline font-mono text-[10px] md:text-[11px] uppercase tracking-widest transition-colors duration-300 ${
                   active === i ? "text-violet" : "text-dim/60"
                 }`}
               >
@@ -467,7 +352,7 @@ export default function PrismaStory() {
         </div>
 
         {/* stage */}
-        <div className="relative flex-1 max-w-6xl w-full mx-auto px-8 md:px-14">
+        <div className="relative min-h-0 flex-1 max-w-6xl w-full mx-auto overflow-hidden pl-8 pr-3 md:px-14">
           {/* ACT 1 · SEARCH */}
           <motion.div
             style={{ opacity: o1 }}
@@ -500,37 +385,12 @@ export default function PrismaStory() {
             </div>
           </motion.div>
 
-          {/* ACT 2 · THE WORKFLOW, nf-core-style process board */}
+          {/* ACT 2 · PRISMA-style screen. Scrubbed to this act's scroll window. */}
           <motion.div
             style={{ opacity: o2 }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            className="absolute inset-0 flex items-center justify-center px-1"
           >
-            <div className="w-full max-w-2xl rounded-[4px] border border-line bg-panel shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between border-b border-line bg-ground/60 px-4 py-2">
-                <span className="font-mono text-[11px] text-dim">workflow: search_to_portal</span>
-                <span className="font-mono text-[10.5px] text-violet">executor · artemis</span>
-              </div>
-              <div className="p-4 md:p-5 flex flex-col gap-3">
-                <WfRow progress={scrollYProgress} range={[0.275, 0.305]} name="GEO_SEARCH:ESEARCH"
-                  right={<><span ref={idRef} className="text-violet tabular-nums">{N_IDENTIFIED}</span> series · +2 outside GEO</>} />
-                <WfRow progress={scrollYProgress} range={[0.305, 0.335]} name="SCREEN:PLATFORM"
-                  right="Visium · MERFISH · seqFISH" />
-                <WfRow progress={scrollYProgress} range={[0.335, 0.365]} name="SCREEN:FILES"
-                  right={<>per-sample spatial + H&amp;E</>} />
-                <WfRow progress={scrollYProgress} range={[0.365, 0.4]} name="EXCLUDE" tone="excl"
-                  right={<><span ref={exclRef} className="text-magma tabular-nums">{N_NOT_INGESTED}</span> not ingested · not individually adjudicated</>} />
-                <WfRow progress={scrollYProgress} range={[0.4, 0.49]} name="INGEST:SECTIONS"
-                  right={<><span ref={inclRef} className="text-violet tabular-nums">{N_SECTIONS}</span> sections · 3 sources</>}>
-                  <div className="flex flex-wrap gap-1.5 mt-2 ml-[26px]">
-                    {["GBM1", "GBM2", "GBM3", "GBM4", "TenX", "AT10", "AT14", "AT15"].map((d, i) => (
-                      <WfTask key={d} progress={scrollYProgress} at={0.405 + i * 0.01} label={d} />
-                    ))}
-                  </div>
-                </WfRow>
-                <WfRow progress={scrollYProgress} range={[0.49, 0.525]} name="PORTAL:BUILD"
-                  right="live, every included section" />
-              </div>
-            </div>
+            <ScreenFunnel progress={scrollYProgress} />
           </motion.div>
 
           {/* ACT 3 · ATLAS */}
@@ -561,10 +421,15 @@ export default function PrismaStory() {
           </motion.div>
         </div>
 
-        {/* caption pinned to the bottom of the sticky panel */}
-        <div className="px-6 md:px-14 pb-5 max-w-7xl mx-auto w-full">
+        {/* On a phone the figure caption sits after the sticky story so the
+            funnel has the viewport. Desktop keeps it pinned under the stage. */}
+        <div className="hidden md:block px-6 md:px-14 pb-5 max-w-7xl mx-auto w-full">
           <Caption />
         </div>
+      </div>
+      </div>
+      <div className="md:hidden px-6 pb-12">
+        <Caption />
       </div>
     </section>
   );
