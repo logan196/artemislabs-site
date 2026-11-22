@@ -4,14 +4,14 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 
 /**
- * Option B — the editorial treatment.
+ * Option B, the editorial treatment.
  *
  * Where Option A halftones the section into an instrument readout, this one
  * leaves it photographic and grades it. The H&E stays a photograph of real
  * tissue; a mix-blend-mode: color pass pulls its magenta into the brand's
  * teal-indigo without touching luminance, so the specimen's own structure
  * still carries the image. Type is a serif display against mono figure
- * labels — an editorial voice rather than a technical one.
+ * labels, an editorial voice rather than a technical one.
  *
  * Layout is asymmetric and left-aligned on purpose: a centred stack of
  * decreasing type sizes is the shape every generated hero has.
@@ -99,8 +99,7 @@ export default function HeroEditorial() {
           transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: 0.62 }}
           className="mt-8 max-w-[46ch] text-lg leading-relaxed text-snow/85 md:text-xl"
         >
-          Spatial and single-cell analysis run by computational biologists —
-          every figure reproducible, every call traceable to the data that made it.
+          Spatial and single-cell analysis run by computational biologists, every figure reproducible, every call traceable to the data that made it.
         </motion.p>
 
         <motion.div

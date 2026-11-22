@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 /**
  * Full-bleed canvas field of line glyphs that resolves into a tissue section.
  *
- * The scene is a density function — a sum of offset gaussians that reads as an
+ * The scene is a density function, a sum of offset gaussians that reads as an
  * irregular, lobed tissue silhouette rather than a circle. Every tick's height
  * and alpha are driven by the density under it, so the drawing emerges from
  * the measurement rather than being an illustration laid on top.
@@ -28,7 +28,7 @@ const NICHES = [
 
 // Calibrated against arda.ai's hero field, measured directly: ~8.4% of pixels
 // carry a mark, and ~13% of all pixels change every 250ms. The second number is
-// the one that matters — a field that only sweeps in and then holds still reads
+// the one that matters, a field that only sweeps in and then holds still reads
 // as a backdrop; one that keeps re-forming reads as live instrumentation.
 const COL_STEP = 7; // px between tick columns
 const ROW_STEP = 17; // px between tick rows
@@ -41,7 +41,7 @@ const DRIFT_X = 44; // px a tick may jump on respawn
 const DRIFT_Y = 24;
 
 // Cheap deterministic hash so a tick's respawn position is a pure function of
-// (seed, cycle) — no per-frame allocation, and identical across repaints.
+// (seed, cycle), no per-frame allocation, and identical across repaints.
 function hash(n) {
   const s = Math.sin(n) * 43758.5453;
   return s - Math.floor(s);
@@ -160,7 +160,7 @@ export default function TickField({ className = "", onReady }) {
           const raw = (t - k.delay) / k.life + k.born;
           const cycle = Math.floor(raw);
           const u = raw - cycle;
-          // trapezoid: quick rise, long hold, quick fall — more legible as
+          // trapezoid: quick rise, long hold, quick fall, more legible as
           // "marks being written" than a sine, which never fully commits
           const pulse = u < 0.18 ? u / 0.18 : u > 0.76 ? (1 - u) / 0.24 : 1;
           a *= pulse;

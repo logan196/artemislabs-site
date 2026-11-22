@@ -3,6 +3,7 @@ const nextConfig = {
   // Static export: same build serves Vercel and the self-contained preview
   // artifact. Relative assetPrefix keeps _next/* chunks path-independent.
   output: "export",
+  trailingSlash: true,
   // Production only. A relative assetPrefix makes the exported _next/* chunks
   // path-independent, but in dev it also rewrites the dev-runtime and HMR
   // endpoints, which leaves the page served but never hydrated — effects never

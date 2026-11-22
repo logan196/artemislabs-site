@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /*
- * RunBoard — the pipeline as a colorful mermaid-style flowchart in a
+ * RunBoard, the pipeline as a colorful mermaid-style flowchart in a
  * VS Code-dark editor panel.
  *
  * A condensed, deterministic REPLAY of the real Artemis spatial runs:
@@ -57,7 +57,7 @@ const TOTAL_SPOTS = DATASETS.reduce((a, d) => a + d.spots, 0); // 15,438
 const TOTAL_DOMAINS = DATASETS.reduce((a, d) => a + d.clusters, 0); // 90
 
 // ---------------------------------------------------------------- timeline
-// Replay pacing only — the shipped runs logged no per-stage durations, so
+// Replay pacing only, the shipped runs logged no per-stage durations, so
 // none are claimed. Windows are relative to each dataset's lane start.
 const WIN = [
   { a: 0, b: 6000 }, // 1 Load + preprocess
@@ -72,7 +72,7 @@ const TOTAL = 28000; // ~23s run + ~5s hold at COMPLETE, then loop
 const FINAL_T = COMPLETE_AT + 100; // static state for reduced motion
 const DOT_LOOP = 800; // ms for a flow dot to ride a connector once
 
-// Footer log schedule — only real values (meta.json / manifest.json), and
+// Footer log schedule, only real values (meta.json / manifest.json), and
 // the pipeline's own skip messages.
 const EVENTS = [];
 for (const d of DATASETS) {
@@ -85,7 +85,7 @@ for (const d of DATASETS) {
     { at: d.start + WIN[4].b, text: `${d.id} · paper retrieval → skipped (no literature_queries)` }
   );
 }
-// in-silico bench humor between real events — clearly whimsy, never data
+// in-silico bench humor between real events, clearly whimsy, never data
 const VERBS = [
   "⌁ titrating λ=0.2…",
   "⌁ hybridizing the neighborhood graph…",
@@ -102,10 +102,10 @@ const COMPLETE_LINE = `✓ 5 datasets · ${TOTAL_SPOTS.toLocaleString("en-US")} 
 
 // ---------------------------------------------------------------- palette
 // Mermaid-on-VS-Code-dark status hues.
-const DONE = "#2dd4bf"; // done   — teal
-const RUN = "#fbbf24"; // running — amber
-const SKIP = "#6b7280"; // skipped — muted slate
-const FAIL = "#f87171"; // failed  — red (unused in the shipped runs, styled anyway)
+const DONE = "#2dd4bf"; // done, teal
+const RUN = "#fbbf24"; // running, amber
+const SKIP = "#6b7280"; // skipped, muted slate
+const FAIL = "#f87171"; // failed, red (unused in the shipped runs, styled anyway)
 const EDGE_ON = "#4b5563"; // settled connector stroke
 const EDGE_OFF = "#2f2d3d"; // not-yet-travelled connector stroke
 const INK = "#efeef8";
@@ -396,7 +396,7 @@ export default function RunBoard() {
         className="rounded-lg border overflow-hidden shadow-sm"
         style={{ background: "#12101d", borderColor: "#2a2838" }}
         role="img"
-        aria-label="Run board: the five public glioma datasets (GSE194329 GBM1 to GBM4 plus the 10x public GBM section) replayed through the real five-stage Artemis pipeline — Load + preprocess, Marker report, Interactive viewer, then AI analysis and Paper retrieval, which the shipped runs skipped. 15,438 spots processed into 90 spatial domains and 5 portals."
+        aria-label="Run board: the five public glioma datasets (GSE194329 GBM1 to GBM4 plus the 10x public GBM section) replayed through the real five-stage Artemis pipeline. Load + preprocess, Marker report, Interactive viewer, then AI analysis and Paper retrieval, which the shipped runs skipped. 15,438 spots processed into 90 spatial domains and 5 portals."
       >
         {/* ------------------------------------------------ editor title bar */}
         <div
@@ -482,7 +482,7 @@ export default function RunBoard() {
                         style={{ opacity: 0.55, transition: "stroke .35s, opacity .35s" }}
                       />
                     ))}
-                    {/* flow dots — one per lane, Okabe–Ito accent, ride the bezier while the edge is active */}
+                    {/* flow dots, one per lane, Okabe–Ito accent, ride the bezier while the edge is active */}
                     {DATASETS.map((d, i) => (
                       <circle
                         key={`fd-${d.id}`}
@@ -496,7 +496,7 @@ export default function RunBoard() {
                   </svg>
                 )}
 
-                {/* stage node — mermaid box: 3px status edge + tinted fill */}
+                {/* stage node, mermaid box: 3px status edge + tinted fill */}
                 <div
                   className="shrink-0 rounded-md"
                   style={{
@@ -529,7 +529,7 @@ export default function RunBoard() {
                     <div ref={reg(`cnt-${s}`)} className="mt-1 font-mono text-[10.5px] tabular-nums whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: DIM }}>
                       {s === 0 ? `0 / ${TOTAL_SPOTS.toLocaleString("en-US")} spots` : s === 1 ? `0 / ${TOTAL_DOMAINS} domains` : s === 2 ? "0 / 5 portals" : `0 / 5 · ${stage.why}`}
                     </div>
-                    {/* thin progress bar — scaleX only */}
+                    {/* thin progress bar, scaleX only */}
                     <div className="mt-1.5 h-[3px] w-full overflow-hidden rounded-full" style={{ background: "#0d0b16" }}>
                       <div
                         ref={reg(`bar-${s}`)}
@@ -539,7 +539,7 @@ export default function RunBoard() {
                     </div>
                   </div>
 
-                  {/* dataset mini-list — Okabe–Ito lane tick per chip */}
+                  {/* dataset mini-list. Okabe–Ito lane tick per chip */}
                   <div className="mt-[10px] border-t px-3 pt-1" style={{ borderColor: "#2e2c3a" }}>
                     {DATASETS.map((d, i) => (
                       <div key={d.id} className="flex items-center gap-1.5 font-mono text-[10.5px]" style={{ height: ROW_H }}>
@@ -578,7 +578,7 @@ export default function RunBoard() {
       </div>
 
       <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-        <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> The pipeline as a live board — five public glioma
+        <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> The pipeline as a live board, five public glioma
         datasets replayed through the real five-stage run (stage names from run_pipeline.py; counts from the shipped
         runs). Condensed replay, not a live cluster.
       </p>

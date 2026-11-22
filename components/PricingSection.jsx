@@ -3,12 +3,12 @@
 import Reveal from "./Reveal";
 
 const BOOKING =
-  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
+  "https://calendar.app.google/Gcn7m6neU3P3ktQA8";
 
 const MODALITIES = [
-  ["Single-cell & single-nucleus", "scRNA/snRNA-seq (10x, Smart-seq), scATAC, multiome, CITE-seq — annotation, trajectories, DE, pathways, cell–cell communication."],
+  ["Single-cell & single-nucleus", "scRNA/snRNA-seq (10x, Smart-seq), scATAC, multiome, CITE-seq, annotation, trajectories, DE, pathways, cell–cell communication."],
   ["Epigenetics & chromatin", "Bulk and single-cell ATAC, CUT&RUN, CUT&Tag, ChIP-seq, WGBS/EM-seq, methylation arrays, Hi-C and chromatin conformation."],
-  ["Spatial omics & imaging", "Xenium, MERFISH, CosMx, seqFISH+, Visium & Visium HD, Slide-seq, CODEX/PhenoCycler, spatial ATAC & CUT&Tag — segmentation to niches to interactive portals."],
+  ["Spatial omics & imaging", "Xenium, MERFISH, CosMx, seqFISH+, Visium & Visium HD, Slide-seq, CODEX/PhenoCycler, spatial ATAC & CUT&Tag, segmentation to niches to interactive portals."],
   ["Bulk & functional genomics", "Bulk RNA-seq and GSEA, ribosome profiling, CRISPR/Perturb-seq screens, TCR/BCR repertoires, Nanopore & PacBio long reads, SVs, WGS/WES annotation."],
 ];
 
@@ -34,7 +34,7 @@ export default function PricingSection() {
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
           Artemis BioLabs gives your lab an on-demand computational biology group and AI
           analysis platform for <span className="text-snow font-medium">$3,000–$5,000 per month</span>,
-          scaled by data volume, complexity and infrastructure — with unlimited ongoing
+          scaled by data volume, complexity and infrastructure, with unlimited ongoing
           analysis and support, not per-dataset or per-figure billing. Assay-agnostic: one
           engagement covers every modality below, our agents working alongside a PhD
           bioinformatics team.
@@ -61,11 +61,11 @@ export default function PricingSection() {
           <p className="font-mono text-[12px] tracking-[0.2em] text-violet uppercase">Tiers</p>
           <p className="mt-3 text-[15px] leading-relaxed">
             <span className="font-semibold">$3,000/mo</span>
-            <span className="text-dim"> — standard ongoing support</span>
+            <span className="text-dim">, standard ongoing support</span>
           </p>
           <p className="mt-2 text-[15px] leading-relaxed">
             <span className="font-semibold">$5,000/mo</span>
-            <span className="text-dim"> — high-volume, multimodal, spatial or infrastructure-heavy work</span>
+            <span className="text-dim">, high-volume, multimodal, spatial or infrastructure-heavy work</span>
           </p>
           <p className="mt-4 text-[14px] text-dim leading-relaxed">
             We set the tier together after a short conversation about your assays, data

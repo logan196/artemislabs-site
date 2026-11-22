@@ -8,9 +8,9 @@ import Reveal from "./Reveal";
 // from their primary archives (verified: Access-Control-Allow-Origin: * and
 // 206 partial content on both hosts).
 //
-//  · CUT&RUN  — GEO GSM8782600 (series GSE289046): SOX2 CUT&RUN in NCI-H520
+//  · CUT&RUN. GEO GSM8782600 (series GSE289046): SOX2 CUT&RUN in NCI-H520
 //    lung squamous carcinoma cells, hg38, RPKM-normalized bigWig.
-//  · Long reads — GIAB HG002 (NA24385): PacBio HiFi Revio 48× alignments to
+//  · Long reads. GIAB HG002 (NA24385): PacBio HiFi Revio 48× alignments to
 //    GRCh38, NIST ftp-trace mirror. igv.js fetches only the window in view.
 //
 // Reference genome: igv.js hosted hg38 data (igv.org + UCSC hgdownload),
@@ -22,7 +22,7 @@ const HIFI_BAM =
   "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/HG002_NA24385_son/PacBio_HiFi-Revio_20231031/HG002_PacBio-HiFi-Revio_20231031_48x_GRCh38-GIABv3.bam";
 
 // SOX2 locus, hg38. In H520 (3q26-amplified SCC) the factor sits parked on
-// its own gene — an ~800-RPKM autoregulatory peak blanketing the gene body,
+// its own gene, an ~800-RPKM autoregulatory peak blanketing the gene body,
 // with a second site ~12 kb upstream. 35 kb window: single HiFi reads span
 // half the view.
 const LOCUS = "chr3:181,695,000-181,730,000";
@@ -82,7 +82,7 @@ function loadIgvScript() {
   if (!igvScriptPromise) {
     igvScriptPromise = new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = IGV_SRC; // relative — survives the static export's relative asset prefix
+      s.src = IGV_SRC; // relative, survives the static export's relative asset prefix
       s.async = true;
       s.onload = () => (window.igv ? resolve() : reject(new Error("igv missing after load")));
       s.onerror = () => {
@@ -180,11 +180,11 @@ export default function GenomeSection() {
           Not just spatial.
         </h2>
         <p className="mt-6 text-lg text-dim leading-relaxed max-w-2xl">
-          CUT&amp;RUN, long reads, bulk — the same embedded team takes your assay from
+          CUT&amp;RUN, long reads, bulk, the same embedded team takes your assay from
           fastq to a browser you can hand a collaborator. The panel below is not a
           screenshot: it is a live igv.js genome browser streaming two public datasets
-          into this page, opened on SOX2 — the stemness factor this site keeps meeting
-          in tumor tissue — caught sitting on its own gene.
+          into this page, opened on SOX2, the stemness factor this site keeps meeting
+          in tumor tissue, caught sitting on its own gene.
         </p>
         <div className="mt-6 flex gap-3 flex-wrap font-mono text-[13px] text-dim">
           <span>CUT&amp;RUN</span>
@@ -233,7 +233,7 @@ export default function GenomeSection() {
                 </p>
                 <p className="text-[15px] text-dim leading-relaxed">
                   This panel streams public data straight from NCBI GEO, NIST GIAB and
-                  igv.org — hosts this network or preview sandbox is blocking. On the
+                  igv.org, hosts this network or preview sandbox is blocking. On the
                   production site it is a working genome browser: SOX2 CUT&amp;RUN
                   coverage (NCI-H520, GEO GSM8782600) above 48× PacBio HiFi alignments
                   (GIAB HG002), open at the SOX2 locus on hg38.
@@ -257,11 +257,10 @@ export default function GenomeSection() {
         <p className="mt-2.5 text-[13.5px] text-dim leading-relaxed max-w-4xl">
           <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> Live genome
           browser (igv.js, hg38) at the SOX2 locus, chr3:181,695,000–181,730,000. Top
-          track: SOX2 CUT&amp;RUN coverage in NCI-H520 lung squamous carcinoma cells —
-          GEO accession GSM8782600 (series GSE289046), RPKM-normalized; the ~800-RPKM
+          track: SOX2 CUT&amp;RUN coverage in NCI-H520 lung squamous carcinoma cells. GEO accession GSM8782600 (series GSE289046), RPKM-normalized; the ~800-RPKM
           peak over the gene body is the factor binding its own locus. Bottom track:
           PacBio HiFi Revio long-read alignments at 48× from the GIAB HG002 reference
-          sample (NIST ftp-trace mirror, GRCh38) — single reads span tens of kilobases.
+          sample (NIST ftp-trace mirror, GRCh38), single reads span tens of kilobases.
           Both are public datasets streamed live into the browser by HTTP range
           request; drag to pan, scroll to zoom.
         </p>

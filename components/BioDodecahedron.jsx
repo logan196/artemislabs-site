@@ -82,7 +82,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
     let raf = 0;
     let running = false;
 
-    // interaction state — all outside React
+    // interaction state, all outside React
     const rot = { rx: 0.5, ry: 0.7, vx: 0, vy: 0 };
     const par = { tx: 0, ty: 0, x: 0, y: 0 }; // parallax target + eased value
     const drag = { on: false, x: 0, y: 0 };
@@ -128,7 +128,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         return [w / 2 + x2 * s, h / 2 + y1 * s, z2];
       });
 
-      // glassy pentagon faces, back-to-front — depth makes the solid read as 3D
+      // glassy pentagon faces, back-to-front, depth makes the solid read as 3D
       const faceOrder = faces
         .map((f, fi) => [f.reduce((acc, i) => acc + pts[i][2], 0) / 5, fi])
         .sort((a, b) => b[0] - a[0]); // far faces first (larger z = farther here)
@@ -142,7 +142,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         ctx.fill();
       }
 
-      // edges — the connections (edges touching the hovered vertex light up)
+      // edges, the connections (edges touching the hovered vertex light up)
       ctx.lineWidth = 1.1;
       for (const [i, j] of edges) {
         const near = 1 - ((pts[i][2] + pts[j][2]) / 2 + 1.7) / 3.4;
@@ -156,7 +156,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
         ctx.lineTo(pts[j][0], pts[j][1]);
         ctx.stroke();
       }
-      // signal pulses travelling the edges — five concurrent carriers
+      // signal pulses travelling the edges, five concurrent carriers
       if (!reduced) {
         for (let c = 0; c < 5; c++) {
           const speed = 0.9 + c * 0.23;
@@ -358,7 +358,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
       }
     };
 
-    // ——— pointer interaction ———
+    // , , ,  pointer interaction , , , 
     const onDown = (e) => {
       interacted = true;
       drag.on = true;
@@ -454,7 +454,7 @@ export default function BioDodecahedron({ size = 460, labels = true, helix = fal
       ref={ref}
       style={{ width: "100%", height: size, touchAction: "pan-y", cursor: "grab" }}
       className="select-none"
-      aria-label="Interactive dodecahedron whose 20 vertices are the parts of the Artemis BioLabs stack — drag to rotate, hover a vertex to name it"
+      aria-label="Interactive dodecahedron whose 20 vertices are the parts of the Artemis BioLabs stack, drag to rotate, hover a vertex to name it"
       role="img"
     />
   );

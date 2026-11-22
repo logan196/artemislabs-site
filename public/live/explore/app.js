@@ -1,4 +1,4 @@
-/* Artemis Explore — vanilla JS spatial tissue viewer.
+/* Artemis Explore, vanilla JS spatial tissue viewer.
    Data: de Jong et al., Nature 2026 (gbmspace.org). All numbers shown in the
    agent pane are precomputed at export time from the run itself. */
 "use strict";
@@ -38,7 +38,7 @@
     $("sampleId").textContent = data.sample;
     $("sampleSub").textContent = data.subtitle;
     $("citation").innerHTML =
-      `Data: ${data.citation.replace("·", "·")} — ${data.n_spots.toLocaleString()} spots, ` +
+      `Data: ${data.citation.replace("·", "·")}, ${data.n_spots.toLocaleString()} spots, ` +
       `${data.states.n_dominant_states} dominant cell states. Viewer: Artemis BioLabs.`;
 
     const [he, st, ...marks] = await Promise.all([

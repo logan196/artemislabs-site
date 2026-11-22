@@ -56,7 +56,7 @@ function LivingFigure() {
       <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
         <span className="font-semibold text-snow">Fig. 2&nbsp;|</span>{" "}
         AT15, an atlas section breathing between the raw H&E and its
-        cell2location-estimated states — de Jong et al., Nature 2026 · gbmspace.org.
+        cell2location-estimated states, de Jong et al., Nature 2026 · gbmspace.org.
       </figcaption>
     </figure>
   );
@@ -81,13 +81,13 @@ export default function GbmGallery() {
           Five sections, one afternoon.
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          Five public glioma sections, dropped into the pipeline unmodified —{" "}
+          Five public glioma sections, dropped into the pipeline unmodified , {" "}
           <span className="text-snow">each one came out the other side as a live portal.</span>
         </p>
         <ul className="mt-4 max-w-2xl space-y-1.5 text-[15.5px] text-dim leading-relaxed list-none">
           <li>→ four high-grade gliomas from Ren et al. 2023 (GSE194329; two IDH-wt GBM, two IDH-mut grade-4 astrocytomas, WHO CNS5) + one 10x Genomics GBM</li>
           <li>→ BANKSY domains, putative cell states and marker maps, each with its own interactive Vitessce portal</li>
-          <li>→ three gbmspace.org atlas sections through the same stack, the paper&apos;s own annotations intact — one is breathing just below</li>
+          <li>→ three gbmspace.org atlas sections through the same stack, the paper&apos;s own annotations intact, one is breathing just below</li>
         </ul>
         <LivingFigure />
       </Reveal>
@@ -124,7 +124,7 @@ export default function GbmGallery() {
               rel="noreferrer"
               className="order-last w-full sm:w-auto sm:order-none rounded-[3px] bg-violet-deep text-ink px-5 py-2 text-[15px] font-medium hover:bg-violet transition-colors text-center"
             >
-              Artemis Explore — H&amp;E × markers × cell states, live →
+              Artemis Explore. H&amp;E × markers × cell states, live →
             </a>
             <a
               href="live/GBM3/portal.html"
@@ -148,7 +148,7 @@ export default function GbmGallery() {
               rel="noreferrer"
               className="order-last w-full sm:w-auto sm:order-none rounded-[3px] border border-snow/50 px-5 py-2 text-[15px] text-dim hover:text-snow hover:border-violet transition-all text-center"
             >
-              seqFISH+ mouse cortex — fluorescence + co-scientist →
+              seqFISH+ mouse cortex, fluorescence + co-scientist →
             </a>
             {m && (
               <div className="flex gap-2 flex-wrap">
@@ -163,19 +163,19 @@ export default function GbmGallery() {
           <div className="relative overflow-hidden rounded-2xl bg-ink border border-snow/60">
             <iframe
               src="live/explore/index.html"
-              title="Artemis Explore — live glioblastoma section viewer: H&E, marker channels, cell states"
+              title="Artemis Explore, live glioblastoma section viewer: H&E, marker channels, cell states"
               className="w-full h-[640px] md:h-[720px] border-0"
               loading="lazy"
             />
             <span className="absolute top-3 right-3 font-mono text-[11px] text-ink bg-violet-deep/95 rounded-[3px] px-2.5 py-1 pointer-events-none">
-              ● live — this is the viewer, not a screenshot
+              ● live, this is the viewer, not a screenshot
             </span>
           </div>
           <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> Artemis Explore, running live in this page — AT15 glioblastoma section (de Jong et al., <i>Nature</i> 2026): pan and zoom the H&E, composite eight expression-derived marker channels, toggle 66 mapped cell states, and let the agent annotate from the run itself. Split view with the s key; open full screen above. Sample cards open the Ren et al. 2023 / 10x sections at full resolution; their state labels are model-annotated and not independently validated.
+            <span className="font-semibold text-snow">Fig. 3&nbsp;|</span> Artemis Explore, running live in this page. AT15 glioblastoma section (de Jong et al., <i>Nature</i> 2026): pan and zoom the H&E, composite eight expression-derived marker channels, toggle 66 mapped cell states, and let the agent annotate from the run itself. Split view with the s key; open full screen above. Sample cards open the Ren et al. 2023 / 10x sections at full resolution; their state labels are model-annotated and not independently validated.
           </p>
           <p className="mt-6 text-[15px] text-dim">
-            All of this is one assay on one disease — the demo we lead with, not the edge of the map.
+            All of this is one assay on one disease, the demo we lead with, not the edge of the map.
           </p>
         </div>
       </div>

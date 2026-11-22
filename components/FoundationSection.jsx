@@ -11,9 +11,9 @@ import Reveal from "./Reveal";
  * the compare slider, with a mono readout chip cycling concept-only text.
  * Twice per cycle the scan pauses and the slider handle glides itself a few
  * hundred px, then returns. Everything here is explicitly labeled as a
- * concept animation — it is NOT a live model and never implies real output.
+ * concept animation, it is NOT a live model and never implies real output.
  *
- * Gating: IntersectionObserver (useInView) — nothing runs off-screen.
+ * Gating: IntersectionObserver (useInView), nothing runs off-screen.
  * Stops permanently on first user interaction. prefers-reduced-motion → off.
  * ------------------------------------------------------------------------- */
 
@@ -96,7 +96,7 @@ function ScanReticle({ patchRef, chipText }) {
           <path key={d} d={d} stroke="#5eead4" strokeOpacity="1" strokeWidth="2" />
         ))}
       </svg>
-      {/* mono readout chip — concept text only */}
+      {/* mono readout chip, concept text only */}
       <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 whitespace-nowrap font-mono text-[11px] leading-none bg-snow/90 text-ink border border-[#2dd4bf]/50 rounded-[3px] px-2.5 py-1.5 flex items-center gap-2">
         <span className="h-1.5 w-1.5 rounded-full bg-[#5eead4]" />
         {chipText}
@@ -138,13 +138,13 @@ function CompareSlider() {
     setPos(Math.min(100, Math.max(0, pct)));
   }, []);
 
-  // Ambient scan loop — rAF, transform/opacity only, fully deterministic.
+  // Ambient scan loop, rAF, transform/opacity only, fully deterministic.
   useEffect(() => {
     if (!scanActive) return;
     const patch = patchRef.current;
     const box = ref.current;
     if (!patch || !box) return;
-    if (box.clientWidth < 560) return; // skip on small screens — slider stays clean
+    if (box.clientWidth < 560) return; // skip on small screens, slider stays clean
 
     const setLine = (n) => {
       if (lineRef.current !== n) {
@@ -236,7 +236,7 @@ function CompareSlider() {
 
   return (
     <div>
-      {/* dark instrument chrome — Strand-style minimal viewer header */}
+      {/* dark instrument chrome. Strand-style minimal viewer header */}
       <div className="flex items-center justify-between gap-4 bg-snow px-4 py-2.5">
         <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-ink/60 truncate">
           viewer · AT14-BRA-4-FO-2_1 · H&E ⇄ measured states
@@ -247,7 +247,7 @@ function CompareSlider() {
             animate={scanActive ? { opacity: [1, 0.25, 1] } : { opacity: 0.35 }}
             transition={scanActive ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
           />
-          {scanActive ? "ambient scan — concept" : "scan idle — drag to compare"}
+          {scanActive ? "ambient scan, concept" : "scan idle, drag to compare"}
         </span>
       </div>
 
@@ -283,7 +283,7 @@ function CompareSlider() {
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
         />
 
-        {/* ambient scanning reticle — concept animation */}
+        {/* ambient scanning reticle, concept animation */}
         <ScanReticle patchRef={patchRef} chipText={READOUT[line]} />
 
         {/* handle */}
@@ -296,17 +296,17 @@ function CompareSlider() {
           </div>
         </div>
 
-        {/* persistent concept tag — this is never a live model */}
+        {/* persistent concept tag, this is never a live model */}
         <span className="absolute right-3 top-3 font-mono text-[10px] tracking-wide bg-snow/85 text-ink/90 border border-violet/40 rounded-[3px] px-2 py-1 pointer-events-none">
-          concept animation — not a live model
+          concept animation, not a live model
         </span>
 
         {/* pinned corner labels */}
         <span className="absolute left-3 bottom-3 font-mono text-[11px] tracking-wide bg-ink/90 text-snow border border-line rounded-[3px] px-2.5 py-1 pointer-events-none">
-          H&E — input
+          H&E, input
         </span>
         <span className="absolute right-3 bottom-3 font-mono text-[11px] tracking-wide bg-ink/90 text-snow border border-line rounded-[3px] px-2.5 py-1 pointer-events-none text-right">
-          cell2location-estimated states — the training target
+          cell2location-estimated states, the training target
           <span className="block text-dim">(cell2location, de Jong et al. 2026)</span>
         </span>
       </div>
@@ -323,10 +323,10 @@ export default function FoundationSection() {
           The slide already knows.
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          Every lab has H&E — it costs almost nothing and it's already in the archive;
+          Every lab has H&E, it costs almost nothing and it's already in the archive;
           spatial profiling costs thousands per section, so almost nobody has it at scale.
           Pathology foundation models (UNI, Virchow, CONCH, Prov-GigaPath) are learning to
-          read molecular state straight from morphology — and pairs like the one below are
+          read molecular state straight from morphology, and pairs like the one below are
           exactly the supervision that teaching requires: profiled tissue, not H&E-derived predictions.
         </p>
       </Reveal>
@@ -337,7 +337,7 @@ export default function FoundationSection() {
           <figcaption className="border-t border-line bg-panel px-5 py-3 text-[13px] text-dim leading-relaxed">
             <span className="font-semibold text-snow">Fig. 7&nbsp;|</span> AT14 section,
             de Jong et al., Nature 2026 (gbmspace.org). Left: H&E. Right: cell2location-estimated
-            cell-state abundances (deconvolved from measured Visium) — the supervision pairs for H&E→molecular
+            cell-state abundances (deconvolved from measured Visium), the supervision pairs for H&E→molecular
             prediction; no H&E-derived predictions shown. Drag the handle (or use
             arrow keys) to compare.
           </figcaption>
@@ -348,8 +348,7 @@ export default function FoundationSection() {
           </p>
           <p className="text-[15px] text-dim leading-relaxed">
             Pairs like the one above train the reverse direction too:{" "}
-            <span className="text-snow">compute the stain instead of performing it</span> —
-            H&amp;E in, molecular overlays out (virtual staining; Rivenson et&nbsp;al.,{" "}
+            <span className="text-snow">compute the stain instead of performing it</span>. H&amp;E in, molecular overlays out (virtual staining; Rivenson et&nbsp;al.,{" "}
             <em>Nat. Biomed. Eng.</em> 2019). We build it per lab: your slides, your
             measured spatial runs as the labels, your archive unlocked.
           </p>

@@ -22,7 +22,7 @@ const ease = (p) => p * p * (3 - 2 * p);
 const PAD = 6;
 
 /* ---------- sketches: (ctx, W, H, t, R) with R a fresh seeded PRNG ----------
-   Pure abstract concept loops — no text, no numbers, no fake data. */
+   Pure abstract concept loops, no text, no numbers, no fake data. */
 const DRAW = {
   /* scattered dots gain faint neighbor-rings, then settle into 3 spatial blocks */
   banksy(ctx, W, H, t, R) {
@@ -326,7 +326,7 @@ const DRAW = {
   },
 };
 
-/* per-kind loop duration (ms) — quiet 4-6s loops */
+/* per-kind loop duration (ms), quiet 4-6s loops */
 const DUR = {
   banksy: 5000, annotate: 5200, forge: 4600, live: 6000,
   copilot: 4200, scout: 5200, abstract: 5000, importer: 4000,

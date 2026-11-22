@@ -6,16 +6,15 @@ import FounderLock from "./FounderLock";
 import TissueDither from "./TissueDither";
 import SplitText from "./SplitText";
 
-const BOOKING =
-  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
+const BOOKING = "https://calendar.app.google/Gcn7m6neU3P3ktQA8";
 
 // Every target must exist in the rendered page. #pipeline and #gallery were
 // left pointing at components that app/page.js no longer renders, so four
-// controls — including the skip link — were silent no-ops.
+// controls, including the skip link, were silent no-ops.
 const NAV = [
-  ["#banksy", "BANKSY"],
   ["#whatwedo", "What we do"],
   ["#copilot", "Co-scientist"],
+  ["/about", "About"],
   ["#stack", "The stack"],
 ];
 
@@ -69,7 +68,7 @@ export default function Hero() {
   return (
     <section ref={ref} className="relative min-h-[92svh] md:min-h-[96svh] flex flex-col overflow-hidden">
       <a
-        href="#banksy"
+        href="#whatwedo"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-panel focus:border focus:border-violet focus:px-3 focus:py-1.5 focus:rounded-[3px]"
       >
         Skip to content
@@ -106,7 +105,7 @@ export default function Hero() {
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-5 md:px-14 py-4 md:py-5">
-        <a href="/" aria-label="Artemis BioLabs — home" onClick={salute}>
+        <a href="/" aria-label="Artemis BioLabs, home" onClick={salute}>
           <img
             src="artemis_lockup.svg"
             alt="Artemis BioLabs"
@@ -198,7 +197,7 @@ export default function Hero() {
       </motion.div>
 
       {/* Provenance, the way a figure carries it. Every value here is true of
-          the image actually being rendered — no invented n, no invented scale
+          the image actually being rendered, no invented n, no invented scale
           bar. The point of the line is that the hero is the specimen. */}
       <div className="pointer-events-none absolute bottom-5 left-5 md:left-14 z-10 hidden sm:block font-mono text-[10.5px] leading-relaxed tracking-[0.1em] text-[#93a7ad] [text-shadow:0_1px_10px_rgba(7,6,11,0.95)]">
         <span className="text-violet">■</span> field rendered from the section&rsquo;s own luminance
@@ -207,8 +206,8 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 md:hidden flex justify-center gap-5 pb-3 text-[13px] text-dim">
-        <a href="#banksy" className="hover:text-snow">BANKSY</a>
         <a href="#whatwedo" className="hover:text-snow">What we do</a>
+        <a href="/about" className="hover:text-snow">About</a>
       </div>
 
       <motion.div

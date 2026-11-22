@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// A live terminal that REPLAYS the real GBM3 session — typed command, staged
+// A live terminal that REPLAYS the real GBM3 session, typed command, staged
 // progress, real state counts, grounded chat. Values mirror output/GBM3.
 const TEAL = "#5eead4";
 const DIM = "#8b87a0";
@@ -17,7 +17,7 @@ const BARS = [
   ["Vitessce portal + zarr", 700],
 ];
 
-// the in-silico bench — whimsical wet-lab verbs while the pipeline cooks
+// the in-silico bench, whimsical wet-lab verbs while the pipeline cooks
 const VERBS = [
   "titrating buffers…",
   "hybridizing probes…",
@@ -50,7 +50,7 @@ function Bar({ label, dur, onDone, active }) {
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
   useEffect(() => {
-    // latch: once a bar completes it stays complete — parent re-renders must
+    // latch: once a bar completes it stays complete, parent re-renders must
     // never restart t0 (that made stages finish out of order).
     if (!active || doneRef.current) return;
     const t0 = performance.now();
@@ -89,7 +89,7 @@ export default function TerminalLive() {
 
   const CMD = "artemis run --input GBM3.h5ad --tissue-context glioblastoma";
   const CHAT_A =
-    "Hypoxia-linked VEGFA is strongest in the endothelial-annotated domain and spatially contiguous — Moran's I 0.62 on this section's k-NN graph.";
+    "Hypoxia-linked VEGFA is strongest in the endothelial-annotated domain and spatially contiguous. Moran's I 0.62 on this section's k-NN graph.";
 
   useEffect(() => {
     reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -150,7 +150,7 @@ export default function TerminalLive() {
         <span className="h-2.5 w-2.5 rounded-full bg-line" />
         <span className="h-2.5 w-2.5 rounded-full bg-line" />
         <span className="h-2.5 w-2.5 rounded-full bg-line" />
-        <span className="ml-3 font-mono text-[12px] text-dim">artemis — zsh</span>
+        <span className="ml-3 font-mono text-[12px] text-dim">artemis, zsh</span>
       </div>
       <div
         ref={boxRef}

@@ -17,7 +17,7 @@ export default function ComicFooter() {
         <p className="mt-3 text-[13px] text-dim leading-relaxed">
           <a href="https://xkcd.com/1838/" target="_blank" rel="noreferrer" className="text-violet hover:underline">xkcd #1838</a> by
           Randall Munroe · <a href="https://xkcd.com/license.html" target="_blank" rel="noreferrer" className="hover:underline">CC BY-NC 2.5</a>.
-          We stir responsibly — every number on this page traces to the run that made it.
+          We stir responsibly, every number on this page traces to the run that made it.
         </p>
       </Reveal>
     </section>

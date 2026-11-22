@@ -14,7 +14,7 @@ export default function ImagingSection() {
           </h2>
           <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
             A longitudinal diffusion-MRI cohort browser we built for a preclinical neurodegeneration study: per-subject FA and fiber-orientation maps, full 3D volumes
-            in the browser, and regional group statistics over 300 atlas regions — one
+            in the browser, and regional group statistics over 300 atlas regions, one
             interface from raw scans to effect sizes.
           </p>
         </Reveal>
@@ -26,7 +26,7 @@ export default function ImagingSection() {
                 artemis · dti-cohort-atlas
               </span>
               <span className="ml-auto font-mono text-[10px] tracking-wide text-dim border border-[#2a2838] rounded-[3px] px-2 py-0.5">
-                screen capture — 20s replay of the real tool
+                screen capture, 20s replay of the real tool
               </span>
             </div>
             <video
@@ -42,7 +42,7 @@ export default function ImagingSection() {
             />
           </div>
           <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The DTI cohort browser — 15 mice × 3 timepoints, registered to the Allen CCFv3 atlas (100&nbsp;µm): FA mosaics and DEC fiber-orientation maps, with in-browser 3D volumes and per-region trajectories in the full tool. Preclinical research in progress, shown with group labels blinded; regional labels provisional.
+            <span className="font-semibold text-snow">Fig. 5&nbsp;|</span> The DTI cohort browser, 15 mice × 3 timepoints, registered to the Allen CCFv3 atlas (100&nbsp;µm): FA mosaics and DEC fiber-orientation maps, with in-browser 3D volumes and per-region trajectories in the full tool. Preclinical research in progress, shown with group labels blinded; regional labels provisional.
           </p>
         </Reveal>
       </div>

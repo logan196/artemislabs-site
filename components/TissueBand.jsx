@@ -13,7 +13,7 @@ const TISSUE_IMAGES = [
     w: 700,
     h: 700,
     alt: "Multiplex immunofluorescence of clear cell renal cell carcinoma: Hoechst, MCM2, CD3 and CD8 channels composited in blue, green and red",
-    caption: "ccRCC · Hoechst / MCM2 / CD3 / CD8 — composited from the study's OME-zarr",
+    caption: "ccRCC · Hoechst / MCM2 / CD3 / CD8, composited from the study's OME-zarr",
     credit: "BioImage Archive S-BIAD605 · Wölflein et al. · CC0",
     href: "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD605",
     tilt: "md:-rotate-[1.4deg]",
@@ -57,7 +57,7 @@ const FILE_TYPES = [
   { id: "report", label: "run reports (md)" },
 ];
 
-/* Deterministic mini-glyphs — same conventions as StackMini (seeded PRNG,
+/* Deterministic mini-glyphs, same conventions as StackMini (seeded PRNG,
    single static draw, no text, no fake numbers). Okabe-Ito for cell states. */
 function glyphRng(seed) {
   let a = 7;
@@ -191,7 +191,7 @@ export default function TissueBand() {
             </h2>
             <p className="mt-4 max-w-xl text-[17px] text-dim leading-relaxed">
               An interactive visualizer with multi-channel marker overlays, cell
-              states and paired H&amp;E —{" "}
+              states and paired H&amp;E , {" "}
               <span className="text-snow">right in the browser.</span> Pan and
               zoom the histology, composite expression-derived marker channels,
               toggle the mapped cell states on and off.
@@ -276,8 +276,7 @@ export default function TissueBand() {
           <p className="text-[16px] text-dim leading-relaxed">
             <span className="text-snow font-medium">
               Artemis moves across all of this
-            </span>{" "}
-            — the artifact types already live elsewhere on this page:
+            </span>{" "}, the artifact types already live elsewhere on this page:
           </p>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
             {FILE_TYPES.map((t) => (

@@ -37,7 +37,7 @@ export default function DeJongSection() {
         <blockquote className="mt-7 max-w-2xl border-l-2 border-violet pl-5">
           <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-2">The claim in one line</p>
           <p className="text-lg md:text-xl leading-relaxed italic">
-            GB heterogeneity is not chaos — one conserved, spatially patterned trajectory,
+            GB heterogeneity is not chaos, one conserved, spatially patterned trajectory,
             developmental-like → gliosis → hypoxia, organizes cancer cells, subclones and
             the myeloid TME across tumours.
           </p>
@@ -113,7 +113,7 @@ export default function DeJongSection() {
               <motion.img
                 key={`${active}-${view}`}
                 src={`dejong/${active}_${view}.jpg`}
-                alt={`${active} — ${view}`}
+                alt={`${active}, ${view}`}
                 className="w-full max-h-[84vh] object-contain"
                 initial={{ opacity: 0, scale: 1.015 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -123,7 +123,7 @@ export default function DeJongSection() {
             </AnimatePresence>
           </a>
           <p className="mt-4 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> Imported unmodified — no re-clustering; the paper's own deconvolution and annotations drive every view.
+            <span className="font-semibold text-snow">Fig. 4&nbsp;|</span> Imported unmodified, no re-clustering; the paper's own deconvolution and annotations drive every view.
             Data: de Jong et al., <i>Nature</i> 2026 (preprint 2025; open access) · gbmspace.org · doi:10.1038/s41586-026-11234-8. Nine sections live in the portal.
           </p>
         </div>

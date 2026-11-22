@@ -54,7 +54,7 @@ const LINES = [
 ];
 
 // ---------------------------------------------------------------- timeline
-const LINE_H = 18; // px — fixed for deterministic caret math
+const LINE_H = 18; // px, fixed for deterministic caret math
 const RAW_END = 3500; // act 1: raw data arrives
 const CODE_START = 3500; // act 2: execution caret walks the code
 const PER_LINE = 330;
@@ -134,23 +134,23 @@ export default function CodePanel() {
   const t = reduced ? FINAL_T : frame * 40;
   const act = actOf(t);
 
-  // act 2 — execution caret
+  // act 2, execution caret
   const caretLine = Math.max(0, Math.min(LINES.length - 1, Math.floor((t - CODE_START) / PER_LINE)));
   const caretVisible = t >= CODE_START && t < TERM_START;
   const executedThrough = t >= TERM_START ? LINES.length - 1 : t >= CODE_START ? caretLine : -1;
   const stage3Active = executedThrough >= 20; // line 169 onward
 
-  // act 1 — raw-data overlay
+  // act 1, raw-data overlay
   const rawVisible = t < RAW_END;
   const lsTyped = typedSlice(LS_CMD, t, 200, 26);
 
-  // act 3 — terminal
+  // act 3, terminal
   const cmd1Typed = t >= TERM_START ? typedSlice(CMD1, t, TERM_START, 26) : "";
   const cmd1Done = t >= TERM_START + CMD1.length * 26 + 300;
   const noteTyped = t >= LOOP_START ? typedSlice(LOOP_NOTE, t, LOOP_START + 200, 28) : "";
   const noteDone = noteTyped.length >= LOOP_NOTE.length;
 
-  // act 4 — figure pane
+  // act 4, figure pane
   const figIn = t >= FIG_START;
 
   const show = (at) => t >= at;
@@ -195,7 +195,7 @@ export default function CodePanel() {
           </div>
         </div>
 
-        {/* editor body — code + raw-data overlay + sliding figure pane */}
+        {/* editor body, code + raw-data overlay + sliding figure pane */}
         <div className="relative overflow-hidden" aria-hidden>
           <div className="overflow-x-auto">
             <pre className="font-mono text-[11.5px] py-4 pr-5 m-0 min-w-max relative" style={{ lineHeight: `${LINE_H}px` }}>
@@ -253,7 +253,7 @@ export default function CodePanel() {
             </pre>
           </div>
 
-          {/* act 1 — raw data arrives (overlay, fades out into the code) */}
+          {/* act 1, raw data arrives (overlay, fades out into the code) */}
           <div
             className="absolute inset-0 font-mono text-[12.5px] leading-[1.9] px-6 py-5"
             style={{
@@ -286,7 +286,7 @@ export default function CodePanel() {
             )}
           </div>
 
-          {/* act 4 — publication-ready figure slides in from the right */}
+          {/* act 4, publication-ready figure slides in from the right */}
           <div
             className="absolute top-0 bottom-0 right-0 flex items-center pr-4 pl-2"
             style={{
@@ -319,7 +319,7 @@ export default function CodePanel() {
           </div>
         </div>
 
-        {/* acts 3 + 5 — terminal strip */}
+        {/* acts 3 + 5, terminal strip */}
         <div
           className="font-mono text-[11.5px] leading-[1.6] px-5 py-3 h-[178px] overflow-hidden whitespace-pre-wrap border-t"
           style={{ background: "#12101d", borderColor: "#2a2838" }}
@@ -385,7 +385,7 @@ export default function CodePanel() {
         </div>
       </div>
 
-      {/* step rail — synced to the acts */}
+      {/* step rail, synced to the acts */}
       <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px]" aria-hidden>
         {STEPS.map((s, i) => (
           <span key={s} className="flex items-center gap-2">
@@ -408,8 +408,7 @@ export default function CodePanel() {
       </div>
 
       <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-        <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> From raw data to a publication-ready figure —
-        the pipeline as it actually ships (run_pipeline.py, verbatim), replayed. Numbers from the real GBM3 run.
+        <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> From raw data to a publication-ready figure, the pipeline as it actually ships (run_pipeline.py, verbatim), replayed. Numbers from the real GBM3 run.
       </p>
     </figure>
   );

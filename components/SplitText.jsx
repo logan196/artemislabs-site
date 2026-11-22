@@ -9,8 +9,7 @@ import { useEffect, useRef, useState } from "react";
  * so it wipes up into view rather than fading. Words are the unbreakable unit,
  * which is what keeps a split headline from wrapping mid-word.
  *
- * Animation runs on CSS transitions with a per-character transitionDelay —
- * one state flip drives the whole line, instead of one component per glyph.
+ * Animation runs on CSS transitions with a per-character transitionDelay, * one state flip drives the whole line, instead of one component per glyph.
  * The clipping sleeve would otherwise crop descenders, so each sleeve carries
  * bottom padding that is pulled back out with a negative margin.
  */
@@ -29,7 +28,7 @@ export default function SplitText({
 
   // Characters render hidden so the reveal can wipe them up from nothing. That
   // makes the headline dependent on this effect firing, so a failsafe reveals
-  // it unconditionally — a missed cue must never leave the hero permanently blank.
+  // it unconditionally, a missed cue must never leave the hero permanently blank.
   useEffect(() => {
     const failsafe = setTimeout(() => setOn(true), 1800);
     return () => clearTimeout(failsafe);
@@ -52,8 +51,7 @@ export default function SplitText({
 
   // The whole split subtree is decorative. ARIA prohibits aria-label on a
   // generic element, so labelling the wrapper span here would be dropped by
-  // Chrome and Firefox and the text would have no accessible name at all —
-  // the CALLER must put the accessible name on the semantic element (the h1).
+  // Chrome and Firefox and the text would have no accessible name at all, // the CALLER must put the accessible name on the semantic element (the h1).
   return (
     <Tag className={className} aria-hidden="true">
       {words.map((word, wi) => (

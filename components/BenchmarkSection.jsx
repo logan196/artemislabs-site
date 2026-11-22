@@ -23,7 +23,7 @@ const ORBIT = [
   "ENCODE",
 ];
 
-// Questions we mine the archives for — asks, not claims.
+// Questions we mine the archives for, asks, not claims.
 const QUERIES = [
   "how does my hypoxia program compare to Ren 2023?",
   "which markers do public GBM panels agree on?",
@@ -157,7 +157,7 @@ export default function BenchmarkSection() {
           </h2>
           <p className="mt-6 text-lg text-dim leading-relaxed max-w-xl">
             The NIH&rsquo;s archives already hold millions of samples like yours. Before you
-            commit a single section, we mine them — which markers to panel, which regions to
+            commit a single section, we mine them, which markers to panel, which regions to
             expect, how many samples you actually need. Then your run lands beside the public
             cohorts that matter: <span className="text-snow">same pipeline, same plots, your
             tissue against the world&rsquo;s.</span>
@@ -177,7 +177,7 @@ export default function BenchmarkSection() {
           </p>
         </Reveal>
 
-        {/* the mining console — your question goes out, public cohorts stream back in */}
+        {/* the mining console, your question goes out, public cohorts stream back in */}
         <Reveal delay={0.1}>
           <div className="rounded-[6px] border border-line bg-panel/70 overflow-hidden glow-ring">
             <div className="flex items-center gap-2 border-b border-line bg-ground/60 px-4 py-2.5">
@@ -238,7 +238,7 @@ export default function BenchmarkSection() {
                 })}
               </svg>
 
-              {/* public studies around the run — every chip is a study live on this page */}
+              {/* public studies around the run, every chip is a study live on this page */}
               {ORBIT.map((label, i) => {
                 const ang = (i / ORBIT.length) * Math.PI * 2 - Math.PI / 2;
                 return (

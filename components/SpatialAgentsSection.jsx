@@ -14,7 +14,7 @@ export default function SpatialAgentsSection() {
     <section id="spatial-agents" className="relative border-y border-line bg-ink-2/60 px-6 py-24 md:px-14 md:py-32">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">05 · SPATIAL BIOINFORMATICS</p>
+          <p className="font-mono text-sm text-violet mb-4">04 · SPATIAL BIOINFORMATICS</p>
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
             <div>
               <h2 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
@@ -23,7 +23,7 @@ export default function SpatialAgentsSection() {
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-dim">
                 Give Artemis the question, assay context, and data access. A lead scientist
                 directs specialized agents through quality control, annotation, spatial
-                inference, and interpretation — with a human review loop at every decision.
+                inference, and interpretation, with a human review loop at every decision.
               </p>
             </div>
             <div className="rounded-[4px] border border-violet/30 bg-panel p-5 font-mono text-[13px] text-dim">

@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 import DataMorph from "./DataMorph";
 
 const STAGES = [
-  { name: "Load + preprocess", detail: "Any .h5ad or 10x Xenium folder. Counts detected, normalized, log1p — spatial coordinates verified.", mono: "load_h5ad(input)" },
-  { name: "BANKSY clustering", detail: "Each spot is embedded with its neighborhood — clusters follow tissue architecture, not just expression.", mono: "λ=0.2 · k=15 · Leiden" },
-  { name: "Cell-state annotation", detail: "Controlled-vocabulary marker agent — a frontier model in the cloud, or a local model through Ollama.", mono: "AC·MES·NPC·OPC-like vocab" },
+  { name: "Load + preprocess", detail: "Any .h5ad or 10x Xenium folder. Counts detected, normalized, log1p, spatial coordinates verified.", mono: "load_h5ad(input)" },
+  { name: "BANKSY clustering", detail: "Each spot is embedded with its neighborhood, clusters follow tissue architecture, not just expression.", mono: "λ=0.2 · k=15 · Leiden" },
+  { name: "Cell-state annotation", detail: "Controlled-vocabulary marker agent, a frontier model in the cloud, or a local model through Ollama.", mono: "AC·MES·NPC·OPC-like vocab" },
   { name: "Vitessce portal", detail: "Chunk-optimized zarr + an interactive portal: spatial view, UMAP, heatmap, marker search.", mono: "portal.html + data.zarr" },
-  { name: "Live analysis + copilot", detail: "On-demand differential expression, composition, Moran's I — and a grounded chat on your data.", mono: "DE · Moran's I · chat" },
+  { name: "Live analysis + copilot", detail: "On-demand differential expression, composition, Moran's I, and a grounded chat on your data.", mono: "DE · Moran's I · chat" },
 ];
 
 export default function PipelineFlow() {
@@ -24,7 +24,7 @@ export default function PipelineFlow() {
       <Reveal delay={0.05} className="mt-8">
         <DataMorph height={400} />
         <p className="text-center text-[13px] text-dim mt-1">
-          Raw reads in, atlas out — the glyph stream is animation; the section it becomes is the real GBM1 data.
+          Raw reads in, atlas out, the glyph stream is animation; the section it becomes is the real GBM1 data.
         </p>
       </Reveal>
 

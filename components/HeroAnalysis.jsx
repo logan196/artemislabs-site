@@ -3,16 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Option C — the hero is the analysis, not the specimen.
+ * Option C, the hero is the analysis, not the specimen.
  *
  * A, B and the Voronoi version were all the same thing underneath: a picture
  * of tissue with type on top. The treatment changed; the category didn't. What
- * Artemis sells is not the section — it's what happens to the section.
+ * Artemis sells is not the section, it's what happens to the section.
  *
  * So this runs the pipeline on screen, on the real thing: 4,764 spots from
  * GBM1, their actual coordinates, their actual BANKSY-resolved cell states.
- * The spots land undifferentiated — the state a client's data arrives in —
- * and then resolve into annotated domains. Every count on screen is derived
+ * The spots land undifferentiated, the state a client's data arrives in, * and then resolve into annotated domains. Every count on screen is derived
  * from the payload at render time. Nothing here is a literal.
  */
 
@@ -128,7 +127,7 @@ export default function HeroAnalysis({ className = "", onStats }) {
         setPhase("resolved");
       }
       if (reduced) return;
-      // the figure is static once resolved — stop rather than repaint it
+      // the figure is static once resolved, stop rather than repaint it
       if (t > LAND + HOLD + RESOLVE + 0.5) return;
       if (visible) raf = requestAnimationFrame(frame);
     };

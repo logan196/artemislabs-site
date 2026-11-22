@@ -1,6 +1,6 @@
 "use client";
 
-// Institution logo marquee — real marks, confirmed by the founder; printed-ink
+// Institution logo marquee, real marks, confirmed by the founder; printed-ink
 // treatment (grayscale at rest, true colors on hover).
 const LOGOS = [
   { src: "logos/stanford.svg", alt: "Stanford University", h: "h-12" },

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * A Voronoi cell-segmentation field — the hero as a real figure.
+ * A Voronoi cell-segmentation field, the hero as a real figure.
  *
  * This is what a Xenium / CosMx segmentation output actually looks like:
  * hard polygon boundaries around every nucleus, filled by a measured value.
@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
  *
  * The entrance is the argument: nuclei land first as a raw, unsegmented point
  * cloud, then a pass sweeps left to right and resolves them into labelled
- * cells. Raw data in, segmented biology out — enacted rather than illustrated.
+ * cells. Raw data in, segmented biology out, enacted rather than illustrated.
  *
  * Geometry is exact, not faked: seeds live on a jittered grid, so each cell's
  * Voronoi polygon is its grid square clipped by the perpendicular bisectors of
@@ -197,7 +197,7 @@ export default function CellField({ className = "" }) {
         }
 
         // slow drift in measured value, so the figure stays live without the
-        // geometry ever moving — segmentation that wobbled would be a lie
+        // geometry ever moving, segmentation that wobbled would be a lie
         const pulse = reduced ? 0 : Math.sin(t * 0.55 + c.seed * 6.28) * 0.06;
         const v = Math.max(0, Math.min(1, c.v + pulse));
         const [cr, cg, cb] = rampAt(v);
@@ -213,7 +213,7 @@ export default function CellField({ className = "" }) {
         ctx.fillStyle = `rgba(${cr},${cg},${cb},${fillA})`;
         ctx.fill();
 
-        // the boundary is the point — keep it hairline and crisp
+        // the boundary is the point, keep it hairline and crisp
         ctx.lineWidth = 0.7;
         ctx.strokeStyle = `rgba(${cr + 40},${cg + 55},${cb + 50},${(c.inTissue ? 0.5 : 0.17) * r})`;
         ctx.stroke();

@@ -1,6 +1,6 @@
 "use client";
 
-// The tools and databases the stack speaks — mixed real marks + text badges.
+// The tools and databases the stack speaks, mixed real marks + text badges.
 const ITEMS = [
   { img: "logos/r.svg", alt: "R", h: "h-10" },
   { text: "Bioconductor" },

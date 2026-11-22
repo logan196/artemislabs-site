@@ -16,8 +16,7 @@ export default function CatalogSection() {
           The public GBM spatial atlas, catalogued.
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          Every public spatial-transcriptomics dataset of glioblastoma we could verify —
-          platform, scope, and accession — ready to drop into the pipeline. Rows marked
+          Every public spatial-transcriptomics dataset of glioblastoma we could verify, platform, scope, and accession, ready to drop into the pipeline. Rows marked
           ● are already live in the portal.
         </p>
       </Reveal>

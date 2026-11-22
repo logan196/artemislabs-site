@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 
 // Concept sketch of a gene-regulatory network (after Kamimoto et al. 2020):
-// three TF modules, pulsing regulatory edges. Illustration — NOT data.
+// three TF modules, pulsing regulatory edges. Illustration. NOT data.
 function mulberry32(a) {
   return function () {
     a |= 0; a = (a + 0x6d2b79f5) | 0;

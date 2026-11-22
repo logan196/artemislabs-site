@@ -60,7 +60,7 @@ export default function Dodecahedron({ size = 72 }) {
       const pulse = reduced ? 0.8 : 0.65 + 0.35 * Math.sin(t * 1.6);
       ctx.lineWidth = 1.1;
       ctx.lineCap = "round";
-      // No glow on paper — crisp engraving lines, depth-weighted alpha only.
+      // No glow on paper, crisp engraving lines, depth-weighted alpha only.
       ctx.shadowBlur = 0;
       for (const [i, j] of edges) {
         const depth = (pts[i][2] + pts[j][2]) / 2; // -c..c

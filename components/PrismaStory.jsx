@@ -15,8 +15,7 @@ const N_IDENTIFIED = 62; // GEO series matching the query above
 const N_NOT_INGESTED = 61; // 62 minus GSE194329, the one GEO series ingested
 const N_SECTIONS = 8; // sections actually shown on this page
 
-// Two tidy bands: sources surface above the query, platforms below the count —
-// nothing ever overlaps the search bar or the counter.
+// Two tidy bands: sources surface above the query, platforms below the count, // nothing ever overlaps the search bar or the counter.
 const CHIPS = [
   { label: "GSE194329", kind: "source" },
   { label: "10x Parent Visium", kind: "source" },
@@ -70,7 +69,7 @@ function PortalChrome({ interactive = true }) {
       </div>
       <img
         src="demo/poster.png"
-        alt="The live Artemis portal — spatial view, UMAP and copilot rail on a real GBM section"
+        alt="The live Artemis portal, spatial view, UMAP and copilot rail on a real GBM section"
         className="w-full block"
         loading="lazy"
       />
@@ -95,7 +94,7 @@ function PortalChrome({ interactive = true }) {
 function Caption() {
   return (
     <p className="text-[11px] md:text-[13px] text-dim leading-relaxed max-w-4xl mt-4 md:mt-6 px-1">
-      <span className="font-semibold text-snow">Fig. 1&nbsp;|</span> From search to portal — the
+      <span className="font-semibold text-snow">Fig. 1&nbsp;|</span> From search to portal, the
       GEO DataSets query{" "}
       <span className="font-mono text-[12px]">
         (glioblastoma) AND (spatial transcriptomics) AND &quot;Homo sapiens&quot;[organism] AND
@@ -103,9 +102,9 @@ function Caption() {
       </span>{" "}
       returned {N_IDENTIFIED} human series (accessed {ACCESSED}). The funnel shows{" "}
       <span className="text-snow">our working subset, not a published systematic review</span>: the
-      sections this page actually processes — GSE194329 (Ren et&nbsp;al., <i>Nat Commun</i> 2023; 4
+      sections this page actually processes. GSE194329 (Ren et&nbsp;al., <i>Nat Commun</i> 2023; 4
       sections), the 10x Genomics Parent Visium GBM demonstration dataset (1 section), and the
-      gbmspace.org atlas (de&nbsp;Jong et&nbsp;al., <i>Nature</i> 2026; 3 sections) — the remaining{" "}
+      gbmspace.org atlas (de&nbsp;Jong et&nbsp;al., <i>Nature</i> 2026; 3 sections), the remaining{" "}
       {N_NOT_INGESTED} GEO series were not individually adjudicated.
     </p>
   );
@@ -133,9 +132,9 @@ function IncludedBody({ nRef }) {
         on this page
       </p>
       <ul className="list-none mt-1 space-y-0.5 text-dim">
-        <li>· GSE194329 — 4 sections (Ren et al. 2023)</li>
-        <li>· 10x Parent Visium — 1 section</li>
-        <li>· gbmspace.org atlas — 3 sections (de Jong et al. 2026)</li>
+        <li>· GSE194329, 4 sections (Ren et al. 2023)</li>
+        <li>· 10x Parent Visium, 1 section</li>
+        <li>· gbmspace.org atlas, 3 sections (de Jong et al. 2026)</li>
       </ul>
     </>
   );
@@ -187,7 +186,7 @@ function StaticStory() {
             <figure key={t.src}>
               <img
                 src={t.src}
-                alt={`H&E section — ${t.label}`}
+                alt={`H&E section, ${t.label}`}
                 className="w-full aspect-square object-cover rounded-[3px] ring-2 ring-violet/60"
                 loading="lazy"
               />
@@ -212,7 +211,7 @@ function StaticStory() {
 
 function Chip({ chip, progress, i }) {
   // patient: each chip waits its turn, rises gently into its slot
-  const a = 0.03 + i * 0.02; // stays < 0.2 for all 6 chips — breakpoints must be monotonic
+  const a = 0.03 + i * 0.02; // stays < 0.2 for all 6 chips, breakpoints must be monotonic
   const opacity = useTransform(progress, [a, a + 0.045, 0.2, 0.25], [0, 1, 1, 0]);
   const y = useTransform(progress, [a, a + 0.06], [10, 0]);
   return (
@@ -322,7 +321,7 @@ function Tile({ tile, progress, i }) {
     <motion.figure style={{ x, y, rotate, opacity }} className="relative">
       <img
         src={tile.src}
-        alt={`H&E section — ${tile.label}`}
+        alt={`H&E section, ${tile.label}`}
         className="w-full aspect-square object-cover rounded-[3px]"
         loading="lazy"
       />
@@ -399,7 +398,7 @@ export default function PrismaStory() {
     return unsub;
   }, [scrollYProgress]);
 
-  // Act visibility windows (contiguous — no dead zones).
+  // Act visibility windows (contiguous, no dead zones).
   const o1 = useTransform(scrollYProgress, [0, 0.2, 0.25], [1, 1, 0]);
   const headerFade = useTransform(scrollYProgress, [0.52, 0.6, 0.93, 1], [1, 0.25, 0.25, 1]);
   const o2 = useTransform(scrollYProgress, [0.26, 0.31, 0.5, 0.54], [0, 1, 1, 0]);
@@ -417,7 +416,7 @@ export default function PrismaStory() {
           One query, <span className="text-violet">eight sections</span>, one portal.
         </h2>
         <p className="mt-4 mb-12 max-w-2xl text-[15px] md:text-base text-dim leading-relaxed">
-          The section above is one of eight — here is the paper trail that found them,
+          The section above is one of eight, here is the paper trail that found them,
           screened them, and shipped them live.
         </p>
         <StaticStory />
@@ -429,7 +428,7 @@ export default function PrismaStory() {
   return (
     <section id="pipeline" ref={wrapRef} className="relative h-[300vh] md:h-[340vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
-        {/* header — recedes while the atlas thumbnails fly through */}
+        {/* header, recedes while the atlas thumbnails fly through */}
         <motion.div
           style={{ opacity: headerFade }}
           className="px-6 md:px-14 pt-14 md:pt-20 max-w-7xl mx-auto w-full"
@@ -439,7 +438,7 @@ export default function PrismaStory() {
             One query, <span className="text-violet">eight sections</span>, one portal.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] md:text-base text-dim leading-relaxed">
-            The section above is one of eight — here is the paper trail that found them,
+            The section above is one of eight, here is the paper trail that found them,
             screened them, and shipped them live.
           </p>
         </motion.div>
@@ -501,7 +500,7 @@ export default function PrismaStory() {
             </div>
           </motion.div>
 
-          {/* ACT 2 · THE WORKFLOW — nf-core-style process board */}
+          {/* ACT 2 · THE WORKFLOW, nf-core-style process board */}
           <motion.div
             style={{ opacity: o2 }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -529,7 +528,7 @@ export default function PrismaStory() {
                   </div>
                 </WfRow>
                 <WfRow progress={scrollYProgress} range={[0.49, 0.525]} name="PORTAL:BUILD"
-                  right="live — every included section" />
+                  right="live, every included section" />
               </div>
             </div>
           </motion.div>

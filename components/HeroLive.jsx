@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import HeroAnalysis from "./HeroAnalysis";
 
 /**
- * Option C — the hero is the work.
+ * Option C, the hero is the work.
  *
  * The claim on the left is the one the data on the right actually supports,
  * and it is the lab's own hard case: GFAP stains reactive astrocytes and
@@ -48,7 +48,7 @@ export default function HeroLive() {
           transition={step(0.45)}
           className="mt-7 max-w-[52ch] text-[17px] leading-relaxed text-snow/80 md:text-lg"
         >
-          GFAP lights up reactive astrocytes and astrocyte-like tumour alike — a marker
+          GFAP lights up reactive astrocytes and astrocyte-like tumour alike, a marker
           panel reads them as one blur. Beside this, that section is being pulled apart
           into its domains, live, on the data itself.
         </motion.p>

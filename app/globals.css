@@ -10,7 +10,7 @@
   --color-dim: #94a3b8;          /* secondary slate text */
   --color-violet: #14b8a6;       /* vibrant cyan/teal accent */
   --color-violet-deep: #0d9488;  /* button fill */
-  --color-magma: #f59e0b;        /* secondary accent — amber */
+  --color-magma: #f59e0b;        /* secondary accent, amber */
   --color-mint: #10b981;
   --color-amber: #f59e0b;
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -62,7 +62,7 @@ html {
   will-change: transform;
 }
 
-/* site-wide moving wash — a faint teal watercolor on paper */
+/* site-wide moving wash, a faint teal watercolor on paper */
 @keyframes drift2 {
   0% { transform: translate3d(0, 0, 0); }
   50% { transform: translate3d(-5%, 4%, 0); }

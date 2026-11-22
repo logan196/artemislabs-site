@@ -72,7 +72,7 @@
   .stage.done{border-left-color:rgba(16,185,129,.35)}
   .stage.done::before{border-color:var(--mint);background:var(--mint)}
   /* A stage that ran but could not answer is NOT success. Grey, hollow,
-     labelled — otherwise a glance reads 8/8 green on a run that answered
+     labelled, otherwise a glance reads 8/8 green on a run that answered
      none of the four questions. */
   .stage.skipped{border-left-color:var(--line)}
   .stage.skipped::before{border-color:var(--dim);background:var(--ink)}
@@ -134,7 +134,7 @@
   <p class="lede">
     Upload bulk RNA-seq from an iPSC differentiation. PROXIMA compares it against
     curated public reference data and reports cell identity, developmental
-    maturity, and where the protocol could improve — and watch it work.
+    maturity, and where the protocol could improve, and watch it work.
   </p>
 
   <form id="form">
@@ -183,7 +183,7 @@ $("runner").value = runner;
 
 // Served from artemislabs.bio, the page has no engine of its own. runner.json
 // sits next to it and carries whichever address the engine is currently
-// reachable at — a free Cloudflare quick tunnel hands out a new hostname on
+// reachable at, a free Cloudflare quick tunnel hands out a new hostname on
 // every restart, so the address is data, not a constant. An explicit choice
 // already typed into the field always wins over it.
 async function discover() {
@@ -370,7 +370,7 @@ function listen(id) {
       if (!$("reconnect")) {
         const b = document.createElement("div");
         b.className = "banner"; b.id = "reconnect";
-        b.textContent = "Connection lost — reconnecting. The run is still going on the server.";
+        b.textContent = "Connection lost, reconnecting. The run is still going on the server.";
         $("tail").appendChild(b);
       }
       return;

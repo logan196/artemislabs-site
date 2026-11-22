@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
  * downsample a photograph to a coarse luminance grid, invert it to darkness,
  * then walk a grid of tick columns and emit a mark wherever the local darkness
  * beats a fixed per-column random threshold. Their "factory" is a dithered
- * photo — not a noise function, which is why it reads as a real scene.
+ * photo, not a noise function, which is why it reads as a real scene.
  *
  * The important difference here: the photograph is the client's own data. This
  * is AT14, a glioblastoma section from de Jong et al. (gbmspace.org), the same
@@ -17,12 +17,12 @@ import { useEffect, useRef } from "react";
  * illustration of one.
  *
  * Per-column thresholds (rather than per-cell) are what give the pattern its
- * vertical grain — the characteristic look, and worth preserving exactly.
+ * vertical grain, the characteristic look, and worth preserving exactly.
  */
 
 const SRC = "/dejong/AT14-BRA-4-FO-2_1_he.jpg";
 
-const LUMA_W = 170; // luminance grid resolution — finer than arda's 16x12
+const LUMA_W = 170; // luminance grid resolution, finer than arda's 16x12
 const LUMA_H = 182; // because real tissue has structure worth resolving
 const IMG_ASPECT = 2338 / 2505;
 

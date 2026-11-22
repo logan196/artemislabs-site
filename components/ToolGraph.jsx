@@ -16,13 +16,13 @@ const H = 640;
 const CX = 520;
 const CY = 320;
 
-/* ---- tools (blurbs audited — reused verbatim from the v2 graph) ---- */
+/* ---- tools (blurbs audited, reused verbatim from the v2 graph) ---- */
 const TOOLS = [
   {
     id: "python", label: "Python", img: "logos/python.svg",
     title: "Python",
     blurb:
-      "The backbone language of our pipelines — from QC scripts to the portals on this page, nearly everything starts in Python.",
+      "The backbone language of our pipelines, from QC scripts to the portals on this page, nearly everything starts in Python.",
   },
   {
     id: "scanpy", label: "scanpy", img: "logos/scanpy.svg",
@@ -34,13 +34,13 @@ const TOOLS = [
     id: "vitessce", label: "Vitessce", img: "logos/vitessce.png",
     title: "Vitessce",
     blurb:
-      "The viewer every portal on this page is built on — linked UMAP, tissue, and expression panels, all in the browser.",
+      "The viewer every portal on this page is built on, linked UMAP, tissue, and expression panels, all in the browser.",
   },
   {
     id: "geo", label: "archive", big: "GEO",
     title: "GEO",
     blurb:
-      "Where public sequencing lands. We pull raw series straight from accession IDs — this site's glioblastoma demos come from GSE194329.",
+      "Where public sequencing lands. We pull raw series straight from accession IDs, this site's glioblastoma demos come from GSE194329.",
   },
   {
     id: "jupyter", label: "Jupyter", img: "logos/jupyter.svg",
@@ -52,7 +52,7 @@ const TOOLS = [
     id: "nextflow", label: "Nextflow", img: "logos/nextflow.svg",
     title: "Nextflow",
     blurb:
-      "The workflow engine for runs too big for a notebook — every step declared, containerized, and resumable.",
+      "The workflow engine for runs too big for a notebook, every step declared, containerized, and resumable.",
   },
   {
     id: "r", label: "R", img: "logos/r.svg",
@@ -64,7 +64,7 @@ const TOOLS = [
     id: "nih", label: "NIH", img: "logos/nih.svg",
     title: "NIH",
     blurb:
-      "NIH archives — GEO, SRA, dbGaP — hold most of the world's public sequencing. The demos on this site are built on NIH-hosted data.",
+      "NIH archives. GEO, SRA, dbGaP, hold most of the world's public sequencing. The demos on this site are built on NIH-hosted data.",
   },
   {
     id: "tenx", label: "10x Genomics", img: "logos/tenx.svg",
@@ -76,61 +76,61 @@ const TOOLS = [
     id: "kegg", label: "KEGG", img: "logos/kegg.png",
     title: "KEGG",
     blurb:
-      "Pathway maps for enrichment calls — which signaling programs a cluster is actually running.",
+      "Pathway maps for enrichment calls, which signaling programs a cluster is actually running.",
   },
   {
     id: "reactome", label: "Reactome", img: "logos/reactome.png",
     title: "Reactome",
     blurb:
-      "Curated human pathway hierarchy — the second opinion we read next to KEGG before calling a signaling program.",
+      "Curated human pathway hierarchy, the second opinion we read next to KEGG before calling a signaling program.",
   },
   {
     id: "string", label: "STRING", img: "logos/string.png",
     title: "STRING",
     blurb:
-      "Protein–protein interaction networks — for asking whether a marker set actually hangs together as a complex.",
+      "Protein-protein interaction networks, for asking whether a marker set actually hangs together as a complex.",
   },
   {
     id: "cellxgene", label: "CELLxGENE", img: "logos/cellxgene.svg",
     title: "CELLxGENE",
     blurb:
-      "The CZI single-cell atlas ecosystem — published reference datasets to sanity-check a cell-state call against.",
+      "The CZI single-cell atlas ecosystem, published reference datasets to sanity-check a cell-state call against.",
   },
   {
     id: "enrichr", label: "Enrichr", img: "logos/enrichr.png",
     title: "Enrichr",
     blurb:
-      "One gene list in, ranked enrichment across hundreds of libraries out — the fastest first pass on what a cluster is doing.",
+      "One gene list in, ranked enrichment across hundreds of libraries out, the fastest first pass on what a cluster is doing.",
   },
   {
     id: "cellont", label: "Cell Ontology", big: "CL",
     title: "Cell Ontology",
     blurb:
-      "The controlled vocabulary for cell types — labels that mean the same thing across every dataset and atlas.",
+      "The controlled vocabulary for cell types, labels that mean the same thing across every dataset and atlas.",
   },
   {
     id: "umap", label: "embedding", big: "UMAP",
     title: "UMAP",
     blurb:
-      "The 2-D fold of expression space. Every embedding figure above is a UMAP — always shown beside the tissue it came from.",
+      "The 2-D fold of expression space. Every embedding figure above is a UMAP, always shown beside the tissue it came from.",
   },
   {
     id: "igv", label: "IGV", img: "logos/igv.png",
     title: "IGV",
     blurb:
-      "The genome browser for reads and tracks — when a call needs checking at base-pair resolution, we open IGV.",
+      "The genome browser for reads and tracks, when a call needs checking at base-pair resolution, we open IGV.",
   },
   {
     id: "gpu", label: "compute", big: "GPU",
     title: "Local GPU",
     blurb:
-      "Local GPU compute. The language models behind our copilot run on our own hardware — Qwen via Ollama — so data never leaves the machine.",
+      "Local GPU compute. The language models behind our copilot run on our own hardware. Qwen via Ollama, so data never leaves the machine.",
   },
   {
     id: "bioc", label: "Bioconductor", img: "logos/bioconductor.svg",
     title: "Bioconductor",
     blurb:
-      "R's genomics ecosystem — thousands of peer-reviewed packages for expression, annotation, and statistics.",
+      "R's genomics ecosystem, thousands of peer-reviewed packages for expression, annotation, and statistics.",
   },
 ];
 
@@ -138,7 +138,7 @@ const CENTER = {
   id: "artemis",
   title: "Artemis BioLabs",
   blurb:
-    "The hub. Every demo on this page came out of this stack — public data in, interactive portals out.",
+    "The hub. Every demo on this page came out of this stack, public data in, interactive portals out.",
 };
 
 const DEFAULT_CARD = {
@@ -312,15 +312,14 @@ export default function ToolGraph() {
   });
 
   return (
-    <section id="stack" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
+    <section id="stack-connected" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">11 · THE STACK, CONNECTED</p>
+        <p className="font-mono text-sm text-violet mb-4">07 · THE STACK, CONNECTED</p>
         <h3 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-3xl">
           Speaks the tools you already trust.
         </h3>
         <p className="mt-4 max-w-2xl text-lg text-dim leading-relaxed">
-          The languages, databases, and viewers behind every demo on this page —
-          flowing into one connected stack.
+          The languages, databases, and viewers behind every demo on this page, flowing into one connected stack.
         </p>
       </Reveal>
 
@@ -489,7 +488,7 @@ export default function ToolGraph() {
           </div>
         </div>
 
-        {/* explanation card — pinned below the panel, never follows the cursor */}
+        {/* explanation card, pinned below the panel, never follows the cursor */}
         <div
           aria-live="polite"
           className="mt-4 rounded-[4px] border border-line bg-panel px-5 py-4 min-h-[92px] md:min-h-[76px]"

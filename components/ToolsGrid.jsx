@@ -5,27 +5,27 @@ import { motion } from "framer-motion";
 import StackMini from "./StackMini";
 
 const TOOLS = [
-  { name: "banksy-pipeline", glyph: "banksy", kind: "agent", desc: "Spatially-aware clustering — BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
+  { name: "banksy-pipeline", glyph: "banksy", kind: "agent", desc: "Spatially-aware clustering. BANKSY λ=0.2, 50 PCs, Leiden over the neighborhood-augmented embedding." },
   { name: "marker-annotator", glyph: "annotate", kind: "agent", desc: "Controlled-vocabulary cell-state calling (AC / MES / NPC / OPC-like + brain TME) from top cluster markers. Frontier or local models." },
   { name: "vitessce-forge", glyph: "forge", kind: "tool", desc: "Any .h5ad or Xenium folder → chunk-optimized zarr + interactive Vitessce portal. One command." },
   { name: "live-analysis", glyph: "live", kind: "api", desc: "On-demand differential expression, composition shifts, and Moran's I spatial autocorrelation." },
-  { name: "research-copilot", glyph: "copilot", kind: "agent", desc: "Chat grounded in your portal's facts — clusters, selections, logged DE runs. Runs on a frontier model, or fully local on qwen3:8b." },
-  { name: "paper-scout", glyph: "scout", kind: "agent", desc: "PubMed retrieval tuned to your clusters and markers — returns real PMIDs via NCBI E-utilities." },
+  { name: "research-copilot", glyph: "copilot", kind: "agent", desc: "Chat grounded in your portal's facts, clusters, selections, logged DE runs. Runs on a frontier model, or fully local on qwen3:8b." },
+  { name: "paper-scout", glyph: "scout", kind: "agent", desc: "PubMed retrieval tuned to your clusters and markers, returns real PMIDs via NCBI E-utilities." },
   { name: "abstract-artist", glyph: "abstract", kind: "agent", desc: "One-command graphical abstracts straight from pipeline results." },
-  { name: "cohort-importer", glyph: "importer", kind: "tool", desc: "Imports published spatial cohorts with their annotations intact — states, niches, histopathology (see the de Jong section)." },
+  { name: "cohort-importer", glyph: "importer", kind: "tool", desc: "Imports published spatial cohorts with their annotations intact, states, niches, histopathology (see the de Jong section)." },
 ];
 
 export default function ToolsGrid() {
   return (
-    <section className="relative bg-ink-2/60 border-y border-line">
+    <section id="stack" className="relative bg-ink-2/60 border-y border-line">
       <div className="px-6 md:px-14 py-20 md:py-28 max-w-7xl mx-auto">
         <Reveal>
-          <p className="font-mono text-sm text-violet mb-4">10 · THE STACK</p>
+          <p className="font-mono text-sm text-violet mb-4">06 · THE STACK</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
             Eight capabilities, one stack.
           </h2>
           <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-            Everything above — the domains, the labels, the portals, the copilot — came
+            Everything above, the domains, the labels, the portals, the copilot, came
             out of these eight pieces. Welcome to the machine room.{" "}
             <a href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20run%20my%20.h5ad" className="text-violet hover:text-snow underline underline-offset-4 transition-colors whitespace-nowrap">Try it with your .h5ad →</a>
           </p>

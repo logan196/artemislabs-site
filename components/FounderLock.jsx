@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 // Touch ID "founder mode" via WebAuthn platform authenticator.
-// Honest scope: on a static site this is a recognition ritual, not security —
-// it proves the person at the keyboard owns the enrolled fingerprint/passkey,
+// Honest scope: on a static site this is a recognition ritual, not security, // it proves the person at the keyboard owns the enrolled fingerprint/passkey,
 // but gates only a cosmetic panel. Credential id is stored per-domain.
 const KEY = "artemis_founder_cred";
 
@@ -84,7 +83,7 @@ export default function FounderLock() {
     <div className="relative">
       <button
         onClick={unlocked ? () => setUnlocked(false) : touch}
-        title={unlocked ? "Founder mode — click to lock" : "Founder login (Touch ID)"}
+        title={unlocked ? "Founder mode, click to lock" : "Founder login (Touch ID)"}
         aria-label="Founder login with Touch ID"
         className={`flex items-center justify-center h-9 w-9 rounded-full border transition-all ${
           unlocked

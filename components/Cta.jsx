@@ -12,9 +12,9 @@ export default function Cta() {
         <p className="font-mono text-sm text-violet mb-4 text-center">HOW AN ENGAGEMENT WORKS</p>
         <div className="grid sm:grid-cols-4 gap-4">
           {[
-            ["1 · pilot", "Send one dataset — Visium, Xenium, MERFISH or .h5ad — and get back a hosted live portal plus the marker report, free."],
+            ["1 · pilot", "Send one dataset: Visium, Xenium, MERFISH or .h5ad. Get back a hosted live portal plus the marker report, free."],
             ["2 · scope", "One call. We map your assays and questions to a concrete deliverable list."],
-            ["3 · deliverables", "A live portal, the written report, the figures — and the code that made all three."],
+            ["3 · deliverables", "A live portal, the written report, the figures, and the code that made all three."],
             ["4 · your data stays yours", "Local-mode runs mean zero egress; cloud models are opt-in per project; deletion on request."],
           ].map(([t, b]) => (
             <div key={t} className="rounded-[3px] border border-line bg-panel/80 p-5">
@@ -35,7 +35,7 @@ export default function Cta() {
         <Reveal>
           {/* The closing figure, bookending the hero: the page opens on a field
               of marks resolving into tissue and closes on the solid you can
-              take hold of. Interactive — drag it. */}
+              take hold of. Interactive, drag it. */}
           <div className="relative w-full max-w-[460px] mx-auto mb-10" aria-hidden>
             <BioDodecahedron size={360} labels={false} helix />
           </div>
@@ -44,12 +44,12 @@ export default function Cta() {
           </h2>
           <p className="mt-6 text-lg text-dim leading-relaxed">
             If your lab is sitting on spatial data and short on computational hands, the
-            first analysis is on us — pick a public or in-house dataset and we'll turn it
+            first analysis is on us, pick a public or in-house dataset and we'll turn it
             around as a live portal.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
+              href="https://calendar.app.google/Gcn7m6neU3P3ktQA8"
               target="_blank"
               rel="noreferrer"
               className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"

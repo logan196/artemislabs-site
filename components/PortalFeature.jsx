@@ -13,7 +13,7 @@ export default function PortalFeature() {
         </h2>
         <p className="mt-5 max-w-2xl text-lg text-dim leading-relaxed">
           Lasso a region on the tissue and the same cells light up in UMAP, the heatmap
-          and the gene list — Vitessce linked views over a chunk-optimized zarr, in the
+          and the gene list. Vitessce linked views over a chunk-optimized zarr, in the
           browser, no install.
         </p>
       </Reveal>
@@ -26,14 +26,14 @@ export default function PortalFeature() {
           />
         </div>
         <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-          The portal as captured during the demo recording — GBM1 (4,764 spots) with UMAP + spatial linked views, cell sets, markers and the copilot rail.
+          The portal as captured during the demo recording. GBM1 (4,764 spots) with UMAP + spatial linked views, cell sets, markers and the copilot rail.
         </p>
       </Reveal>
       <Reveal delay={0.12} className="mt-8 grid sm:grid-cols-3 gap-4">
         {[
-          ["Drop-in ingest", "Any .h5ad or 10x Xenium folder — counts detected, coordinates verified, portal out."],
+          ["Drop-in ingest", "Any .h5ad or 10x Xenium folder, counts detected, coordinates verified, portal out."],
           ["Linked exploration", "Spatial ⇄ UMAP ⇄ heatmap ⇄ gene list share one selection and one color encoding."],
-          ["Ask the section", "The copilot rail answers grounded questions — and can run with a local model through Ollama."],
+          ["Ask the section", "The copilot rail answers grounded questions, and can run with a local model through Ollama."],
         ].map(([t, d]) => (
           <div key={t} className="rounded-[4px] border border-line bg-panel/70 p-5">
             <p className="font-medium text-[16px]">{t}</p>

@@ -1,5 +1,5 @@
 /**
- * Artemis co-scientist proxy — Cloudflare Worker.
+ * Artemis co-scientist proxy. Cloudflare Worker.
  *
  * Holds the Gemini key server-side (wrangler secret GEMINI_API_KEY) so nothing
  * secret ever reaches a browser. Accepts { prompt } from the portal, enforces
@@ -53,7 +53,7 @@ export default {
     if (env.RL) {
       const key = `rl:${ip}:${Math.floor(Date.now() / 1000 / WINDOW_S)}`;
       const n = parseInt((await env.RL.get(key)) || "0", 10) + 1;
-      if (n > PER_WINDOW) return json({ error: "rate limit — try again shortly" }, 429, origin);
+      if (n > PER_WINDOW) return json({ error: "rate limit, try again shortly" }, 429, origin);
       await env.RL.put(key, String(n), { expirationTtl: WINDOW_S * 2 });
     }
 
@@ -89,6 +89,6 @@ export default {
       if (!text) return json({ error: "empty response" }, 502, origin);
       return json({ text }, 200, origin);
     }
-    return json({ error: "model busy — try again" }, 503, origin);
+    return json({ error: "model busy, try again" }, 503, origin);
   },
 };

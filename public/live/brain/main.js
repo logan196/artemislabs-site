@@ -237,7 +237,7 @@ function flyTo(t0, t1, from, to, lookFrom, lookTo){
 const INTRO = [
   {t0:0.0, t1:2.2, enter(){ hideCaption(); setCaption('This is not an AI-generated brain.'); }, u:{progress:0, dim:0.0}},
   {t0:2.2, t1:7.5, enter(m){ setCaption(`${m.cells.toLocaleString()} real cells. One real mouse brain.`, 'every dot one measured cell · whole-brain MERFISH · Yao et al., Nature 2023'); }, u:{progress:1, mode:1}},
-  {t0:7.5, t1:11.5, enter(){ setCaption('Every cell molecularly typed.', 'official Allen taxonomy colors — glutamate, GABA, modulatory systems'); }, u:{mode:0}},
+  {t0:7.5, t1:11.5, enter(){ setCaption('Every cell molecularly typed.', 'official Allen taxonomy colors, glutamate, GABA, modulatory systems'); }, u:{mode:0}},
   {t0:11.5, t1:16.0, enter(){ setCaption('Dopamine neurons, lit from real measurements.', 'Slc6a3 (dopamine transporter) expression per cell'); }, u:{mode:4, gene:6}, dive:true},
   {t0:16.0, t1:19.5, enter(){ setCaption('The whole brain. In your browser.', 'drag to orbit · slice it · search a cell type'); }, u:{mode:2}, back:true},
 ];
@@ -248,7 +248,7 @@ const FILM_TL = [
    anno:{rail:[['SOURCE','Yao et al. 2023'],['CELLS','3,938,808'],['PANEL','550 genes']]}},
   {t0:8.5, t1:13.5, enter(){ setCaption('Every cell molecularly typed.', '338 subclasses · official Allen taxonomy colors'); }, u:{mode:0},
    anno:{rail:[['VIEW','subclass colors'],['TYPES','338']]}},
-  {t0:13.5, t1:19.0, enter(){ setCaption('Dopamine neurons — measured, not imagined.', 'Slc6a3 expression, per cell'); }, u:{mode:4, gene:6}, dive:true,
+  {t0:13.5, t1:19.0, enter(){ setCaption('Dopamine neurons, measured, not imagined.', 'Slc6a3 expression, per cell'); }, u:{mode:4, gene:6}, dive:true,
    anno:{rail:[['GENE','Slc6a3'],['MEASURED','217,516']]}},
   {t0:19.0, t1:24.0, anno:{rail:[['GENE','Slc6a4'],['MEASURED','223,031']]}, enter(){ uniforms.u_dim.value = -0.7; setCaption('Serotonin system, same brain.', 'Slc6a4 expression, per cell');
    this.anno && 0; animateUniform('u_exposure', 1.25, 19.0, 21.0); }, u:{mode:4, gene:7}, back:true, orbit:true},
@@ -403,7 +403,7 @@ function buildRail(m){
      show:()=>{ setMode(0); }},
     {h:'DOPAMINE SYSTEM', big:fmt(dopa), p:`cells with measured <b>Slc6a3</b> (dopamine transporter) expression.`,
      show:()=>{ setMode(4); setGene(6); }},
-    {h:'LARGEST SUBCLASS', big:fmt(topSub.count), p:`<b>${topSub.name}</b> — the most populated of ${L.subclass.length} subclasses.`,
+    {h:'LARGEST SUBCLASS', big:fmt(topSub.count), p:`<b>${topSub.name}</b>, the most populated of ${L.subclass.length} subclasses.`,
      show:()=>{ setMode(2); const id = L.subclass.findIndex(x=>x.name===topSub.name); setHl(2, id); setTimeout(clearHl, 6000); }},
   ];
   $('rail').innerHTML = cards.map((c,i)=>`<div class="card"><h4>${c.h}</h4><div class="big">${c.big}</div><p>${c.p}</p>${c.show?`<button class="showme" data-i="${i}">show me</button>`:''}</div>`).join('');
@@ -425,7 +425,7 @@ function setupSearch(m){
     hits.querySelectorAll('.hit').forEach(b=>b.onclick=()=>{
       const s = mhits[+b.dataset.j];
       clearHl(); setMode(s.level); setHl(s.level, s.i);
-      setCaption(`${s.name}`, `${fmt(s.count)} cells · ${s.level===2?'subclass':'cluster'} — highlighted gold for 10s`);
+      setCaption(`${s.name}`, `${fmt(s.count)} cells · ${s.level===2?'subclass':'cluster'}, highlighted gold for 10s`);
       diveTo(s.level, s.i, s.count);
       setTimeout(()=>{ clearHl(); hideCaption(); }, 10000);
       hits.innerHTML='';

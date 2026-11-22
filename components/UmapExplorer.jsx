@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
 
-// Sequential teal ramp for marker expression — one hue, light→dark, on cream.
+// Sequential teal ramp for marker expression, one hue, light→dark, on cream.
 const RAMP_LO = [217, 232, 228]; // barely-teal paper
 const RAMP_HI = [11, 63, 58]; // deep teal ink
 const INK = "rgba(28,26,21,0.92)";
@@ -49,9 +49,9 @@ export default function UmapExplorer() {
   const [auto, setAuto] = useState(true);
   const [reduced, setReduced] = useState(false);
 
-  // Everything that changes at 60fps lives in refs — zero re-renders per frame.
+  // Everything that changes at 60fps lives in refs, zero re-renders per frame.
   const anim = useRef({
-    pos: null, // displayed positions (Float32Array n*2) — hover reads this
+    pos: null, // displayed positions (Float32Array n*2), hover reads this
     tissue: null,
     embFrom: null,
     embTo: null,
@@ -215,7 +215,7 @@ export default function UmapExplorer() {
         }
       }
 
-      // the H&E slide the spots came from — fades in while we're in tissue space
+      // the H&E slide the spots came from, fades in while we're in tissue space
       const heA = Math.max(0, Math.min(1, (0.45 - m) / 0.18));
       if (a.he && heA > 0.01 && w > 560) {
         const iw = Math.min(170, w * 0.22);
@@ -252,7 +252,7 @@ export default function UmapExplorer() {
       const st = data.settings[view.current.active];
       const where =
         m < 0.04
-          ? "tissue coordinates — the section itself"
+          ? "tissue coordinates, the section itself"
           : m > 0.96
             ? `umap: min_dist=${st.min_dist} spread=${st.spread}`
             : "folding tissue → embedding…";
@@ -261,7 +261,7 @@ export default function UmapExplorer() {
     [data, reduced]
   );
 
-  // ——— the perpetual loop ————————————————————————————————————————————
+  // , , ,  the perpetual loop , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , 
   const loop = useCallback(
     (now) => {
       const a = anim.current;
@@ -393,18 +393,18 @@ export default function UmapExplorer() {
   return (
     <section id="umap-interrogated" className="px-6 md:px-14 py-28 max-w-7xl mx-auto">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">07 · DEMOCRATIZING BIOINFORMATICS</p>
+        <p className="font-mono text-sm text-violet mb-4">01 · DEMOCRATIZING BIOINFORMATICS</p>
         <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
           Your computational biology core, <span className="text-violet">reimagined.</span>
         </h2>
         <p className="mt-5 max-w-2xl text-lg text-dim leading-relaxed">
-          <span className="text-snow">The analysis isn&rsquo;t a PDF you receive — it&rsquo;s an
+          <span className="text-snow">The analysis isn&rsquo;t a PDF you receive. It&rsquo;s an
           instrument you hold.</span> Below, 1,775 spots from a public GBM section breathe
           between the tissue they were cut from and the embedding that organizes them.
           Cell types keep their colors and their names the whole way, so you can watch
-          morphology become biology — then take the dials yourself: drag the slider,
-          switch the parameterization, color by SOX2 — the same stemness factor caught
-          sitting on its own gene in the browser above.
+          morphology become biology, then take the dials yourself: drag the slider,
+          switch the parameterization, color by SOX2, the same stemness factor caught
+          sitting on its own gene in this figure.
         </p>
       </Reveal>
 
@@ -516,7 +516,7 @@ export default function UmapExplorer() {
             )}
           </div>
 
-          {/* cell types — click to isolate one through the whole morph */}
+          {/* cell types, click to isolate one through the whole morph */}
           {data && (
             <div className="mt-4 flex flex-wrap gap-2">
               {data.domains.map((d, i) => (
@@ -557,7 +557,7 @@ export default function UmapExplorer() {
           <span className="font-semibold text-snow">Fig. 6&nbsp;|</span> A living figure:
           the same 1,775 spots glide between tissue coordinates and four UMAP
           parameterizations computed offline from one shared neighbors graph (fixed
-          seed) — cell-type labels ride their clusters through the fold. One UMAP is a
+          seed), cell-type labels ride their clusters through the fold. One UMAP is a
           choice, not a fact; here you hold the dials. GBM3, Ren et al. 2023 (GSE194329);
           every view computed, none curated.
         </p>

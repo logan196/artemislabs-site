@@ -7,25 +7,25 @@ const FIGS = [
   {
     src: "analysis/GBM1_umap_pair.jpg",
     alt: "GBM1: UMAP of the BANKSY embedding beside the spatial section, both colored by putative cell state",
-    cap: "GBM1 — the BANKSY-embedding UMAP beside the tissue, one color per putative cell state.",
+    cap: "GBM1, the BANKSY-embedding UMAP beside the tissue, one color per putative cell state.",
     tag: "a",
   },
   {
     src: "analysis/TenX_GBM_umap_pair.jpg",
     alt: "10x GBM section: UMAP beside spatial coordinates, colored by putative cell state",
-    cap: "10x GBM — same pairing on the fresh-frozen reference section.",
+    cap: "10x GBM, same pairing on the fresh-frozen reference section.",
     tag: "b",
   },
   {
     src: "analysis/TenX_GBM_dpt_pair.jpg",
     alt: "10x GBM section: diffusion pseudotime shown on UMAP and on the tissue",
-    cap: "10x GBM — diffusion pseudotime (scanpy DPT, rooted at the SOX2-max spot), on UMAP and on tissue. Exploratory: Visium spots mix cells, so read as a gradient, not a lineage.",
+    cap: "10x GBM, diffusion pseudotime (scanpy DPT, rooted at the SOX2-max spot), on UMAP and on tissue. Exploratory: Visium spots mix cells, so read as a gradient, not a lineage.",
     tag: "c",
   },
   {
     src: "analysis/morphology_strip.jpg",
     alt: "Histological morphology of two glioma sections at three zoom levels",
-    cap: "Morphology up close — the same H&E sections at three zoom levels (top: AT15, de Jong et al.; bottom: GBM2, Ren et al.). Staining density varies with cellularity.",
+    cap: "Morphology up close, the same H&E sections at three zoom levels (top: AT15, de Jong et al.; bottom: GBM2, Ren et al.). Staining density varies with cellularity.",
     tag: "d",
   },
 ];
@@ -38,26 +38,25 @@ export default function AnalysisGallery() {
           More ways to read a section.
         </h3>
         <p className="mt-4 max-w-2xl text-lg text-dim leading-relaxed">
-          UMAP beside tissue, pseudotime, morphology — all computed from the runs above.
+          UMAP beside tissue, pseudotime, morphology, all computed from the runs above.
         </p>
       </Reveal>
-      {/* museum placards — plain-language concepts, clearly not data */}
+      {/* museum placards, plain-language concepts, clearly not data */}
       <Reveal className="mt-10 grid md:grid-cols-2 gap-5">
         <div className="rounded-[4px] border border-line bg-panel/80 p-6">
           <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">What's a UMAP?</p>
           <p className="text-[15.5px] leading-relaxed text-snow/90">
-            A tissue section measures thousands of genes in every spot — far too many
+            A tissue section measures thousands of genes in every spot, far too many
             dimensions to look at. UMAP folds that space down to two, keeping neighbors
             close: spots with similar expression land near each other, and the clusters
-            you see are real subpopulations. Some detail is always lost in the fold —
-            which is why every UMAP on this page sits beside the tissue it came from.
+            you see are real subpopulations. Some detail is always lost in the fold, which is why every UMAP on this page sits beside the tissue it came from.
           </p>
         </div>
         <div className="rounded-[4px] border border-line bg-panel/80 p-6">
           <p className="font-mono text-[11px] tracking-[0.25em] text-violet uppercase mb-3">Regulatory networks, next</p>
           <GrnConcept height={220} />
           <p className="mt-3 text-[13px] text-dim leading-relaxed">
-            Concept sketch — gene-regulatory-network inference (after Kamimoto et al. 2020):
+            Concept sketch, gene-regulatory-network inference (after Kamimoto et al. 2020):
             expression + chromatin in, transcription-factor modules out. Illustration, not data.
           </p>
         </div>

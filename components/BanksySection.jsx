@@ -6,8 +6,7 @@ import { stateColor } from "../lib/stateColors";
 
 // Fixed palette, assigned to real states in order (states are sorted by
 // descending count in the JSON). Repeats if there are more states than colors.
-// Canonical per-state colors shared with the UMAP explorer, keyed by NAME —
-// the same state keeps the same color in every figure on the page.
+// Canonical per-state colors shared with the UMAP explorer, keyed by NAME, // the same state keeps the same color in every figure on the page.
 
 const INK = [28, 26, 21]; // neutral "expression without place" color
 
@@ -40,7 +39,7 @@ export default function BanksySection() {
 
     const { states, spots } = data;
     const stateRgb = states.map((name, i) => hexToRgb(stateColor(name, i)));
-    // the actual H&E slide this data came from — anchors "this is a tumor"
+    // the actual H&E slide this data came from, anchors "this is a tumor"
     const heImg = new Image();
     heImg.src = "gbm/GBM1_he.jpg";
     const counts = states.map(() => 0);
@@ -55,7 +54,7 @@ export default function BanksySection() {
       .slice(0, 6);
 
     // --- roaming BANKSY neighborhood ring: focus spot + its k nearest ---
-    // Deterministic hops (hopCount * 997 mod n — no Math.random), neighbors
+    // Deterministic hops (hopCount * 997 mod n, no Math.random), neighbors
     // recomputed ONCE per hop and cached; the per-frame cost is just drawing.
     const RING_K = 6;
     const HOP_MS = 2400;
@@ -104,8 +103,7 @@ export default function BanksySection() {
       const px = (nx) => ox + nx * scale;
       const py = (ny) => oy + ny * scale;
 
-      // neighbour rings on a rotating subset (skipped under reduced motion —
-      // they are the only time-driven animation)
+      // neighbour rings on a rotating subset (skipped under reduced motion, // they are the only time-driven animation)
       if (!reduceMotion && ringPhase > 0 && resolve < 1) {
         const n = Math.floor(ringPhase * 10);
         for (let k = 0; k < n; k++) {
@@ -125,7 +123,7 @@ export default function BanksySection() {
         }
       }
 
-      // spots: beat 1 = REAL per-spot GFAP intensity (sepia ramp — the blur the
+      // spots: beat 1 = REAL per-spot GFAP intensity (sepia ramp, the blur the
       // caption describes), lerped to real state colors as BANKSY resolves.
       const SEPIA = [154, 91, 19];
       for (const [sx, sy, si, gf] of spots) {
@@ -151,7 +149,7 @@ export default function BanksySection() {
         ctx.fill();
       }
 
-      // roaming neighborhood ring — a literal picture of what BANKSY does:
+      // roaming neighborhood ring, a literal picture of what BANKSY does:
       // one focus spot, spokes to its 6 nearest neighbors, "spot + ring" as
       // the unit that gets embedded. Full strength while the method is being
       // explained; fades to 35% once the colored domains fully resolve.
@@ -236,7 +234,7 @@ export default function BanksySection() {
         }
       }
 
-      // H&E inset while in the expression view — the tissue these spots sit on
+      // H&E inset while in the expression view, the tissue these spots sit on
       if (resolve < 0.6 && heImg.complete && heImg.naturalWidth > 0) {
         const a = 1 - resolve / 0.6;
         const iw = Math.min(190, w * 0.2);
@@ -314,7 +312,7 @@ export default function BanksySection() {
     return () => cancelAnimationFrame(raf);
   }, [scrollYProgress, data]);
 
-  // Contiguous windows — no dead zones where all three captions are ghosts.
+  // Contiguous windows, no dead zones where all three captions are ghosts.
   const cap1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
   const cap2 = useTransform(scrollYProgress, [0.3, 0.38, 0.56, 0.64], [0, 1, 1, 0]);
   const cap3 = useTransform(scrollYProgress, [0.58, 0.66, 1], [0, 1, 1]);
@@ -323,7 +321,7 @@ export default function BanksySection() {
     <section id="banksy" ref={wrapRef} className="relative h-[180vh] md:h-[240vh]">
       <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
         <div className="px-6 md:px-14 pt-16 md:pt-20 max-w-7xl mx-auto w-full">
-          <p className="font-mono text-sm text-violet mb-3">01 · BANKSY — A GBM USE CASE</p>
+          <p className="font-mono text-sm text-violet mb-3">01 · BANKSY. A GBM USE CASE</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Clustering that <span className="text-violet">sees the tissue.</span>
           </h2>
@@ -336,15 +334,14 @@ export default function BanksySection() {
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           {/* persistent card; only the text crossfades, so the backdrop never ghosts */}
           <div className="absolute bottom-8 left-6 md:left-10 w-[26rem] max-w-[85vw] rounded-[4px] bg-panel/95 border border-line shadow-sm p-4 grid">
-            {/* grid-stacked so the card sizes to the tallest caption — nothing overflows */}
+            {/* grid-stacked so the card sizes to the tallest caption, nothing overflows */}
             <motion.p style={{ opacity: cap1 }} className="col-start-1 row-start-1 text-dim text-[16px] leading-relaxed">
               A glioblastoma section. GFAP lights up{" "}
               <span className="text-snow">reactive astrocytes and astrocyte-like tumor
-              states alike</span> — spot-by-spot clustering reads them as one blur.
+              states alike</span>, spot-by-spot clustering reads them as one blur.
             </motion.p>
             <motion.p style={{ opacity: cap2 }} className="col-start-1 row-start-1 text-dim text-[16px] leading-relaxed">
-              BANKSY embeds every spot <span className="text-snow">with its neighborhood</span> —
-              its own expression, the average of the ring of spots around it, and how that
+              BANKSY embeds every spot <span className="text-snow">with its neighborhood</span>, its own expression, the average of the ring of spots around it, and how that
               average changes around the ring. Place becomes part of identity.
             </motion.p>
             <motion.p style={{ opacity: cap3 }} className="col-start-1 row-start-1 text-dim text-[16px] leading-relaxed">
@@ -364,11 +361,11 @@ export default function BanksySection() {
           </p>
           <p className="text-[15px] text-dim leading-relaxed">
             GBM is the stress test. Several tumor states coexist in one section, they
-            shade into each other, and the hardest split — reactive astrocytes versus
-            astrocyte-like tumor states — <span className="text-snow">shares the very
+            shade into each other, and the hardest split, reactive astrocytes versus
+            astrocyte-like tumor states, <span className="text-snow">shares the very
             marker you just watched (GFAP)</span>, so histology and single-gene panels
             both blur it. A pipeline that separates states here has earned the gentler
-            tissues — and the public GBM record is deep enough (GSE194329, 10x,
+            tissues, and the public GBM record is deep enough (GSE194329, 10x,
             gbmspace.org) that every claim on this page can be re-run and checked.
           </p>
         </div>
@@ -382,7 +379,7 @@ export default function BanksySection() {
             parallel</span>, each handed its domain&rsquo;s top differential markers and
             constrained to a controlled vocabulary (AC-, MES-, NPC-, OPC-like plus the
             brain tumor microenvironment). The labels that snapped in above are those
-            calls — model-annotated, flagged as such on every figure, never presented
+            calls, model-annotated, flagged as such on every figure, never presented
             as ground truth.
           </p>
         </div>

@@ -14,9 +14,9 @@ export default function WetLabSection() {
             Built for wet labs, whatever the assay.
           </h2>
           <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-            Spatial is the showcase on this page — the engagement covers everything your
+            Spatial is the showcase on this page, the engagement covers everything your
             bench produces. Below: a published CSF proteomics cohort (Hällqvist 2024,
-            <i> Nat Commun</i>) independently reanalyzed in our notebook portal — volcano
+            <i> Nat Commun</i>) independently reanalyzed in our notebook portal, volcano
             plots, cross-dataset validation, classifier rebuilds, and a reproducibility
             appendix where every figure ships with the code that made it.
           </p>
@@ -36,7 +36,7 @@ export default function WetLabSection() {
             />
           </div>
           <p className="mt-3 text-[13.5px] text-dim leading-relaxed">
-            <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> The notebook portal reanalyzing Hällqvist et al. 2024 (CSF proteomics, 194 subjects, 32-protein MRM panel) — public data, every claim re-derived.
+            <span className="font-semibold text-snow">Fig. 8&nbsp;|</span> The notebook portal reanalyzing Hällqvist et al. 2024 (CSF proteomics, 194 subjects, 32-protein MRM panel), public data, every claim re-derived.
           </p>
         </Reveal>
       </div>
