@@ -3,7 +3,7 @@
 import Reveal from "./Reveal";
 
 const BOOKING =
-  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW";
+  "https://calendar.app.google/Gcn7m6neU3P3ktQA8";
 
 const MODALITIES = [
   ["Single-cell & single-nucleus", "scRNA/snRNA-seq (10x, Smart-seq), scATAC, multiome, CITE-seq — annotation, trajectories, DE, pathways, cell–cell communication."],
