@@ -1,0 +1,99 @@
+/* Artemis Labs linked UMAP + Spatial workbench. Brand: near-black, teal, serif + mono. */
+:root{
+  --bg:#07080a;
+  --well:#000;
+  --ink:#f3f4f8;
+  --muted:#b8bcc8;
+  --dim:#8b909c;
+  --line:#1a1c28;
+  --line2:#2a2d3a;
+  --teal:#7eefe0;
+  --teal2:#2dd4bf;
+  --btn:#ececef;
+  --btn-ink:#1b1f3b;
+  --sans:Inter,system-ui,-apple-system,sans-serif;
+  --serif:"Instrument Serif", "Source Serif 4", "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);height:100%}
+body{min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--teal2);text-decoration:none}
+a:hover{color:var(--teal)}
+button{font:inherit}
+
+.wb-page{display:flex;flex-direction:column;min-height:100vh}
+.wb-top{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:12px 18px;border-bottom:1px solid var(--line);background:#0b0c10;
+}
+.wb-brand{display:flex;align-items:center;gap:14px;min-width:0}
+.wb-brand img{width:118px;height:auto;display:block;flex:none}
+.wb-id{display:flex;flex-direction:column;gap:2px;min-width:0}
+.wb-brand small{display:block;font:500 10.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.wb-brand b{display:block;font:400 20px/1.1 var(--serif);color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.wb-ctl{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-pills{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.wb-pill{
+  border:1px solid var(--line2);background:transparent;color:var(--muted);
+  font:600 12px/1 var(--sans);padding:7px 11px;border-radius:999px;cursor:pointer;
+}
+.wb-pill:hover{color:var(--ink);border-color:#3a3e4d}
+.wb-pill.on{background:rgba(45,212,191,.12);border-color:var(--teal2);color:var(--teal)}
+.wb-sep{width:1px;height:22px;background:var(--line2)}
+.wb-link{
+  font:600 12.5px/1 var(--sans);color:var(--muted);
+  border:1px solid var(--line2);padding:7px 11px;border-radius:8px;
+}
+.wb-link:hover{color:var(--ink);border-color:var(--teal2)}
+
+.wb-stage{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;min-height:0;background:#0b0c12}
+.wb-pane{
+  position:relative;background:var(--well);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:0;
+}
+.wb-pane canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:default}
+.wb-pane.is-lasso canvas{cursor:crosshair}
+.wb-title{position:absolute;left:12px;top:8px;z-index:2;font:600 14px/1.25 var(--sans);color:#f3f4f8;pointer-events:none}
+.wb-tools{position:absolute;left:12px;top:36px;z-index:3;display:flex;gap:8px}
+.wb-tool{
+  width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
+  background:var(--btn);color:var(--btn-ink);display:grid;place-items:center;cursor:pointer;padding:0;
+}
+.wb-tool svg{width:17px;height:17px;display:block}
+.wb-tool svg .fill{fill:currentColor}
+.wb-tool svg .line{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.wb-tool:hover,.wb-tool.on{background:#fff;border-color:#fff}
+.wb-legend{position:absolute;right:12px;top:10px;z-index:2;display:grid;grid-template-columns:auto 92px;column-gap:8px;align-items:center;pointer-events:none}
+.wb-legend[hidden]{display:none}
+.wb-legend .name{font:600 11px/1 var(--mono);letter-spacing:.04em;color:#e8eaf2;text-align:right}
+.wb-legend .bar{grid-column:2;height:8px;border-radius:2px;background:linear-gradient(90deg,#0d0887,#7e03a8,#cc4778,#f89540,#f0f921)}
+.wb-legend .lo,.wb-legend .hi{grid-column:2;display:flex;justify-content:space-between;font:500 10px/1 var(--mono);color:#c5c9d4}
+.wb-count{position:absolute;left:0;right:0;bottom:10px;z-index:2;text-align:center;font:500 12px/1 var(--sans);color:#c5c9d4;pointer-events:none}
+.wb-lasso{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+.wb-foot{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:10px 18px 14px;border-top:1px solid var(--line);font:500 12px/1.45 var(--sans);color:var(--dim);background:#0b0c10;
+}
+.wb-foot strong{color:var(--muted);font-weight:600}
+.wb-clear{font:600 12px/1 var(--sans);color:var(--teal2);background:none;border:0;cursor:pointer;padding:0}
+.wb-clear[hidden]{display:none}
+
+body.embed .wb-top{padding:8px 12px}
+body.embed .wb-brand small, body.embed .wb-link, body.embed .wb-foot{display:none}
+body.embed .wb-brand b{font-size:16px}
+body.embed .wb-brand img{width:96px;height:auto}
+body.embed{min-height:0;height:100%;background:#000}
+body.embed .wb-page{height:100%;min-height:0}
+body.embed .wb-stage{padding:6px;gap:6px}
+
+.status{position:absolute;inset:0;display:grid;place-items:center;color:var(--dim);font:500 13px/1.4 var(--sans);z-index:4}
+.status.err{color:#f0b4b4}
+
+@media (max-width:720px){
+  .wb-stage{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+  .wb-top{padding:10px 12px}
+  .wb-brand b{font-size:17px}
+  .wb-tools{top:34px}
+  .wb-title{font-size:13px}
+}
