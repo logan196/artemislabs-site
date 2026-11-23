@@ -6,12 +6,17 @@
 <title>Artemis Explore · AT15 glioblastoma</title>
 <meta name="description" content="Interactive spatial tissue viewer — H&E, expression-derived marker layers and cell2location cell states. Data: de Jong et al., Nature 2026 (gbmspace.org).">
 <link rel="stylesheet" href="style.css">
+<style>
+.brand-home{display:inline-flex;align-items:center;border-radius:8px;padding:4px 6px;margin:-4px -6px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:filter .18s ease,background-color .18s ease,box-shadow .18s ease,transform .12s ease}
+.brand-home:hover,.brand-home:focus-visible,.brand-home:active{background:rgba(45,212,191,.12);box-shadow:0 0 0 1px rgba(45,212,191,.55),0 0 18px rgba(45,212,191,.45);filter:brightness(1.35) saturate(1.2);outline:none}
+.brand-home:active{transform:scale(.96)}
+</style>
 </head>
 <body>
 <div id="app">
   <header class="topbar">
     <div class="brand">
-      <img src="artemis_lockup.svg" alt="Artemis BioLabs" class="lockup">
+      <a class="brand-home" href="/" target="_top" aria-label="Artemis BioLabs, back to main page"><img src="artemis_lockup.svg" alt="Artemis BioLabs" class="lockup"></a>
       <span class="divider"></span>
       <div class="sampleinfo">
         <span class="sample-id" id="sampleId">—</span>
