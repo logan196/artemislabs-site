@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artemis Explore · AT15 glioblastoma</title>
+<meta name="description" content="Interactive spatial tissue viewer — H&E, expression-derived marker layers and cell2location cell states. Data: de Jong et al., Nature 2026 (gbmspace.org).">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <img src="artemis_lockup.svg" alt="Artemis BioLabs" class="lockup">
+      <span class="divider"></span>
+      <div class="sampleinfo">
+        <span class="sample-id" id="sampleId">—</span>
+        <span class="sample-sub" id="sampleSub">loading…</span>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <div class="seg" role="group" aria-label="View mode">
+        <button id="btnSingle" class="seg-btn" title="Single pane (s)">Single</button>
+        <button id="btnSplit" class="seg-btn active" title="Split pane (s)">Split</button>
+      </div>
+      <button class="icon-btn" id="btnShot" title="Save screenshot">
+        <svg viewBox="0 0 24 24"><path d="M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9Zm3 5.5A4.5 4.5 0 1 1 7.5 13 4.5 4.5 0 0 1 12 8.5Zm0 2A2.5 2.5 0 1 0 14.5 13 2.5 2.5 0 0 0 12 10.5Z"/></svg>
+      </button>
+      <button class="icon-btn" id="btnShare" title="Copy link">
+        <svg viewBox="0 0 24 24"><path d="M18 8a3 3 0 1 0-2.83-4H15a3 3 0 0 0 .18 1.03L8.9 8.66a3 3 0 1 0 0 6.68l6.28 3.63A3 3 0 1 0 18 16a3 3 0 0 0-1.9.69L9.9 13.1a3 3 0 0 0 0-2.2l6.2-3.59A3 3 0 0 0 18 8Z"/></svg>
+      </button>
+      <button class="icon-btn" id="btnFull" title="Fullscreen">
+        <svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4V4Zm10 0h6v6h-2V6h-4V4ZM4 14h2v4h4v2H4v-6Zm14 0h2v6h-6v-2h4v-4Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section class="viewport" id="viewport">
+      <div class="pane" id="paneL">
+        <canvas></canvas>
+        <span class="pane-label" id="labelL">H&amp;E</span>
+        <div class="scalebar"><div class="scalebar-line"></div><span class="scalebar-text"></span></div>
+      </div>
+      <div class="pane" id="paneR">
+        <canvas></canvas>
+        <span class="pane-label">MARKERS</span>
+        <div class="scalebar"><div class="scalebar-line"></div><span class="scalebar-text"></span></div>
+      </div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="side-scroll">
+        <div class="side-head">
+          <h2>Layers <span class="count" id="layerCount">0/0</span></h2>
+          <input type="search" id="search" placeholder="Search layers…" autocomplete="off">
+        </div>
+
+        <div class="group">
+          <div class="group-title">H&amp;E</div>
+          <label class="row" id="rowHE">
+            <span class="chip chip-he"></span>
+            <span class="row-name">H&amp;E histology</span>
+            <input type="checkbox" id="chkHE" checked>
+            <span class="box"></span>
+          </label>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Markers <span class="group-note">expression-derived (pseudo-IF)</span></div>
+          <div id="markerRows"></div>
+        </div>
+
+        <div class="group" id="statesGroup">
+          <button class="group-toggle" id="statesToggle" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="group-title-inline">Cell states</span>
+            <span class="group-note" id="statesNote"></span>
+            <input type="checkbox" id="chkStates" aria-label="Show cell states overlay">
+            <span class="box" id="boxStates"></span>
+          </button>
+          <div class="states-body" id="statesBody" hidden>
+            <div class="states-method" id="statesMethod"></div>
+            <div id="statesLegend"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent">
+        <div class="agent-head">
+          <span class="agent-dot"></span>
+          <span class="agent-title">ARTEMIS AGENT</span>
+          <button id="btnAnnotate" class="agent-btn">annotate</button>
+        </div>
+        <pre class="agent-body" id="agentBody">ready — press annotate to summarize this section from the run export.</pre>
+        <div class="agent-foot">precomputed from the run — local model annotations, not independently validated</div>
+      </div>
+
+      <footer class="side-foot" id="citation"></footer>
+    </aside>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
