@@ -6,7 +6,6 @@ import WhatWeDo from "@/components/WhatWeDo";
 import FoundersSection from "@/components/FoundersSection";
 import UseCasesSection from "@/components/UseCasesSection";
 import PortalFeature from "@/components/PortalFeature";
-import SpatialAgentsSection from "@/components/SpatialAgentsSection";
 import CopilotSection from "@/components/CopilotSection";
 import ToolsGrid from "@/components/ToolsGrid";
 import StackMetro from "@/components/StackMetro";
@@ -25,7 +24,6 @@ export default function Home() {
       <FoundersSection />
       <UseCasesSection />
       <PortalFeature />
-      <SpatialAgentsSection />
       <CopilotSection />
       <ToolsGrid />
       <StackMetro />

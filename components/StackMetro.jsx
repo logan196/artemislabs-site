@@ -1762,7 +1762,7 @@ export default function StackMetro() {
     <section id="stack" className="relative px-6 md:px-14 py-24 md:py-32 max-w-7xl mx-auto">
       <span ref={sentinelRef} className="block h-px w-full" aria-hidden />
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">08 · THE STACK, CONNECTED</p>
+        <p className="font-mono text-sm text-violet mb-4">07 · THE STACK, CONNECTED</p>
         <h3 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-3xl">
           Built on the tools you already trust.
         </h3>
