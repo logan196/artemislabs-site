@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import CredStrip from "@/components/CredStrip";
 import ClientMarquee from "@/components/ClientMarquee";
 import UmapExplorer from "@/components/UmapExplorer";
 import PrismaStory from "@/components/PrismaStory";
@@ -17,6 +18,7 @@ export default function Home() {
     <main className="grain">
       <div className="bg-sea" aria-hidden />
       <Hero />
+      <CredStrip />
       <ClientMarquee />
       <UmapExplorer />
       <PrismaStory />
