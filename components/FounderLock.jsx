@@ -114,9 +114,10 @@ export default function FounderLock() {
           >
             <p className="font-mono text-[12px] text-mint mb-3">● founder mode</p>
             <div className="grid gap-2 text-[14px]">
+              <a className="text-snow hover:text-violet transition-colors" href="https://logan196.github.io/artemis-labs-hub/" target="_blank" rel="noreferrer">hub · all labs</a>
               <a className="text-snow hover:text-violet transition-colors" href="https://github.com/logan196/artemislabs-site" target="_blank" rel="noreferrer">repo · artemislabs-site</a>
               <a className="text-snow hover:text-violet transition-colors" href="http://localhost:3456/" target="_blank" rel="noreferrer">local portal :3456</a>
-              <a className="text-snow hover:text-violet transition-colors" href="https://logan196.github.io/artemislabs-site/" target="_blank" rel="noreferrer">live site</a>
+              <a className="text-snow hover:text-violet transition-colors" href="https://artemislabs.bio/" target="_blank" rel="noreferrer">live site</a>
               <p className="font-mono text-[11px] text-dim pt-1 border-t border-line">
                 deploy: bash scripts/deploy-ghpages.sh
               </p>
