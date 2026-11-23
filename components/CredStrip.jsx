@@ -1,6 +1,6 @@
 // Funding line under the opening. Wording is the founder's own request
-// ("funded by Bill Gross"); the article link is the Caltech story about the
-// Bill Gross Business Plan Competition prize, not evidence of an investment.
+// ("funded by Bill Gross"); the article link is the Fortune story he
+// supplied (fortune.com, Nov 17 2026), not evidence of an investment.
 const linkCls =
   "underline decoration-white/30 underline-offset-4 hover:decoration-[#f7f4ea] transition-colors";
 export default function CredStrip() {
@@ -24,11 +24,11 @@ export default function CredStrip() {
         <p className="mt-2 text-[0.85rem] md:text-[0.95rem] text-[#f7f4ea]/60">
           <a
             className={linkCls}
-            href="https://initiativeforstudents.caltech.edu/story-listings/on-your-mark-get-set-launch/"
+            href="https://fortune.com/2026/11/17/bill-gross-idealab-ai-patents-fortune-500-license-caltech/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Caltech prize article
+            Fortune article
           </a>
         </p>
       </div>
