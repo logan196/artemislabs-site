@@ -32,7 +32,7 @@ export const metadata = {
     siteName: "Artemis BioLabs",
     images: [
       {
-        url: "/artemis-social-20261124.png",
+        url: "/artemis-social-card-v2.png",
         width: 1200,
         height: 630,
         alt: "Artemis BioLabs brand preview card",
@@ -44,7 +44,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Artemis BioLabs",
     description: "Every core service your lab needs. One AI-powered team. Computational biology, accelerated.",
-    images: ["/artemis-social-20261124.png"],
+    images: ["/artemis-social-card-v2.png"],
   },
 };
 
