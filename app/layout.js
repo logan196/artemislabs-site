@@ -38,6 +38,15 @@ export const metadata = {
         alt: "Artemis BioLabs brand preview card",
       },
     ],
+    videos: [
+      {
+        url: "/artemis-preview-loop-v1.mp4",
+        secureUrl: "https://artemislabs.bio/artemis-preview-loop-v1.mp4",
+        type: "video/mp4",
+        width: 1200,
+        height: 630,
+      },
+    ],
     type: "website",
   },
   twitter: {
