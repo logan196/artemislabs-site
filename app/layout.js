@@ -30,8 +30,21 @@ export const metadata = {
     description: "Every core service your lab needs. One AI-powered team. Computational biology, accelerated.",
     url: "https://artemislabs.bio",
     siteName: "Artemis BioLabs",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Artemis BioLabs lockup" }],
+    images: [
+      {
+        url: "/artemis-social-20261124.png",
+        width: 1200,
+        height: 630,
+        alt: "Artemis BioLabs brand preview card",
+      },
+    ],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Artemis BioLabs",
+    description: "Every core service your lab needs. One AI-powered team. Computational biology, accelerated.",
+    images: ["/artemis-social-20261124.png"],
   },
 };
 
