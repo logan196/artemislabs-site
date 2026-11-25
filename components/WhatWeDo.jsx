@@ -1,49 +1,75 @@
 "use client";
 
-import Reveal from "./Reveal";
+import { useRef } from "react";
 import AssayMini from "./AssayMini";
+import Reveal, { Stagger } from "./Reveal";
+import { MAILTO } from "@/lib/links";
 
 const CORES = [
-  { name: "Single-cell", desc: "Raw reads to annotated atlases · iPSC benchmarking", kind: "singlecell" },
-  { name: "Spatial transcriptomics", desc: "Every cell mapped on tissue", kind: "spatial" },
-  { name: "CUT&Tag and chromatin", desc: "Peaks, tracks, differential binding", kind: "chromatin" },
-  { name: "Long-read sequencing", desc: "Isoforms, SVs and methylation", kind: "longread" },
-  { name: "Radiomics and imaging", desc: "Segmentation to outcome models", kind: "radiomics" },
-  { name: "Calcium imaging", desc: "Wave detection without hand scoring", kind: "calcium" },
-  { name: "Clinical data and biostatistics", desc: "Cohorts, trials, survival models", kind: "clinical" },
-  { name: "Custom apps: DNA Studio", desc: "Plasmid maps from SnapGene files", kind: "dna" },
+  { n: "01", name: "Single-cell", desc: "Raw reads to annotated atlases, including iPSC benchmarking.", kind: "singlecell" },
+  { n: "02", name: "Spatial transcriptomics", desc: "Every cell mapped back onto the tissue.", kind: "spatial" },
+  { n: "03", name: "CUT&Tag and chromatin", desc: "Peaks, tracks, and differential binding.", kind: "chromatin" },
+  { n: "04", name: "Long-read sequencing", desc: "Isoforms, structural variants, and methylation.", kind: "longread" },
+  { n: "05", name: "Radiomics and imaging", desc: "Segmentation through outcome models.", kind: "radiomics" },
+  { n: "06", name: "Calcium imaging", desc: "Wave detection without hand scoring.", kind: "calcium" },
+  { n: "07", name: "Clinical data", desc: "Cohorts, trials, and survival models.", kind: "clinical" },
+  { n: "08", name: "DNA Studio", desc: "Plasmid maps from SnapGene files.", kind: "dna" },
 ];
+
+function LitCard({ children }) {
+  const ref = useRef(null);
+  const move = (e) => {
+    const node = ref.current;
+    if (!node) return;
+    const r = node.getBoundingClientRect();
+    node.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    node.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  return (
+    <article
+      ref={ref}
+      onMouseMove={move}
+      className="reveal lit-card relative overflow-hidden rounded-[4px] border border-line bg-panel/80 p-4"
+    >
+      {children}
+    </article>
+  );
+}
 
 export default function WhatWeDo() {
   return (
-    <section id="whatwedo" className="relative px-6 md:px-14 py-24 md:py-36 max-w-7xl mx-auto">
+    <section id="whatwedo" className="relative mx-auto max-w-7xl px-6 py-24 md:px-14 md:py-36">
       <Reveal>
-        <p className="font-mono text-sm text-violet mb-4">04 · WHAT WE DO</p>
-        <h2 className="text-4xl md:text-5xl font-semibold tracking-tight max-w-3xl">
-          Eight cores. <span className="text-violet">One embedded team.</span>
+        <p className="mb-4 font-mono text-sm text-violet">WHAT WE DO</p>
+        <h2 className="max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
+          Eight cores. One team.
         </h2>
-        <p className="mt-6 max-w-2xl text-lg text-dim leading-relaxed">
-          From study design through analysis and reporting, each core is scoped to the
-          question, the assay, and the people who need to use the result.
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-dim">
+          Study design, the analysis, and a result the people in the lab can actually use.
         </p>
       </Reveal>
 
-      <Reveal delay={0.1}>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
-          {CORES.map((c) => (
-            <div key={c.name} className="rounded-[4px] border border-line bg-panel/70 p-5">
-              <div className="rounded-[3px] bg-[#efeadd66] mb-3 overflow-hidden">
-                <AssayMini kind={c.kind} height={110} />
+      <Stagger className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {CORES.map((c) => (
+          <LitCard key={c.name}>
+            <div className="relative z-10">
+              <div className="mb-4 overflow-hidden rounded-[3px] bg-[#efeadd66]">
+                <AssayMini kind={c.kind} height={108} />
               </div>
-              <p className="font-medium text-[17px]">{c.name}</p>
-              <p className="text-dim text-[14.5px] mt-1.5">{c.desc}</p>
-              <p className="mt-3 font-mono text-[11.5px] text-dim">demo on request</p>
+              <p className="font-mono text-[11px] tracking-[0.16em] text-violet">{c.n}</p>
+              <h3 className="mt-2 text-[18px] font-medium text-snow">{c.name}</h3>
+              <p className="mt-2 text-[14.5px] leading-relaxed text-dim">{c.desc}</p>
             </div>
-          ))}
-        </div>
-        <p className="mt-6 text-[15px] text-dim">
-          Also bulk RNA-seq, variants, proteomics, metabolomics, cytometry and microbiome.{" "}
-          <a href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20sample%20report" className="text-violet hover:text-snow underline underline-offset-4 transition-colors">Request a sample report →</a>
+          </LitCard>
+        ))}
+      </Stagger>
+
+      <Reveal delay={0.05}>
+        <p className="mt-8 max-w-3xl text-[15px] leading-relaxed text-dim">
+          Also bulk RNA-seq, variants, proteomics, metabolomics, cytometry, and microbiome.{" "}
+          <a href={MAILTO} className="text-violet underline decoration-violet/40 underline-offset-4 hover:text-snow">
+            Ask for a sample report
+          </a>
         </p>
       </Reveal>
     </section>
