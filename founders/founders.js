@@ -24,106 +24,107 @@ function init() {
     rev.forEach(function (el) { io.observe(el); });
   } else rev.forEach(function (el) { el.classList.add("af-in"); });
 
-  /* ---- a wireframe dodecahedron assembles, an arrow strikes it, the Caltech wordmark lights up inside ---- */
+  /* ---- 2,400 real cells (GEO GSE339006, glioblastoma Xenium) flow from their tissue layout into a
+     dodecahedron; orange cells converge into the Caltech wordmark at its centre; then back to tissue ---- */
   var cv = document.getElementById("af-hunt-canvas");
   if (cv && cv.getContext) (function () {
     var ctx = cv.getContext("2d"), W = 600, H = 380, dpr = Math.min(window.devicePixelRatio || 1, 2);
     cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
-    var p = (1 + Math.sqrt(5)) / 2, q = 1 / p, V = [];
-    [-1, 1].forEach(function (a) { [-1, 1].forEach(function (b) { [-1, 1].forEach(function (c) { V.push([a, b, c]); }); }); });
-    [-1, 1].forEach(function (a) { [-1, 1].forEach(function (b) { V.push([0, a * q, b * p]); V.push([a * q, b * p, 0]); V.push([a * p, 0, b * q]); }); });
-    var E = [], d2 = 4 * q * q;
-    for (var i = 0; i < V.length; i++) for (var j = i + 1; j < V.length; j++) {
-      var dx = V[i][0] - V[j][0], dy = V[i][1] - V[j][1], dz = V[i][2] - V[j][2];
-      if (Math.abs(dx * dx + dy * dy + dz * dz - d2) < 1e-6) E.push([i, j]);
+    var ORANGE = [255, 108, 12]; /* Caltech orange #FF6C0C */
+    var PAL = [[249,115,22],[100,116,139],[59,130,246],[139,92,246],[234,179,8],[20,184,166],[236,72,153],[244,63,94],[163,230,53],[239,68,68],[34,211,238],[251,191,36]];
+    var CX = 300, CY = 190, RS = 150, TS = 258; /* solid radius, tissue half-width (px) */
+    var N = 0, TX, TY, GX, GY, GZ, TYP, ROLE, DEL, SPR = {}, logo = null, frozen = false;
+    var CYCLE = 11, t0 = null, running = false, raf = 0, last = 0, ready = false, pendingStill = false;
+    function sprite(c) { /* soft glow dot, cached per colour, scaled at draw time */
+      var k = c.join(); if (SPR[k]) return SPR[k];
+      var s = document.createElement("canvas"), d = 32; s.width = s.height = d;
+      var g = s.getContext("2d"), gr = g.createRadialGradient(d / 2, d / 2, 0, d / 2, d / 2, d / 2);
+      gr.addColorStop(0, "rgba(" + c + ",1)"); gr.addColorStop(.28, "rgba(" + c + ",.55)"); gr.addColorStop(1, "rgba(" + c + ",0)");
+      g.fillStyle = gr; g.fillRect(0, 0, d, d); return (SPR[k] = s);
     }
-    var CX = 318, CY = 190, R = 128, MINT = "94,234,212", TEAL = "20,184,166";
-    var logo = new Image(), LW = 168, LH = LW * 110 / 450; /* the wordmark's own 450:110 aspect, never stretched */
-    logo.src = "founders/caltech-wordmark.png";
-    function rot(v, a, b) {
-      var x = v[0], y = v[1], z = v[2], ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
-      var x1 = x * ca + z * sa, z1 = -x * sa + z * ca, y1 = y * cb - z1 * sb, z2 = y * sb + z1 * cb;
-      return [CX + x1 * R / 1.75, CY + y1 * R / 1.75, z2];
+    function mix(a, b, t) { return [Math.round(a[0] + (b[0] - a[0]) * t), Math.round(a[1] + (b[1] - a[1]) * t), Math.round(a[2] + (b[2] - a[2]) * t)]; }
+    var MINT = [94, 234, 212];
+    function colorFor(i, k) { /* k: 0 tissue colour .. 1 role colour, quantised so sprites stay cached */
+      var base = PAL[TYP[i]] || MINT, role = ROLE[i], tgt = role === 3 ? ORANGE : mix(base, MINT, role === 2 ? .7 : .45);
+      return mix(base, tgt, Math.round(k * 4) / 4);
     }
-    var rnd = (function (s) { return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; })(11);
-    var EO = E.map(function () { return rnd(); });
-    var DOTS = []; for (i = 0; i < 46; i++) DOTS.push({ a: rnd() * 6.283, r: 1.15 + rnd() * .5, s: .5 + rnd() * 1.2, w: .15 + rnd() * .25 });
-    var frozen = false, REV = 0; /* wordmark reveal 0..1: front edges dim so they never obscure the mark */
-    var CYCLE = 10, t0 = null, running = false, raf = 0, last = 0;
     function cl(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
-    function ease(x) { x = cl(x); return 1 - Math.pow(1 - x, 3); }
-    function edges(P, front, al, grow, spread) {
-      ctx.lineCap = "round";
-      E.forEach(function (e, k) {
-        var A = P[e[0]], B = P[e[1]], z = (A[2] + B[2]) / 2;
-        if ((z >= 0) !== front) return;
-        var f = cl(grow * 1.7 - EO[k] * .7); if (f <= 0) return;
-        var ax = A[0], ay = A[1], bx = B[0], by = B[1];
-        if (spread) { var mx = (ax + bx) / 2 - CX, my = (ay + by) / 2 - CY; ax += mx * spread; bx += mx * spread; ay += my * spread; by += my * spread; }
-        bx = ax + (bx - ax) * f; by = ay + (by - ay) * f;
-        var depth = .3 + .7 * (z + 1.8) / 3.6;
-        ctx.strokeStyle = "rgba(" + MINT + "," + (al * depth * (front ? 1 - .5 * REV : .55)).toFixed(3) + ")";
-        ctx.lineWidth = front ? 1.6 : 1.1;
-        ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
-      });
-    }
+    function smooth(x) { x = cl(x); return x * x * (3 - 2 * x); }
+    fetch("founders/cells.bin").then(function (r) { return r.arrayBuffer(); }).then(function (buf) {
+      N = buf.byteLength / 12;
+      var q = new Int16Array(buf, 0, N * 5), u = new Uint8Array(buf, N * 10);
+      TX = new Float32Array(N); TY = new Float32Array(N); GX = new Float32Array(N); GY = new Float32Array(N); GZ = new Float32Array(N); DEL = new Float32Array(N);
+      for (var i = 0; i < N; i++) {
+        TX[i] = q[2 * i] / 16000; TY[i] = q[2 * i + 1] / 16000;
+        GX[i] = q[2 * N + 3 * i] / 16000; GY[i] = q[2 * N + 3 * i + 1] / 16000; GZ[i] = q[2 * N + 3 * i + 2] / 16000;
+        DEL[i] = ((TX[i] + 1) * .5) * .55 + ((i * 2654435761) % 1000) / 1000 * .25; /* sweep left to right, with jitter */
+      }
+      TYP = u.subarray(0, N); ROLE = u.subarray(N, 2 * N); ready = true;
+      if (pendingStill || RM) draw(5.5); else if (!running) draw(0);
+    }).catch(function () {});
+    var img = new Image(); img.src = "founders/caltech-wordmark.png";
+    img.onload = function () { /* the wordmark recoloured to Caltech orange, shape untouched */
+      var c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
+      var g = c.getContext("2d"); g.drawImage(img, 0, 0); g.globalCompositeOperation = "source-in"; g.fillStyle = "#FF6C0C"; g.fillRect(0, 0, c.width, c.height);
+      logo = c; if (RM || frozen) draw(5.5);
+    };
+    var LW = 0.62 * 2 * RS, LH = LW * 110 / 450;
     function draw(t) {
       ctx.clearRect(0, 0, W, H);
-      var a = t * .38, b = .45 + Math.sin(t * .27) * .22;
-      var P = V.map(function (v) { return rot(v, a, b); });
-      var grow = ease(t / 1.8), fly = (t - 1.5) / .8, hit = t - 2.3;
-      var reveal = ease((t - 2.3) / .8), out = ease((t - 8.4) / .8);
-      var al = 1 - out, spread = out * .35;
-      REV = reveal * (1 - out);
-      var g = ctx.createRadialGradient(CX, CY, 6, CX, CY, 190);
-      g.addColorStop(0, "rgba(" + TEAL + "," + (.18 * grow * al) + ")");
-      g.addColorStop(.45, "rgba(255,110,30," + (.07 * reveal * al) + ")");
-      g.addColorStop(1, "rgba(" + TEAL + ",0)");
+      if (!ready) return;
+      /* phases: tissue 0-1.2, flow 1.2-3.8, solid 3.8-8.6, flow back 8.6-11 */
+      var fwd = t < 8.6, rotA = t * .32, rotB = .42 + Math.sin(t * .23) * .18;
+      var ca = Math.cos(rotA), sa = Math.sin(rotA), cb = Math.cos(rotB), sb = Math.sin(rotB);
+      var logoOn = smooth((t - 4.1) / .9) * (1 - smooth((t - 8.2) / .6));
+      /* halo */
+      var form = fwd ? smooth((t - 1.6) / 2.2) : 1 - smooth((t - 8.6) / 2.0);
+      var g = ctx.createRadialGradient(CX, CY, 8, CX, CY, 210);
+      g.addColorStop(0, "rgba(20,184,166," + (.16 * form) + ")"); g.addColorStop(.5, "rgba(255,108,12," + (.06 * logoOn) + ")"); g.addColorStop(1, "rgba(20,184,166,0)");
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-      DOTS.forEach(function (d) {
-        var an = d.a + t * d.w, x = CX + Math.cos(an) * R * d.r, y = CY + Math.sin(an) * R * d.r * .42;
-        ctx.fillStyle = "rgba(" + MINT + "," + (.35 * grow * al).toFixed(3) + ")"; ctx.beginPath(); ctx.arc(x, y, d.s, 0, 6.283); ctx.fill();
-      });
-      edges(P, false, al, grow, spread);
-      if (reveal > 0 && logo.complete && logo.naturalWidth) {
-        var la = reveal * (1 - out), sc = .9 + .1 * reveal, w = LW * sc, h = LH * sc;
-        var plate = ctx.createRadialGradient(CX, CY, 4, CX, CY, w * .75);
-        plate.addColorStop(0, "rgba(7,6,11," + (.75 * la) + ")"); plate.addColorStop(1, "rgba(7,6,11,0)");
-        ctx.fillStyle = plate; ctx.fillRect(CX - w, CY - w, w * 2, w * 2);
-        ctx.save(); ctx.globalAlpha = la; ctx.shadowColor = "rgba(255,110,30,.55)"; ctx.shadowBlur = 22 * la;
-        ctx.drawImage(logo, CX - w / 2, CY - h / 2, w, h); ctx.restore();
+      ctx.globalCompositeOperation = "lighter";
+      for (var i = 0; i < N; i++) {
+        var k = fwd ? smooth((t - 1.2 - DEL[i] * 1.2) / 1.4) : 1 - smooth((t - 8.6 - (1 - DEL[i]) * .8) / 1.4);
+        /* target: rotate solid points; logo points stay facing the viewer */
+        var gx = GX[i], gy = GY[i], gz = GZ[i], px, py, pz;
+        if (ROLE[i] === 3) { px = gx; py = gy; pz = .6; }
+        else { var x1 = gx * ca + gz * sa, z1 = -gx * sa + gz * ca; px = x1; py = gy * cb - z1 * sb; pz = gy * sb + z1 * cb; }
+        var tx = TX[i] * TS, ty = TY[i] * TS + Math.sin(t * .6 + i) * .6;
+        var sx = px * RS, sy = py * RS;
+        /* curved path: bulge sideways mid-flight */
+        var bend = Math.sin(k * Math.PI) * 26 * (((i * 7919) % 200) / 100 - 1);
+        var x = CX + tx + (sx - tx) * k + bend, y = CY + ty + (sy - ty) * k - bend * .4;
+        var depth = (pz + 1) / 2; /* 0 back .. 1 front */
+        var role = ROLE[i], r, a;
+        if (role === 3) { r = 1.7 + .5 * k; a = (.3 + .3 * k) * (1 - .6 * logoOn); }
+        else { r = (1.5 + (role === 2 ? 1.5 : role === 1 ? .45 : 0) * k) * (1 + .45 * depth * k); a = (.5 + .22 * (1 - k)) * (k ? (.3 + .7 * depth) * (role === 0 ? .45 : role === 1 ? .62 : .9) : 1); }
+        a *= 1 - .45 * Math.sin(k * Math.PI); /* thin the swarm mid-flight so additive light never clips to white */
+        if (role !== 3 && logoOn && pz > -.1 && Math.abs(x - CX) < LW * .55 && Math.abs(y - CY) < LH * .7) a *= 1 - .55 * logoOn; /* keep the mark clear */
+        ctx.globalAlpha = a > 1 ? 1 : a;
+        var spr = sprite(colorFor(i, k));
+        ctx.drawImage(spr, x - r * 2.6, y - r * 2.6, r * 5.2, r * 5.2);
       }
-      edges(P, true, al, grow, spread);
-      if (grow >= 1 && !out) P.forEach(function (v) { ctx.fillStyle = "rgba(" + MINT + "," + (.35 + .55 * (v[2] + 1.8) / 3.6).toFixed(3) + ")"; ctx.beginPath(); ctx.arc(v[0], v[1], 1.8, 0, 6.283); ctx.fill(); });
-      if (fly > -0.02 && hit < .3) {
-        var k = ease(Math.max(fly, 0)), tipX = -30 + CX * k, tipY = CY + 30 * (1 - k) * (1 - k) - 10 * (1 - k);
-        var a2 = hit > 0 ? 1 - hit / .3 : 1;
-        var tr = ctx.createLinearGradient(tipX - 190, 0, tipX, 0); tr.addColorStop(0, "rgba(" + MINT + ",0)"); tr.addColorStop(1, "rgba(" + MINT + "," + (.35 * a2) + ")");
-        ctx.strokeStyle = tr; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(tipX - 190, tipY + 2); ctx.lineTo(tipX - 14, tipY); ctx.stroke();
-        ctx.strokeStyle = "rgba(248,250,252," + a2 + ")"; ctx.lineWidth = 1.7;
-        ctx.beginPath(); ctx.moveTo(tipX - 100, tipY); ctx.lineTo(tipX, tipY); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(tipX - 12, tipY - 5.5); ctx.lineTo(tipX - 12, tipY + 5.5); ctx.closePath(); ctx.fillStyle = "rgba(248,250,252," + a2 + ")"; ctx.fill();
-        ctx.strokeStyle = "rgba(" + MINT + "," + a2 + ")"; ctx.lineWidth = 1.2;
-        for (var f2 = 0; f2 < 3; f2++) { var fx = tipX - 100 + f2 * 6; ctx.beginPath(); ctx.moveTo(fx, tipY); ctx.lineTo(fx - 8, tipY - 7); ctx.moveTo(fx, tipY); ctx.lineTo(fx - 8, tipY + 7); ctx.stroke(); }
+      ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+      if (logo && logoOn > 0) {
+        ctx.save(); ctx.globalAlpha = .55 * logoOn; ctx.shadowColor = "rgba(255,108,12,.8)"; ctx.shadowBlur = 22; /* glow pass */
+        ctx.drawImage(logo, CX - LW / 2, CY - LH / 2, LW, LH); ctx.restore();
+        ctx.globalAlpha = logoOn; ctx.drawImage(logo, CX - LW / 2, CY - LH / 2, LW, LH); ctx.globalAlpha = 1; /* crisp pass */
       }
-      if (hit > 0 && hit < 1) { ctx.strokeStyle = "rgba(" + MINT + "," + ((1 - hit) * .7).toFixed(3) + ")"; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(CX, CY, 12 + hit * 170, 0, 6.283); ctx.stroke(); }
     }
     function frame(now) {
       if (!running) return;
       if (t0 == null) t0 = now;
       var t = ((now - t0) / 1000) % CYCLE;
-      if (now - last > 30) { draw(t); last = now; }
+      if (now - last > 24) { draw(t); last = now; } /* up to ~40fps */
       raf = requestAnimationFrame(frame);
     }
     function start() { if (running || RM || frozen) return; running = true; raf = requestAnimationFrame(frame); }
     function stop() { running = false; cancelAnimationFrame(raf); }
-    cv.__afFrame = function (t) { frozen = true; stop(); draw(t); }; /* deterministic frame, for screenshots */
-    if (RM) { var still = function () { draw(4.2); }; still(); logo.onload = still; return; }
-    draw(0);
+    cv.__afFrame = function (t) { frozen = true; stop(); pendingStill = true; draw(t); }; /* deterministic frame, for screenshots */
+    if (RM) return; /* still frame drawn once the data and wordmark load */
     if (hasIO) new IntersectionObserver(function (es) { es.forEach(function (e) { e.isIntersecting ? start() : stop(); }); }, { threshold: 0.15 }).observe(cv);
     else start();
     document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else if (!hasIO) start(); });
-    cv.parentNode.addEventListener("click", function () { t0 = null; start(); });
+    cv.parentNode.addEventListener("click", function () { t0 = null; frozen = false; start(); });
   })();
 
   /* ---- live Vitessce portal, loaded only when it scrolls into view (desktop) or on tap (phones) ---- */
