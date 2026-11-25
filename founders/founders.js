@@ -24,22 +24,22 @@ function init() {
     rev.forEach(function (el) { io.observe(el); });
   } else rev.forEach(function (el) { el.classList.add("af-in"); });
 
-  /* ---- 2,400 real cells (GEO GSE339006, glioblastoma Xenium) flow from their tissue layout into a
+  /* ---- 1,400 real cells (GEO GSE339006, glioblastoma Xenium) flow from their tissue layout into a
      dodecahedron; orange cells converge into the Caltech wordmark at its centre; then back to tissue ---- */
   var cv = document.getElementById("af-hunt-canvas");
   if (cv && cv.getContext) (function () {
-    var ctx = cv.getContext("2d"), W = 600, H = 380, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var ctx = cv.getContext("2d"), W = 760, H = 400, dpr = Math.min(window.devicePixelRatio || 1, 2);
     cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
     var ORANGE = [255, 108, 12]; /* Caltech orange #FF6C0C */
     var PAL = [[249,115,22],[100,116,139],[59,130,246],[139,92,246],[234,179,8],[20,184,166],[236,72,153],[244,63,94],[163,230,53],[239,68,68],[34,211,238],[251,191,36]];
-    var CX = 300, CY = 190, RS = 150, TS = 258; /* solid radius, tissue half-width (px) */
+    var CX = 380, CY = 200, RS = 132, TS = 236; /* solid radius, tissue half-width (px) */
     var N = 0, TX, TY, GX, GY, GZ, TYP, ROLE, DEL, SPR = {}, logo = null, frozen = false;
     var CYCLE = 11, t0 = null, running = false, raf = 0, last = 0, ready = false, pendingStill = false;
     function sprite(c) { /* soft glow dot, cached per colour, scaled at draw time */
       var k = c.join(); if (SPR[k]) return SPR[k];
       var s = document.createElement("canvas"), d = 32; s.width = s.height = d;
       var g = s.getContext("2d"), gr = g.createRadialGradient(d / 2, d / 2, 0, d / 2, d / 2, d / 2);
-      gr.addColorStop(0, "rgba(" + c + ",1)"); gr.addColorStop(.28, "rgba(" + c + ",.55)"); gr.addColorStop(1, "rgba(" + c + ",0)");
+      gr.addColorStop(0, "rgba(" + c + ",.95)"); gr.addColorStop(.22, "rgba(" + c + ",.4)"); gr.addColorStop(1, "rgba(" + c + ",0)");
       g.fillStyle = gr; g.fillRect(0, 0, d, d); return (SPR[k] = s);
     }
     function mix(a, b, t) { return [Math.round(a[0] + (b[0] - a[0]) * t), Math.round(a[1] + (b[1] - a[1]) * t), Math.round(a[2] + (b[2] - a[2]) * t)]; }
@@ -79,7 +79,7 @@ function init() {
       /* halo */
       var form = fwd ? smooth((t - 1.6) / 2.2) : 1 - smooth((t - 8.6) / 2.0);
       var g = ctx.createRadialGradient(CX, CY, 8, CX, CY, 210);
-      g.addColorStop(0, "rgba(20,184,166," + (.16 * form) + ")"); g.addColorStop(.5, "rgba(255,108,12," + (.06 * logoOn) + ")"); g.addColorStop(1, "rgba(20,184,166,0)");
+      g.addColorStop(0, "rgba(20,184,166," + (.07 * form) + ")"); g.addColorStop(.5, "rgba(255,108,12," + (.03 * logoOn) + ")"); g.addColorStop(1, "rgba(20,184,166,0)");
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
       ctx.globalCompositeOperation = "lighter";
       for (var i = 0; i < N; i++) {
@@ -95,17 +95,17 @@ function init() {
         var x = CX + tx + (sx - tx) * k + bend, y = CY + ty + (sy - ty) * k - bend * .4;
         var depth = (pz + 1) / 2; /* 0 back .. 1 front */
         var role = ROLE[i], r, a;
-        if (role === 3) { r = 1.7 + .5 * k; a = (.3 + .3 * k) * (1 - .6 * logoOn); }
-        else { r = (1.5 + (role === 2 ? 1.5 : role === 1 ? .45 : 0) * k) * (1 + .45 * depth * k); a = (.5 + .22 * (1 - k)) * (k ? (.3 + .7 * depth) * (role === 0 ? .45 : role === 1 ? .62 : .9) : 1); }
+        if (role === 3) { r = 1.15 + .25 * k; a = (.28 + .25 * k) * (1 - .6 * logoOn); }
+        else { r = (1.05 + (role === 2 ? .75 : role === 1 ? .12 : 0) * k) * (1 + .3 * depth * k); a = (.55 + .2 * (1 - k)) * (k ? (.3 + .7 * depth) * (role === 0 ? .38 : role === 1 ? .7 : .95) : 1); }
         a *= 1 - .45 * Math.sin(k * Math.PI); /* thin the swarm mid-flight so additive light never clips to white */
         if (role !== 3 && logoOn && pz > -.1 && Math.abs(x - CX) < LW * .55 && Math.abs(y - CY) < LH * .7) a *= 1 - .55 * logoOn; /* keep the mark clear */
         ctx.globalAlpha = a > 1 ? 1 : a;
         var spr = sprite(colorFor(i, k));
-        ctx.drawImage(spr, x - r * 2.6, y - r * 2.6, r * 5.2, r * 5.2);
+        ctx.drawImage(spr, x - r * 2.2, y - r * 2.2, r * 4.4, r * 4.4);
       }
       ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
       if (logo && logoOn > 0) {
-        ctx.save(); ctx.globalAlpha = .55 * logoOn; ctx.shadowColor = "rgba(255,108,12,.8)"; ctx.shadowBlur = 22; /* glow pass */
+        ctx.save(); ctx.globalAlpha = .3 * logoOn; ctx.shadowColor = "rgba(255,108,12,.7)"; ctx.shadowBlur = 12; /* glow pass */
         ctx.drawImage(logo, CX - LW / 2, CY - LH / 2, LW, LH); ctx.restore();
         ctx.globalAlpha = logoOn; ctx.drawImage(logo, CX - LW / 2, CY - LH / 2, LW, LH); ctx.globalAlpha = 1; /* crisp pass */
       }
