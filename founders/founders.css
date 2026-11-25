@@ -1,0 +1,80 @@
+/* Founders section (artemislabs.bio). Scoped to #founders; uses the site's tokens. */
+#founders.af{--af-ink:#07060b;--af-panel:#0d0c16;--af-line:#ffffff1f;--af-teal:#14b8a6;--af-mint:#5eead4;--af-dim:#94a3b8;--af-snow:#f8fafc;
+  --af-serif:var(--font-editorial,"Instrument Serif"),Georgia,serif;--af-mono:var(--font-jetbrains,"JetBrains Mono"),ui-monospace,SFMono-Regular,Menlo,monospace;
+  position:relative;padding:96px 24px 112px;overflow:hidden;isolation:isolate}
+#founders.af::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 50% at 78% 18%,rgba(20,184,166,.10),transparent 70%),radial-gradient(50% 40% at 10% 70%,rgba(20,184,166,.06),transparent 70%),
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/56px 56px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/56px 56px;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent)}
+#founders .af-wrap{max-width:80rem;margin:0 auto}
+@media (min-width:768px){#founders.af{padding:128px 56px 140px}}
+#founders .af-kicker,#founders .af-label,#founders .af-role,#founders .af-photo figcaption,#founders .af-creds span,#founders .af-hunt-tag,#founders .af-fine{font-family:var(--af-mono);text-transform:uppercase}
+#founders .af-kicker{display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.16em;color:var(--af-teal);margin:0 0 18px}
+#founders .af-rule{display:inline-block;width:28px;height:1px;background:var(--af-teal)}
+#founders .af-h2{font-family:var(--af-serif);font-weight:400;font-size:clamp(40px,6.4vw,76px);line-height:1.02;letter-spacing:-.01em;margin:0;max-width:16ch}
+#founders .af-h2 em{font-style:italic;color:var(--af-mint)}
+#founders .af-head{display:grid;gap:28px;align-items:end}
+@media (min-width:900px){#founders .af-head{grid-template-columns:1.1fr .9fr}}
+#founders .af-hunt{position:relative;aspect-ratio:560/300;width:100%;max-width:560px;justify-self:end;border:1px solid var(--af-line);border-radius:4px;
+  background:radial-gradient(70% 80% at 70% 50%,rgba(20,184,166,.10),transparent 70%),rgba(13,12,22,.55);overflow:hidden}
+#founders .af-hunt canvas{display:block;width:100%;height:100%}
+#founders .af-hunt-tag{position:absolute;left:14px;bottom:10px;font-size:10.5px;letter-spacing:.2em;color:var(--af-dim)}
+#founders .af-story{display:grid;gap:36px;margin-top:64px;align-items:center}
+@media (min-width:900px){#founders .af-story{grid-template-columns:1.05fr .95fr;gap:56px}}
+#founders .af-photo{margin:0}
+#founders .af-photo-frame{position:relative;border:1px solid rgba(94,234,212,.28);border-radius:4px;overflow:hidden;background:#0b1514;box-shadow:0 40px 80px -40px rgba(20,184,166,.35)}
+#founders .af-photo img{display:block;width:100%;height:auto;aspect-ratio:964/524;object-fit:cover;filter:saturate(1.02) contrast(1.02)}
+#founders .af-c{position:absolute;width:14px;height:14px;border-color:var(--af-mint);border-style:solid;opacity:.9}
+#founders .af-c1{left:8px;top:8px;border-width:1px 0 0 1px}#founders .af-c2{right:8px;top:8px;border-width:1px 1px 0 0}
+#founders .af-c3{left:8px;bottom:8px;border-width:0 0 1px 1px}#founders .af-c4{right:8px;bottom:8px;border-width:0 1px 1px 0}
+#founders .af-scan{position:absolute;left:0;right:0;top:-30%;height:30%;background:linear-gradient(180deg,transparent,rgba(94,234,212,.16),transparent);pointer-events:none;opacity:0}
+#founders .af-photo.af-in .af-scan{animation:afscan 2.4s .3s ease-out 1 both}
+@keyframes afscan{0%{top:-30%;opacity:0}15%{opacity:1}100%{top:110%;opacity:0}}
+#founders .af-photo figcaption{margin-top:12px;font-size:11.5px;letter-spacing:.18em;color:var(--af-dim)}
+#founders .af-photo figcaption span{color:var(--af-teal);margin:0 .4em}
+#founders .af-label{font-size:11.5px;letter-spacing:.2em;color:var(--af-teal);margin:0 0 14px}
+#founders .af-h3{font-family:var(--af-serif);font-weight:400;font-size:clamp(32px,4vw,48px);line-height:1.05;margin:0 0 18px}
+#founders .af-h3-sm{font-size:clamp(26px,3vw,36px);margin-bottom:10px}
+#founders .af-body{font-size:17px;line-height:1.6;color:#cbd5e1;margin:0;max-width:40rem}
+#founders .af-body-sm{font-size:15px;color:var(--af-dim)}
+#founders .af-quote{margin:22px 0 0;padding:4px 0 4px 18px;border-left:2px solid var(--af-teal);font-size:17px;line-height:1.55;color:#cbd5e1}
+#founders .af-quote strong{color:var(--af-snow);font-weight:600}
+#founders .af-cards{display:grid;gap:16px;margin-top:72px}
+@media (min-width:700px){#founders .af-cards{grid-template-columns:1fr 1fr}}
+#founders .af-card{position:relative;border:1px solid var(--af-line);border-radius:4px;background:linear-gradient(180deg,rgba(20,19,34,.85),rgba(13,12,22,.85));padding:24px;transition:border-color .3s,transform .3s,box-shadow .3s}
+#founders .af-card::after{content:"";position:absolute;left:24px;right:24px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--af-mint),transparent);opacity:.55}
+#founders .af-card:hover{border-color:rgba(94,234,212,.4);box-shadow:0 24px 60px -36px rgba(20,184,166,.55)}
+#founders .af-card-top{display:flex;gap:18px;align-items:center}
+#founders .af-avatar{width:88px;height:88px;border-radius:4px;object-fit:cover;border:1px solid var(--af-line);flex:none}
+#founders .af-name{font-size:21px;font-weight:500;margin:0;color:var(--af-snow)}
+#founders .af-role{font-size:12px;letter-spacing:.14em;color:var(--af-teal);margin:4px 0 0}
+#founders .af-mail{display:inline-block;margin-top:6px;font-family:var(--af-mono);font-size:12px;color:var(--af-dim);text-decoration:none;transition:color .2s}
+#founders .af-mail:hover{color:var(--af-teal)}
+#founders .af-creds{list-style:none;margin:20px 0 0;padding:16px 0 0;border-top:1px solid var(--af-line);display:grid;gap:9px}
+#founders .af-creds li{display:grid;grid-template-columns:96px 1fr;gap:12px;font-size:14px;line-height:1.4;color:#cbd5e1}
+#founders .af-creds span{font-size:10.5px;letter-spacing:.16em;color:var(--af-dim);padding-top:2px}
+#founders .af-portal{margin-top:72px;border:1px solid var(--af-line);border-radius:4px;background:rgba(13,12,22,.7);overflow:hidden}
+#founders .af-portal-head{display:flex;flex-direction:column;gap:18px;padding:24px;border-bottom:1px solid var(--af-line)}
+@media (min-width:800px){#founders .af-portal-head{flex-direction:row;align-items:flex-end;justify-content:space-between;padding:28px 32px}}
+#founders .af-btn{flex:none;display:inline-block;align-self:flex-start;border:1px solid rgba(94,234,212,.45);color:var(--af-mint);border-radius:3px;padding:10px 16px;font-size:14px;font-weight:500;text-decoration:none;transition:background .2s,color .2s}
+#founders .af-btn:hover{background:var(--af-teal);color:var(--af-ink)}
+#founders .af-portal-stage{position:relative;height:min(68svh,560px);background:#07060b}
+@media (min-width:800px){#founders .af-portal-stage{height:640px}}
+#founders .af-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.9}
+#founders .af-portal-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#07060b;opacity:0;transition:opacity .6s}
+#founders .af-portal-stage.af-live iframe{opacity:1}
+#founders .af-load{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:10px;border:0;border-radius:3px;background:#0d9488;color:var(--af-ink);font:500 14px/1 ui-sans-serif,system-ui,sans-serif;padding:13px 20px;cursor:pointer;box-shadow:0 10px 40px -10px rgba(20,184,166,.7)}
+#founders .af-load:hover{background:var(--af-teal)}
+#founders .af-load-dot{width:8px;height:8px;border-radius:50%;background:var(--af-ink);box-shadow:0 0 0 0 rgba(7,6,11,.5);animation:afpulse 1.6s infinite}
+@keyframes afpulse{70%{box-shadow:0 0 0 8px rgba(7,6,11,0)}100%{box-shadow:0 0 0 0 rgba(7,6,11,0)}}
+#founders .af-portal-stage.af-loading .af-load{pointer-events:none;opacity:.85}
+#founders .af-portal-stage.af-live .af-load{display:none}
+#founders .af-fine{margin:0;padding:12px 24px;font-size:10.5px;letter-spacing:.14em;color:#64748b;border-top:1px solid var(--af-line)}
+/* reveal on scroll (only when JS has run) */
+#founders.af-ready [data-af-reveal]{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+#founders.af-ready [data-af-reveal].af-in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  #founders.af-ready [data-af-reveal]{opacity:1;transform:none;transition:none}
+  #founders .af-photo.af-in .af-scan,#founders .af-load-dot{animation:none}
+  #founders .af-card{transition:none}
+}

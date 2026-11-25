@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live spatial portal · Artemis Biolabs</title>
+<meta name="robots" content="noindex">
+<style>
+  html,body{margin:0;height:100%;background:#07060b;color:#f8fafc;font:13px/1.4 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  #vit{position:absolute;inset:0}
+  #st{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#94a3b8}
+  #st i{display:block;width:120px;height:2px;margin:14px auto 0;background:linear-gradient(90deg,transparent,#14b8a6,transparent);background-size:200% 100%;animation:sh 1.2s linear infinite}
+  @keyframes sh{to{background-position:-200% 0}}
+  @media (prefers-reduced-motion:reduce){#st i{animation:none}}
+  /* quiet the Vitessce chrome so it sits inside the site */
+  .vitessce-container{background:#07060b!important}
+  .vitessce-container .card{background:#0c0b14!important;border:1px solid #ffffff1f!important}
+</style>
+<script type="importmap">{"imports":{"react":"https://cdn.jsdelivr.net/npm/react@18.3.1/+esm","react/jsx-runtime":"https://cdn.jsdelivr.net/npm/react@18.3.1/jsx-runtime/+esm","react-dom":"https://cdn.jsdelivr.net/npm/react-dom@18.3.1/+esm","react-dom/client":"https://cdn.jsdelivr.net/npm/react-dom@18.3.1/client/+esm"}}</script>
+</head>
+<body>
+<div id="vit"></div>
+<div id="st">Loading 82,730 cells into Vitessce<i></i></div>
+<script type="module">
+/* Plain Vitessce 4.1.2 reading Artemis's public AnnData-Zarr store of GEO GSE339006
+   (6 human glioblastoma 10x Xenium sections, 82,730 cells). Nothing is computed here. */
+const ZARR = "https://logan-9726-artemis-sonabend-gbm-xenium.static.hf.space/vit/sonabend.zarr";
+const CT = {"Malignant / tumour-like":"#f97316","Astrocyte":"#64748b","Oligodendrocyte":"#3b82f6","Oligodendrocyte precursor":"#8b5cf6","Neuron":"#eab308","Microglia":"#14b8a6","Macrophage":"#ec4899","SPP1-high myeloid":"#f43f5e","T cell":"#a3e635","Endothelium":"#ef4444","Pericyte":"#22d3ee","Fibroblast":"#fbbf24"};
+const SEC = {"P110_non":"#9CC7EE","P110_son":"#F4A3C0","P124_non":"#5BA3E0","P124_son":"#E0457B","P133_non":"#2F6DB5","P133_son":"#9E1F4F"};
+const rgb = h => [1,3,5].map(i => parseInt(h.slice(i,i+2),16));
+const host = document.getElementById("vit"), st = document.getElementById("st");
+const narrow = innerWidth < 640;
+/* frame patient 124 (intact left, sonicated right) on first paint; the rest is a pan away */
+const box = {x0:0, x1:9145, y0:-10117, y1:-3651};
+function cfg(){
+  const W = innerWidth, H = innerHeight;
+  const sw = narrow ? W : W*8/12, sh = narrow ? H*0.62 : H;
+  const zoom = Math.log2(Math.min(sw/(box.x1-box.x0), sh/(box.y1-box.y0))*0.9);
+  const sc = {dataset:"A",obsType:"A",embeddingType:"A",obsSetSelection:"A",obsSetColor:"A",embeddingObsRadiusMode:"A",embeddingObsRadius:"A",
+    embeddingZoom:"A",embeddingTargetX:"A",embeddingTargetY:"A",featureType:"g",featureValueType:"g",featureSelection:"g",obsColorEncoding:"g",
+    featureValueColormap:"g",featureValueColormapRange:"g",embeddingObsSetLabelsVisible:"A",obsSetExpansion:"A"};
+  const sets = [{name:"Cell state",path:"obs/cell_type"},{name:"Section",path:"obs/section"}];
+  const colors = [...Object.entries(CT).map(([k,v])=>({path:["Cell state",k],color:rgb(v)})),...Object.entries(SEC).map(([k,v])=>({path:["Section",k],color:rgb(v)}))];
+  const rows = 12;
+  const layout = narrow ? [
+    {component:"scatterplot",x:0,y:0,w:12,h:8,coordinationScopes:sc,props:{title:"GSE339006 · cell state"}},
+    {component:"obsSets",x:0,y:8,w:12,h:4,coordinationScopes:sc}
+  ] : [
+    {component:"scatterplot",x:0,y:0,w:8,h:rows,coordinationScopes:sc,props:{title:"GSE339006 · human glioblastoma, 10x Xenium · cell state"}},
+    {component:"obsSets",x:8,y:0,w:4,h:7,coordinationScopes:sc},
+    {component:"featureList",x:8,y:7,w:4,h:5,coordinationScopes:sc}
+  ];
+  return {version:"1.0.16",name:"Artemis live portal",initStrategy:"auto",
+    datasets:[{uid:"A",name:"GSE339006",files:[
+      {fileType:"obsEmbedding.anndata.zarr",url:ZARR,coordinationValues:{obsType:"cell",embeddingType:"tissue"},options:{path:"obsm/spatial",dims:[0,1]}},
+      {fileType:"obsSets.anndata.zarr",url:ZARR,coordinationValues:{obsType:"cell"},options:sets},
+      {fileType:"obsFeatureMatrix.anndata.zarr",url:ZARR,coordinationValues:{obsType:"cell",featureType:"gene",featureValueType:"expression"},options:{path:"X"}}]}],
+    coordinationSpace:{dataset:{A:"A"},obsType:{A:"cell"},embeddingType:{A:"tissue"},featureType:{g:"gene"},featureValueType:{g:"expression"},
+      featureSelection:{g:null},obsColorEncoding:{g:"cellSetSelection"},featureValueColormap:{g:"plasma"},featureValueColormapRange:{g:[0,0.8]},
+      obsSetSelection:{A:Object.keys(CT).map(k=>["Cell state",k])},obsSetColor:{A:colors},embeddingObsRadiusMode:{A:"manual"},embeddingObsRadius:{A:narrow?1.1:1.7},obsSetExpansion:{A:[["Cell state"]]},
+      embeddingObsSetLabelsVisible:{A:false},embeddingZoom:{A:zoom},embeddingTargetX:{A:(box.x0+box.x1)/2},embeddingTargetY:{A:-(box.y0+box.y1)/2}},
+    layout};
+}
+try{
+  const [React, RD, V] = await Promise.all([import("react"), import("react-dom/client"), import("https://cdn.jsdelivr.net/npm/vitessce@4.1.2/dist/index.min.js")]);
+  const R = React.default||React, D = RD.default||RD;
+  D.createRoot(host).render(R.createElement(V.Vitessce,{config:cfg(),height:innerHeight,theme:"dark",uid:"artemis-founders-portal"}));
+  const t0 = Date.now(), iv = setInterval(()=>{ if(!/Loading/i.test(host.innerText) && host.querySelector("canvas") || Date.now()-t0>20000){ clearInterval(iv); st.remove(); document.documentElement.dataset.drawn="1"; } },700);
+}catch(e){ st.textContent = "The live portal could not load. Open the full portal instead."; }
+</script>
+</body>
+</html>
