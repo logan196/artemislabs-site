@@ -106,7 +106,7 @@ function init() {
     }
     function start() { if (running || RM) return; running = true; raf = requestAnimationFrame(frame); }
     function stop() { running = false; cancelAnimationFrame(raf); }
-    if (RM) { draw(1.3); return; } /* static, assembled polyhedron */
+    if (RM) { draw(1.98); return; } /* static, assembled polyhedron */
     draw(0);
     if (hasIO) new IntersectionObserver(function (es) { es.forEach(function (e) { e.isIntersecting ? start() : stop(); }); }, { threshold: 0.15 }).observe(cv);
     else start();
