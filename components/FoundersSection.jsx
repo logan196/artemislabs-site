@@ -7,7 +7,8 @@ import Reveal from "./Reveal";
 const FOUNDERS = [
   {
     name: "Logan Beharry",
-    role: "Co-founder & CSO",
+    role: "Co-founder & CEO",
+    email: "logan@artemislabs.bio",
     img: "team/logan-beharry.webp",
     credits: [
       "Previously · A2 Biotherapeutics (CAR-T process development)",
@@ -19,6 +20,7 @@ const FOUNDERS = [
   {
     name: "Bella Germano",
     role: "Co-founder & COO",
+    email: "bella@artemislabs.bio",
     img: "team/bella-germano.webp",
     credits: [
       "Current research · Cedars-Sinai",
@@ -73,6 +75,7 @@ export default function FoundersSection() {
               />
               <p className="text-[19px] font-medium">{f.name}</p>
               <p className="font-mono text-[12px] tracking-[0.12em] text-violet mt-1 uppercase">{f.role}</p>
+              <a href={`mailto:${f.email}`} className="font-mono text-[12px] text-dim hover:text-violet transition-colors mt-2 inline-block">{f.email}</a>
               <ul className="mt-4 space-y-1.5">
                 {f.credits.map((c) => (
                   <li key={c} className="text-[13.5px] text-dim leading-snug">{c}</li>
