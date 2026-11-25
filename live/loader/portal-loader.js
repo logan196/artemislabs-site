@@ -14,6 +14,8 @@
   var inst = ds.inst || "", logo = ds.logo ? new URL(ds.logo, base).href : "", mark = ds.mark ? new URL(ds.mark, base).href : logo;
   var css = "#a-ldr{position:fixed;inset:0;z-index:2147483646;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,3vh,26px);font:400 12px/1.4 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#55808a;transition:opacity " + FADE + "ms cubic-bezier(.2,.7,.2,1);-webkit-font-smoothing:antialiased}" +
     "#a-ldr.out{opacity:0;pointer-events:none}" +
+    // Compositor-driven safety net: fades the screen at CAP even if the portal's own scripts block the main thread.
+    "#a-ldr{animation:alout " + FADE + "ms cubic-bezier(.2,.7,.2,1) " + CAP + "ms forwards}#a-ldr.hold{animation:none}@keyframes alout{to{opacity:0;visibility:hidden;pointer-events:none}}" +
     "#a-ldr .al-st{position:relative;width:min(70vw,44vh,340px);aspect-ratio:1}" +
     "#a-ldr .al-st canvas{position:absolute;inset:0;width:100%;height:100%}" +
     "#a-ldr .al-fb{position:absolute;inset:6%;display:none;animation:alb 2.4s ease-in-out infinite}#a-ldr .al-fb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}" +
@@ -42,6 +44,7 @@
   var handle = null, done = false, loaded = document.readyState === "complete";
   function fallback() { el.classList.add("fb"); }
   var hold = /[?&]loaderhold=/.test(qs); // screenshot/QA aid: keep the loader up
+  if (hold) el.classList.add("hold");
   function finish() {
     if (done || hold) return; done = true;
     el.classList.add("out");
