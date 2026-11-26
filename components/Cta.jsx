@@ -49,6 +49,50 @@ export default function Cta() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
+              href="https://calendly.com/d/d24k-njq-fcd/artemis-biolabs-reanalysis-pilot-scoping"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block rounded-[3px] bg-violet-deep text-ink px-8 py-3.5 font-medium hover:bg-violet transition-colors"
+            >
+              Book a demo
+            </a>
+            <a
+              href="mailto:loganbeharry@gmail.com?subject=Artemis%20BioLabs%20%C2%B7%20analysis"
+              className="inline-block rounded-[3px] border border-snow/50 px-8 py-3.5 text-dim hover:text-snow hover:border-violet transition-all"
+            >
+              Or start with an email
+            </a>
+          </div>
+        </Reveal>
+      </div>
+
+      <footer className="mt-24 border-t border-line pt-8 flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
+        <span className="flex items-center gap-3">
+          <img src="artemis_mark.svg" alt="" className="h-8" />
+          <span className="font-semibold tracking-[0.18em] text-[14px]">ARTEMIS <span className="font-mono text-violet tracking-[0.3em] text-[11px]">BIOLABS</span></span>
+        </span>
+        <p className="font-mono text-[13px] text-dim">
+          © 2026 Artemis BioLabs · computational biology, accelerated · artemislabs.bio
+        </p>
+      </footer>
+    </section>
+  );
+}
+              of marks resolving into tissue and closes on the solid you can
+              take hold of. Interactive — drag it. */}
+          <div className="relative w-full max-w-[460px] mx-auto mb-10" aria-hidden>
+            <BioDodecahedron size={360} labels={false} helix />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
+            Your data has a story.
+          </h2>
+          <p className="mt-6 text-lg text-dim leading-relaxed">
+            If your lab is sitting on spatial data and short on computational hands, the
+            first analysis is on us — pick a public or in-house dataset and we'll turn it
+            around as a live portal.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
               href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0FzlJl55WV52jaH-JEG8_xJLO5YLd20t2ksXikjwMfGnVQ-zLI4XUCAmHTFiLE1tnQgAIxBhjW"
               target="_blank"
               rel="noreferrer"
