@@ -178,6 +178,17 @@
     position: absolute; bottom: 22px; font: 10.5px var(--mono);
     color: var(--faint); letter-spacing: .08em;
   }
+  /* mobile: keep the header inside small viewports; tabs stay scrollable */
+  @media (max-width: 640px) {
+    .topbar { gap: 10px; padding: 0 10px; height: 46px; }
+    .brand { flex: 1 1 auto; min-width: 0; }
+    .app-sub { display: none; }
+    .app-id { font-size: 11px; }
+    .tabs { padding: 0 6px; }
+    .tab { min-width: 0; flex: 1 0 auto; padding: 8px 10px 10px; }
+    .statusbar { padding: 0 10px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #entry { display: none; }
     .tabs .ink, .stage iframe, .tab { transition: none; }
@@ -470,7 +481,7 @@
       suggWrap.appendChild(b);
     });
 
-    msg("a", "Ask me about this section. I answer from this run's marker report — 1,775 spots, 15 BANKSY domains, per-cluster top markers.");
+    msg("a", "Ask me about the GBM3 section. I answer from that run's marker report — 1,775 spots, 15 BANKSY domains, per-cluster top markers. The dataset tabs switch the viewer; the co-scientist covers the GBM3 run.");
 
     if (!window.ARTEMIS_AI_ENDPOINT) {
       msg("a", "Live answering is not configured on this deployment. The walkthrough on the main site shows the same capability on a real run.");
