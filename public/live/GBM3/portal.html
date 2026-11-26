@@ -222,10 +222,10 @@
       <div class="sugg" id="ai-sugg"></div>
       <form class="ai-form" id="ai-form">
         <input id="ai-input" type="text" autocomplete="off" maxlength="400"
-               placeholder="Ask about this section&hellip;" aria-label="Ask the co-scientist" />
+               placeholder="Ask about the GBM3 section&hellip;" aria-label="Ask the co-scientist" />
         <button type="submit" id="ai-send">ask</button>
       </form>
-      <div class="ai-foot">
+      <div class="ai-foot" id="ai-foot">
         Live model, answered at request time and grounded in this run&rsquo;s marker report
         (GBM3 &middot; 1,775 spots &middot; 15 BANKSY domains). Cell-type labels are model-annotated
         and not independently validated &mdash; verify before citing.
@@ -364,6 +364,12 @@
     if (!rec.loaded) showPaneLoading(d.name); else paneLoading.classList.remove("show");
 
     renderActiveStats(id);
+    var foot = document.getElementById("ai-foot");
+    if (foot) {
+      foot.textContent = (id === "GBM3")
+        ? "Live model, answered at request time and grounded in this run’s marker report (GBM3 · 1,775 spots · 15 BANKSY domains). Cell-type labels are model-annotated and not independently validated — verify before citing."
+        : "Viewer is showing " + d.name + ". The co-scientist answers only from the GBM3 run’s marker report (1,775 spots · 15 BANKSY domains); switch to the GBM3 tab to inspect that run. Cell-type labels are model-annotated and not independently validated — verify before citing.";
+    }
     try { history.replaceState(null, "", "#" + id); } catch (e) {}
   }
 
