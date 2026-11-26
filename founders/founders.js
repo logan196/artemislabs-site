@@ -157,3 +157,115 @@ function init() {
     setTimeout(function () { mo.disconnect(); }, 30000);
   }
 })();
+
+
+/* --------------------------------------------------------------------
+   USE CASES availability guard (deploy-time addition, Nov 25 2026).
+   Links in #usecases are checked when pressed. If the destination does
+   not answer, an "under construction" panel explains the state instead
+   of dropping the visitor on an error page. Destinations are preserved:
+   the panel always offers the original link so a restored portal is
+   reachable without a code change.
+-------------------------------------------------------------------- */
+(function () {
+  "use strict";
+
+  var PENDING_ID = "uc-avail-pending";
+  var PANEL_ID = "uc-avail-panel";
+
+  function dismiss() {
+    [PENDING_ID, PANEL_ID].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.remove();
+    });
+  }
+
+  function toast(msg, id) {
+    var t = document.createElement("div");
+    t.id = id;
+    t.setAttribute("role", "status");
+    t.textContent = msg;
+    t.style.cssText =
+      "position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9999;" +
+      "background:#101414;color:#e8f0ef;border:1px solid #2dd4bf55;border-radius:6px;" +
+      "padding:10px 16px;font:13px/1.4 ui-monospace,monospace;box-shadow:0 8px 30px rgba(0,0,0,.5)";
+    document.body.appendChild(t);
+  }
+
+  function showPanel(href) {
+    dismiss();
+    var wrap = document.createElement("div");
+    wrap.id = PANEL_ID;
+    wrap.setAttribute("role", "dialog");
+    wrap.setAttribute("aria-modal", "true");
+    wrap.setAttribute("aria-label", "Under construction");
+    wrap.style.cssText =
+      "position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;" +
+      "background:rgba(4,8,8,.72);backdrop-filter:blur(3px);padding:20px";
+    var card = document.createElement("div");
+    card.style.cssText =
+      "max-width:440px;width:100%;background:#0d1112;border:1px solid #2dd4bf44;border-radius:10px;" +
+      "padding:26px 26px 22px;color:#e8f0ef;font-family:inherit;box-shadow:0 20px 60px rgba(0,0,0,.6)";
+    var h = document.createElement("p");
+    h.style.cssText = "margin:0 0 4px;font:600 12px/1 ui-monospace,monospace;letter-spacing:.14em;color:#2dd4bf;text-transform:uppercase";
+    h.textContent = "Under construction";
+    var b = document.createElement("p");
+    b.style.cssText = "margin:10px 0 0;font-size:15px;line-height:1.55;color:#c9d6d4";
+    b.textContent = "This portal is temporarily down. The analysis behind it is intact and we are restoring the live view. Please check back soon.";
+    var dest = document.createElement("p");
+    dest.style.cssText = "margin:14px 0 0;font:12px/1.5 ui-monospace,monospace;color:#7b8a88;word-break:break-all";
+    dest.textContent = href;
+    var row = document.createElement("div");
+    row.style.cssText = "margin-top:20px;display:flex;gap:10px;flex-wrap:wrap";
+    var go = document.createElement("a");
+    go.href = href;
+    go.textContent = "Open it anyway";
+    go.style.cssText =
+      "flex:1;text-align:center;padding:9px 14px;border-radius:6px;border:1px solid #2dd4bf;color:#2dd4bf;" +
+      "font:500 13px/1.2 inherit;text-decoration:none";
+    var close = document.createElement("button");
+    close.type = "button";
+    close.textContent = "Close";
+    close.style.cssText =
+      "padding:9px 16px;border-radius:6px;border:1px solid #33403e;background:transparent;color:#c9d6d4;" +
+      "font:500 13px/1.2 inherit;cursor:pointer";
+    close.addEventListener("click", dismiss);
+    wrap.addEventListener("click", function (ev) { if (ev.target === wrap) dismiss(); });
+    document.addEventListener("keydown", function onKey(ev) {
+      if (ev.key === "Escape") { dismiss(); document.removeEventListener("keydown", onKey); }
+    });
+    row.appendChild(go);
+    row.appendChild(close);
+    card.appendChild(h);
+    card.appendChild(b);
+    card.appendChild(dest);
+    card.appendChild(row);
+    wrap.appendChild(card);
+    document.body.appendChild(wrap);
+    close.focus();
+  }
+
+  function checkAndGo(href) {
+    dismiss();
+    toast("Checking availability…", PENDING_ID);
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 8000);
+    fetch(href, { cache: "no-store", signal: ctrl.signal, headers: { Range: "bytes=0-0" } })
+      .then(function (res) {
+        clearTimeout(timer);
+        if (res.ok || res.status === 206) { dismiss(); window.location.href = href; }
+        else showPanel(href);
+      })
+      .catch(function () { clearTimeout(timer); showPanel(href); });
+  }
+
+  document.addEventListener("click", function (ev) {
+    if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    var a = ev.target && ev.target.closest ? ev.target.closest('#usecases a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute("href");
+    if (!href || href.charAt(0) === "#" || /^(mailto:|tel:)/i.test(href)) return;
+    ev.preventDefault();
+    checkAndGo(href);
+  }, true);
+})();
