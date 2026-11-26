@@ -47,6 +47,15 @@
   }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
 
+  @media (max-width: 640px) {
+    .topbar { padding: 0 10px; gap: 10px; }
+    .brand { flex: 1 1 auto; }
+    .lockup { height: 22px; }
+    .divider { display: none; }
+    .app-id { white-space: normal; }
+    .app-sub { display: none; }
+  }
+
   /* ---------- dataset tabs ---------- */
   .tabs {
     display: flex; align-items: stretch; gap: 2px; position: relative;
@@ -211,10 +220,10 @@
       <div class="sugg" id="ai-sugg"></div>
       <form class="ai-form" id="ai-form">
         <input id="ai-input" type="text" autocomplete="off" maxlength="400"
-               placeholder="Ask about this section&hellip;" aria-label="Ask the co-scientist" />
+               placeholder="Ask about the GBM3 section&hellip;" aria-label="Ask the co-scientist" />
         <button type="submit" id="ai-send">ask</button>
       </form>
-      <div class="ai-foot">
+      <div class="ai-foot" id="ai-foot">
         Live model, answered at request time and grounded in this run&rsquo;s marker report
         (GBM3 &middot; 1,775 spots &middot; 15 BANKSY domains). Cell-type labels are model-annotated
         and not independently validated &mdash; verify before citing.
@@ -353,6 +362,12 @@
     if (!rec.loaded) showPaneLoading(d.name); else paneLoading.classList.remove("show");
 
     renderActiveStats(id);
+    var foot = document.getElementById("ai-foot");
+    if (foot) {
+      foot.textContent = (id === "GBM3")
+        ? "Live model, answered at request time and grounded in this run’s marker report (GBM3 · 1,775 spots · 15 BANKSY domains). Cell-type labels are model-annotated and not independently validated — verify before citing."
+        : "Viewer is showing " + d.name + ". The co-scientist answers only from the GBM3 run’s marker report (1,775 spots · 15 BANKSY domains); switch to the GBM3 tab to inspect that run. Cell-type labels are model-annotated and not independently validated — verify before citing.";
+    }
     try { history.replaceState(null, "", "#" + id); } catch (e) {}
   }
 
@@ -470,7 +485,7 @@
       suggWrap.appendChild(b);
     });
 
-    msg("a", "Ask me about this section. I answer from this run's marker report — 1,775 spots, 15 BANKSY domains, per-cluster top markers.");
+    msg("a", "Ask me about the GBM3 section. I answer from the GBM3 run's marker report — 1,775 spots, 15 BANKSY domains, per-cluster top markers. The tabs above switch the viewer; my answers always cover GBM3.");
 
     if (!window.ARTEMIS_AI_ENDPOINT) {
       msg("a", "Live answering is not configured on this deployment. The walkthrough on the main site shows the same capability on a real run.");
